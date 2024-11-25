@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             HomeStatusBar(),
             WorldPuzzleBead(),
-            HomeIcon(),
+            HomeIcons(),
           ],
         ),
       ),

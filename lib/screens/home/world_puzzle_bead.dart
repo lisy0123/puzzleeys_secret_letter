@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
@@ -14,13 +15,10 @@ class WorldPuzzleBead extends StatelessWidget {
       VarSetting.worldGradientColors[2],
     ];
 
-    return GestureDetector(
-      onTap: () => onTapWorldPuzzleBead(context),
-      child: Center(
-        child: _buildWorldPuzzleBead(
-          gradientColors: worldFinalGradientColors,
-          context: context,
-        ),
+    return Center(
+      child: _buildWorldPuzzleBead(
+        gradientColors: worldFinalGradientColors,
+        context: context,
       ),
     );
   }
@@ -41,24 +39,36 @@ class WorldPuzzleBead extends StatelessWidget {
       decoration: BoxDecorationSetting.boxDecorationPuzzleBead(
         gradientColors: gradientColors,
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.asset(
-            'assets/imgs/puzzle_pattern.png',
-            fit: BoxFit.contain,
-          ),
-          TextSetting.textWorldPuzzle(
-            worldPuzzleNums: VarSetting.worldPuzzleNums,
-            myPuzzleNums: VarSetting.myPuzzleNums,
-            context: context,
-          ),
-        ],
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: () => onTapWorldPuzzleBead(context),
+        icon: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              'assets/imgs/puzzle_pattern.png',
+              fit: BoxFit.contain,
+            ),
+            TextSetting.textWorldPuzzle(
+              worldPuzzleNums: VarSetting.worldPuzzleNums,
+              myPuzzleNums: VarSetting.myPuzzleNums,
+              context: context,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void onTapWorldPuzzleBead(BuildContext context) {
-    debugPrint("Next Page!");
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => PuzzleScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+      ),
+    );
   }
 }

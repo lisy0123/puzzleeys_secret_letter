@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
+import 'package:puzzleeys_secret_letter/widgets/home/home_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
 
 class HomeStatusBar extends StatelessWidget {
@@ -21,10 +23,7 @@ class HomeStatusBar extends StatelessWidget {
 
   Widget _buildMainBarBox(BuildContext context) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       height: 32.0,
       margin: const EdgeInsets.only(
         left: 50.0,
@@ -47,7 +46,7 @@ class HomeStatusBar extends StatelessWidget {
           myGradientColors: myGradientColors,
           context: context,
         ),
-        _buildSettingButton(context),
+        const HomeButton(iconName: 'setting'),
       ],
     );
   }
@@ -60,7 +59,7 @@ class HomeStatusBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: () => onTapMyPuzzleBead(context),
+          onTap: () => HomeButton().onTap(context),
           child: Container(
             margin: const EdgeInsets.only(left: 16.0),
             width: 56.0,
@@ -71,8 +70,8 @@ class HomeStatusBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12.0),
-        Image.asset(
-          'assets/imgs/bar_puzzle.png',
+        SvgPicture.asset(
+          'assets/imgs/bar_puzzle.svg',
           height: 22.0,
         ),
         const SizedBox(width: 8.0),
@@ -81,39 +80,6 @@ class HomeStatusBar extends StatelessWidget {
           context: context,
         ),
       ],
-    );
-  }
-
-  Widget _buildSettingButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTapSetting(context),
-      child: Container(
-        margin: const EdgeInsets.only(right: 32.0),
-        height: 20.0,
-        child: Image.asset('assets/imgs/icon_setting.png'),
-      ),
-    );
-  }
-
-  void onTapMyPuzzleBead(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text("My puzzle bead"),
-        );
-      },
-    );
-  }
-
-  void onTapSetting(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text("Setting"),
-        );
-      },
     );
   }
 }

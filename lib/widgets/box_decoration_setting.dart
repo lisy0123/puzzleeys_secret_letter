@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 
 class BoxDecorationSetting {
-  static List<BoxShadow> _shadow({
-    double opacity = 0.5,
-}) {
+  static List<BoxShadow> _shadow() {
     return [
       BoxShadow(
-        color: Colors.black.withOpacity(opacity),
+        color: Colors.black.withOpacity(0.5),
         offset: const Offset(0, 8),
-        blurRadius: 20,
+        blurRadius: 10,
       ),
     ];
   }
@@ -44,9 +42,16 @@ class BoxDecorationSetting {
     );
   }
 
-  static BoxDecoration boxDecorationMainIcon() {
+  static BoxDecoration boxDecorationIcon() {
     return BoxDecoration(
-      boxShadow: _shadow(opacity: 0.3),
+      boxShadow: _shadow(),
+    );
+  }
+
+  static BoxDecoration boxDecorationHomeAlertDialog() {
+    return _shadowBorder().copyWith(
+      borderRadius: BorderRadius.circular(5),
+      color: ColorSetting.colorPaper,
     );
   }
 }

@@ -15,7 +15,7 @@ class TextSetting {
         .toList();
   }
 
-  static Stack textTitle({
+  static Stack _textTitle({
     required String text,
     required List<TextStyle?> textStyle,
     required BuildContext context,
@@ -30,11 +30,11 @@ class TextSetting {
     );
   }
 
-  static Stack textIcon({
+  static Stack textIconTitle({
     required text,
     required BuildContext context,
   }) {
-    return textTitle(
+    return _textTitle(
       text: text,
       textStyle: [
         Theme.of(context).textTheme.titleLarge,
@@ -52,7 +52,7 @@ class TextSetting {
     final String text = '현재 $worldPuzzleNums개의 감정 퍼즐이 있어요.\n'
         '퍼즐이에게 $myPuzzleNums개의 감정 퍼즐이 도착했어요!';
 
-    return textTitle(
+    return _textTitle(
       text: text,
       textStyle: [
         Theme.of(context).textTheme.headlineLarge,
