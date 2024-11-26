@@ -31,9 +31,7 @@ class WorldPuzzleBead extends StatelessWidget {
 
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.only(
-        top: 40.0,
-      ),
+      margin: const EdgeInsets.only(top: 60.0),
       width: beadSize,
       height: beadSize,
       decoration: BoxDecorationSetting.boxDecorationPuzzleBead(

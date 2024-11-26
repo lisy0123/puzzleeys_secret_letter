@@ -12,6 +12,12 @@ class BoxDecorationSetting {
     ];
   }
 
+  static BoxDecoration boxDecorationIcon() {
+    return BoxDecoration(
+      boxShadow: _shadow(),
+    );
+  }
+
   static BoxDecoration _shadowBorder() {
     return BoxDecoration(
       boxShadow: _shadow(),
@@ -19,6 +25,20 @@ class BoxDecorationSetting {
         color: ColorSetting.colorBase,
         width: 2,
       ),
+    );
+  }
+
+  static BoxDecoration boxDecorationShadowBorder() {
+    return _shadowBorder().copyWith(
+      borderRadius: BorderRadius.circular(8),
+      color: ColorSetting.colorWhite,
+    );
+  }
+
+  static BoxDecoration boxDecorationHomeAlertDialog() {
+    return _shadowBorder().copyWith(
+      borderRadius: BorderRadius.circular(5),
+      color: ColorSetting.colorPaper,
     );
   }
 
@@ -32,26 +52,6 @@ class BoxDecorationSetting {
         end: Alignment.bottomCenter,
         colors: gradientColors,
       ),
-    );
-  }
-
-  static BoxDecoration boxDecorationShadowBorder() {
-    return _shadowBorder().copyWith(
-      borderRadius: BorderRadius.circular(8),
-      color: ColorSetting.colorWhite,
-    );
-  }
-
-  static BoxDecoration boxDecorationIcon() {
-    return BoxDecoration(
-      boxShadow: _shadow(),
-    );
-  }
-
-  static BoxDecoration boxDecorationHomeAlertDialog() {
-    return _shadowBorder().copyWith(
-      borderRadius: BorderRadius.circular(5),
-      color: ColorSetting.colorPaper,
     );
   }
 }

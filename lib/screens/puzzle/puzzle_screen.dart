@@ -3,7 +3,7 @@ import 'package:puzzleeys_secret_letter/screens/home/home_status_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_icons.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_world_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 
 class PuzzleScreen extends StatefulWidget {
   const PuzzleScreen({super.key});
@@ -14,48 +14,62 @@ class PuzzleScreen extends StatefulWidget {
 
 class _PuzzleScreenState extends State<PuzzleScreen>
     with TickerProviderStateMixin {
-  TabController? controller;
+  late final TabController _controller;
 
   @override
   void initState() {
+    _controller = TabController(length: 3, vsync: this);
     super.initState();
-    controller = TabController(
-      length: 3,
-      vsync: this,
-    );
+  }
+
+  void navigateToTab(int index) {
+    if (_controller.index != index) {
+      setState(() {
+        _controller.animateTo(index);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: SafeArea(
-        top: true,
-        bottom: true,
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  TabBarView(
-                    controller: controller,
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                TabBarView(
+                  controller: _controller,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    PuzzlePersonalScreen(),
+                    PuzzleGlobalScreen(),
+                    PuzzleSubjectScreen(),
+                  ],
+                ),
+                SafeArea(
+                  top: true,
+                  child: Column(
                     children: [
-                      PuzzlePersonalScreen(),
-                      PuzzleWorldScreen(),
-                      PuzzleSubjectScreen(),
-                    ],
-                  ),
-                  Stack(
-                    children: [
+                      SizedBox(height: 8.0),
                       HomeStatusBar(),
-                      PuzzleIcons(),
+                      PuzzleIcons(
+                        currentIndex: _controller.index,
+                        onIconTap: navigateToTab,
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

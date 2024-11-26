@@ -49,8 +49,9 @@ class TextSetting {
     required int myPuzzleNums,
     required BuildContext context,
   }) {
-    final String text = '현재 $worldPuzzleNums개의 감정 퍼즐이 있어요.\n'
-        '퍼즐이에게 $myPuzzleNums개의 감정 퍼즐이 도착했어요!';
+    final String text =
+        '감정 퍼즐 $worldPuzzleNums개가 세계 퍼즐판에 있고\n'
+        '$myPuzzleNums개가 개인 퍼즐판에 있어요!';
 
     return _textTitle(
       text: text,

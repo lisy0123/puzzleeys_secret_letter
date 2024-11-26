@@ -4,7 +4,7 @@ import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 class ThemeSetting {
   static TextStyle _textMain({
     Color textColor = ColorSetting.colorBase,
-    double fontSize = 15.0,
+    double fontSize = 14.0,
   }) {
     return TextStyle(
       fontSize: fontSize,
@@ -16,14 +16,14 @@ class ThemeSetting {
 
   static TextStyle _textMainStroke({
     Color textColor = ColorSetting.colorWhite,
-    double fontSize = 15.0,
+    double fontSize = 14.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
         fontSize: fontSize,
         fontWeight: FontWeight.w900,
         foreground: Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 3
+          ..strokeWidth = 2.5
           ..strokeJoin = StrokeJoin.round
           ..strokeCap = StrokeCap.round
           ..color = textColor == ColorSetting.colorWhite
@@ -39,8 +39,8 @@ class ThemeSetting {
         headlineMedium: _textMain(),
         labelLarge: _textMainStroke(textColor: ColorSetting.colorBase),
         labelMedium: _textMain(textColor: ColorSetting.colorWhite),
-        titleLarge: _textMainStroke(fontSize: 20.0),
-        titleMedium: _textMain(fontSize: 20.0),
+        titleLarge: _textMainStroke(fontSize: 18.0),
+        titleMedium: _textMain(fontSize: 18.0),
       ),
     );
   }

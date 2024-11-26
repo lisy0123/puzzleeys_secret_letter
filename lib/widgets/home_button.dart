@@ -5,7 +5,7 @@ import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
 
 class HomeButton extends StatelessWidget {
-  final String? iconName;
+  final String iconName;
 
   const HomeButton({
     super.key,
@@ -26,15 +26,15 @@ class HomeButton extends StatelessWidget {
         margin: const EdgeInsets.only(right: 32.0),
         child: SvgPicture.asset(
           'assets/imgs/icon_setting.svg',
-          height: 22.0,
+          height: 18.0,
         ),
       );
     } else {
       return Container(
         decoration: BoxDecorationSetting.boxDecorationIcon(),
         child: SvgPicture.asset(
-          'assets/imgs/icon_$iconName.svg',
-          height: 42.0,
+          'assets/imgs/icon_home_$iconName.svg',
+          height: 40.0,
         ),
       );
     }
@@ -48,7 +48,7 @@ class HomeButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           contentPadding: EdgeInsets.zero,
           content: SizedBox(
-            height: (iconName == "setting" || iconName == "") ? 480.0 : 400.0,
+            height: (iconName == "setting" || iconName == "") ? 440.0 : 360.0,
             width: iconName == "" ? 400.0 : 260.0,
             child: Stack(
               alignment: Alignment.topCenter,
@@ -78,10 +78,10 @@ class HomeButton extends StatelessWidget {
   Widget _drawContentTitle(BuildContext context) {
     const Map<String, String> iconNameLists = {
       "setting": "설 정",
-      "notice": "공 지",
-      "calendar": "구슬  달력",
-      "shop": "상 점",
-      "goal": "업 적",
+      "0": "공 지",
+      "1": "구슬  달력",
+      "2": "상 점",
+      "3": "업 적",
       "": "감정 퍼즐 구슬",
     };
 
