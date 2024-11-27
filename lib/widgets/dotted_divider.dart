@@ -11,12 +11,12 @@ class DottedDivider extends StatelessWidget {
 
   const DottedDivider({
     super.key,
-    this.dashWidth = 4.0,
-    this.dashSpace = 4.0,
+    required this.dashWidth,
+    required this.dashSpace,
     this.color = ColorSetting.colorBase,
-    this.thickness = 1.0,
+    required this.thickness,
     this.axis = Axis.horizontal,
-    this.padding = 16.0,
+    required this.padding,
   });
 
   @override

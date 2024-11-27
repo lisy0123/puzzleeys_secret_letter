@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 
 class ThemeSetting {
   static TextStyle _textMain({
     Color textColor = ColorSetting.colorBase,
-    double fontSize = 14.0,
+    double fontSize = 100.0,
   }) {
     return TextStyle(
-      fontSize: fontSize,
+      fontSize: fontSize.w,
       letterSpacing: 3,
       height: 1.5,
       color: textColor,
@@ -16,10 +17,10 @@ class ThemeSetting {
 
   static TextStyle _textMainStroke({
     Color textColor = ColorSetting.colorWhite,
-    double fontSize = 14.0,
+    double fontSize = 100.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
-        fontSize: fontSize,
+        fontSize: fontSize.w,
         fontWeight: FontWeight.w900,
         foreground: Paint()
           ..style = PaintingStyle.stroke
@@ -39,8 +40,8 @@ class ThemeSetting {
         headlineMedium: _textMain(),
         labelLarge: _textMainStroke(textColor: ColorSetting.colorBase),
         labelMedium: _textMain(textColor: ColorSetting.colorWhite),
-        titleLarge: _textMainStroke(fontSize: 18.0),
-        titleMedium: _textMain(fontSize: 18.0),
+        titleLarge: _textMainStroke(fontSize: 120.0),
+        titleMedium: _textMain(fontSize: 120.0),
       ),
     );
   }

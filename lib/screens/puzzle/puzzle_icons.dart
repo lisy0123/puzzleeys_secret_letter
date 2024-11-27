@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 
@@ -17,7 +18,7 @@ class PuzzleIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(top: 4.0, left: 70.0),
+      margin: EdgeInsets.only(top: 24.0.w, left: 400.0.w),
       child: Stack(
         children: [
           _buildBackGround(),
@@ -32,7 +33,7 @@ class PuzzleIcons extends StatelessWidget {
       decoration: BoxDecorationSetting.boxDecorationIcon(),
       child: SvgPicture.asset(
         'assets/imgs/navigation_bar.svg',
-        height: 48.0,
+        height: 66.0.h,
       ),
     );
   }
@@ -42,23 +43,23 @@ class PuzzleIcons extends StatelessWidget {
       onTap: () => Navigator.pop(context),
       child: SvgPicture.asset(
         'assets/imgs/icon_home.svg',
-        height: 22.0,
+        height: 30.0.h,
       ),
     );
   }
 
   Widget _buildIconRow(BuildContext context) {
-    const List<double> iconHeight = [22.0, 24.0, 28.0];
+    final List<double> iconHeight = [30.0.h, 32.0.h, 34.0.h];
 
     return Container(
-      margin: const EdgeInsets.only(top: 14.0, left: 14.0),
+      margin: EdgeInsets.only(top: 22.0.h, left: 20.0.h),
       child: Row(
         children: [
           _buildHomeButton(context),
           ...List.generate(iconHeight.length, (index) {
             return Row(
               children: [
-                const SizedBox(width: 22.0),
+                SizedBox(width: 30.0.h),
                 _buildIconButton(
                   index: index,
                   iconHeight: iconHeight[index],

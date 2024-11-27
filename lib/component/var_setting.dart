@@ -16,4 +16,13 @@ class VarSetting {
     ColorSetting.colorPink,
   ];
 
+  static const Map<String, String> iconNameLists = {
+    "setting": "설 정",
+    "0": "공 지",
+    "1": "테 마",
+    "2": "업 적",
+    "3": "상 점",
+    "": "감정 퍼즐 구슬",
+  };
+
 }

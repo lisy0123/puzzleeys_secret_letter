@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PuzzleGlobalScreen extends StatefulWidget {
   const PuzzleGlobalScreen({super.key});
@@ -34,7 +35,7 @@ class _PuzzleGlobalScreenState extends State<PuzzleGlobalScreen> {
               offset: offset,
               child: Icon(
                 Icons.favorite,
-                size: 50.0,
+                size: 80.0.h,
               ),
             ),
           ],

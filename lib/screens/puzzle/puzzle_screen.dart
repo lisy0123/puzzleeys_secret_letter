@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/screens/home/home_status_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_icons.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
@@ -57,7 +58,7 @@ class _PuzzleScreenState extends State<PuzzleScreen>
                   top: true,
                   child: Column(
                     children: [
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 24.0.w),
                       HomeStatusBar(),
                       PuzzleIcons(
                         currentIndex: _controller.index,

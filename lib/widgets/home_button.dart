@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
@@ -23,10 +25,10 @@ class HomeButton extends StatelessWidget {
   Widget _build() {
     if (iconName == 'setting') {
       return Container(
-        margin: const EdgeInsets.only(right: 32.0),
+        margin: EdgeInsets.only(right: 140.0.w),
         child: SvgPicture.asset(
           'assets/imgs/icon_setting.svg',
-          height: 18.0,
+          height: 28.0.h,
         ),
       );
     } else {
@@ -34,7 +36,7 @@ class HomeButton extends StatelessWidget {
         decoration: BoxDecorationSetting.boxDecorationIcon(),
         child: SvgPicture.asset(
           'assets/imgs/icon_home_$iconName.svg',
-          height: 40.0,
+          height: 260.0.w,
         ),
       );
     }
@@ -46,10 +48,9 @@ class HomeButton extends StatelessWidget {
       builder: (_) {
         return AlertDialog(
           backgroundColor: Colors.transparent,
-          contentPadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.only(right: 56.0.w, left: 56.0.w),
           content: SizedBox(
-            height: (iconName == "setting" || iconName == "") ? 440.0 : 360.0,
-            width: iconName == "" ? 400.0 : 260.0,
+            height: (iconName == "setting") ? 3000.0.w : 2400.0.w,
             child: Stack(
               alignment: Alignment.topCenter,
               children: _drawContent(context),
@@ -64,40 +65,34 @@ class HomeButton extends StatelessWidget {
   List<Widget> _drawContent(BuildContext context) {
     return ([
       Container(
-        margin: const EdgeInsets.only(top: 16.0),
+        margin: EdgeInsets.only(top: 16.0.h),
         decoration: BoxDecorationSetting.boxDecorationHomeAlertDialog(),
       ),
       SvgPicture.asset(
         'assets/imgs/background_tape.svg',
-        height: 36.0,
+        height: 42.0.h,
       ),
       _drawContentTitle(context),
     ]);
   }
 
   Widget _drawContentTitle(BuildContext context) {
-    const Map<String, String> iconNameLists = {
-      "setting": "설 정",
-      "0": "공 지",
-      "1": "구슬  달력",
-      "2": "상 점",
-      "3": "업 적",
-      "": "감정 퍼즐 구슬",
-    };
-
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(height: 40.0),
+        SizedBox(height: 48.0.h),
         Container(
           child: TextSetting.textIconTitle(
-            text: iconNameLists[iconName],
+            text: VarSetting.iconNameLists[iconName],
             context: context,
           ),
         ),
-        const SizedBox(height: 16.0),
-        const DottedDivider(),
+        SizedBox(height: 16.0.h),
+        DottedDivider(
+          dashWidth: 6.0.h,
+          dashSpace: 6.0.h,
+          thickness: 1.0.h,
+          padding: 18.0.h,
+        ),
       ],
     );
   }

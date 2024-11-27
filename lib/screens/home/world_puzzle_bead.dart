@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
@@ -27,11 +28,11 @@ class WorldPuzzleBead extends StatelessWidget {
     required List<Color> gradientColors,
     required BuildContext context,
   }) {
-    final double beadSize = MediaQuery.of(context).size.width - 56.0;
+    final double beadSize = MediaQuery.of(context).size.width - 280.0.w;
 
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.only(top: 60.0),
+      margin: EdgeInsets.only(top: 900.0.w),
       width: beadSize,
       height: beadSize,
       decoration: BoxDecorationSetting.boxDecorationPuzzleBead(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 import 'package:puzzleeys_secret_letter/screens/home/world_puzzle_bead.dart';
 import 'package:puzzleeys_secret_letter/screens/home/home_status_bar.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                SizedBox(height: 8.0),
+                SizedBox(height: 24.0.w),
                 HomeStatusBar(),
                 _buildIcons(context),
               ],
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildIcons(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,
-      margin: const EdgeInsets.only(top: 4.0, right: 24.0),
+      margin: EdgeInsets.only(top: 24.0.w, right: 100.0.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +41,7 @@ class HomeScreen extends StatelessWidget {
             return Column(
               children: [
                 HomeButton(iconName: index.toString()),
-                const SizedBox(height: 18.0),
+                SizedBox(height: 140.0.w),
               ],
             );
           }),
