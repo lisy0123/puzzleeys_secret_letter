@@ -5,7 +5,7 @@ import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 class ThemeSetting {
   static TextStyle _textMain({
     Color textColor = ColorSetting.colorBase,
-    double fontSize = 100.0,
+    double fontSize = 90.0,
   }) {
     return TextStyle(
       fontSize: fontSize.w,
@@ -17,7 +17,7 @@ class ThemeSetting {
 
   static TextStyle _textMainStroke({
     Color textColor = ColorSetting.colorWhite,
-    double fontSize = 100.0,
+    double fontSize = 90.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
         fontSize: fontSize.w,
@@ -27,21 +27,23 @@ class ThemeSetting {
           ..strokeWidth = 2.5
           ..strokeJoin = StrokeJoin.round
           ..strokeCap = StrokeCap.round
-          ..color = textColor == ColorSetting.colorWhite
-              ? textColor.withOpacity(0.9)
-              : textColor);
+          ..color = textColor);
   }
 
   static ThemeData themeSetting() {
     return ThemeData(
       fontFamily: 'BMJUA',
       textTheme: TextTheme(
-        headlineLarge: _textMainStroke(),
-        headlineMedium: _textMain(),
-        labelLarge: _textMainStroke(textColor: ColorSetting.colorBase),
-        labelMedium: _textMain(textColor: ColorSetting.colorWhite),
+        headlineLarge: _textMainStroke(textColor: ColorSetting.colorBase),
+        headlineMedium: _textMain(textColor: ColorSetting.colorWhite),
         titleLarge: _textMainStroke(fontSize: 120.0),
         titleMedium: _textMain(fontSize: 120.0),
+        labelLarge: _textMain(fontSize: 70.0),
+        labelMedium: _textMain(
+          fontSize: 70.0,
+          textColor: ColorSetting.colorBase.withOpacity(0.4),
+        ),
+        displayLarge: _textMain(fontSize: 80.0),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/screens/home/home_status_bar.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_icons.dart';
+import 'package:puzzleeys_secret_letter/screens/outliner/bottom_icon_bar.dart';
+import 'package:puzzleeys_secret_letter/screens/outliner/status_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
@@ -19,7 +19,11 @@ class _PuzzleScreenState extends State<PuzzleScreen>
 
   @override
   void initState() {
-    _controller = TabController(length: 3, vsync: this);
+    _controller = TabController(
+      length: 3,
+      vsync: this,
+      animationDuration: Duration.zero,
+    );
     super.initState();
   }
 
@@ -49,22 +53,18 @@ class _PuzzleScreenState extends State<PuzzleScreen>
                   controller: _controller,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    PuzzlePersonalScreen(),
                     PuzzleGlobalScreen(),
                     PuzzleSubjectScreen(),
+                    PuzzlePersonalScreen(),
                   ],
                 ),
                 SafeArea(
                   top: true,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 24.0.w),
-                      HomeStatusBar(),
-                      PuzzleIcons(
-                        currentIndex: _controller.index,
-                        onIconTap: navigateToTab,
-                      ),
-                    ],
+                  bottom: true,
+                  child: Container(
+                    margin: EdgeInsets.all(40.0.w),
+                    padding: EdgeInsets.only(bottom: 20.0.h),
+                    child: _build(context),
                   ),
                 ),
               ],
@@ -72,6 +72,19 @@ class _PuzzleScreenState extends State<PuzzleScreen>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        StatusBar(),
+        ButtonIconBar(
+          currentIndex: _controller.index,
+          onIconTap: navigateToTab,
+        ),
+      ],
     );
   }
 }

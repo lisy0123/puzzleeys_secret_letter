@@ -30,6 +30,20 @@ class TextSetting {
     );
   }
 
+  static Text textMainIconTitle({
+    required index,
+    required text,
+    required BuildContext context,
+  }) {
+    return Text(
+      text,
+      style: index
+          ? Theme.of(context).textTheme.labelLarge
+          : Theme.of(context).textTheme.labelMedium,
+      textAlign: TextAlign.center,
+    );
+  }
+
   static Stack textIconTitle({
     required text,
     required BuildContext context,
@@ -44,20 +58,14 @@ class TextSetting {
     );
   }
 
-  static Stack textWorldPuzzle({
-    required int worldPuzzleNums,
-    required int myPuzzleNums,
+  static Stack textListIconTitle({
+    required text,
     required BuildContext context,
   }) {
-    final String text =
-        '감정 퍼즐 $worldPuzzleNums개가 세계 퍼즐판에 있고\n'
-        '$myPuzzleNums개가 개인 퍼즐판에 있어요!';
-
     return _textTitle(
       text: text,
       textStyle: [
-        Theme.of(context).textTheme.headlineLarge,
-        Theme.of(context).textTheme.headlineMedium,
+        Theme.of(context).textTheme.displayLarge,
       ],
       context: context,
     );
@@ -72,11 +80,22 @@ class TextSetting {
       children: _buildTextVariants(
         text: puzzleNums.toString(),
         styles: [
-          Theme.of(context).textTheme.labelLarge,
-          Theme.of(context).textTheme.labelMedium,
+          Theme.of(context).textTheme.headlineLarge,
+          Theme.of(context).textTheme.headlineMedium,
         ],
         context: context,
       ),
+    );
+  }
+
+  static SelectableText textPuzzleContent({
+    required String text,
+    required BuildContext context,
+  }) {
+    return SelectableText(
+      text,
+      style: Theme.of(context).textTheme.displayLarge,
+      textAlign: TextAlign.center,
     );
   }
 }

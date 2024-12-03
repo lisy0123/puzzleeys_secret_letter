@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
-import 'package:puzzleeys_secret_letter/screens/home/home_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       designSize: Size(2340, 1080),
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeSetting.themeSetting(),
-          home: HomeScreen(),
+          home: PuzzleScreen(),
         );
       },
     );

@@ -30,7 +30,7 @@ class BoxDecorationSetting {
 
   static BoxDecoration boxDecorationShadowBorder() {
     return _shadowBorder().copyWith(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(10),
       color: ColorSetting.colorWhite,
     );
   }
@@ -51,6 +51,17 @@ class BoxDecorationSetting {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: gradientColors,
+      ),
+    );
+  }
+
+  static BoxDecoration boxDecorationButton() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: ColorSetting.colorWhite,
+      border: Border.all(
+        color: ColorSetting.colorBase,
+        width: 2,
       ),
     );
   }
