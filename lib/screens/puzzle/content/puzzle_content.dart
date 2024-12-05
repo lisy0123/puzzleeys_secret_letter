@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
-import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/writing/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
+import 'package:puzzleeys_secret_letter/widgets/color_match.dart';
 
 class PuzzleContent extends StatefulWidget {
   final int row;
@@ -12,6 +12,7 @@ class PuzzleContent extends StatefulWidget {
   final int index;
   final double puzzleHeight;
   final double scaleFactor;
+  final String puzzleState;
 
   const PuzzleContent({
     super.key,
@@ -20,6 +21,7 @@ class PuzzleContent extends StatefulWidget {
     required this.index,
     required this.puzzleHeight,
     required this.scaleFactor,
+    required this.puzzleState,
   });
 
   @override
@@ -31,15 +33,13 @@ class _PuzzleContentState extends State<PuzzleContent> {
 
   @override
   Widget build(BuildContext context) {
-    final double rotateAngle = (widget.row % 2 == widget.column % 2)
-        ? 90 * math.pi / 180
-        : 90 * math.pi / 90;
-    final puzzleColor = ColorSetting.colorRed;
+    final rotateAngle = _calculateRotationAngle();
+    final puzzleColor = ColorSetting.colorBlue;
 
     return LayoutId(
       id: widget.index,
       child: GestureDetector(
-        onDoubleTap: () => _build(puzzleColor),
+        onTap: () => _showPuzzleDialog(puzzleColor),
         child: Transform.rotate(
           angle: rotateAngle,
           child: SvgPicture.asset(
@@ -47,7 +47,7 @@ class _PuzzleContentState extends State<PuzzleContent> {
             height: widget.puzzleHeight * widget.scaleFactor,
             fit: BoxFit.contain,
             colorFilter: ColorFilter.mode(
-              puzzleColor.withOpacity(0.7),
+              puzzleColor.withOpacity(0.8),
               BlendMode.srcATop,
             ),
           ),
@@ -56,34 +56,29 @@ class _PuzzleContentState extends State<PuzzleContent> {
     );
   }
 
-  void _build(Color puzzleColor) {
+  double _calculateRotationAngle() {
+    return (widget.row % 2 == widget.column % 2)
+        ? 90 * math.pi / 180
+        : 90 * math.pi / 90;
+  }
+
+  void _showPuzzleDialog(Color puzzleColor) {
     showDialog(
       barrierDismissible: false,
-      barrierColor: Colors.transparent,
+      barrierColor: ColorMatch(baseColor: puzzleColor)().withOpacity(0.8),
       context: context,
-      builder: (_) {
-        return GestureDetector(
-          onPanStart: _onPanStart,
-          onPanUpdate: _onPanUpdate,
-          child: Center(
-            child: Stack(
-              children: [
-                Container(
-                  color: puzzleColor.withOpacity(0.7),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  color: ColorSetting.colorWhite.withOpacity(0.1),
-                  child: Container(
-                    margin: EdgeInsets.all(180.0.w),
-                    child: PuzzleDetail(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => _buildPuzzleDialogContent(),
+    );
+  }
+
+  Widget _buildPuzzleDialogContent() {
+    return GestureDetector(
+      onPanStart: _onPanStart,
+      onPanUpdate: _onPanUpdate,
+      child: PuzzleDetailScreen(
+        index: widget.index,
+        puzzleState: widget.puzzleState,
+      ),
     );
   }
 
@@ -94,11 +89,7 @@ class _PuzzleContentState extends State<PuzzleContent> {
   void _onPanUpdate(DragUpdateDetails details) {
     double dragDistance = details.globalPosition.dy - startDragY;
 
-    if (dragDistance > 10) {
-      Navigator.pop(context);
-    };
-    if (dragDistance < -10) {
-      debugPrint('mail!');
-    };
+    if (dragDistance > 10) Navigator.pop(context);
+    if (dragDistance < -10) PuzzleWritingScreen();
   }
 }

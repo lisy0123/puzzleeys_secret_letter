@@ -14,28 +14,17 @@ class VarSetting {
     '전체',
     '주제',
     '개인',
+    '상점',
   ];
   static const Map<String, String> iconNameLists = {
-    "list": "더 보 기",
-    "0": "내 글",
-    "1": "감정 퍼즐",
-    "2": "감정 퍼즐 구슬",
-    "3": "퀘스트",
-    "4": "업 적",
-    "5": "상 점",
-    "6": "공 지",
-    "7": "문 의",
-    "8": "설 정", // same with setting
+    'setting': '설 정',
+    'list': '더 보 기',
+    'bead': '감정 퍼즐 구슬',
+    '0': '내 글',
+    '1': '공 지',
+    '2': '퀘스트',
+    '3': '업 적',
+    'alarm': '신고하기',
+    'puzzle': '감정 담기',
   };
-  static const List<String> listContentLists = [
-    '내 글',
-    '퍼 즐',
-    '구 슬',
-    "퀘스트",
-    "업 적",
-    '상 점',
-    "공 지",
-    "문 의",
-    "설 정",
-  ];
 }

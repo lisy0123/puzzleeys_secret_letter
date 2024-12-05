@@ -32,18 +32,20 @@ class ThemeSetting {
 
   static ThemeData themeSetting() {
     return ThemeData(
+      scaffoldBackgroundColor: ColorSetting.colorBase,
       fontFamily: 'BMJUA',
       textTheme: TextTheme(
         headlineLarge: _textMainStroke(textColor: ColorSetting.colorBase),
         headlineMedium: _textMain(textColor: ColorSetting.colorWhite),
-        titleLarge: _textMainStroke(fontSize: 120.0),
-        titleMedium: _textMain(fontSize: 120.0),
+        titleLarge: _textMainStroke(fontSize: 110.0),
+        titleMedium: _textMain(fontSize: 110.0),
+        displayLarge: _textMain(),
+        displayMedium: _textMain(fontSize: 80.0),
         labelLarge: _textMain(fontSize: 70.0),
         labelMedium: _textMain(
           fontSize: 70.0,
           textColor: ColorSetting.colorBase.withOpacity(0.4),
         ),
-        displayLarge: _textMain(fontSize: 80.0),
       ),
     );
   }

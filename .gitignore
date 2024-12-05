@@ -95,6 +95,8 @@ app.*.map.json
 # End of https://www.toptal.com/developers/gitignore/api/flutter
 
 
+.env
+_old/
 screenshot/
 
 .DS_Store

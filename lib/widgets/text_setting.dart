@@ -4,7 +4,6 @@ class TextSetting {
   static List<Text> _buildTextVariants({
     required String text,
     required List<TextStyle?> styles,
-    required BuildContext context,
   }) {
     return styles
         .map((styles) => Text(
@@ -18,14 +17,12 @@ class TextSetting {
   static Stack _textTitle({
     required String text,
     required List<TextStyle?> textStyle,
-    required BuildContext context,
   }) {
     return Stack(
       alignment: Alignment.center,
       children: _buildTextVariants(
         text: text,
         styles: textStyle,
-        context: context,
       ),
     );
   }
@@ -54,11 +51,22 @@ class TextSetting {
         Theme.of(context).textTheme.titleLarge,
         Theme.of(context).textTheme.titleMedium,
       ],
-      context: context,
     );
   }
 
-  static Stack textListIconTitle({
+  static Stack textIconButton({
+    required text,
+    required BuildContext context,
+  }) {
+    return _textTitle(
+      text: text,
+      textStyle: [
+        Theme.of(context).textTheme.displayMedium,
+      ],
+    );
+  }
+
+  static Stack textDisplay({
     required text,
     required BuildContext context,
   }) {
@@ -67,7 +75,6 @@ class TextSetting {
       textStyle: [
         Theme.of(context).textTheme.displayLarge,
       ],
-      context: context,
     );
   }
 
@@ -83,19 +90,7 @@ class TextSetting {
           Theme.of(context).textTheme.headlineLarge,
           Theme.of(context).textTheme.headlineMedium,
         ],
-        context: context,
       ),
-    );
-  }
-
-  static SelectableText textPuzzleContent({
-    required String text,
-    required BuildContext context,
-  }) {
-    return SelectableText(
-      text,
-      style: Theme.of(context).textTheme.displayLarge,
-      textAlign: TextAlign.center,
     );
   }
 }

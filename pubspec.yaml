@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.15
   flutter_screenutil: ^5.9.3
   supabase_flutter: ^2.8.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

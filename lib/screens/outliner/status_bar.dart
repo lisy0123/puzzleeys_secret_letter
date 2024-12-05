@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_ui.dart';
-import 'package:puzzleeys_secret_letter/screens/list/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
 
 class StatusBar extends StatelessWidget {
@@ -18,6 +18,7 @@ class StatusBar extends StatelessWidget {
           context: context,
           height: 44.0,
           left: 300.0,
+          top: 14.0,
         ),
         _buildMainBar(
           myGradientColors: VarSetting.myGradientColors,
@@ -41,8 +42,8 @@ class StatusBar extends StatelessWidget {
         ),
         Row(
           children: [
-            const IconDialog(iconName: 'list'),
-            const IconDialog(iconName: 'setting'),
+            IconDialog(iconName: 'list'),
+            IconDialog(iconName: 'setting'),
           ],
         ),
       ],
@@ -56,17 +57,7 @@ class StatusBar extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () => IconDialog(iconName: "2").onTap(context),
-          child: Container(
-            margin: EdgeInsets.only(left: 80.0.w),
-            width: 72.0.h,
-            height: 72.0.h,
-            decoration: BoxDecorationSetting.boxDecorationPuzzleBead(
-              gradientColors: myGradientColors,
-            ),
-          ),
-        ),
+        _buildBead(myGradientColors, context),
         SizedBox(width: 80.0.w),
         SvgPicture.asset(
           'assets/imgs/bar_puzzle.svg',
@@ -88,6 +79,20 @@ class StatusBar extends StatelessWidget {
           context: context,
         ),
       ],
+    );
+  }
+
+  Widget _buildBead(List<Color> myGradientColors, BuildContext context) {
+    return GestureDetector(
+      onTap: () => IconDialog(iconName: "bead").buildDialog(context),
+      child: Container(
+        margin: EdgeInsets.only(left: 80.0.w),
+        width: 72.0.h,
+        height: 72.0.h,
+        decoration: BoxDecorationSetting.boxDecorationBead(
+          myGradientColors: myGradientColors,
+        ),
+      ),
     );
   }
 }

@@ -2,25 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 
 class BoxDecorationSetting {
-  static List<BoxShadow> _shadow() {
-    return [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.5),
-        offset: const Offset(0, 8),
-        blurRadius: 10,
-      ),
-    ];
-  }
-
-  static BoxDecoration boxDecorationIcon() {
-    return BoxDecoration(
-      boxShadow: _shadow(),
+  static BoxShadow shadow() {
+    return BoxShadow(
+      color: Colors.black.withOpacity(0.5),
+      offset: const Offset(0, 8),
+      blurRadius: 10,
     );
   }
 
-  static BoxDecoration _shadowBorder() {
+  static BoxDecoration shadowBorder() {
     return BoxDecoration(
-      boxShadow: _shadow(),
+      boxShadow: [shadow()],
       border: Border.all(
         color: ColorSetting.colorBase,
         width: 2,
@@ -28,40 +20,24 @@ class BoxDecorationSetting {
     );
   }
 
-  static BoxDecoration boxDecorationShadowBorder() {
-    return _shadowBorder().copyWith(
-      borderRadius: BorderRadius.circular(10),
-      color: ColorSetting.colorWhite,
-    );
-  }
-
-  static BoxDecoration boxDecorationHomeAlertDialog() {
-    return _shadowBorder().copyWith(
-      borderRadius: BorderRadius.circular(5),
-      color: ColorSetting.colorPaper,
-    );
-  }
-
-  static BoxDecoration boxDecorationPuzzleBead({
-    required List<Color> gradientColors,
+  static BoxDecoration boxDecorationShadowBorder({
+    double circular = 10.0,
+    Color color = ColorSetting.colorWhite,
   }) {
-    return _shadowBorder().copyWith(
+    return shadowBorder().copyWith(
+      borderRadius: BorderRadius.circular(circular),
+      color: color,
+    );
+  }
+
+  static BoxDecoration boxDecorationBead(
+      {required List<Color> myGradientColors}) {
+    return shadowBorder().copyWith(
       shape: BoxShape.circle,
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: gradientColors,
-      ),
-    );
-  }
-
-  static BoxDecoration boxDecorationButton() {
-    return BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      color: ColorSetting.colorWhite,
-      border: Border.all(
-        color: ColorSetting.colorBase,
-        width: 2,
+        colors: myGradientColors,
       ),
     );
   }

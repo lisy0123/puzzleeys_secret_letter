@@ -24,22 +24,16 @@ class ButtonIconBar extends StatelessWidget {
         CustomUi.buildWhiteBox(context: context),
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: Container(
-            margin: EdgeInsets.only(left: 40.0.w, right: 40.0.w, top: 16.0.h),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ...List.generate(3, (generator) {
-                  return Row(
-                    children: [
-                      _buildIconButton(
-                        index: generator,
-                        context: context,
-                      ),
-                    ],
-                  );
-                }),
-              ],
+              children: List.generate(4, (index) {
+                return _buildIconButton(
+                  index: index,
+                  context: context,
+                );
+              }),
             ),
           ),
         ),
@@ -53,31 +47,30 @@ class ButtonIconBar extends StatelessWidget {
   }) {
     final bool isSelected = currentIndex == index;
 
-    return GestureDetector(
-      child: IconButton(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onPressed: () => onIconTap(index),
-        icon: Column(
-          children: [
-            SvgPicture.asset(
-              'assets/imgs/icon_$index.svg',
-              height: 40.0.h,
-              colorFilter: ColorFilter.mode(
-                isSelected
-                    ? ColorSetting.colorBase.withOpacity(0.2)
-                    : Colors.white.withOpacity(0.5),
-                BlendMode.srcATop,
-              ),
+    return IconButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () => onIconTap(index),
+      icon: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            'assets/imgs/icon_$index.svg',
+            height: 40.0.h,
+            colorFilter: ColorFilter.mode(
+              isSelected
+                  ? ColorSetting.colorBase.withOpacity(0.2)
+                  : Colors.white.withOpacity(0.5),
+              BlendMode.srcATop,
             ),
-            SizedBox(width: 500.0.w),
-            TextSetting.textMainIconTitle(
-              index: isSelected,
-              text: VarSetting.mainIconNameLists[index],
-              context: context,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(width: 300.0.w),
+          TextSetting.textMainIconTitle(
+            index: isSelected,
+            text: VarSetting.mainIconNameLists[index],
+            context: context,
+          ),
+        ],
       ),
     );
   }

@@ -9,11 +9,12 @@ class CustomUi {
     required BuildContext context,
     double height = 100.0,
     double left = 40.0,
+    double top = 0.0,
   }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: height.h,
-      margin: EdgeInsets.only(left: left.w, right: 40.0.w, top: 14.0.h),
+      margin: EdgeInsets.only(left: left.w, right: 40.0.w, top: top.h),
       decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
     );
   }
@@ -36,27 +37,24 @@ class CustomUiCircle extends StatefulWidget {
 class _CustomUiCircleState extends State<CustomUiCircle> {
   bool _isPressed = false;
 
+  void _handleTapState(bool pressed) {
+    setState(() {
+      _isPressed = pressed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) {
-        setState(() {
-          _isPressed = true;
-        });
-      },
+      onTapDown: (_) => _handleTapState(true),
       onTapUp: (_) {
-        setState(() {
-          _isPressed = false;
-          widget.onTap();
-        });
+        _handleTapState(false);
+        widget.onTap();
       },
-      onTapCancel: () {
-        setState(() {
-          _isPressed = false;
-        });
-      },
+      onTapCancel: () => _handleTapState(false),
       child: Container(
-        decoration: BoxDecorationSetting.boxDecorationIcon().copyWith(
+        decoration: BoxDecoration(
+          boxShadow: [BoxDecorationSetting.shadow()],
           shape: BoxShape.circle,
         ),
         child: SvgPicture.asset(
