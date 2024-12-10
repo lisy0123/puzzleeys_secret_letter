@@ -5,7 +5,7 @@ import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_ui.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
-import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 
 class StatusBar extends StatelessWidget {
   const StatusBar({super.key});
@@ -14,57 +14,41 @@ class StatusBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomUi.buildWhiteBox(
-          context: context,
-          height: 44.0,
-          left: 300.0,
+        CustomUi(
+          height: 200.0,
+          left: 200.0,
           top: 14.0,
+          child: _buildMainBar(context),
         ),
-        _buildMainBar(
-          myGradientColors: VarSetting.myGradientColors,
-          context: context,
-        ),
+        _buildBead(VarSetting.myGradientColors, context),
       ],
     );
   }
 
-  Widget _buildMainBar({
-    required List<Color> myGradientColors,
-    required BuildContext context,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildMainBarLeft(
-          myGradientColors: myGradientColors,
-          context: context,
-        ),
-        Row(
-          children: [
-            IconDialog(iconName: 'list'),
-            IconDialog(iconName: 'setting'),
-          ],
-        ),
-      ],
+  Widget _buildMainBar(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 200.0.w, right: 100.0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildMainBarLeft(context),
+          IconDialog(iconName: 'list'),
+        ],
+      ),
     );
   }
 
-  Widget _buildMainBarLeft({
-    required List<Color> myGradientColors,
-    required BuildContext context,
-  }) {
+  Widget _buildMainBarLeft(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildBead(myGradientColors, context),
-        SizedBox(width: 80.0.w),
         SvgPicture.asset(
           'assets/imgs/bar_puzzle.svg',
           height: 30.0.h,
         ),
         SizedBox(width: 30.0.w),
-        TextSetting.textPuzzleNums(
+        TextSetting.textTopBarNums(
           puzzleNums: VarSetting.puzzleNums,
           context: context,
         ),
@@ -74,7 +58,7 @@ class StatusBar extends StatelessWidget {
           height: 30.0.h,
         ),
         SizedBox(width: 30.0.w),
-        TextSetting.textPuzzleNums(
+        TextSetting.textTopBarNums(
           puzzleNums: VarSetting.diaNums,
           context: context,
         ),
@@ -84,11 +68,11 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildBead(List<Color> myGradientColors, BuildContext context) {
     return GestureDetector(
-      onTap: () => IconDialog(iconName: "bead").buildDialog(context),
+      onTap: () => IconDialog(iconName: 'bead').buildDialog(context),
       child: Container(
-        margin: EdgeInsets.only(left: 80.0.w),
-        width: 72.0.h,
-        height: 72.0.h,
+        margin: EdgeInsets.only(left: 40.0.w),
+        width: 320.0.w,
+        height: 320.0.w,
         decoration: BoxDecorationSetting.boxDecorationBead(
           myGradientColors: myGradientColors,
         ),

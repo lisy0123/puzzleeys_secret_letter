@@ -9,10 +9,10 @@ class ShopScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        right: 160.0.w,
-        left: 160.0.w,
-        bottom: 160.0.h,
-        top: 140.0.h,
+        right: 100.0.w,
+        left: 100.0.w,
+        bottom: 700.0.w,
+        top: 600.0.w,
       ),
       child: Container(
         alignment: Alignment.center,

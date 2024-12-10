@@ -4,13 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_ui.dart';
-import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
 
-class ButtonIconBar extends StatelessWidget {
+class ButtomBar extends StatelessWidget {
   final int currentIndex;
   final void Function(int) onIconTap;
 
-  const ButtonIconBar({
+  const ButtomBar({
     super.key,
     required this.currentIndex,
     required this.onIconTap,
@@ -21,20 +20,15 @@ class ButtonIconBar extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        CustomUi.buildWhiteBox(context: context),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(4, (index) {
-                return _buildIconButton(
-                  index: index,
-                  context: context,
-                );
-              }),
-            ),
+        CustomUi(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(4, (index) {
+              return _buildIconButton(
+                index: index,
+                context: context,
+              );
+            }),
           ),
         ),
       ],
@@ -56,7 +50,7 @@ class ButtonIconBar extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/imgs/icon_$index.svg',
-            height: 40.0.h,
+            height: 36.0.h,
             colorFilter: ColorFilter.mode(
               isSelected
                   ? ColorSetting.colorBase.withOpacity(0.2)
@@ -65,10 +59,12 @@ class ButtonIconBar extends StatelessWidget {
             ),
           ),
           SizedBox(width: 300.0.w),
-          TextSetting.textMainIconTitle(
-            index: isSelected,
-            text: VarSetting.mainIconNameLists[index],
-            context: context,
+          Text(
+            VarSetting.mainIconNameLists[index],
+            style: isSelected
+                ? Theme.of(context).textTheme.labelLarge
+                : Theme.of(context).textTheme.labelMedium,
+            textAlign: TextAlign.center,
           ),
         ],
       ),

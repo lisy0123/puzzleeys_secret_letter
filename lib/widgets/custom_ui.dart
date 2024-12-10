@@ -4,18 +4,29 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
 
-class CustomUi {
-  static Widget buildWhiteBox({
-    required BuildContext context,
-    double height = 100.0,
-    double left = 40.0,
-    double top = 0.0,
-  }) {
+class CustomUi extends StatelessWidget {
+  final double height;
+  final double left;
+  final double top;
+  final Widget child;
+
+  const CustomUi({
+    super.key,
+    this.height = 440.0,
+    this.left = 40.0,
+    this.top = 0.0,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
-      height: height.h,
+      height: height.w,
       margin: EdgeInsets.only(left: left.w, right: 40.0.w, top: top.h),
       decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
+      child: child,
     );
   }
 }

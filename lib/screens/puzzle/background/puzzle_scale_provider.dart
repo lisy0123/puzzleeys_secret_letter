@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PuzzleScaleProvider extends ChangeNotifier {
-  double scaleFactor = 1.0;
+  late double scaleFactor = 1.0;
 
   void toggleScale() {
     switch (scaleFactor) {

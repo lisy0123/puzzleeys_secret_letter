@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeSetting.themeSetting(),
-          home: MainScreen(),
+          home: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: MainScreen(),
+          ),
         );
       },
     );

@@ -1,15 +1,7 @@
 <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_235_560)">
-<path d="M20.9383 24.6127L25.4797 26.6994L20.4693 11.5502L14.0873 14.1733L18.9623 28.9131L20.9383 24.6127Z" fill="white"/>
-<path d="M20.3339 11.1408L20.4693 11.5502M20.4693 11.5502L25.4797 26.6994L20.9383 24.6127L18.9623 28.9131L14.0873 14.1733L20.4693 11.5502Z" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M8.54716 24.6127L4.00567 26.6994L9.01614 11.5502L15.3981 14.1733L10.5231 28.9131L8.54716 24.6127Z" fill="white"/>
-<path d="M9.15155 11.1408L9.01614 11.5502M9.01614 11.5502L4.00567 26.6994L8.54716 24.6127L10.5231 28.9131L15.3981 14.1733L9.01614 11.5502Z" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22.8854 10.5834C22.8854 15.3239 19.0425 19.1668 14.302 19.1668C9.56149 19.1668 5.71857 15.3239 5.71857 10.5834C5.71857 5.84292 9.56149 2 14.302 2C19.0425 2 22.8854 5.84292 22.8854 10.5834Z" fill="white" stroke="#4B4B4B" stroke-width="2"/>
-<circle cx="14.3687" cy="10.6498" r="4.36118" fill="white" stroke="#4B4B4B" stroke-width="2"/>
-</g>
-<defs>
-<clipPath id="clip0_235_560">
-<rect width="30" height="30" fill="white"/>
-</clipPath>
-</defs>
+<rect x="4" y="4.8042" width="22" height="23" rx="2" fill="white" stroke="#4B4B4B" stroke-width="2"/>
+<rect x="3.58696" y="10.0435" width="22.8261" height="1.17391" fill="white" stroke="#4B4B4B" stroke-width="1.17391"/>
+<rect x="8.42505" y="6.875" width="4.75" height="1.25" rx="0.625" transform="rotate(-90 8.42505 6.875)" fill="#4B4B4B" stroke="#4B4B4B" stroke-width="1.25"/>
+<rect x="20.4249" y="6.875" width="4.75" height="1.25" rx="0.625" transform="rotate(-90 20.4249 6.875)" fill="#4B4B4B" stroke="#4B4B4B" stroke-width="1.25"/>
+<path d="M18.4187 19.8628L19.2113 20.4726L18.4187 19.8628C18.1382 20.2274 17.9919 20.6775 18.0046 21.1374L18.0748 23.6886L15.6701 22.8335C15.2367 22.6794 14.7633 22.6794 14.3299 22.8335L11.9252 23.6886L11.9954 21.1374C12.0081 20.6775 11.8618 20.2274 11.5813 19.8628L10.0249 17.84L12.473 17.1184C12.9142 16.9883 13.2971 16.7101 13.5572 16.3307L15 14.2255L16.4428 16.3307C16.7029 16.7101 17.0858 16.9883 17.527 17.1184L19.9751 17.84L18.4187 19.8628Z" fill="white" stroke="#4B4B4B" stroke-width="2"/>
 </svg>

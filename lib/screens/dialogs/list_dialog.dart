@@ -3,34 +3,37 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
-import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 
-class ListDialog {
-  static Widget screen(BuildContext context) {
+class ListDialog extends StatelessWidget {
+  const ListDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: List.generate(2, (colIndex) {
+      children: List.generate(3, (colIndex) {
         return _buildRow(colIndex: colIndex, context: context);
       }),
     );
   }
 
-  static Widget _buildRow({
+  Widget _buildRow({
     required int colIndex,
     required BuildContext context,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: List.generate(2, (rowIndex) {
-        final index = colIndex * 2 + rowIndex;
+      children: List.generate(3, (rowIndex) {
+        final index = colIndex * 3 + rowIndex;
         return _buildIcon(index, context);
       }),
     );
   }
 
-  static Widget _buildIcon(int index, BuildContext context) {
+  Widget _buildIcon(int index, BuildContext context) {
     return Column(
       children: [
         IconButton(
@@ -42,10 +45,20 @@ class ListDialog {
               SvgPicture.asset(
                 'assets/imgs/list_$index.svg',
                 width: 36.0.h,
+                colorFilter: ColorFilter.mode(
+                  index == 4
+                      ? Colors.white.withOpacity(0.6)
+                      : Colors.transparent,
+                  BlendMode.srcATop,
+                ),
               ),
-              SizedBox(height: 6.0.h),
-              TextSetting.textIconButton(
-                text: VarSetting.iconNameLists[index.toString()],
+              SizedBox(
+                height: 6.0.h,
+                width: 300.0.w,
+              ),
+              TextSetting.textDisplay(
+                text: VarSetting.iconNameLists[index.toString()]!,
+                disable: index == 4 ? true : false,
                 context: context,
               ),
             ],
@@ -55,10 +68,12 @@ class ListDialog {
     );
   }
 
-  static void _showIconDialog(int index, BuildContext context) {
-    IconDialog(
-      iconName: index.toString(),
-      overlapped: true,
-    ).buildDialog(context);
+  void _showIconDialog(int index, BuildContext context) {
+    if (index != 4) {
+      IconDialog(
+        iconName: index.toString(),
+        overlapped: true,
+      ).buildDialog(context);
+    }
   }
 }

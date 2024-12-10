@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/widgets/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 
 class CustomButton extends StatefulWidget {
   final String iconName;
@@ -30,24 +30,25 @@ class _CustomButtonState extends State<CustomButton> {
       onTapUp: (_) {
         setState(() {
           _isPressed = false;
-          widget.onTap;
+          widget.onTap();
         });
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child: Container(
-        width: 700.0.w,
-        height: 260.0.w,
+        width: 600.0.w,
+        height: 240.0.w,
         decoration: _buttonDecoration(),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   'assets/imgs/${widget.iconName}.svg',
-                  height: 40.0.h,
+                  height: 34.0.h,
                 ),
+                SizedBox(width: 40.0.w,),
                 TextSetting.textDisplay(
                   text: widget.iconTitle,
                   context: context,
@@ -65,8 +66,8 @@ class _CustomButtonState extends State<CustomButton> {
 
   BoxDecoration _buttonDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      color: ColorSetting.colorWhite,
+      borderRadius: BorderRadius.circular(7),
+      color: Colors.white,
       border: Border.all(
         color: ColorSetting.colorBase,
         width: 2,

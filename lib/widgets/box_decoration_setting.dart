@@ -22,7 +22,7 @@ class BoxDecorationSetting {
 
   static BoxDecoration boxDecorationShadowBorder({
     double circular = 10.0,
-    Color color = ColorSetting.colorWhite,
+    Color color = Colors.white,
   }) {
     return shadowBorder().copyWith(
       borderRadius: BorderRadius.circular(circular),

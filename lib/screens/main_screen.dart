@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/screens/outliner/bottom_icon_bar.dart';
+import 'package:puzzleeys_secret_letter/screens/outliner/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/outliner/status_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
@@ -46,19 +46,17 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                _buildTabBarView(),
-                _buildMainContent(context),
-              ],
-            ),
+    return Column(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              _buildTabBarView(),
+              _buildMainContent(context),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -89,7 +87,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             Column(
               children: [
                 if (_tabController.index != 3) _buildActionButtons(),
-                ButtonIconBar(
+                ButtomBar(
                   currentIndex: _tabController.index,
                   onIconTap: navigateToTab,
                 ),

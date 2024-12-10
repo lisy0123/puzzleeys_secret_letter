@@ -9,14 +9,14 @@ class ThemeSetting {
   }) {
     return TextStyle(
       fontSize: fontSize.w,
-      letterSpacing: 3,
+      letterSpacing: 2,
       height: 1.5,
       color: textColor,
     );
   }
 
   static TextStyle _textMainStroke({
-    Color textColor = ColorSetting.colorWhite,
+    Color textColor = Colors.white,
     double fontSize = 90.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
@@ -32,15 +32,26 @@ class ThemeSetting {
 
   static ThemeData themeSetting() {
     return ThemeData(
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      }),
       scaffoldBackgroundColor: ColorSetting.colorBase,
       fontFamily: 'BMJUA',
       textTheme: TextTheme(
+        // top bar nums
         headlineLarge: _textMainStroke(textColor: ColorSetting.colorBase),
-        headlineMedium: _textMain(textColor: ColorSetting.colorWhite),
+        headlineMedium: _textMain(textColor: Colors.white),
+        // dialog title
         titleLarge: _textMainStroke(fontSize: 110.0),
         titleMedium: _textMain(fontSize: 110.0),
-        displayLarge: _textMain(),
+        // display: icon button, puzzle content
         displayMedium: _textMain(fontSize: 80.0),
+        // icon disable
+        displaySmall: _textMain(
+          fontSize: 80.0,
+          textColor: ColorSetting.colorBase.withOpacity(0.4),
+        ),
+        // bottom bar, small
         labelLarge: _textMain(fontSize: 70.0),
         labelMedium: _textMain(
           fontSize: 70.0,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class ColorSetting {
   static const Color colorBase = Color(0xFF4B4B4B);
   static const Color colorPaper = Color(0xFFFDF5EF);
-  static const Color colorWhite = Color(0xFFFFFFFF);
 
   static const Color colorPink = Color(0xFFFF86E9);
   static const Color colorRed = Color(0xFFFF8686);
