@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/line_limiting_text_input_formatter.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
@@ -33,35 +35,24 @@ class _PutDialogState extends State<PutDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (_textFocusNode.hasFocus)
+        if (_textFocusNode.hasFocus) {
           FocusManager.instance.primaryFocus?.unfocus();
+        }
       },
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
           margin: EdgeInsets.only(top: 90.0.h),
-          padding: EdgeInsets.symmetric(
-            vertical: 60.0.w,
-            horizontal: 100.0.w,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 100.0.w, vertical: 60.0.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () => debugPrint('test'),
-                child: _buildPuzzle(),
+                onTap: () => _showPuzzleColors(context),
+                child: _buildPuzzle(context),
               ),
-              _buildTextField(),
-              CustomButton(
-                iconName: 'btn_puzzle',
-                iconTitle: '넣기',
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => NextScreen(),
-                  ));
-                },
-              ),
+              _buildTextField(context),
+              _buildPutButton(context),
             ],
           ),
         ),
@@ -69,7 +60,12 @@ class _PutDialogState extends State<PutDialog> {
     );
   }
 
-  Widget _buildPuzzle() {
+  // TODO
+  Widget _showPuzzleColors(BuildContext context) {
+    return Placeholder();
+  }
+
+  Widget _buildPuzzle(BuildContext context) {
     return SizedBox(
       height: 600.0.w,
       child: Stack(
@@ -91,7 +87,7 @@ class _PutDialogState extends State<PutDialog> {
     );
   }
 
-  Widget _buildTextField() {
+  Widget _buildTextField(BuildContext context) {
     return TextField(
       controller: _textEditingController,
       focusNode: _textFocusNode,
@@ -109,6 +105,19 @@ class _PutDialogState extends State<PutDialog> {
         border: InputBorder.none,
         counterText: '',
       ),
+    );
+  }
+
+  Widget _buildPutButton(BuildContext context) {
+    return CustomButton(
+      iconName: 'btn_puzzle',
+      iconTitle: '넣기',
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        context.read<WritingProvider>().toggleVisibility();
+      },
     );
   }
 }

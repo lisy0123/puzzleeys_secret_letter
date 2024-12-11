@@ -7,18 +7,23 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late double height;
+    final heightDivide =
+        MediaQuery.of(context).size.height / MediaQuery.of(context).size.width;
+    if (heightDivide > 2.37) {
+      height = 1400.0.w;
+    } else if (heightDivide > 2.16) {
+      height = 1600.0.w;
+    } else {
+      height = 1400.0.w;
+    }
+
     return Container(
-      margin: EdgeInsets.only(
-        right: 100.0.w,
-        left: 100.0.w,
-        bottom: 700.0.w,
-        top: 600.0.w,
-      ),
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
-        child: const Text('1. 상점\n2. 퍼즐색 바꾸기'),
-      ),
+      margin: EdgeInsets.only(bottom: 120.0.w),
+      width: MediaQuery.of(context).size.width - 200.0.w,
+      height: MediaQuery.of(context).size.height - height,
+      decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
+      child: const Text('1. 상점\n2. 퍼즐색 바꾸기'),
     );
   }
 }

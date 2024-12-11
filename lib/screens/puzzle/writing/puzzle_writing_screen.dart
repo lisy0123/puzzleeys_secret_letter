@@ -15,7 +15,7 @@ class PuzzleWritingScreen extends StatefulWidget {
 class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _textFocusNode = FocusNode();
-  int _maxLines = 21;
+  late double _height = 2800.0.w;
 
   @override
   void initState() {
@@ -23,9 +23,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     _textFocusNode.addListener(() {
       setState(() {
         if (_textFocusNode.hasFocus) {
-          _maxLines = 13;
+          _height = 1300.0.w;
         } else {
-          _maxLines = 21;
+          _height = 2800.0.w;
         }
       });
     });
@@ -42,49 +42,26 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (_textFocusNode.hasFocus)
+        if (_textFocusNode.hasFocus) {
           FocusManager.instance.primaryFocus?.unfocus();
+        }
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: Center(
           child: Padding(
-            padding: EdgeInsets.all(200.0.w),
+            padding: EdgeInsets.only(
+              left: 200.0.w,
+              right: 200.0.w,
+              top: MediaQuery.of(context).size.height / 8.2,
+            ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.all(100.0.w),
-                  child: PuzzleScreenHandler().buildIconButton(
-                    iconName: 'btn_back',
-                    text: '돌아가기',
-                    onTap: () {
-                      IconDialog(
-                        iconName: 'cancel',
-                        simpleDialog: true,
-                      ).buildDialog(context);
-                    },
-                    context: context,
-                  ),
-                ),
-                Container(
-                  height: 2700.0.w,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 160.0.w,
-                      vertical: 80.0.w,
-                    ),
-                    child: _buildTextField(context),
-                  ),
-                ),
+                _buldBackButton(context),
+                _buildMidContent(context),
                 SizedBox(height: 200.0.w),
-                _buildButton(context),
+                _buildPutButton(context),
               ],
             ),
           ),
@@ -93,11 +70,41 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     );
   }
 
+  Widget _buldBackButton(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.all(100.0.w),
+      child: PuzzleScreenHandler().buildIconButton(
+        iconName: 'btn_back',
+        text: '돌아가기',
+        onTap: () {
+          IconDialog(iconName: 'cancel', simpleDialog: true)
+              .buildDialog(context);
+        },
+        context: context,
+      ),
+    );
+  }
+
+  Widget _buildMidContent(BuildContext context) {
+    return Container(
+      height: _height,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 160.0.w, vertical: 80.0.w),
+        child: _buildTextField(context),
+      ),
+    );
+  }
+
   Widget _buildTextField(BuildContext context) {
     return TextField(
       controller: _textEditingController,
       focusNode: _textFocusNode,
-      maxLines: _maxLines,
+      maxLines: 21,
       maxLength: 1000,
       inputFormatters: [LengthLimitingTextInputFormatter(1000)],
       style: Theme.of(context).textTheme.displayMedium,
@@ -110,7 +117,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     );
   }
 
-  Widget _buildButton(BuildContext context) {
+  Widget _buildPutButton(BuildContext context) {
     return CustomButton(
       iconName: 'btn_puzzle',
       iconTitle: '감정 넣기',

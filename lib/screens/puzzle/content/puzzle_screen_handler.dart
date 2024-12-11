@@ -9,24 +9,12 @@ class PuzzleScreenHandler {
     required Widget child,
     required BuildContext context,
   }) {
-    showGeneralDialog(
+    showDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: barrierColor,
-      transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (context, animation, secondaryAnimation) {
+      builder: (BuildContext context) {
         return child;
-      },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        const Offset begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.easeInOut;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(position: offsetAnimation, child: child);
       },
     );
   }

@@ -8,7 +8,7 @@ class ThemeSetting {
     double fontSize = 90.0,
   }) {
     return TextStyle(
-      fontSize: fontSize.w,
+      fontSize: fontSize.sp,
       letterSpacing: 2,
       height: 1.5,
       color: textColor,
@@ -20,7 +20,7 @@ class ThemeSetting {
     double fontSize = 90.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
-        fontSize: fontSize.w,
+        fontSize: fontSize.sp,
         fontWeight: FontWeight.w900,
         foreground: Paint()
           ..style = PaintingStyle.stroke

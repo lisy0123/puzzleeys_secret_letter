@@ -46,16 +46,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-          child: Stack(
-            children: [
-              _buildTabBarView(),
-              _buildMainContent(context),
-            ],
-          ),
-        ),
+        _buildTabBarView(),
+        _buildMainTop(context),
+        _buildMainBottom(context),
       ],
     );
   }
@@ -68,33 +63,35 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         PuzzleGlobalScreen(),
         PuzzleSubjectScreen(),
         PuzzlePersonalScreen(),
-        ShopScreen(),
+        EmptyShopScreen(),
       ],
     );
   }
 
-  Widget _buildMainContent(BuildContext context) {
+  Widget _buildMainTop(BuildContext context) {
     return SafeArea(
       top: true,
-      bottom: true,
       child: Container(
         margin: EdgeInsets.all(40.0.w),
-        padding: EdgeInsets.only(bottom: 20.0.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            StatusBar(),
-            Column(
-              children: [
-                if (_tabController.index != 3) _buildActionButtons(),
-                ButtomBar(
-                  currentIndex: _tabController.index,
-                  onIconTap: navigateToTab,
-                ),
-              ],
-            ),
-          ],
-        ),
+        child: StatusBar(),
+      ),
+    );
+  }
+
+  Widget _buildMainBottom(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(40.0.w),
+      padding: EdgeInsets.only(bottom: 200.0.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (_tabController.index != 3) _buildActionButtons(),
+          if (_tabController.index == 3) ShopScreen(),
+          ButtomBar(
+            currentIndex: _tabController.index,
+            onIconTap: navigateToTab,
+          ),
+        ],
       ),
     );
   }
@@ -116,5 +113,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+}
+
+class EmptyShopScreen extends StatelessWidget {
+  const EmptyShopScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

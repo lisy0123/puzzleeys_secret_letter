@@ -56,7 +56,7 @@ class PuzzleContent extends StatelessWidget {
 
   void _showPuzzleDialog(Color puzzleLightColor, BuildContext context) {
     PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleLightColor.withOpacity(0.8),
+      barrierColor: puzzleLightColor.withOpacity(0.7),
       child: PuzzleDetailScreen(
         index: index,
         puzzleColor: puzzleLightColor,

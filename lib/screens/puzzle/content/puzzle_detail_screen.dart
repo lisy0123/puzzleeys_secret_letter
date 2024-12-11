@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/writing/puzzle_writing_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleDetailScreen extends StatefulWidget {
@@ -24,27 +26,24 @@ class PuzzleDetailScreen extends StatefulWidget {
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
+    final bool visible = context.watch<WritingProvider>().isVisible;
+
+    return Visibility(
+      visible: visible,
       child: Stack(
         children: [
           GestureDetector(onTap: () => Navigator.pop(context)),
           Padding(
-            padding: EdgeInsets.all(200.0.w),
+            padding: EdgeInsets.only(
+              left: 200.0.w,
+              right: 200.0.w,
+              top: MediaQuery.of(context).size.height / 7,
+            ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildPuzzleDetails(context),
                 SizedBox(height: 200.0.w),
-                CustomButton(
-                  iconName: 'btn_mail',
-                  iconTitle: '답 장',
-                  onTap: () => PuzzleScreenHandler.navigateScreen(
-                    barrierColor: Colors.white.withOpacity(0.8),
-                    child: PuzzleWritingScreen(),
-                    context: context,
-                  ),
-                ),
+                _buildReplyButton(context),
               ],
             ),
           ),
@@ -55,10 +54,9 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   Widget _buildPuzzleDetails(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () => IconDialog(
-        iconName: 'get',
-        puzzleColor: widget.puzzleColor,
-      ).buildDialog(context),
+      onDoubleTap: () =>
+          IconDialog(iconName: 'get', puzzleColor: widget.puzzleColor)
+              .buildDialog(context),
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
@@ -71,17 +69,9 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           children: [
             _buildTopContent(context),
             SizedBox(height: 100.0.w),
-            _buildMidContent(),
+            _buildMidContent(context),
             SizedBox(height: 100.0.w),
-            PuzzleScreenHandler().buildIconButton(
-              iconName: 'bar_puzzle',
-              text: '135',
-              onTap: () => IconDialog(
-                iconName: 'get',
-                puzzleColor: widget.puzzleColor,
-              ).buildDialog(context),
-              context: context,
-            ),
+            _buildBottomContent(context),
           ],
         ),
       ),
@@ -108,7 +98,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  Widget _buildMidContent() {
+  Widget _buildMidContent(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       height: 2300.0.w,
@@ -125,6 +115,31 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBottomContent(BuildContext context) {
+    return PuzzleScreenHandler().buildIconButton(
+      iconName: 'bar_puzzle',
+      text: '135',
+      onTap: () => IconDialog(iconName: 'get', puzzleColor: widget.puzzleColor)
+          .buildDialog(context),
+      context: context,
+    );
+  }
+
+  Widget _buildReplyButton(BuildContext context) {
+    return CustomButton(
+      iconName: 'btn_mail',
+      iconTitle: '답 장',
+      onTap: () {
+        context.read<WritingProvider>().toggleVisibility();
+        PuzzleScreenHandler.navigateScreen(
+          barrierColor: Colors.white.withOpacity(0.3),
+          child: PuzzleWritingScreen(),
+          context: context,
+        );
+      },
     );
   }
 }

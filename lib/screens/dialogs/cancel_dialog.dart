@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 
@@ -21,6 +23,7 @@ class CancelDialog extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             Navigator.pop(context);
+            context.read<WritingProvider>().toggleVisibility();
           },
         ),
       ],
