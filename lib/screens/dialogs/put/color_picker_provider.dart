@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class WritingProvider extends ChangeNotifier {
+class ColorPickerProvider extends ChangeNotifier {
   late double _opacity = 1.0;
   double get opacity => _opacity;
 

@@ -5,6 +5,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/writing/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleDetailScreen extends StatefulWidget {
@@ -24,31 +25,43 @@ class PuzzleDetailScreen extends StatefulWidget {
 }
 
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<WritingProvider>().updateOpacity(setToInitial: true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bool visible = context.watch<WritingProvider>().isVisible;
+    final double opacity = context.watch<WritingProvider>().opacity;
 
-    return Visibility(
-      visible: visible,
-      child: Stack(
-        children: [
-          GestureDetector(onTap: () => Navigator.pop(context)),
-          Padding(
-            padding: EdgeInsets.only(
-              left: 200.0.w,
-              right: 200.0.w,
-              top: MediaQuery.of(context).size.height / 7,
-            ),
-            child: Column(
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 100),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      child: opacity > 0.0
+          ? Stack(
+              key: ValueKey('visible'),
               children: [
-                _buildPuzzleDetails(context),
-                SizedBox(height: 200.0.w),
-                _buildReplyButton(context),
+                GestureDetector(onTap: () => Navigator.pop(context)),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 200.0.w,
+                    right: 200.0.w,
+                    top: MediaQuery.of(context).size.height / 7,
+                  ),
+                  child: Column(
+                    children: [
+                      _buildPuzzleDetails(context),
+                      SizedBox(height: 200.0.w),
+                      _buildReplyButton(context),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-        ],
-      ),
+            )
+          : SizedBox.shrink(key: ValueKey('hidden')),
     );
   }
 
@@ -122,8 +135,10 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     return PuzzleScreenHandler().buildIconButton(
       iconName: 'bar_puzzle',
       text: '135',
-      onTap: () => IconDialog(iconName: 'get', puzzleColor: widget.puzzleColor)
-          .buildDialog(context),
+      onTap: () => IconDialog(
+        iconName: 'get',
+        puzzleColor: ColorMatch(widget.puzzleColor)(),
+      ).buildDialog(context),
       context: context,
     );
   }
@@ -133,12 +148,12 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       iconName: 'btn_mail',
       iconTitle: '답 장',
       onTap: () {
-        context.read<WritingProvider>().toggleVisibility();
         PuzzleScreenHandler.navigateScreen(
           barrierColor: Colors.white.withOpacity(0.3),
           child: PuzzleWritingScreen(),
           context: context,
         );
+        context.read<WritingProvider>().updateOpacity();
       },
     );
   }

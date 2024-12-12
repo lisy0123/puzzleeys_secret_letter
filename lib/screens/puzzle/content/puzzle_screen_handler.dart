@@ -22,11 +22,11 @@ class PuzzleScreenHandler {
   Widget buildIconButton({
     required String iconName,
     required String text,
-    required Function onTap,
+    required VoidCallback onTap,
     required BuildContext context,
   }) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: buildSideText(iconName: iconName, text: text, context: context),
     );
   }
@@ -36,20 +36,19 @@ class PuzzleScreenHandler {
     required String text,
     required BuildContext context,
   }) {
+    final isLargeIcon = iconName == 'bar_puzzle' || iconName == 'btn_back';
+    final iconSize = isLargeIcon ? 140.0.w : 100.0.w;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(
-          'assets/imgs/$iconName.svg',
-          height: iconName == 'bar_puzzle' ? 120.0.w : 100.0.w,
-        ),
+        SvgPicture.asset('assets/imgs/$iconName.svg', height: iconSize),
         SizedBox(width: 20.0.w),
-        if (iconName == 'bar_puzzle')
-          TextSetting.textDisplay(text: text, context: context)
-        else
-          TextSetting.textSmall(text: text, context: context),
+        isLargeIcon
+            ? TextSetting.textDisplay(text: text, context: context)
+            : TextSetting.textSmall(text: text, context: context),
       ],
     );
   }

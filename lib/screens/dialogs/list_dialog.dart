@@ -52,10 +52,7 @@ class ListDialog extends StatelessWidget {
                   BlendMode.srcATop,
                 ),
               ),
-              SizedBox(
-                height: 6.0.h,
-                width: 300.0.w,
-              ),
+              SizedBox(height: 6.0.h, width: 300.0.w),
               TextSetting.textDisplay(
                 text: VarSetting.iconNameLists[index.toString()]!,
                 disable: index == 4 ? true : false,

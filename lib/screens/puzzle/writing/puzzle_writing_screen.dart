@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
+import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleWritingScreen extends StatefulWidget {
@@ -14,15 +15,15 @@ class PuzzleWritingScreen extends StatefulWidget {
 
 class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   final TextEditingController _textEditingController = TextEditingController();
-  final FocusNode _textFocusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
   late double _height = 2800.0.w;
 
   @override
   void initState() {
     super.initState();
-    _textFocusNode.addListener(() {
+    _focusNode.addListener(() {
       setState(() {
-        if (_textFocusNode.hasFocus) {
+        if (_focusNode.hasFocus) {
           _height = 1300.0.w;
         } else {
           _height = 2800.0.w;
@@ -34,18 +35,14 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    _textFocusNode.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (_textFocusNode.hasFocus) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        }
-      },
+      onTap: () => Utils.dismissKeyboard(focusNode: _focusNode),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
@@ -54,7 +51,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             padding: EdgeInsets.only(
               left: 200.0.w,
               right: 200.0.w,
-              top: MediaQuery.of(context).size.height / 8.2,
+              top: MediaQuery.of(context).size.height / 7.5,
             ),
             child: Column(
               children: [
@@ -73,7 +70,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   Widget _buldBackButton(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.all(100.0.w),
+      padding: EdgeInsets.symmetric(vertical: 50.0.w, horizontal: 20.0.w),
       child: PuzzleScreenHandler().buildIconButton(
         iconName: 'btn_back',
         text: '돌아가기',
@@ -103,7 +100,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   Widget _buildTextField(BuildContext context) {
     return TextField(
       controller: _textEditingController,
-      focusNode: _textFocusNode,
+      focusNode: _focusNode,
       maxLines: 21,
       maxLength: 1000,
       inputFormatters: [LengthLimitingTextInputFormatter(1000)],

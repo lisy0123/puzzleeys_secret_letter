@@ -23,7 +23,7 @@ class CancelDialog extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             Navigator.pop(context);
-            context.read<WritingProvider>().toggleVisibility();
+            context.read<WritingProvider>().updateOpacity();
           },
         ),
       ],

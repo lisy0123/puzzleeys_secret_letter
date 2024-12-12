@@ -5,7 +5,8 @@ import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/cancel_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/put_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
 import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
@@ -65,12 +66,18 @@ class DialogContent {
     switch (iconName) {
       case 'list':
         dialogContent = ListDialog();
+        break;
       case 'get':
         dialogContent = GetDialog(puzzleColor: puzzleColor);
+        break;
       case 'cancel':
         dialogContent = CancelDialog();
+        break;
       case 'put':
         return PutDialog(puzzleColor: puzzleColor);
+      case 'sent':
+        dialogContent = SentDialog();
+        break;
       default:
         dialogContent = Placeholder();
     }

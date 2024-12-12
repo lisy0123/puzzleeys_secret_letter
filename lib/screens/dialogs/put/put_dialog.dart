@@ -3,8 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/line_limiting_text_input_formatter.dart';
+import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
 
@@ -22,11 +26,17 @@ class PutDialog extends StatefulWidget {
 
 class _PutDialogState extends State<PutDialog> {
   final TextEditingController _textEditingController = TextEditingController();
-  final FocusNode _textFocusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ColorPickerProvider>().updateOpacity(setToInitial: true);
+  }
 
   @override
   void dispose() {
-    _textFocusNode.dispose();
+    _focusNode.dispose();
     _textEditingController.dispose();
     super.dispose();
   }
@@ -34,35 +44,26 @@ class _PutDialogState extends State<PutDialog> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (_textFocusNode.hasFocus) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        }
-      },
+      onTap: () => Utils.dismissKeyboard(focusNode: _focusNode),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
           margin: EdgeInsets.only(top: 90.0.h),
           padding: EdgeInsets.symmetric(horizontal: 100.0.w, vertical: 60.0.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () => _showPuzzleColors(context),
+                onTap: () =>
+                    context.read<ColorPickerProvider>().updateOpacity(),
                 child: _buildPuzzle(context),
               ),
-              _buildTextField(context),
-              _buildPutButton(context),
+              _buildBottomContent(context),
             ],
           ),
         ),
       ),
     );
-  }
-
-  // TODO
-  Widget _showPuzzleColors(BuildContext context) {
-    return Placeholder();
   }
 
   Widget _buildPuzzle(BuildContext context) {
@@ -87,10 +88,33 @@ class _PutDialogState extends State<PutDialog> {
     );
   }
 
+  // TODO
+  Widget _buildBottomContent(BuildContext context) {
+    final double opacity = context.watch<ColorPickerProvider>().opacity;
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 100),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      child: opacity > 0.0
+          ? Column(
+              key: ValueKey('visible'),
+              children: [
+                _buildTextField(context),
+                _buildPutButton(context),
+              ],
+            )
+          : SizedBox(
+              key: ValueKey('hidden'),
+              child: ColorPicker(),
+            ),
+    );
+  }
+
   Widget _buildTextField(BuildContext context) {
     return TextField(
       controller: _textEditingController,
-      focusNode: _textFocusNode,
+      focusNode: _focusNode,
       maxLines: 2,
       maxLength: 30,
       inputFormatters: [
@@ -113,10 +137,9 @@ class _PutDialogState extends State<PutDialog> {
       iconName: 'btn_puzzle',
       iconTitle: '넣기',
       onTap: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        context.read<WritingProvider>().toggleVisibility();
+        context.read<WritingProvider>().updateOpacity();
+        Navigator.popUntil(context, (route) => route.isFirst);
+        IconDialog(iconName: 'sent', simpleDialog: true).buildDialog(context);
       },
     );
   }
