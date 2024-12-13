@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColorSetting {
+class CustomColors {
   static const Color colorBase = Color(0xFF4B4B4B);
   static const Color colorPaper = Color(0xFFFDF5EF);
 

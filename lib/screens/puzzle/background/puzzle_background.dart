@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_scale_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 
 class PuzzleBackground extends StatefulWidget {
   final String puzzleState;

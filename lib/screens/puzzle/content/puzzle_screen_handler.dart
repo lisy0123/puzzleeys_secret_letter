@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
 class PuzzleScreenHandler {
   static void navigateScreen({
@@ -47,8 +47,8 @@ class PuzzleScreenHandler {
         SvgPicture.asset('assets/imgs/$iconName.svg', height: iconSize),
         SizedBox(width: 20.0.w),
         isLargeIcon
-            ? TextSetting.textDisplay(text: text, context: context)
-            : TextSetting.textSmall(text: text, context: context),
+            ? CustomText.textDisplay(text: text, context: context)
+            : CustomText.textSmall(text: text, context: context),
       ],
     );
   }

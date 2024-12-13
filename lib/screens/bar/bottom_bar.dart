@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/component/var_setting.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_ui.dart';
+import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class ButtomBar extends StatelessWidget {
   final int currentIndex;
@@ -20,7 +20,7 @@ class ButtomBar extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        CustomUi(
+        CustomBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(4, (index) {
@@ -53,14 +53,14 @@ class ButtomBar extends StatelessWidget {
             height: 36.0.h,
             colorFilter: ColorFilter.mode(
               isSelected
-                  ? ColorSetting.colorBase.withOpacity(0.2)
+                  ? CustomColors.colorBase.withOpacity(0.2)
                   : Colors.white.withOpacity(0.5),
               BlendMode.srcATop,
             ),
           ),
           SizedBox(width: 300.0.w),
           Text(
-            VarSetting.mainIconNameLists[index],
+            CustomVars.mainIconNameLists[index],
             style: isSelected
                 ? Theme.of(context).textTheme.labelLarge
                 : Theme.of(context).textTheme.labelMedium,

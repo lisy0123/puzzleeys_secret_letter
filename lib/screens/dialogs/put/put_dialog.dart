@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker_provider.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/line_limiting_text_input_formatter.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
-import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
   final Color puzzleColor;
@@ -31,7 +32,10 @@ class _PutDialogState extends State<PutDialog> {
   @override
   void initState() {
     super.initState();
-    context.read<ColorPickerProvider>().updateOpacity(setToInitial: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ColorPickerProvider>().updateOpacity(setToInitial: true);
+      context.read<ColorPickerProvider>().updateColor(setToInitial: true);
+    });
   }
 
   @override
@@ -51,14 +55,22 @@ class _PutDialogState extends State<PutDialog> {
           margin: EdgeInsets.only(top: 90.0.h),
           padding: EdgeInsets.symmetric(horizontal: 100.0.w, vertical: 60.0.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              CustomText.textSmall(
+                text: CustomStrings.chooseMessage,
+                context: context,
+              ),
               GestureDetector(
                 onTap: () =>
                     context.read<ColorPickerProvider>().updateOpacity(),
                 child: _buildPuzzle(context),
               ),
-              _buildBottomContent(context),
+              SizedBox(
+                height: 660.0.w,
+                child: _buildBottomContent(context),
+              ),
             ],
           ),
         ),
@@ -67,20 +79,17 @@ class _PutDialogState extends State<PutDialog> {
   }
 
   Widget _buildPuzzle(BuildContext context) {
+    final Color selectedColor =
+        context.watch<ColorPickerProvider>().selectedColor;
+
     return SizedBox(
       height: 600.0.w,
       child: Stack(
         children: [
           Opacity(
-            opacity: 0.5,
+            opacity: (selectedColor == Colors.white) ? 0.4 : 1.0,
             child: Center(
-              child: GetDialog.puzzleImage(Colors.white),
-            ),
-          ),
-          Center(
-            child: TextSetting.textDisplay(
-              text: '클릭해서 감정을 넣어주세요',
-              context: context,
+              child: TiltedPuzzle(puzzleColor: selectedColor),
             ),
           ),
         ],
@@ -88,7 +97,6 @@ class _PutDialogState extends State<PutDialog> {
     );
   }
 
-  // TODO
   Widget _buildBottomContent(BuildContext context) {
     final double opacity = context.watch<ColorPickerProvider>().opacity;
 
@@ -98,13 +106,14 @@ class _PutDialogState extends State<PutDialog> {
       switchOutCurve: Curves.easeOut,
       child: opacity > 0.0
           ? Column(
-              key: ValueKey('visible'),
+              key: const ValueKey('visible'),
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildTextField(context),
                 _buildPutButton(context),
               ],
             )
-          : SizedBox(
+          : const SizedBox(
               key: ValueKey('hidden'),
               child: ColorPicker(),
             ),
@@ -124,7 +133,7 @@ class _PutDialogState extends State<PutDialog> {
       style: Theme.of(context).textTheme.displayMedium,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
-        hintText: '제목을 써주세요...',
+        hintText: CustomStrings.namingMessage,
         hintStyle: Theme.of(context).textTheme.displaySmall,
         border: InputBorder.none,
         counterText: '',
@@ -135,11 +144,12 @@ class _PutDialogState extends State<PutDialog> {
   Widget _buildPutButton(BuildContext context) {
     return CustomButton(
       iconName: 'btn_puzzle',
-      iconTitle: '넣기',
+      iconTitle: CustomStrings.put,
       onTap: () {
         context.read<WritingProvider>().updateOpacity();
         Navigator.popUntil(context, (route) => route.isFirst);
-        IconDialog(iconName: 'sent', simpleDialog: true).buildDialog(context);
+        const IconDialog(iconName: 'sent', simpleDialog: true)
+            .buildDialog(context);
       },
     );
   }

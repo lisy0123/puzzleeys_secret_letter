@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
 class CustomButton extends StatefulWidget {
   final String iconName;
@@ -49,7 +49,7 @@ class _CustomButtonState extends State<CustomButton> {
                   height: 34.0.h,
                 ),
                 SizedBox(width: 40.0.w,),
-                TextSetting.textDisplay(
+                CustomText.textDisplay(
                   text: widget.iconTitle,
                   context: context,
                 ),
@@ -69,7 +69,7 @@ class _CustomButtonState extends State<CustomButton> {
       borderRadius: BorderRadius.circular(7),
       color: Colors.white,
       border: Border.all(
-        color: ColorSetting.colorBase,
+        color: CustomColors.colorBase,
         width: 2,
       ),
     );
@@ -77,7 +77,7 @@ class _CustomButtonState extends State<CustomButton> {
 
   Color _overlayColor() {
     return _isPressed
-        ? ColorSetting.colorBase.withOpacity(0.2)
+        ? CustomColors.colorBase.withOpacity(0.2)
         : Colors.transparent;
   }
 }

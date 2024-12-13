@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
-import 'package:puzzleeys_secret_letter/widgets/puzzle_tilted_piece.dart';
-import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class GetDialog extends StatelessWidget {
   final Color puzzleColor;
@@ -17,28 +18,21 @@ class GetDialog extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        puzzleImage(puzzleColor),
+        TiltedPuzzle(puzzleColor: puzzleColor),
         SizedBox(
           height: 340.0.w,
           width: double.infinity,
-          child: TextSetting.textDisplay(
+          child: CustomText.textDisplay(
             text: '글자수 30자글자수 30자글자수 30자글자수 30자글자dh',
             context: context,
           ),
         ),
         CustomButton(
           iconName: 'btn_puzzle',
-          iconTitle: '담 기',
+          iconTitle: CustomStrings.get,
           onTap: () {},
         ),
       ],
-    );
-  }
-
-  static Widget puzzleImage(Color puzzleColor) {
-    return CustomPaint(
-      size: Size(600.0.w, 600.0.w),
-      painter: PuzzleTiltedPiece(puzzleColor: puzzleColor),
     );
   }
 }

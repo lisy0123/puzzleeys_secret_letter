@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 
-class CustomUi extends StatelessWidget {
+class CustomBox extends StatelessWidget {
   final double height;
   final double left;
   final double top;
   final Widget child;
 
-  const CustomUi({
+  const CustomBox({
     super.key,
     this.height = 440.0,
     this.left = 40.0,
@@ -25,27 +25,27 @@ class CustomUi extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: height.w,
       margin: EdgeInsets.only(left: left.w, right: 40.0.w, top: top.h),
-      decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
+      decoration: BoxDecorations.shadowBorder(),
       child: child,
     );
   }
 }
 
-class CustomUiCircle extends StatefulWidget {
+class CustomCircle extends StatefulWidget {
   final String svgImage;
   final Function onTap;
 
-  const CustomUiCircle({
+  const CustomCircle({
     super.key,
     required this.svgImage,
     required this.onTap,
   });
 
   @override
-  State<CustomUiCircle> createState() => _CustomUiCircleState();
+  State<CustomCircle> createState() => _CustomCircleState();
 }
 
-class _CustomUiCircleState extends State<CustomUiCircle> {
+class _CustomCircleState extends State<CustomCircle> {
   bool _isPressed = false;
 
   void _handleTapState(bool pressed) {
@@ -65,7 +65,7 @@ class _CustomUiCircleState extends State<CustomUiCircle> {
       onTapCancel: () => _handleTapState(false),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [BoxDecorationSetting.shadow()],
+          boxShadow: [BoxDecorations.shadow()],
           shape: BoxShape.circle,
         ),
         child: SvgPicture.asset(
@@ -73,7 +73,7 @@ class _CustomUiCircleState extends State<CustomUiCircle> {
           width: 260.0.w,
           colorFilter: ColorFilter.mode(
             _isPressed
-                ? ColorSetting.colorBase.withOpacity(0.2)
+                ? CustomColors.colorBase.withOpacity(0.2)
                 : Colors.transparent,
             BlendMode.srcATop,
           ),

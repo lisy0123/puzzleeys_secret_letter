@@ -6,9 +6,9 @@ class PuzzleSubjectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String puzzleState = 'Subject';
+    const  String puzzleState = 'Subject';
 
-    return Stack(
+    return const Stack(
       children: [
         PuzzleBackground(
           puzzleState: puzzleState,

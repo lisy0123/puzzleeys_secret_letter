@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
-class PuzzleTiltedPiece extends CustomPainter {
+class TiltedPuzzle extends StatelessWidget {
   final Color puzzleColor;
 
-  PuzzleTiltedPiece({required this.puzzleColor});
+  const TiltedPuzzle({super.key, required this.puzzleColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(600.0.w, 600.0.w),
+      painter: TiltedPuzzlePiece(puzzleColor: puzzleColor),
+    );
+  }
+}
+
+class TiltedPuzzlePiece extends CustomPainter {
+  final Color puzzleColor;
+
+  TiltedPuzzlePiece({required this.puzzleColor});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -79,12 +94,12 @@ class PuzzleTiltedPiece extends CustomPainter {
 
     paint
       ..style = PaintingStyle.stroke
-      ..color = ColorSetting.colorBase;
+      ..color = CustomColors.colorBase;
     canvas.drawPath(path, paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(covariant TiltedPuzzlePiece oldDelegate) {
+    return oldDelegate.puzzleColor != puzzleColor;
   }
 }

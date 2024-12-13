@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
+import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
@@ -22,7 +22,7 @@ class ShopScreen extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 120.0.w),
       width: MediaQuery.of(context).size.width - 200.0.w,
       height: MediaQuery.of(context).size.height - height,
-      decoration: BoxDecorationSetting.boxDecorationShadowBorder(),
+      decoration: BoxDecorations.shadowBorder(),
       child: const Text('1. 상점\n2. 퍼즐색 바꾸기'),
     );
   }

@@ -11,9 +11,9 @@ class PuzzleGlobalScreen extends StatefulWidget {
 class _PuzzleGlobalScreenState extends State<PuzzleGlobalScreen> {
   @override
   Widget build(BuildContext context) {
-    final String puzzleState = 'Global';
+    const  String puzzleState = 'Global';
 
-    return Stack(
+    return const Stack(
       children: [
         PuzzleBackground(
           puzzleState: puzzleState,

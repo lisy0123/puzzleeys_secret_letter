@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextSetting {
+class CustomText {
   static List<Text> _buildTextVariants({
     required String text,
     required List<TextStyle?> styles,

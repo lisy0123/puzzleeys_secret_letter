@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
 class DottedDivider extends StatelessWidget {
   final double dashWidth;
@@ -13,7 +13,7 @@ class DottedDivider extends StatelessWidget {
     super.key,
     required this.dashWidth,
     required this.dashSpace,
-    this.color = ColorSetting.colorBase,
+    this.color = CustomColors.colorBase,
     required this.thickness,
     this.axis = Axis.horizontal,
     required this.padding,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'dart:math' as math;
 
@@ -26,14 +26,13 @@ class PuzzleContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final puzzleColor = ColorSetting.colorRed;
-    final puzzleLightColor = ColorMatch(puzzleColor)();
+    final puzzleColor = CustomColors.colorRed;
     final rotationAngle = _getRotationAngle();
 
     return LayoutId(
       id: index,
       child: GestureDetector(
-        onTap: () => _showPuzzleDialog(puzzleLightColor, context),
+        onTap: () => _showPuzzleDialog(puzzleColor, context),
         child: Transform.rotate(
           angle: rotationAngle,
           child: SvgPicture.asset(
@@ -41,7 +40,7 @@ class PuzzleContent extends StatelessWidget {
             height: puzzleHeight * scaleFactor,
             fit: BoxFit.contain,
             colorFilter: ColorFilter.mode(
-              puzzleColor.withOpacity(0.8),
+              Colors.white.withOpacity(0.5),
               BlendMode.srcATop,
             ),
           ),
@@ -54,9 +53,11 @@ class PuzzleContent extends StatelessWidget {
     return (row % 2 == column % 2) ? 90 * math.pi / 180 : 90 * math.pi / 90;
   }
 
-  void _showPuzzleDialog(Color puzzleLightColor, BuildContext context) {
+  void _showPuzzleDialog(Color puzzleColor, BuildContext context) {
+    final Color puzzleLightColor = ColorMatch(puzzleColor)();
+
     PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleLightColor.withOpacity(0.7),
+      barrierColor: puzzleColor.withOpacity(0.7),
       child: PuzzleDetailScreen(
         index: index,
         puzzleColor: puzzleLightColor,

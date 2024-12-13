@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/screens/outliner/bottom_bar.dart';
-import 'package:puzzleeys_secret_letter/screens/outliner/status_bar.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_scale_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
+import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_ui.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -73,7 +73,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       top: true,
       child: Container(
         margin: EdgeInsets.all(40.0.w),
-        child: StatusBar(),
+        child: const StatusBar(),
       ),
     );
   }
@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (_tabController.index != 3) _buildActionButtons(),
-          if (_tabController.index == 3) ShopScreen(),
+          if (_tabController.index == 3) const ShopScreen(),
           ButtomBar(
             currentIndex: _tabController.index,
             onIconTap: navigateToTab,
@@ -102,11 +102,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomUiCircle(
+          CustomCircle(
             svgImage: 'cir_zoom',
             onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
           ),
-          CustomUiCircle(
+          CustomCircle(
             svgImage: 'cir_shuffle',
             onTap: () {},
           ),

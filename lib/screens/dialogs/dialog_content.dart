@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/component/var_setting.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/cancel_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
-import 'package:puzzleeys_secret_letter/styles/text_setting.dart';
-import 'package:puzzleeys_secret_letter/widgets/box_decoration_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 
 class DialogContent {
@@ -27,9 +27,9 @@ class DialogContent {
     return ([
       Container(
         margin: EdgeInsets.only(top: 16.0.h),
-        decoration: BoxDecorationSetting.boxDecorationShadowBorder(
+        decoration: BoxDecorations.shadowBorder(
           circular: 5,
-          color: ColorSetting.colorPaper,
+          color: CustomColors.colorPaper,
         ),
       ),
       SvgPicture.asset(
@@ -46,8 +46,8 @@ class DialogContent {
     return Column(
       children: [
         SizedBox(height: 48.0.h),
-        TextSetting.textDialogTitle(
-          text: VarSetting.iconNameLists[iconName]!,
+        CustomText.textDialogTitle(
+          text: CustomVars.iconNameLists[iconName]!,
           context: context,
         ),
         SizedBox(height: 16.0.h),
@@ -65,21 +65,21 @@ class DialogContent {
     final Widget dialogContent;
     switch (iconName) {
       case 'list':
-        dialogContent = ListDialog();
+        dialogContent = const ListDialog();
         break;
       case 'get':
         dialogContent = GetDialog(puzzleColor: puzzleColor);
         break;
       case 'cancel':
-        dialogContent = CancelDialog();
+        dialogContent = const CancelDialog();
         break;
       case 'put':
         return PutDialog(puzzleColor: puzzleColor);
       case 'sent':
-        dialogContent = SentDialog();
+        dialogContent = const SentDialog();
         break;
       default:
-        dialogContent = Placeholder();
+        dialogContent = const Placeholder();
     }
 
     return Container(

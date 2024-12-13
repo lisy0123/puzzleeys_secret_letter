@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
-class VarSetting {
+class CustomVars {
   static final int puzzleNums = 9876;
   static final int diaNums = 1234;
 
   static final List<Color> myGradientColors = [
-    ColorSetting.colorBlue,
-    ColorSetting.colorPink,
+    CustomColors.colorBlue,
+    CustomColors.colorPink,
+  ];
+  
+  static final List<Color> myColorPicker = [
+    CustomColors.colorPink,
+    CustomColors.colorRed,
+    CustomColors.colorOrange,
+    CustomColors.colorYellow,
+    CustomColors.colorGreen,
+    CustomColors.colorSkyBlue,
+    CustomColors.colorBlue,
+    CustomColors.colorPurple,
   ];
 
   static const List<String> mainIconNameLists = [

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/writing/puzzle_writing_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/writing/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
+import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
@@ -25,11 +26,12 @@ class PuzzleDetailScreen extends StatefulWidget {
 }
 
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
-
   @override
   void initState() {
     super.initState();
-    context.read<WritingProvider>().updateOpacity(setToInitial: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<WritingProvider>().updateOpacity(setToInitial: true);
+    });
   }
 
   @override
@@ -42,7 +44,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       switchOutCurve: Curves.easeOut,
       child: opacity > 0.0
           ? Stack(
-              key: ValueKey('visible'),
+              key: const ValueKey('visible'),
               children: [
                 GestureDetector(onTap: () => Navigator.pop(context)),
                 Padding(
@@ -61,19 +63,20 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
                 ),
               ],
             )
-          : SizedBox.shrink(key: ValueKey('hidden')),
+          : const SizedBox.shrink(key: ValueKey('hidden')),
     );
   }
 
   Widget _buildPuzzleDetails(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () =>
-          IconDialog(iconName: 'get', puzzleColor: widget.puzzleColor)
-              .buildDialog(context),
+      onDoubleTap: () => IconDialog(
+        iconName: 'get',
+        puzzleColor: ColorMatch(widget.puzzleColor)(),
+      ).buildDialog(context),
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: widget.puzzleColor.withOpacity(0.7),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.symmetric(horizontal: 100.0.w),
@@ -103,8 +106,8 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         ),
         PuzzleScreenHandler().buildIconButton(
           iconName: 'btn_alarm',
-          text: '신고하기',
-          onTap: () => IconDialog(iconName: 'alarm').buildDialog(context),
+          text: CustomStrings.alarm,
+          onTap: () => const IconDialog(iconName: 'alarm').buildDialog(context),
           context: context,
         ),
       ],
@@ -116,7 +119,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       alignment: Alignment.center,
       height: 2300.0.w,
       child: RawScrollbar(
-        thumbColor: widget.puzzleColor,
+        thumbColor: ColorMatch(widget.puzzleColor)(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
@@ -146,11 +149,11 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   Widget _buildReplyButton(BuildContext context) {
     return CustomButton(
       iconName: 'btn_mail',
-      iconTitle: '답 장',
+      iconTitle: CustomStrings.reply,
       onTap: () {
         PuzzleScreenHandler.navigateScreen(
           barrierColor: Colors.white.withOpacity(0.3),
-          child: PuzzleWritingScreen(),
+          child: const PuzzleWritingScreen(),
           context: context,
         );
         context.read<WritingProvider>().updateOpacity();

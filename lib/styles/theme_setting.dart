@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/styles/color_setting.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
 class ThemeSetting {
   static TextStyle _textMain({
-    Color textColor = ColorSetting.colorBase,
+    Color textColor = CustomColors.colorBase,
     double fontSize = 90.0,
   }) {
     return TextStyle(
@@ -35,11 +35,11 @@ class ThemeSetting {
       pageTransitionsTheme: const PageTransitionsTheme(builders: {
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
-      scaffoldBackgroundColor: ColorSetting.colorBase,
+      scaffoldBackgroundColor: CustomColors.colorBase,
       fontFamily: 'BMJUA',
       textTheme: TextTheme(
         // top bar nums
-        headlineLarge: _textMainStroke(textColor: ColorSetting.colorBase),
+        headlineLarge: _textMainStroke(textColor: CustomColors.colorBase),
         headlineMedium: _textMain(textColor: Colors.white),
         // dialog title
         titleLarge: _textMainStroke(fontSize: 110.0),
@@ -49,13 +49,13 @@ class ThemeSetting {
         // icon disable
         displaySmall: _textMain(
           fontSize: 80.0,
-          textColor: ColorSetting.colorBase.withOpacity(0.4),
+          textColor: CustomColors.colorBase.withOpacity(0.4),
         ),
         // bottom bar, small
         labelLarge: _textMain(fontSize: 70.0),
         labelMedium: _textMain(
           fontSize: 70.0,
-          textColor: ColorSetting.colorBase.withOpacity(0.4),
+          textColor: CustomColors.colorBase.withOpacity(0.4),
         ),
       ),
     );

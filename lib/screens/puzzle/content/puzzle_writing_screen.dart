@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
@@ -73,9 +74,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       padding: EdgeInsets.symmetric(vertical: 50.0.w, horizontal: 20.0.w),
       child: PuzzleScreenHandler().buildIconButton(
         iconName: 'btn_back',
-        text: '돌아가기',
+        text: CustomStrings.back,
         onTap: () {
-          IconDialog(iconName: 'cancel', simpleDialog: true)
+          const IconDialog(iconName: 'cancel', simpleDialog: true)
               .buildDialog(context);
         },
         context: context,
@@ -87,7 +88,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return Container(
       height: _height,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.5),
+        color: Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -106,7 +107,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       inputFormatters: [LengthLimitingTextInputFormatter(1000)],
       style: Theme.of(context).textTheme.displayMedium,
       decoration: InputDecoration(
-        hintText: '답장을 써주세요...',
+        hintText: CustomStrings.writingMessage,
         hintStyle: Theme.of(context).textTheme.displaySmall,
         border: InputBorder.none,
         counterStyle: Theme.of(context).textTheme.labelLarge,
@@ -117,9 +118,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   Widget _buildPutButton(BuildContext context) {
     return CustomButton(
       iconName: 'btn_puzzle',
-      iconTitle: '감정 넣기',
+      iconTitle: CustomStrings.putEmotion,
       onTap: () {
-        IconDialog(iconName: 'put').buildDialog(context);
+        const IconDialog(iconName: 'put').buildDialog(context);
       },
     );
   }
