@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/cancel_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/list_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/dialog_enums.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
-import 'package:puzzleeys_secret_letter/constants/vars.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
@@ -36,8 +32,7 @@ class DialogContent {
         'assets/imgs/background_tape.svg',
         height: 42.0.h,
       ),
-      if (!simpleDialog)
-        _buildTitle(context),
+      if (!simpleDialog) _buildTitle(context),
       _buildBody(context),
     ]);
   }
@@ -47,7 +42,7 @@ class DialogContent {
       children: [
         SizedBox(height: 48.0.h),
         CustomText.textDialogTitle(
-          text: CustomVars.iconNameLists[iconName]!,
+          text: CustomStrings.dialogNameLists[iconName]!,
           context: context,
         ),
         SizedBox(height: 16.0.h),
@@ -62,25 +57,8 @@ class DialogContent {
   }
 
   Widget _buildBody(BuildContext context) {
-    final Widget dialogContent;
-    switch (iconName) {
-      case 'list':
-        dialogContent = const ListDialog();
-        break;
-      case 'get':
-        dialogContent = GetDialog(puzzleColor: puzzleColor);
-        break;
-      case 'cancel':
-        dialogContent = const CancelDialog();
-        break;
-      case 'put':
-        return PutDialog(puzzleColor: puzzleColor);
-      case 'sent':
-        dialogContent = const SentDialog();
-        break;
-      default:
-        dialogContent = const Placeholder();
-    }
+    final Widget dialogContent =
+        DialogEnums(iconName: iconName, puzzleColor: puzzleColor);
 
     return Container(
       margin: EdgeInsets.only(top: simpleDialog ? 40.0.h : 90.0.h),

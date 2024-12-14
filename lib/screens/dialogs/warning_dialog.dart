@@ -5,8 +5,13 @@ import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
-class CancelDialog extends StatelessWidget {
-  const CancelDialog({super.key});
+class WarningDialog extends StatelessWidget {
+  final int dialogType;
+
+  const WarningDialog({
+    super.key,
+    required this.dialogType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class CancelDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomText.textDisplay(
-          text: CustomStrings.backMessage,
+          text: CustomStrings.warningMessageLists[dialogType],
           context: context,
         ),
         CustomButton(
@@ -23,8 +28,10 @@ class CancelDialog extends StatelessWidget {
           iconTitle: CustomStrings.back,
           onTap: () {
             Navigator.pop(context);
-            Navigator.pop(context);
-            context.read<WritingProvider>().updateOpacity();
+            if (dialogType == 0) {
+              Navigator.pop(context);
+              context.read<WritingProvider>().updateOpacity();
+            }
           },
         ),
       ],

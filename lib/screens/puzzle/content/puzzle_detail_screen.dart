@@ -107,7 +107,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         PuzzleScreenHandler().buildIconButton(
           iconName: 'btn_alarm',
           text: CustomStrings.alarm,
-          onTap: () => const IconDialog(iconName: 'alarm').buildDialog(context),
+          onTap: () => IconDialog(iconName: 'alarm').buildDialog(context),
           context: context,
         ),
       ],

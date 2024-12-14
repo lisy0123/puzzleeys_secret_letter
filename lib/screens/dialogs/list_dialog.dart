@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
@@ -54,7 +54,7 @@ class ListDialog extends StatelessWidget {
               ),
               SizedBox(height: 6.0.h, width: 300.0.w),
               CustomText.textDisplay(
-                text: CustomVars.iconNameLists[index.toString()]!,
+                text: CustomStrings.dialogNameLists[index.toString()]!,
                 disable: index == 4 ? true : false,
                 context: context,
               ),

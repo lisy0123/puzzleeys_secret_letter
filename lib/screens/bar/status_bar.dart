@@ -33,7 +33,7 @@ class StatusBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildMainBarLeft(context),
-          const IconDialog(iconName: 'list'),
+          IconDialog(iconName: 'list'),
         ],
       ),
     );
@@ -68,7 +68,7 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildBead(List<Color> myGradientColors, BuildContext context) {
     return GestureDetector(
-      onTap: () => const IconDialog(iconName: 'bead').buildDialog(context),
+      onTap: () => IconDialog(iconName: 'bead').buildDialog(context),
       child: Container(
         margin: EdgeInsets.only(left: 40.0.w),
         width: 320.0.w,

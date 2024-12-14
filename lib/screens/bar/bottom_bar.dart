@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
@@ -60,7 +60,7 @@ class ButtomBar extends StatelessWidget {
           ),
           SizedBox(width: 300.0.w),
           Text(
-            CustomVars.mainIconNameLists[index],
+            CustomStrings.pageNameLists[index],
             style: isSelected
                 ? Theme.of(context).textTheme.labelLarge
                 : Theme.of(context).textTheme.labelMedium,

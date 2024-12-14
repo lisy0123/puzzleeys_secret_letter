@@ -76,7 +76,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         iconName: 'btn_back',
         text: CustomStrings.back,
         onTap: () {
-          const IconDialog(iconName: 'cancel', simpleDialog: true)
+          IconDialog(iconName: 'cancel', simpleDialog: true)
               .buildDialog(context);
         },
         context: context,
@@ -102,15 +102,13 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return TextField(
       controller: _textEditingController,
       focusNode: _focusNode,
-      maxLines: 21,
-      maxLength: 1000,
-      inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+      maxLines: 22,
+      inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
       style: Theme.of(context).textTheme.displayMedium,
       decoration: InputDecoration(
         hintText: CustomStrings.writingMessage,
         hintStyle: Theme.of(context).textTheme.displaySmall,
         border: InputBorder.none,
-        counterStyle: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
@@ -119,9 +117,15 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return CustomButton(
       iconName: 'btn_puzzle',
       iconTitle: CustomStrings.putEmotion,
-      onTap: () {
-        const IconDialog(iconName: 'put').buildDialog(context);
-      },
+      onTap: () => _showDialog(context),
     );
+  }
+
+  void _showDialog(BuildContext context) {
+    if (_textEditingController.text.length < 10) {
+      IconDialog(iconName: 'limit', simpleDialog: true).buildDialog(context);
+    } else {
+      IconDialog(iconName: 'put').buildDialog(context);
+    }
   }
 }

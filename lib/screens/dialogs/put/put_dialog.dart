@@ -51,28 +51,23 @@ class _PutDialogState extends State<PutDialog> {
       onTap: () => Utils.dismissKeyboard(focusNode: _focusNode),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
-          margin: EdgeInsets.only(top: 90.0.h),
-          padding: EdgeInsets.symmetric(horizontal: 100.0.w, vertical: 60.0.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomText.textSmall(
-                text: CustomStrings.chooseMessage,
-                context: context,
-              ),
-              GestureDetector(
-                onTap: () =>
-                    context.read<ColorPickerProvider>().updateOpacity(),
-                child: _buildPuzzle(context),
-              ),
-              SizedBox(
-                height: 660.0.w,
-                child: _buildBottomContent(context),
-              ),
-            ],
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomText.textSmall(
+              text: CustomStrings.chooseMessage,
+              context: context,
+            ),
+            GestureDetector(
+              onTap: () => context.read<ColorPickerProvider>().updateOpacity(),
+              child: _buildPuzzle(context),
+            ),
+            SizedBox(
+              height: 660.0.w,
+              child: _buildBottomContent(context),
+            ),
+          ],
         ),
       ),
     );
@@ -145,12 +140,24 @@ class _PutDialogState extends State<PutDialog> {
     return CustomButton(
       iconName: 'btn_puzzle',
       iconTitle: CustomStrings.put,
-      onTap: () {
-        context.read<WritingProvider>().updateOpacity();
-        Navigator.popUntil(context, (route) => route.isFirst);
-        const IconDialog(iconName: 'sent', simpleDialog: true)
-            .buildDialog(context);
-      },
+      onTap: () => _showDialog(context),
     );
+  }
+
+  void _showDialog(BuildContext context) {
+    final Color color =
+        Provider.of<ColorPickerProvider>(context, listen: false).selectedColor;
+
+    if (color == Colors.white) {
+      IconDialog(iconName: 'emptyPuzzle', simpleDialog: true)
+          .buildDialog(context);
+    } else if (_textEditingController.text.isEmpty) {
+      IconDialog(iconName: 'emptyName', simpleDialog: true)
+          .buildDialog(context);
+    } else {
+      context.read<WritingProvider>().updateOpacity();
+      Navigator.popUntil(context, (route) => route.isFirst);
+      IconDialog(iconName: 'sent', simpleDialog: true).buildDialog(context);
+    }
   }
 }

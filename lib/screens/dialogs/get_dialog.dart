@@ -30,7 +30,9 @@ class GetDialog extends StatelessWidget {
         CustomButton(
           iconName: 'btn_puzzle',
           iconTitle: CustomStrings.get,
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );
