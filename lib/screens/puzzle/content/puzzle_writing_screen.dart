@@ -56,7 +56,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             ),
             child: Column(
               children: [
-                _buldBackButton(context),
+                _buildBackButton(context),
                 _buildMidContent(context),
                 SizedBox(height: 200.0.w),
                 _buildPutButton(context),
@@ -68,7 +68,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     );
   }
 
-  Widget _buldBackButton(BuildContext context) {
+  Widget _buildBackButton(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(vertical: 50.0.w, horizontal: 20.0.w),

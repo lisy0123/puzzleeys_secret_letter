@@ -95,7 +95,17 @@ app.*.map.json
 # End of https://www.toptal.com/developers/gitignore/api/flutter
 
 
+# .env info
 .env
+
+# IOS .env info
+Config.xcconfig
+
+# Android play console upload Key info
+key.properties
+**/*.keystore
+**/*.jks
+
 _old/
 screenshot/
 

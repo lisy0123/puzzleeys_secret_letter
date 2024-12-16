@@ -40,7 +40,7 @@ class PuzzleContent extends StatelessWidget {
             height: puzzleHeight * scaleFactor,
             fit: BoxFit.contain,
             colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.5),
+              CustomColors.colorBlue.withOpacity(0.8),
               BlendMode.srcATop,
             ),
           ),
