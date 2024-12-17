@@ -9,7 +9,7 @@ class ThemeSetting {
   }) {
     return TextStyle(
       fontSize: fontSize.sp,
-      letterSpacing: 2,
+      letterSpacing: 1.5,
       height: 1.5,
       color: textColor,
     );
@@ -44,7 +44,14 @@ class ThemeSetting {
         // dialog title
         titleLarge: _textMainStroke(fontSize: 110.0),
         titleMedium: _textMain(fontSize: 110.0),
-        // display: icon button, puzzle content
+        // puzzle content
+        displayLarge: _textMain(fontSize: 80.0).copyWith(
+          fontFamily: 'RIDI',
+          fontWeight: FontWeight.w900,
+          letterSpacing: 1,
+          height: 1.8,
+        ),
+        // display: icon button
         displayMedium: _textMain(fontSize: 80.0),
         // icon disable
         displaySmall: _textMain(
@@ -57,6 +64,11 @@ class ThemeSetting {
           fontSize: 70.0,
           textColor: CustomColors.colorBase.withOpacity(0.4),
         ),
+        // puzzle hint content
+        labelSmall: _textMain(
+          fontSize: 80.0,
+          textColor: CustomColors.colorBase.withOpacity(0.6),
+        ).copyWith(fontFamily: 'RIDI', letterSpacing: 1, height: 1.8),
       ),
     );
   }

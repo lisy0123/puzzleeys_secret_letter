@@ -24,12 +24,17 @@ class CustomStrings {
     '8': '설 정',
   };
 
+  static String slogan = '퍼즐에 감정을 담다';
+  static String googleLogin = '구글로 시작하기';
+  static String appleLogin = '애플로 시작하기';
+
   static String reply = '답 장';
   static String alarm = '신고하기';
   static String back = '돌아가기';
   static String putEmotion = '감정 넣기';
   static String get = '담 기';
   static String put = '넣 기';
+  static String logout = '로그아웃';
 
   static String writingMessage = '답장을 적어주세요.';
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';

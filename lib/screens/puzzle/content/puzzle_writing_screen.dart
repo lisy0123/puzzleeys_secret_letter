@@ -104,10 +104,10 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       focusNode: _focusNode,
       maxLines: 22,
       inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-      style: Theme.of(context).textTheme.displayMedium,
+      style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
         hintText: CustomStrings.writingMessage,
-        hintStyle: Theme.of(context).textTheme.displaySmall,
+        hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
       ),
     );

@@ -35,20 +35,19 @@ class _CustomButtonState extends State<CustomButton> {
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child: Container(
-        width: 600.0.w,
+        width: 620.0.w,
         height: 240.0.w,
         decoration: _buttonDecoration(),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SvgPicture.asset(
                   'assets/imgs/${widget.iconName}.svg',
                   height: 34.0.h,
                 ),
-                SizedBox(width: 40.0.w,),
                 CustomText.textDisplay(
                   text: widget.iconTitle,
                   context: context,

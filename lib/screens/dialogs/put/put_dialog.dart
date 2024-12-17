@@ -125,11 +125,11 @@ class _PutDialogState extends State<PutDialog> {
         LengthLimitingTextInputFormatter(30),
         LineLimitingTextInputFormatter(1),
       ],
-      style: Theme.of(context).textTheme.displayMedium,
+      style: Theme.of(context).textTheme.displayLarge,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
         hintText: CustomStrings.namingMessage,
-        hintStyle: Theme.of(context).textTheme.displaySmall,
+        hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
         counterText: '',
       ),

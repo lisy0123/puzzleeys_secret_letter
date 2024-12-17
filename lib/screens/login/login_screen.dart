@@ -1,183 +1,111 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:puzzleeys_secret_letter/constants/colors.dart';
-import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/screens/login/login_screen_handler.dart';
 
-final supabase = Supabase.instance.client;
-
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  String? _userId;
-
-  @override
-  void initState() {
-    super.initState();
-    supabase.auth.onAuthStateChange.listen((data) {
-      setState(() {
-        _userId = data.session?.user.id;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
+          begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.black12, Colors.black54],
+          colors: [Colors.black12, Colors.black.withOpacity(0.7)],
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 100.0.w, vertical: 200.0.w),
-        child: Stack(
-          alignment: Alignment.center,
+        padding: EdgeInsets.only(
+            left: 100.0.w, right: 100.0.w, top: 300.0.h, bottom: 80.0.h),
+        child: _buildContent(context),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
           children: [
-            _buildTitle(context),
-            _buildSignInButtons(context),
+            _buildText(),
+            SizedBox(height: 40.0.w),
+            _buildText(text: CustomStrings.slogan),
+          ],
+        ),
+        Image.asset('assets/imgs/login_puzzle.png', height: 400.0.w),
+        Column(
+          children: [
+            _buildSignInButton(
+              onTap: LoginScreenHandler.googleLogin,
+              color: Colors.white,
+              text: CustomStrings.googleLogin,
+              icon: SvgPicture.asset('assets/imgs/google.svg'),
+            ),
+            SizedBox(height: 60.0.w),
+            _buildSignInButton(
+              onTap: LoginScreenHandler.appleLogin,
+              color: Colors.black,
+              text: CustomStrings.appleLogin,
+              icon: Icon(Icons.apple, color: Colors.white),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Text _buildText({String text = 'PUZZLEEY'}) {
+    final bool classify = text == 'PUZZLEEY';
+
+    return Text(
+      text,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'RIDI',
+        fontSize: classify ? 260.sp : 100.sp,
+        fontWeight: classify ? FontWeight.w900 : FontWeight.w500,
+        letterSpacing: classify ? 6 : 2,
+      ),
+    );
+  }
+
+  Widget _buildSignInButton({
+    required VoidCallback onTap,
+    required Color color,
+    required String text,
+    required Widget icon,
+  }) {
+    final bool isGoogle = color == Colors.white;
+    final Color textColor = isGoogle ? Colors.black : Colors.white;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            SizedBox(width: 50.0.w),
+            Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 100.sp,
+                letterSpacing: 1.3,
+              ),
+            ),
           ],
         ),
       ),
-    );
-    // return Scaffold(
-    //   body: Center(
-    //     child: Column(
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: [
-    //         Text(_userId ?? 'Not signed in'),
-    //         ElevatedButton(
-    //           onPressed: () async {
-    //             final webClientId = dotenv.env['WED_ID'];
-    //             final iosClientId = dotenv.env['IOS_ID'];
-    //
-    //             final GoogleSignIn googleSignIn = GoogleSignIn(
-    //               clientId: iosClientId,
-    //               serverClientId: webClientId,
-    //             );
-    //             final googleUser = await googleSignIn.signIn();
-    //             final googleAuth = await googleUser!.authentication;
-    //             final accessToken = googleAuth.accessToken;
-    //             final idToken = googleAuth.idToken;
-    //
-    //             if (accessToken == null) {
-    //               throw 'No Access Token found.';
-    //             }
-    //             if (idToken == null) {
-    //               throw 'No ID Token found.';
-    //             }
-    //
-    //             await supabase.auth.signInWithIdToken(
-    //               provider: OAuthProvider.google,
-    //               idToken: idToken,
-    //               accessToken: accessToken,
-    //             );
-    //           },
-    //           child: Text('Sign in with Google'),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-  }
-
-  Widget _buildTitle(BuildContext context) {
-    return SizedBox(
-      height: 2000.0.w,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Text(
-                'PUZZLEEY',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 240.sp,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 4,
-                ),
-              ),
-              SizedBox(height: 20.0.w),
-              Text(
-                '퍼즐에 감정을 담다',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 100.sp,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
-          ),
-          Image.asset(
-            'assets/imgs/login_puzzle.png',
-            height: 400.0.w,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignInButtons(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          onPressed: () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/imgs/google.svg'),
-              SizedBox(width: 50.0.w),
-              Text(
-                '구글로 시작하기',
-                style: TextStyle(color: Colors.black, fontSize: 100.sp),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 100.0.w),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          onPressed: () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.apple, color: Colors.white),
-              SizedBox(width: 50.0.w),
-              Text(
-                '애플로 시작하기',
-                style: TextStyle(color: Colors.white, fontSize: 100.sp),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

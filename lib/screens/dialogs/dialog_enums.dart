@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/list_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
@@ -44,6 +45,8 @@ enum DialogType {
         return WarningDialog(dialogType: 2);
       case DialogType.emptyPuzzle:
         return WarningDialog(dialogType: 3);
+      case DialogType.list0:
+        return AccountDialog();
       default:
         return Placeholder();
     }
