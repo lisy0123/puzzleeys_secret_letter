@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   static void dismissKeyboard({required FocusNode focusNode}) {
@@ -8,12 +8,9 @@ class Utils {
     }
   }
 
-  String generateRandomUserId() {
-    const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    Random rand = Random();
-
-    return List.generate(
-        15, (index) => characters[rand.nextInt(characters.length)]).join();
+  static String convertUTCToKST(String utcTime) {
+    DateTime kstTime = DateTime.parse(utcTime).add(Duration(hours: 9));
+    String formattedKstTime = DateFormat('yyyy-MM-dd HH:mm').format(kstTime);
+    return formattedKstTime;
   }
 }

@@ -73,7 +73,7 @@ class _CustomCircleState extends State<CustomCircle> {
           width: 260.0.w,
           colorFilter: ColorFilter.mode(
             _isPressed
-                ? CustomColors.colorBase.withOpacity(0.2)
+                ? CustomColors.colorBase.withValues(alpha: 0.2)
                 : Colors.transparent,
             BlendMode.srcATop,
           ),

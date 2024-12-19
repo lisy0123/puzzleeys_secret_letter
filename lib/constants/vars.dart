@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
 class CustomVars {
+  static final String version = '0.8.1';
+
   static final int puzzleNums = 9876;
   static final int diaNums = 1234;
 

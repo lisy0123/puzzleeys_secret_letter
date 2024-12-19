@@ -14,12 +14,12 @@ class LoginScreen extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.black12, Colors.black.withOpacity(0.7)],
+          colors: [Colors.black12, Colors.black.withValues(alpha: 0.7)],
         ),
       ),
       child: Padding(
         padding: EdgeInsets.only(
-            left: 100.0.w, right: 100.0.w, top: 300.0.h, bottom: 80.0.h),
+            left: 100.0.w, right: 100.0.w, top: 340.0.h, bottom: 60.0.h),
         child: _buildContent(context),
       ),
     );
@@ -65,10 +65,10 @@ class LoginScreen extends StatelessWidget {
       text,
       style: TextStyle(
         color: Colors.white,
-        fontFamily: 'RIDI',
-        fontSize: classify ? 260.sp : 100.sp,
-        fontWeight: classify ? FontWeight.w900 : FontWeight.w500,
-        letterSpacing: classify ? 6 : 2,
+        fontFamily: classify ? 'BMJUA' : 'NANUM',
+        fontSize: classify ? 280.sp : 100.sp,
+        fontWeight: FontWeight.w900,
+        letterSpacing: classify ? 6 : 3,
       ),
     );
   }
@@ -85,6 +85,7 @@ class LoginScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: 320.0.w,
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
         decoration: BoxDecoration(
           color: color,
@@ -99,8 +100,10 @@ class LoginScreen extends StatelessWidget {
               text,
               style: TextStyle(
                 color: textColor,
-                fontSize: 100.sp,
-                letterSpacing: 1.3,
+                fontFamily: 'NANUM',
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2,
+                fontSize: 90.sp,
               ),
             ),
           ],

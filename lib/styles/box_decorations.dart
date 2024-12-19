@@ -4,7 +4,7 @@ import 'package:puzzleeys_secret_letter/constants/colors.dart';
 class BoxDecorations {
   static BoxShadow shadow() {
     return BoxShadow(
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withValues(alpha: 0.5),
       offset: const Offset(0, 8),
       blurRadius: 10,
     );

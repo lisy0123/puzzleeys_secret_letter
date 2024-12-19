@@ -76,8 +76,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         iconName: 'btn_back',
         text: CustomStrings.back,
         onTap: () {
-          IconDialog(iconName: 'cancel', simpleDialog: true)
-              .buildDialog(context);
+          BuildDialog.show(
+            iconName: 'cancel',
+            simpleDialog: true,
+            context: context,
+          );
         },
         context: context,
       ),
@@ -88,7 +91,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return Container(
       height: _height,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
+        color: Colors.white.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -123,9 +126,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
 
   void _showDialog(BuildContext context) {
     if (_textEditingController.text.length < 10) {
-      IconDialog(iconName: 'limit', simpleDialog: true).buildDialog(context);
+      BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
-      IconDialog(iconName: 'put').buildDialog(context);
+      BuildDialog.show(iconName: 'put', context: context);
     }
   }
 }

@@ -149,15 +149,21 @@ class _PutDialogState extends State<PutDialog> {
         Provider.of<ColorPickerProvider>(context, listen: false).selectedColor;
 
     if (color == Colors.white) {
-      IconDialog(iconName: 'emptyPuzzle', simpleDialog: true)
-          .buildDialog(context);
+      BuildDialog.show(
+        iconName: 'emptyPuzzle',
+        simpleDialog: true,
+        context: context,
+      );
     } else if (_textEditingController.text.isEmpty) {
-      IconDialog(iconName: 'emptyName', simpleDialog: true)
-          .buildDialog(context);
+      BuildDialog.show(
+        iconName: 'emptyName',
+        simpleDialog: true,
+        context: context,
+      );
     } else {
       context.read<WritingProvider>().updateOpacity();
       Navigator.popUntil(context, (route) => route.isFirst);
-      IconDialog(iconName: 'sent', simpleDialog: true).buildDialog(context);
+      BuildDialog.show(iconName: 'sent', simpleDialog: true, context: context);
     }
   }
 }

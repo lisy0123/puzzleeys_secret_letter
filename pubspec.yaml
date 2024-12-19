@@ -44,6 +44,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   flutter_launcher_icons: ^0.14.2
   flutter_secure_storage: ^9.2.2
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -89,9 +90,13 @@ flutter:
     - family: BMJUA
       fonts:
         - asset: assets/fonts/BMJUA_otf.otf
-    - family: RIDI
+    - family: NANUM
       fonts:
-        - asset: assets/fonts/RIDIBatang.otf
+        - asset: assets/fonts/NanumSquareRoundR.ttf
+        - asset: assets/fonts/NanumSquareRoundB.ttf
+          weight: 700
+        - asset: assets/fonts/NanumSquareRoundEB.ttf
+          weight: 900
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

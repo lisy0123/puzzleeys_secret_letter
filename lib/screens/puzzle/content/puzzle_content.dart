@@ -40,7 +40,7 @@ class PuzzleContent extends StatelessWidget {
             height: puzzleHeight * scaleFactor,
             fit: BoxFit.contain,
             colorFilter: ColorFilter.mode(
-              CustomColors.colorBlue.withOpacity(0.8),
+              CustomColors.colorBlue.withValues(alpha: 0.8),
               BlendMode.srcATop,
             ),
           ),
@@ -57,7 +57,7 @@ class PuzzleContent extends StatelessWidget {
     final Color puzzleLightColor = ColorMatch(puzzleColor)();
 
     PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleColor.withOpacity(0.7),
+      barrierColor: puzzleColor.withValues(alpha: 0.7),
       child: PuzzleDetailScreen(
         index: index,
         puzzleColor: puzzleLightColor,

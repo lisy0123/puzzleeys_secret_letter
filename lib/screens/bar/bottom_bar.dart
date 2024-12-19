@@ -53,8 +53,8 @@ class ButtomBar extends StatelessWidget {
             height: 36.0.h,
             colorFilter: ColorFilter.mode(
               isSelected
-                  ? CustomColors.colorBase.withOpacity(0.2)
-                  : Colors.white.withOpacity(0.5),
+                  ? CustomColors.colorBase.withValues(alpha: 0.2)
+                  : Colors.white.withValues(alpha: 0.5),
               BlendMode.srcATop,
             ),
           ),

@@ -46,7 +46,7 @@ class ThemeSetting {
         titleMedium: _textMain(fontSize: 110.0),
         // puzzle content
         displayLarge: _textMain(fontSize: 80.0).copyWith(
-          fontFamily: 'RIDI',
+          fontFamily: 'NANUM',
           fontWeight: FontWeight.w900,
           letterSpacing: 1,
           height: 1.8,
@@ -56,19 +56,24 @@ class ThemeSetting {
         // icon disable
         displaySmall: _textMain(
           fontSize: 80.0,
-          textColor: CustomColors.colorBase.withOpacity(0.4),
+          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
         ),
         // bottom bar, small
         labelLarge: _textMain(fontSize: 70.0),
         labelMedium: _textMain(
           fontSize: 70.0,
-          textColor: CustomColors.colorBase.withOpacity(0.4),
+          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
         ),
         // puzzle hint content
         labelSmall: _textMain(
           fontSize: 80.0,
-          textColor: CustomColors.colorBase.withOpacity(0.6),
-        ).copyWith(fontFamily: 'RIDI', letterSpacing: 1, height: 1.8),
+          textColor: CustomColors.colorBase.withValues(alpha: 0.6),
+        ).copyWith(
+          fontFamily: 'NANUM',
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1,
+          height: 1.8,
+        ),
       ),
     );
   }

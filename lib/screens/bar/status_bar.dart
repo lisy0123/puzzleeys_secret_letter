@@ -68,7 +68,7 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildBead(List<Color> myGradientColors, BuildContext context) {
     return GestureDetector(
-      onTap: () => IconDialog(iconName: 'bead').buildDialog(context),
+      onTap: () => BuildDialog.show(iconName: 'bead', context: context),
       child: Container(
         margin: EdgeInsets.only(left: 40.0.w),
         width: 320.0.w,

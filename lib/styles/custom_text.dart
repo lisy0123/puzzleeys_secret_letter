@@ -53,7 +53,7 @@ class CustomText {
     );
   }
 
-  static Stack textDisplay({
+  static Text textDisplay({
     required String text,
     bool disable = false,
     required BuildContext context,
@@ -65,19 +65,32 @@ class CustomText {
       textStyle = Theme.of(context).textTheme.displayMedium;
     }
 
-    return _textTitle(
-      text: text,
-      textStyle: [textStyle],
+    return Text(
+      text,
+      style: textStyle,
+      textAlign: TextAlign.center,
     );
   }
 
-  static Stack textSmall({
+  static Text textSmall({
     required String text,
     required BuildContext context,
   }) {
-    return _textTitle(
-      text: text,
-      textStyle: [Theme.of(context).textTheme.labelLarge],
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.labelLarge,
+      textAlign: TextAlign.center,
+    );
+  }
+
+  static Text textContent({
+    required String text,
+    required BuildContext context,
+  }) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.displayLarge,
+      textAlign: TextAlign.center,
     );
   }
 }

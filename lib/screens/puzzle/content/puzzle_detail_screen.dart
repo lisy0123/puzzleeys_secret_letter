@@ -69,14 +69,15 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   Widget _buildPuzzleDetails(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () => IconDialog(
+      onDoubleTap: () => BuildDialog.show(
         iconName: 'get',
         puzzleColor: ColorMatch(widget.puzzleColor)(),
-      ).buildDialog(context),
+        context: context,
+      ),
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
-          color: widget.puzzleColor.withOpacity(0.7),
+          color: widget.puzzleColor.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.symmetric(horizontal: 100.0.w),
@@ -107,7 +108,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         PuzzleScreenHandler().buildIconButton(
           iconName: 'btn_alarm',
           text: CustomStrings.alarm,
-          onTap: () => IconDialog(iconName: 'alarm').buildDialog(context),
+          onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
           context: context,
         ),
       ],
@@ -138,10 +139,11 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     return PuzzleScreenHandler().buildIconButton(
       iconName: 'bar_puzzle',
       text: '135',
-      onTap: () => IconDialog(
+      onTap: () => BuildDialog.show(
         iconName: 'get',
         puzzleColor: ColorMatch(widget.puzzleColor)(),
-      ).buildDialog(context),
+        context: context,
+      ),
       context: context,
     );
   }
@@ -152,7 +154,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       iconTitle: CustomStrings.reply,
       onTap: () {
         PuzzleScreenHandler.navigateScreen(
-          barrierColor: Colors.white.withOpacity(0.3),
+          barrierColor: Colors.white.withValues(alpha: 0.3),
           child: const PuzzleWritingScreen(),
           context: context,
         );

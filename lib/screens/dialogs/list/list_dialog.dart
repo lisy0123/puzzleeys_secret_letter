@@ -24,7 +24,7 @@ class ListDialog extends StatelessWidget {
     required BuildContext context,
   }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(3, (rowIndex) {
         final index = colIndex * 3 + rowIndex;
@@ -47,7 +47,7 @@ class ListDialog extends StatelessWidget {
                 width: 36.0.h,
                 colorFilter: ColorFilter.mode(
                   index == 4
-                      ? Colors.white.withOpacity(0.6)
+                      ? Colors.white.withValues(alpha: 0.6)
                       : Colors.transparent,
                   BlendMode.srcATop,
                 ),
@@ -66,11 +66,12 @@ class ListDialog extends StatelessWidget {
   }
 
   void _showIconDialog(int index, BuildContext context) {
+    Navigator.pop(context);
     if (index != 4) {
-      IconDialog(
+      BuildDialog.show(
         iconName: index.toString(),
-        overlapped: true,
-      ).buildDialog(context);
+        context: context,
+      );
     }
   }
 }

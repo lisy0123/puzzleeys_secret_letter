@@ -8,12 +8,16 @@ class CustomButton extends StatefulWidget {
   final String iconName;
   final String iconTitle;
   final Function onTap;
+  final double width;
+  final double height;
 
   const CustomButton({
     super.key,
     required this.iconName,
     required this.iconTitle,
     required this.onTap,
+    this.width = 620.0,
+    this.height = 240.0,
   });
 
   @override
@@ -21,7 +25,7 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  bool _isPressed = false;
+  late bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +39,8 @@ class _CustomButtonState extends State<CustomButton> {
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child: Container(
-        width: 620.0.w,
-        height: 240.0.w,
+        width: widget.width.w,
+        height: widget.height.w,
         decoration: _buttonDecoration(),
         child: Stack(
           alignment: Alignment.center,
@@ -44,10 +48,11 @@ class _CustomButtonState extends State<CustomButton> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SvgPicture.asset(
-                  'assets/imgs/${widget.iconName}.svg',
-                  height: 34.0.h,
-                ),
+                if (widget.iconName != 'none')
+                  SvgPicture.asset(
+                    'assets/imgs/${widget.iconName}.svg',
+                    height: 34.0.h,
+                  ),
                 CustomText.textDisplay(
                   text: widget.iconTitle,
                   context: context,
@@ -55,7 +60,7 @@ class _CustomButtonState extends State<CustomButton> {
               ],
             ),
             Container(
-              color:_overlayColor(),
+              color: _overlayColor(),
             ),
           ],
         ),
@@ -76,7 +81,7 @@ class _CustomButtonState extends State<CustomButton> {
 
   Color _overlayColor() {
     return _isPressed
-        ? CustomColors.colorBase.withOpacity(0.2)
+        ? CustomColors.colorBase.withValues(alpha: 0.2)
         : Colors.transparent;
   }
 }
