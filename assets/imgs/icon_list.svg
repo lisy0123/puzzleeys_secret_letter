@@ -1,8 +1,1 @@
-<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="7" cy="7.08334" rx="2" ry="2.08334" fill="#4B4B4B"/>
-<path d="M12 7H25" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/>
-<ellipse cx="7" cy="15.0833" rx="2" ry="2.08334" fill="#4B4B4B"/>
-<path d="M12 15H25" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/>
-<ellipse cx="7" cy="23.0833" rx="2" ry="2.08334" fill="#4B4B4B"/>
-<path d="M12 23H25" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/>
-</svg>
+<svg width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="7" cy="7.083" rx="2" ry="2.083" fill="#4B4B4B"/><path d="M12 7h13" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/><ellipse cx="7" cy="15.083" rx="2" ry="2.083" fill="#4B4B4B"/><path d="M12 15h13" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/><ellipse cx="7" cy="23.083" rx="2" ry="2.083" fill="#4B4B4B"/><path d="M12 23h13" stroke="#4B4B4B" stroke-width="2" stroke-linecap="round"/></svg>
