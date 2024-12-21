@@ -93,4 +93,23 @@ class CustomText {
       textAlign: TextAlign.center,
     );
   }
+
+  static Stack textContentTitle({
+    required String text,
+    bool stroke = false,
+    required BuildContext context,
+  }) {
+    final List<TextStyle?> textStyle;
+
+    if (stroke) {
+      textStyle = [
+        Theme.of(context).textTheme.bodyLarge,
+        Theme.of(context).textTheme.displayLarge,
+      ];
+    } else {
+      textStyle = [Theme.of(context).textTheme.titleSmall];
+    }
+
+    return _textTitle(text: text, textStyle: textStyle);
+  }
 }

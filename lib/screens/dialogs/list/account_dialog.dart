@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
-import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,7 +17,7 @@ class AccountDialog extends StatefulWidget {
 }
 
 class _AccountDialogState extends State<AccountDialog> {
-  late final StreamSubscription authSubscription;
+  late final StreamSubscription _authSubscription;
   String? _userId;
   String? _userCreatedAt;
   late bool _isPressed = false;
@@ -24,15 +25,19 @@ class _AccountDialogState extends State<AccountDialog> {
   @override
   void initState() {
     super.initState();
-    authSubscription =
+    _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       if (mounted) {
-        _userData(event.session!.user.email);
+        _loadUserData(event.session!.user.email);
       }
     });
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      _loadUserData(session.user.email);
+    }
   }
 
-  Future<void> _userData(String? email) async {
+  Future<void> _loadUserData(String? email) async {
     if (email != null) {
       final userResponse = await Supabase.instance.client
           .from('user_list')
@@ -48,96 +53,112 @@ class _AccountDialogState extends State<AccountDialog> {
       } else {
         throw "Error: $userResponse";
       }
+    } else {
+      throw "Error: No User!";
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    authSubscription.cancel();
+    _authSubscription.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 60.0.w, bottom: 20.0.w),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildUserIdSection(context),
+            SizedBox(height: 20.0.w),
+            Text(
+              _userId ?? '00000000000000000000==',
+              style: TextStyle(
+                color: CustomColors.colorBase,
+                fontFamily: 'NANUM',
+                fontWeight: FontWeight.w900,
+                fontSize: 78.0.w
+              ),
+            ),
+          ],
+        ),
+        Utils.dialogDivider(),
+        _buildBottomContent(
+          firstString: CustomStrings.userCreatedAt,
+          secondString: _userCreatedAt ?? '0000-00-00 00:00',
+          context: context,
+        ),
+        Utils.dialogDivider(),
+        _buildBottomContent(
+          firstString: CustomStrings.userPuzzleeyDays,
+          secondString:
+              '${_calculateDays(_userCreatedAt).toString().padLeft(3, '0')}일째',
+          context: context,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserIdSection(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() {
+          _isPressed = false;
+          Utils.copyText(
+            textName: CustomStrings.userIdOverlay,
+            textToCopy: _userId!,
+            context: context,
+          );
+        });
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              GestureDetector(
-                onTapDown: (_) => setState(() => _isPressed = true),
-                onTapUp: (_) {
-                  setState(() {
-                    _isPressed = false;
-                  });
-                },
-                onTapCancel: () => setState(() => _isPressed = false),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomText.textContent(text: '회원 번호', context: context),
-                    SvgPicture.asset(
-                      height: 110.0.w,
-                      'assets/imgs/btn_copy.svg',
-                      colorFilter: ColorFilter.mode(
-                        _isPressed
-                            ? CustomColors.colorBase.withValues(alpha: 0.2)
-                            : Colors.transparent,
-                        BlendMode.srcATop,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.0.w),
-              CustomText.textContent(
-                text: _userId ?? '',
-                context: context,
-              ),
-            ],
+          CustomText.textContentTitle(text: CustomStrings.userId, context: context),
+          SvgPicture.asset(
+            height: 110.0.w,
+            'assets/imgs/btn_copy.svg',
+            colorFilter: ColorFilter.mode(
+              _isPressed
+                  ? CustomColors.colorBase.withValues(alpha: 0.2)
+                  : Colors.transparent,
+              BlendMode.srcATop,
+            ),
           ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText.textContent(text: '버전:', context: context),
-                  CustomText.textContent(
-                    text: CustomVars.version,
-                    context: context,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText.textContent(text: '가입 날짜:', context: context),
-                  CustomText.textContent(
-                    text: _userCreatedAt ?? '',
-                    context: context,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          // CustomButton(
-          //   iconName: 'none',
-          //   iconTitle: CustomStrings.logout,
-          //   onTap: () async {
-          //     await Supabase.instance.client.auth.signOut();
-          //     Future.delayed(Duration.zero, () {
-          //       if (context.mounted) {
-          //         Navigator.popUntil(context, (route) => route.isFirst);
-          //       }
-          //     });
-          //   },
-          // ),
         ],
       ),
     );
+  }
+
+  Widget _buildBottomContent({
+    required String firstString,
+    required String secondString,
+    required BuildContext context,
+  }) {
+    return Column(
+      children: [
+        CustomText.textContentTitle(text: firstString, context: context),
+        CustomText.textContent(text: secondString, context: context),
+      ],
+    );
+  }
+
+  int _calculateDays(String? userCreatedAt) {
+    if (_userCreatedAt != null) {
+      DateTime createdDate =
+          DateFormat("yyyy-MM-dd HH:mm").parse(userCreatedAt!);
+      DateTime currentDate = DateTime.now();
+      Duration difference = currentDate.difference(createdDate);
+      return difference.inDays;
+    } else {
+      return 0;
+    }
   }
 }

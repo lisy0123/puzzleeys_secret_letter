@@ -22,7 +22,7 @@ class DialogContent {
   List<Widget> buildContent(BuildContext context) {
     return ([
       Container(
-        margin: EdgeInsets.only(top: 16.0.h),
+        margin: EdgeInsets.only(top: 18.0.h),
         decoration: BoxDecorations.shadowBorder(
           circular: 5,
           color: CustomColors.colorPaper,
@@ -47,10 +47,10 @@ class DialogContent {
         ),
         SizedBox(height: 16.0.h),
         DottedDivider(
-          dashWidth: 30.0.w,
+          dashWidth: 40.0.w,
           dashSpace: 20.0.w,
           thickness: 6.0.w,
-          padding: 80.0.w,
+          padding: 60.0.w,
         ),
       ],
     );
@@ -63,7 +63,7 @@ class DialogContent {
     return Container(
       margin: EdgeInsets.only(top: simpleDialog ? 40.0.h : 90.0.h),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 60.0.w, horizontal: 100.0.w),
+        padding: EdgeInsets.all(60.0.w),
         child: dialogContent,
       ),
     );

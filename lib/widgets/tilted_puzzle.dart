@@ -18,15 +18,16 @@ class TiltedPuzzle extends StatelessWidget {
 
 class TiltedPuzzlePiece extends CustomPainter {
   final Color puzzleColor;
+  final double strokeWidth;
 
-  TiltedPuzzlePiece({required this.puzzleColor});
+  TiltedPuzzlePiece({required this.puzzleColor, this.strokeWidth = 2.0});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = puzzleColor
       ..style = PaintingStyle.fill
-      ..strokeWidth = 2
+      ..strokeWidth = strokeWidth
       ..strokeJoin = StrokeJoin.miter
       ..strokeCap = StrokeCap.butt;
 

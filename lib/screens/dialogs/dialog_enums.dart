@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/quest_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
@@ -29,6 +33,8 @@ enum DialogType {
 
   Widget showDialog(Color puzzleColor) {
     switch (this) {
+      case DialogType.bead:
+        return BeadDialog();
       case DialogType.list:
         return ListDialog();
       case DialogType.get:
@@ -47,6 +53,12 @@ enum DialogType {
         return WarningDialog(dialogType: 3);
       case DialogType.list0:
         return AccountDialog();
+      case DialogType.list3:
+        return MissionDialog();
+      case DialogType.list5:
+        return QuestDialog();
+      case DialogType.list8:
+        return SettingDialog();
       default:
         return Placeholder();
     }

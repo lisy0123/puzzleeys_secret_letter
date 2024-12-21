@@ -41,7 +41,7 @@ class BuildDialog {
         return AlertDialog(
           backgroundColor: Colors.transparent,
           contentPadding: EdgeInsets.symmetric(
-            horizontal: simpleDialog ? 340.0.w : 160.0.w,
+            horizontal: simpleDialog ? 360.0.w : 160.0.w,
           ),
           content: SizedBox(
             width: 1400.0.w,
@@ -65,8 +65,6 @@ class BuildDialog {
       return 1000.0.w;
     } else if (iconName == 'bead') {
       return 2400.0.w;
-    } else if (iconName == '0') {
-      return 1400.0.w;
     } else {
       return 2000.0.w;
     }

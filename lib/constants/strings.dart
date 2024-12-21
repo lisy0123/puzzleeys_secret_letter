@@ -28,6 +28,11 @@ class CustomStrings {
   static String googleLogin = '구글로 시작하기';
   static String appleLogin = '애플로 시작하기';
 
+  static String userId = '회원 번호';
+  static String userCreatedAt = '가입 날짜';
+  static String userPuzzleeyDays = '퍼즐이가 된 지';
+  static String userIdOverlay = '회원 번호를 복사했어요!';
+
   static String reply = '답 장';
   static String alarm = '신고하기';
   static String back = '돌아가기';
@@ -41,7 +46,7 @@ class CustomStrings {
   static String namingMessage = '감정에 이름을 붙여주세요.';
   static String sentMessage = '감정 퍼즐을 보냈어요!';
 
-  static const List<String> warningMessageLists = [
+  static List<String> warningMessageLists = [
     '돌아가면\n편지가 지워져요!',
     '최소 10자 이상\n작성해주세요!',
     '감정에\n이름을 붙여주세요!',

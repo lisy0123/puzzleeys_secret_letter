@@ -24,7 +24,7 @@ class ListDialog extends StatelessWidget {
     required BuildContext context,
   }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(3, (rowIndex) {
         final index = colIndex * 3 + rowIndex;
@@ -66,10 +66,10 @@ class ListDialog extends StatelessWidget {
   }
 
   void _showIconDialog(int index, BuildContext context) {
-    Navigator.pop(context);
     if (index != 4) {
       BuildDialog.show(
         iconName: index.toString(),
+        overlapped: true,
         context: context,
       );
     }

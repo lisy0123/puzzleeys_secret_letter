@@ -44,6 +44,20 @@ class ThemeSetting {
         // dialog title
         titleLarge: _textMainStroke(fontSize: 110.0),
         titleMedium: _textMain(fontSize: 110.0),
+        // content title
+        titleSmall: _textMain().copyWith(
+          fontFamily: 'NANUM',
+          fontWeight: FontWeight.w900,
+          letterSpacing: 1,
+          height: 1.8,
+        ),
+        // content title (dialog puzzle/dia stroke)
+        bodyLarge: _textMainStroke(fontSize: 80.0).copyWith(
+          fontFamily: 'NANUM',
+          fontWeight: FontWeight.w900,
+          letterSpacing: 1,
+          height: 1.8,
+        ),
         // puzzle content
         displayLarge: _textMain(fontSize: 80.0).copyWith(
           fontFamily: 'NANUM',

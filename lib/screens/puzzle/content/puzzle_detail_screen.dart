@@ -51,7 +51,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
                   padding: EdgeInsets.only(
                     left: 200.0.w,
                     right: 200.0.w,
-                    top: MediaQuery.of(context).size.height / 7,
+                    top: (MediaQuery.of(context).size.height - 3440.0.w) / 2,
                   ),
                   child: Column(
                     children: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
@@ -25,7 +24,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     _focusNode.addListener(() {
       setState(() {
         if (_focusNode.hasFocus) {
-          _height = 1300.0.w;
+          _height = 1200.0.w;
         } else {
           _height = 2800.0.w;
         }
@@ -52,7 +51,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             padding: EdgeInsets.only(
               left: 200.0.w,
               right: 200.0.w,
-              top: MediaQuery.of(context).size.height / 7.5,
+              top: (MediaQuery.of(context).size.height - 3510.0.w) / 2,
             ),
             child: Column(
               children: [
@@ -105,8 +104,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return TextField(
       controller: _textEditingController,
       focusNode: _focusNode,
-      maxLines: 22,
-      inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.newline,
+      maxLines: null,
       style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
         hintText: CustomStrings.writingMessage,

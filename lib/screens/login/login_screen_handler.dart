@@ -1,20 +1,17 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:convert';
 
 class LoginScreenHandler {
   static Future<void> googleLogin() async {
     try {
       final googleSignIn = await _initializeGoogleSignIn();
       final googleUser = await _signInWithGoogle(googleSignIn);
-
       final googleAuth = await googleUser!.authentication;
-      final accessToken = googleAuth.accessToken;
-      final idToken = googleAuth.idToken;
-      await _validateTokens(accessToken, idToken);
 
-      final response = await _supabaseLogin(accessToken!, idToken!);
+      await _validateTokens(googleAuth.accessToken, googleAuth.idToken);
+      final response =
+          await _supabaseLogin(googleAuth.accessToken!, googleAuth.idToken!);
       _validateLoginResponse(response);
     } catch (e) {
       throw 'Google login failed: $e';
@@ -57,11 +54,8 @@ class LoginScreenHandler {
 
   static Future<void> _validateTokens(
       String? accessToken, String? idToken) async {
-    if (accessToken == null) {
-      throw 'No Access Token found.';
-    }
-    if (idToken == null) {
-      throw 'No ID Token found.';
+    if (accessToken == null || idToken == null) {
+      throw 'Access Token or ID Token is missing.';
     }
   }
 
@@ -74,42 +68,38 @@ class LoginScreenHandler {
         idToken: idToken,
       );
       if (response.user == null) {
-        throw 'User authentication failed';
+        throw 'User authentication failed.';
       }
 
-      try {
-        final idString = response.user!.id;
-        final id = base64.encode(List<int>.generate(16, (i) => int.parse(
-              idString.replaceAll('-', '')[i * 2] +
-                    idString.replaceAll('-', '')[i * 2 + 1],
-                radix: 16)));
-        final existingUserResponse = await Supabase.instance.client
-            .from('user_list')
-            .select()
-            .eq('id', id)
-            .maybeSingle();
-
-        if (existingUserResponse == null) {
-          final insertResponse =
-              await Supabase.instance.client.from('user_list').insert({
-            'id': id,
-            'email': response.user!.email,
-            'auth_user_id': response.user!.id,
-            'provider': response.user!.appMetadata['provider'],
-            'created_at': response.user!.createdAt,
-          }).select();
-
-          if (insertResponse.isEmpty) {
-            throw 'Error inserting user data into user_table: $insertResponse';
-          }
-        }
-      } catch (e) {
-        throw "Insert Error: $e";
-      }
+      await _insertUserIfNeeded(response);
 
       return response;
     } catch (e) {
-      throw 'Error during login or user insertion: $e';
+      throw 'Error during Supabase login or user insertion: $e';
+    }
+  }
+
+  static Future<void> _insertUserIfNeeded(AuthResponse response) async {
+    final userId = response.user!.id;
+    final existingUserResponse = await Supabase.instance.client
+        .from('user_list')
+        .select()
+        .eq('auth_user_id', userId)
+        .maybeSingle();
+
+    if (existingUserResponse == null) {
+      final insertResponse =
+          await Supabase.instance.client.from('user_list').insert({
+        'id': userId,
+        'email': response.user!.email,
+        'auth_user_id': response.user!.id,
+        'provider': response.user!.appMetadata['provider'],
+        'created_at': response.user!.createdAt,
+      }).select();
+
+      if (insertResponse.isEmpty) {
+        throw 'Error inserting user data into user_table: $insertResponse';
+      }
     }
   }
 
