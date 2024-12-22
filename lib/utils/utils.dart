@@ -19,12 +19,12 @@ class Utils {
   }
 
   static void copyText({
-    required String textName,
+    required String text,
     required String textToCopy,
     required BuildContext context,
   }) {
     Clipboard.setData(ClipboardData(text: textToCopy));
-    CustomOverlay.showOverlay(textName, context);
+    CustomOverlay.show(text: text, context: context);
   }
 
   static Widget dialogDivider() {

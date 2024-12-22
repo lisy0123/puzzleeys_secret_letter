@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

@@ -46,10 +46,44 @@ class CustomStrings {
   static String namingMessage = '감정에 이름을 붙여주세요.';
   static String sentMessage = '감정 퍼즐을 보냈어요!';
 
-  static List<String> warningMessageLists = [
-    '돌아가면\n편지가 지워져요!',
-    '최소 10자 이상\n작성해주세요!',
-    '감정에\n이름을 붙여주세요!',
-    '퍼즐에\n감정을 넣어주세요!',
-  ];
+  static Map<Enum, String> warningMessages = {
+    WarningType.cancel: '돌아가면\n편지가 지워져요!',
+    WarningType.limit: '최소 10자 이상\n작성해주세요!',
+    WarningType.emptyName: '감정에\n이름을 붙여주세요!',
+    WarningType.emptyPuzzle: '퍼즐에\n감정을 넣어주세요!',
+  };
+
+  static Map<Enum, OverlayMessage> overlayMessages = {
+    OverlayType.attendance: OverlayMessage(1, '출석했어요!'),
+    OverlayType.getPuzzle: OverlayMessage(1, '감정 퍼즐을 담았어요!'),
+    OverlayType.writeSubjectPuzzle: OverlayMessage(1, '오늘의 감정 퍼즐을 보냈어요!'),
+    OverlayType.writeGlobalPuzzle: OverlayMessage(1, '감정 퍼즐을 보냈어요!'),
+    OverlayType.writePersonalPuzzle: OverlayMessage(-1, '누군가에게 감정 퍼즐을 보냈어요!'),
+    OverlayType.writePuzzleToMe: OverlayMessage(-1, '나에게 감정 퍼즐을 보냈어요!'),
+    OverlayType.writeReply: OverlayMessage(-1, '답장을 보냈어요!'),
+  };
+}
+
+enum WarningType {
+  cancel,
+  limit,
+  emptyName,
+  emptyPuzzle;
+}
+
+enum OverlayType {
+  attendance,
+  getPuzzle,
+  writeSubjectPuzzle,
+  writeGlobalPuzzle,
+  writePersonalPuzzle,
+  writePuzzleToMe,
+  writeReply;
+}
+
+class OverlayMessage {
+  final int num;
+  final String message;
+
+  OverlayMessage(this.num, this.message);
 }

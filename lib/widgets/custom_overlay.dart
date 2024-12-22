@@ -1,48 +1,107 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class CustomOverlay {
   static final List<OverlayEntry> _overlayEntries = [];
 
-  static void showOverlay(String textName, BuildContext context) {
+  static void show({
+    required String text,
+    int delayed = 700,
+    bool puzzleVis = false,
+    int puzzleNum = 1,
+    required BuildContext context,
+  }) {
     final overlay = Overlay.of(context);
+
     final overlayEntry = OverlayEntry(
       builder: (context) => Padding(
-        padding: EdgeInsets.only(top: 640.0.h),
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height - 1700.0.w,
+        ),
         child: Center(
           child: Material(
             color: Colors.transparent,
             child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 100.0.w),
               padding:
-                  EdgeInsets.symmetric(vertical: 80.0.w, horizontal: 160.0.w),
+                  EdgeInsets.symmetric(vertical: puzzleVis ? 30.0.w : 80.0.w),
               decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(20),
+                color: Colors.black.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(
-                textName,
-                style: TextStyle(
-                  color: Colors.white70,
-                  letterSpacing: 2,
-                  fontFamily: 'NANUM',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 70.0.sp,
-                ),
+              child: _buildContent(
+                text: text,
+                puzzleVis: puzzleVis,
+                puzzleNum: puzzleNum,
+                context: context,
               ),
             ),
           ),
         ),
       ),
     );
-
     overlay.insert(overlayEntry);
     _overlayEntries.add(overlayEntry);
 
-    Future.delayed(const Duration(milliseconds: 700), () {
+    Future.delayed(Duration(milliseconds: delayed), () {
       if (overlayEntry.mounted) {
         overlayEntry.remove();
         _overlayEntries.remove(overlayEntry);
       }
     });
+  }
+
+  static Widget _buildContent({
+    required String text,
+    required bool puzzleVis,
+    required int puzzleNum,
+    required BuildContext context,
+  }) {
+    final String puzzleNumString =
+        (puzzleNum > 0) ? '+${puzzleNum.toString()}' : puzzleNum.toString();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (puzzleVis)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Transform.rotate(
+                angle: -45 * pi / 180,
+                child: CustomPaint(
+                  size: Size(200.0.w, 200.0.w),
+                  painter: TiltedPuzzlePiece(
+                    puzzleColor: Colors.white,
+                    strokeWidth: 1,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10.0.w),
+              Text(
+                puzzleNumString,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  fontSize: 74.0.sp,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              SizedBox(width: 60.0.w),
+            ],
+          ),
+        Text(
+          text,
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.9),
+            fontSize: 74.0.sp,
+            fontFamily: 'NANUM',
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ],
+    );
   }
 }

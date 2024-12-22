@@ -6,7 +6,7 @@ import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
 class WarningDialog extends StatelessWidget {
-  final int dialogType;
+  final Enum dialogType;
 
   const WarningDialog({
     super.key,
@@ -20,7 +20,7 @@ class WarningDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomText.textDisplay(
-          text: CustomStrings.warningMessageLists[dialogType],
+          text: CustomStrings.warningMessages[dialogType]!,
           context: context,
         ),
         CustomButton(
@@ -28,7 +28,7 @@ class WarningDialog extends StatelessWidget {
           iconTitle: CustomStrings.back,
           onTap: () {
             Navigator.pop(context);
-            if (dialogType == 0) {
+            if (dialogType == WarningType.cancel) {
               Navigator.pop(context);
               context.read<WritingProvider>().updateOpacity();
             }

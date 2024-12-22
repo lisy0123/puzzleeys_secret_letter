@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
@@ -7,14 +8,12 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/quest_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/sent_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 
 enum DialogType {
   list,
   get,
   put,
-  sent,
   emptyName,
   emptyPuzzle,
   cancel,
@@ -41,16 +40,14 @@ enum DialogType {
         return GetDialog(puzzleColor: puzzleColor);
       case DialogType.put:
         return PutDialog(puzzleColor: puzzleColor);
-      case DialogType.sent:
-        return SentDialog();
       case DialogType.cancel:
-        return WarningDialog(dialogType: 0);
+        return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
-        return WarningDialog(dialogType: 1);
+        return WarningDialog(dialogType: WarningType.limit);
       case DialogType.emptyName:
-        return WarningDialog(dialogType: 2);
+        return WarningDialog(dialogType: WarningType.emptyName);
       case DialogType.emptyPuzzle:
-        return WarningDialog(dialogType: 3);
+        return WarningDialog(dialogType: WarningType.emptyPuzzle);
       case DialogType.list0:
         return AccountDialog();
       case DialogType.list3:

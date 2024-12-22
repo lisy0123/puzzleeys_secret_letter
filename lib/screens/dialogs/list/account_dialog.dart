@@ -110,7 +110,7 @@ class _AccountDialogState extends State<AccountDialog> {
         setState(() {
           _isPressed = false;
           Utils.copyText(
-            textName: CustomStrings.userIdOverlay,
+            text: CustomStrings.userIdOverlay,
             textToCopy: _userId!,
             context: context,
           );

@@ -51,7 +51,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             padding: EdgeInsets.only(
               left: 200.0.w,
               right: 200.0.w,
-              top: (MediaQuery.of(context).size.height - 3510.0.w) / 2,
+              top: (MediaQuery.of(context).size.height - 780.0.h) / 2,
             ),
             child: Column(
               children: [

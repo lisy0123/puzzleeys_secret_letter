@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class GetDialog extends StatelessWidget {
@@ -32,6 +33,15 @@ class GetDialog extends StatelessWidget {
           iconTitle: CustomStrings.get,
           onTap: () {
             Navigator.pop(context);
+            CustomOverlay.show(
+              text:
+                  CustomStrings.overlayMessages[OverlayType.getPuzzle]!.message,
+              delayed: 1500,
+              puzzleVis: true,
+              puzzleNum:
+                  CustomStrings.overlayMessages[OverlayType.getPuzzle]!.num,
+              context: context,
+            );
           },
         ),
       ],

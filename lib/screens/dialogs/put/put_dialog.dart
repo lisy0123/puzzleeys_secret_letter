@@ -11,6 +11,7 @@ import 'package:puzzleeys_secret_letter/utils/line_limiting_text_input_formatter
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
@@ -163,7 +164,13 @@ class _PutDialogState extends State<PutDialog> {
     } else {
       context.read<WritingProvider>().updateOpacity();
       Navigator.popUntil(context, (route) => route.isFirst);
-      BuildDialog.show(iconName: 'sent', simpleDialog: true, context: context);
+      CustomOverlay.show(
+        text: CustomStrings.overlayMessages[OverlayType.writeReply]!.message,
+        delayed: 1500,
+        puzzleVis: true,
+        puzzleNum: CustomStrings.overlayMessages[OverlayType.writeReply]!.num,
+        context: context,
+      );
     }
   }
 }
