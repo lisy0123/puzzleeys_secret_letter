@@ -10,6 +10,8 @@ class CustomButton extends StatefulWidget {
   final Function onTap;
   final double width;
   final double height;
+  final double iconHeight;
+  final double borderStroke;
 
   const CustomButton({
     super.key,
@@ -18,6 +20,8 @@ class CustomButton extends StatefulWidget {
     required this.onTap,
     this.width = 620.0,
     this.height = 240.0,
+    this.iconHeight = 34.0,
+    this.borderStroke = 2.0,
   });
 
   @override
@@ -41,7 +45,7 @@ class _CustomButtonState extends State<CustomButton> {
       child: Container(
         width: widget.width.w,
         height: widget.height.w,
-        decoration: _buttonDecoration(),
+        decoration: _buttonDecoration(widget.borderStroke),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -51,7 +55,7 @@ class _CustomButtonState extends State<CustomButton> {
                 if (widget.iconName != 'none')
                   SvgPicture.asset(
                     'assets/imgs/${widget.iconName}.svg',
-                    height: 34.0.h,
+                    height: widget.iconHeight.h,
                   ),
                 CustomText.textDisplay(
                   text: widget.iconTitle,
@@ -68,13 +72,13 @@ class _CustomButtonState extends State<CustomButton> {
     );
   }
 
-  BoxDecoration _buttonDecoration() {
+  BoxDecoration _buttonDecoration(double borderStroke) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(7),
       color: Colors.white,
       border: Border.all(
         color: CustomColors.colorBase,
-        width: 2,
+        width: borderStroke,
       ),
     );
   }

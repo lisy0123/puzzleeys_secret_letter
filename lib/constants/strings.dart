@@ -62,6 +62,30 @@ class CustomStrings {
     OverlayType.writePuzzleToMe: OverlayMessage(-1, '나에게 감정 퍼즐을 보냈어요!'),
     OverlayType.writeReply: OverlayMessage(-1, '답장을 보냈어요!'),
   };
+
+  static Map<Enum, String> missionMessages = {
+    MissionType.attendance: '오늘도 출석하기',
+    MissionType.writeSubjectPuzzle: '오늘의 감정 퍼즐 보내기',
+    MissionType.writeGlobalPersonalPuzzle: '감정 퍼즐 보내기',
+    MissionType.getPuzzle: '감정 퍼즐 담기',
+    MissionType.writeReply: '답장 보내기',
+  };
+
+  static Map<Enum, String> questMessages = {
+    QuestType.attendance: '출석',
+    QuestType.writePuzzle: '감정 퍼즐 보내기',
+    QuestType.getPuzzle: '감정 퍼즐 담기',
+    QuestType.writeReply: '답장 보내기',
+  };
+
+  static Map<Enum, QuestData> questDatabases = {
+    QuestType.attendance: QuestData(6, 60),
+    QuestType.writePuzzle: QuestData(5, 50),
+    QuestType.getPuzzle: QuestData(3, 30),
+    QuestType.writeReply: QuestData(8, 80),
+  };
+
+  static List<String> questUnit = ['일', '회'];
 }
 
 enum WarningType {
@@ -85,5 +109,27 @@ class OverlayMessage {
   final int num;
   final String message;
 
-  OverlayMessage(this.num, this.message);
+  const OverlayMessage(this.num, this.message);
+}
+
+enum MissionType {
+  attendance,
+  writeSubjectPuzzle,
+  writeGlobalPersonalPuzzle,
+  getPuzzle,
+  writeReply;
+}
+
+enum QuestType {
+  attendance,
+  writePuzzle,
+  getPuzzle,
+  writeReply;
+}
+
+class QuestData {
+  final int count;
+  final int goal;
+
+  const QuestData(this.count, this.goal);
 }

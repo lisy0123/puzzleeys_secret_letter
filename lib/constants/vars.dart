@@ -11,8 +11,8 @@ class CustomVars {
     CustomColors.colorBlue,
     CustomColors.colorPink,
   ];
-  
-  static final List<Color> myColorPicker = [
+
+  static final List<Color> myColorPickers = [
     CustomColors.colorPink,
     CustomColors.colorRed,
     CustomColors.colorOrange,

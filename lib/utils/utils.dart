@@ -29,6 +29,6 @@ class Utils {
 
   static Widget dialogDivider() {
     return DottedDivider(
-        dashWidth: 40.0.w, dashSpace: 10.0.w, thickness: 3.0.w, padding: 0.0.w);
+        dashWidth: 40.0.w, dashSpace: 20.0.w, thickness: 3.0.w, padding: 0.0.w);
   }
 }

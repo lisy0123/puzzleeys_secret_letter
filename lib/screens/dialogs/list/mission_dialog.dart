@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
-import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class MissionDialog extends StatelessWidget {
   const MissionDialog({super.key});
@@ -11,55 +11,71 @@ class MissionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _build(context),
-        Utils.dialogDivider(),
-        _build(context),
-        Utils.dialogDivider(),
-        _build(context),
-        Utils.dialogDivider(),
-        _build(context),
-        Utils.dialogDivider(),
-        _build(context),
+        _buildMissionList(context),
+        SizedBox(height: 60.0.w),
+        CustomButton(
+          iconName: 'bar_dia',
+          iconHeight: 28.0,
+          iconTitle: 10.toString(),
+          height: 200.0,
+          width: 480.0,
+          borderStroke: 1.3,
+          onTap: () {},
+        ),
       ],
     );
   }
 
-  Widget _build(BuildContext context) {
+  Widget _buildMissionList(BuildContext context) {
+    final missions = [
+      MissionType.attendance,
+      MissionType.writeSubjectPuzzle,
+      MissionType.writeGlobalPersonalPuzzle,
+      MissionType.getPuzzle,
+      MissionType.writeReply,
+    ];
+
+    return Column(
+      children: List.generate(missions.length, (index) {
+        return Column(
+          children: [
+            _buildContent(
+              index: index + 1,
+              missionType: missions[index],
+              context: context,
+            ),
+            Utils.dialogDivider(),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildContent({
+    required int index,
+    required Enum missionType,
+    required BuildContext context,
+  }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+      padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 45.0.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomText.textContent(text: '누적 출석일 9999일!', context: context),
-          SizedBox(width: 40.0.w),
-          Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 40.0.w),
-                child: Transform.rotate(
-                  angle: pi / 2,
-                  child: CustomPaint(
-                    size: Size(200.0.w, 200.0.w),
-                    painter: TiltedPuzzlePiece(
-                      puzzleColor: Colors.white,
-                      strokeWidth: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 90.0.w,
-                left: 170.0.w,
-                child: CustomText.textContentTitle(
-                  text: 9.toString(),
-                  stroke: true,
-                  context: context,
-                ),
-              ),
-            ],
+          Text(
+            '$index. ${CustomStrings.missionMessages[missionType]!}',
+            style: TextStyle(
+              color: CustomColors.colorBase.withValues(alpha: 0.5),
+              fontSize: 80.0.sp,
+              fontFamily: 'NANUM',
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+              height: 1.8,
+              decoration: TextDecoration.lineThrough,
+              decorationColor: CustomColors.colorBase.withValues(alpha: 0.5),
+              decorationThickness: 4.0,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

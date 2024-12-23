@@ -51,13 +51,6 @@ class ThemeSetting {
           letterSpacing: 1,
           height: 1.8,
         ),
-        // content title (dialog puzzle/dia stroke)
-        bodyLarge: _textMainStroke(fontSize: 80.0).copyWith(
-          fontFamily: 'NANUM',
-          fontWeight: FontWeight.w900,
-          letterSpacing: 1,
-          height: 1.8,
-        ),
         // puzzle content
         displayLarge: _textMain(fontSize: 80.0).copyWith(
           fontFamily: 'NANUM',
@@ -65,6 +58,8 @@ class ThemeSetting {
           letterSpacing: 1,
           height: 1.8,
         ),
+        // display stroke: dialog dia stroke
+        bodySmall: _textMainStroke(fontSize: 80.0),
         // display: icon button
         displayMedium: _textMain(fontSize: 80.0),
         // icon disable

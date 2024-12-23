@@ -41,9 +41,12 @@ class BoxDecorations {
     );
   }
 
-  static BoxDecoration colorList({required Color color}) {
+  static BoxDecoration colorList({
+    required Color color,
+    double borderRadius = 7.0,
+  }) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(7),
+      borderRadius: BorderRadius.circular(borderRadius),
       color: color,
       boxShadow: const [],
       border: Border.all(

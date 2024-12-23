@@ -53,23 +53,27 @@ class CustomText {
     );
   }
 
-  static Text textDisplay({
+  static Stack textDisplay({
     required String text,
     bool disable = false,
+    bool stroke = false,
     required BuildContext context,
   }) {
-    final TextStyle? textStyle;
+    final List<TextStyle?> textStyle;
     if (disable) {
-      textStyle = Theme.of(context).textTheme.displaySmall;
+      textStyle = [Theme.of(context).textTheme.displaySmall];
     } else {
-      textStyle = Theme.of(context).textTheme.displayMedium;
+      if (stroke) {
+        textStyle = [
+          Theme.of(context).textTheme.bodySmall,
+          Theme.of(context).textTheme.displayMedium,
+        ];
+      } else {
+        textStyle = [Theme.of(context).textTheme.displayMedium];
+      }
     }
 
-    return Text(
-      text,
-      style: textStyle,
-      textAlign: TextAlign.center,
-    );
+    return _textTitle(text: text, textStyle: textStyle);
   }
 
   static Text textSmall({
@@ -94,22 +98,14 @@ class CustomText {
     );
   }
 
-  static Stack textContentTitle({
+  static Text textContentTitle({
     required String text,
-    bool stroke = false,
     required BuildContext context,
   }) {
-    final List<TextStyle?> textStyle;
-
-    if (stroke) {
-      textStyle = [
-        Theme.of(context).textTheme.bodyLarge,
-        Theme.of(context).textTheme.displayLarge,
-      ];
-    } else {
-      textStyle = [Theme.of(context).textTheme.titleSmall];
-    }
-
-    return _textTitle(text: text, textStyle: textStyle);
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.titleSmall,
+      textAlign: TextAlign.center,
+    );
   }
 }

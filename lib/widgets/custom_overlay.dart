@@ -70,10 +70,11 @@ class CustomOverlay {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(width: 60.0.w),
               Transform.rotate(
                 angle: -45 * pi / 180,
                 child: CustomPaint(
-                  size: Size(200.0.w, 200.0.w),
+                  size: Size(190.0.w, 190.0.w),
                   painter: TiltedPuzzlePiece(
                     puzzleColor: Colors.white,
                     strokeWidth: 1,
@@ -87,7 +88,9 @@ class CustomOverlay {
                   color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 74.0.sp,
                   fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(width: 60.0.w),
             ],
@@ -100,6 +103,7 @@ class CustomOverlay {
             fontFamily: 'NANUM',
             fontWeight: FontWeight.w900,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

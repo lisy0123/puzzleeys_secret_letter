@@ -34,7 +34,7 @@ class ColorPicker extends StatelessWidget {
   }
 
   Widget _buildColorPicker(int index, BuildContext context) {
-    final Color color = CustomVars.myColorPicker[index];
+    final Color color = CustomVars.myColorPickers[index];
 
     return Container(
       width: 260.0.w,
