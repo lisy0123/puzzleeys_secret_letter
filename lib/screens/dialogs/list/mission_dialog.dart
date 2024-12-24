@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
-class MissionDialog extends StatelessWidget {
+class MissionDialog extends StatefulWidget {
   const MissionDialog({super.key});
 
+  @override
+  State<MissionDialog> createState() => _MissionDialogState();
+}
+
+class _MissionDialogState extends State<MissionDialog> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,10 +23,10 @@ class MissionDialog extends StatelessWidget {
         SizedBox(height: 60.0.w),
         CustomButton(
           iconName: 'bar_dia',
-          iconHeight: 28.0,
+          iconHeight: 24.0,
           iconTitle: 10.toString(),
-          height: 200.0,
-          width: 480.0,
+          iconTopTitle: CustomStrings.questButtons[true]!,
+          width: 540.0,
           borderStroke: 1.3,
           onTap: () {},
         ),
@@ -59,7 +65,7 @@ class MissionDialog extends StatelessWidget {
     required BuildContext context,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 45.0.w),
+      padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 42.0.w),
       child: Row(
         children: [
           Text(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/constants/vars.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
@@ -39,42 +41,49 @@ class _QuestDialogState extends State<QuestDialog> {
     required Enum quest,
     required BuildContext context,
   }) {
-    final QuestData questData = CustomStrings.questDatabases[quest]!;
-    final String index = quest == QuestType.attendance
-        ? '${questData.count}/${questData.goal}${CustomStrings.questUnit[0]}'
-        : '${questData.count}/${questData.goal}${CustomStrings.questUnit[1]}';
-
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 100.0.w),
+      padding: EdgeInsets.only(left: 60.0.w, right: 20.0.w),
       child: SizedBox(
         height: 360.0.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText.textContent(
-                  text: CustomStrings.questMessages[quest]!,
-                  context: context,
-                ),
-                CustomText.textContent(text: index, context: context),
-              ],
-            ),
+            _buildText(quest, context),
             CustomButton(
               iconName: 'bar_dia',
-              iconHeight: 26.0,
+              iconHeight: 24.0,
               iconTitle: 10.toString(),
-              height: 200.0,
-              width: 400.0,
+              iconTopTitle: CustomStrings.questButtons[false]!,
+              width: 380.0,
               borderStroke: 1.3,
               onTap: () {},
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildText(Enum quest, BuildContext context) {
+    final QuestData questData = CustomVars.questDatabases[quest]!;
+    final String goal = quest == QuestType.attendance
+        ? '${questData.goal}${CustomStrings.questUnits[0]}'
+        : '${questData.goal}${CustomStrings.questUnits[1]}';
+    final String progress = quest == QuestType.attendance
+        ? questData.count.toString()
+        : questData.count.toString();
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText.textContent(
+          text: '${CustomStrings.questMessages[quest]} $goal',
+          context: context,
+        ),
+        CustomText.textContent(text: '$progress/$goal', context: context),
+      ],
     );
   }
 }

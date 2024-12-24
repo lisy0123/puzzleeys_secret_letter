@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';

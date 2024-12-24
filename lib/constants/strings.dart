@@ -1,11 +1,7 @@
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
+
 class CustomStrings {
-  static const List<String> pageNameLists = [
-    '전체',
-    '주제',
-    '개인',
-    '상점',
-    '더보기',
-  ];
+  static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
   static const Map<String, String> dialogNameLists = {
     'list': '더 보 기',
@@ -73,63 +69,11 @@ class CustomStrings {
 
   static Map<Enum, String> questMessages = {
     QuestType.attendance: '출석',
-    QuestType.writePuzzle: '감정 퍼즐 보내기',
-    QuestType.getPuzzle: '감정 퍼즐 담기',
+    QuestType.writePuzzle: '퍼즐 보내기',
+    QuestType.getPuzzle: '퍼즐 담기',
     QuestType.writeReply: '답장 보내기',
   };
 
-  static Map<Enum, QuestData> questDatabases = {
-    QuestType.attendance: QuestData(6, 60),
-    QuestType.writePuzzle: QuestData(5, 50),
-    QuestType.getPuzzle: QuestData(3, 30),
-    QuestType.writeReply: QuestData(8, 80),
-  };
-
-  static List<String> questUnit = ['일', '회'];
-}
-
-enum WarningType {
-  cancel,
-  limit,
-  emptyName,
-  emptyPuzzle;
-}
-
-enum OverlayType {
-  attendance,
-  getPuzzle,
-  writeSubjectPuzzle,
-  writeGlobalPuzzle,
-  writePersonalPuzzle,
-  writePuzzleToMe,
-  writeReply;
-}
-
-class OverlayMessage {
-  final int num;
-  final String message;
-
-  const OverlayMessage(this.num, this.message);
-}
-
-enum MissionType {
-  attendance,
-  writeSubjectPuzzle,
-  writeGlobalPersonalPuzzle,
-  getPuzzle,
-  writeReply;
-}
-
-enum QuestType {
-  attendance,
-  writePuzzle,
-  getPuzzle,
-  writeReply;
-}
-
-class QuestData {
-  final int count;
-  final int goal;
-
-  const QuestData(this.count, this.goal);
+  static List<String> questUnits = ['일', '회'];
+  static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};
 }

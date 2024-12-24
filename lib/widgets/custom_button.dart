@@ -7,6 +7,7 @@ import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 class CustomButton extends StatefulWidget {
   final String iconName;
   final String iconTitle;
+  final String iconTopTitle;
   final Function onTap;
   final double width;
   final double height;
@@ -17,6 +18,7 @@ class CustomButton extends StatefulWidget {
     super.key,
     required this.iconName,
     required this.iconTitle,
+    this.iconTopTitle = '',
     required this.onTap,
     this.width = 620.0,
     this.height = 240.0,
@@ -49,20 +51,19 @@ class _CustomButtonState extends State<CustomButton> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                if (widget.iconName != 'none')
-                  SvgPicture.asset(
-                    'assets/imgs/${widget.iconName}.svg',
-                    height: widget.iconHeight.h,
+            if (widget.iconTopTitle != '')
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomText.textSmall(
+                    text: widget.iconTopTitle,
+                    context: context,
                   ),
-                CustomText.textDisplay(
-                  text: widget.iconTitle,
-                  context: context,
-                ),
-              ],
-            ),
+                  _buildRowContent(context),
+                ],
+              ),
+            if (widget.iconTopTitle == '') _buildRowContent(context),
             Container(
               color: _overlayColor(),
             ),
@@ -80,6 +81,23 @@ class _CustomButtonState extends State<CustomButton> {
         color: CustomColors.colorBase,
         width: borderStroke,
       ),
+    );
+  }
+
+  Widget _buildRowContent(BuildContext context) {
+    return Row(
+      mainAxisAlignment: (widget.iconTopTitle == '')
+          ? MainAxisAlignment.spaceEvenly
+          : MainAxisAlignment.center,
+      children: [
+        if (widget.iconName != 'none')
+          SvgPicture.asset(
+            'assets/imgs/${widget.iconName}.svg',
+            height: widget.iconHeight.h,
+          ),
+        if (widget.iconTopTitle != '') SizedBox(width: 30.0.w),
+        CustomText.textDisplay(text: widget.iconTitle, context: context),
+      ],
     );
   }
 
