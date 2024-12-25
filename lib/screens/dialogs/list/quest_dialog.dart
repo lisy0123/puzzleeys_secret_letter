@@ -42,9 +42,9 @@ class _QuestDialogState extends State<QuestDialog> {
     required BuildContext context,
   }) {
     return Padding(
-      padding: EdgeInsets.only(left: 60.0.w, right: 20.0.w),
+      padding: EdgeInsets.only(left: 40.0.w, right: 20.0.w),
       child: SizedBox(
-        height: 360.0.w,
+        height: 340.0.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,9 +52,10 @@ class _QuestDialogState extends State<QuestDialog> {
             _buildText(quest, context),
             CustomButton(
               iconName: 'bar_dia',
-              iconHeight: 24.0,
+              iconHeight: 20.0,
               iconTitle: 10.toString(),
               iconTopTitle: CustomStrings.questButtons[false]!,
+              height: 260.0,
               width: 380.0,
               borderStroke: 1.3,
               onTap: () {},

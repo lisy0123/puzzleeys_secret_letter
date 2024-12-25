@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.only(
-            left: 100.0.w, right: 100.0.w, top: 340.0.h, bottom: 60.0.h),
+            left: 100.0.w, right: 100.0.w, top: 440.0.h, bottom: 60.0.h),
         child: _buildContent(context),
       ),
     );
@@ -36,7 +36,6 @@ class LoginScreen extends StatelessWidget {
             _buildText(text: CustomStrings.slogan),
           ],
         ),
-        Image.asset('assets/imgs/login_puzzle.png', height: 400.0.w),
         Column(
           children: [
             _buildSignInButton(

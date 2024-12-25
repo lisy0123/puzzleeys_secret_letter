@@ -16,21 +16,24 @@ class MissionDialog extends StatefulWidget {
 class _MissionDialogState extends State<MissionDialog> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildMissionList(context),
-        SizedBox(height: 60.0.w),
-        CustomButton(
-          iconName: 'bar_dia',
-          iconHeight: 24.0,
-          iconTitle: 10.toString(),
-          iconTopTitle: CustomStrings.questButtons[true]!,
-          width: 540.0,
-          borderStroke: 1.3,
-          onTap: () {},
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 12.0.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildMissionList(context),
+          CustomButton(
+            iconName: 'bar_dia',
+            iconHeight: 20.0,
+            iconTitle: 10.toString(),
+            iconTopTitle: CustomStrings.questButtons[true]!,
+            height: 260.0,
+            width: 560.0,
+            borderStroke: 1.3,
+            onTap: () {},
+          ),
+        ],
+      ),
     );
   }
 
@@ -65,7 +68,7 @@ class _MissionDialogState extends State<MissionDialog> {
     required BuildContext context,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 42.0.w),
+      padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 36.0.w),
       child: Row(
         children: [
           Text(

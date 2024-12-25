@@ -111,6 +111,7 @@ key.properties
 _old/
 screenshot/
 
+.vscode/*
 .DS_Store
 ._.DS_Store
 */.DS_Store
