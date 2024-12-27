@@ -1,1 +1,0 @@
-supabase functions serve --no-verify-jwt

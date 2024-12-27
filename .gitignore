@@ -99,6 +99,7 @@ app.*.map.json
 
 # .env info
 .env
+*/.env
 
 # IOS .env info
 Config.xcconfig

@@ -15,7 +15,7 @@ class AccountDialog extends StatefulWidget {
   @override
   State<AccountDialog> createState() => _AccountDialogState();
 }
-
+//TODO: need to fix, using server!
 class _AccountDialogState extends State<AccountDialog> {
   late final StreamSubscription _authSubscription;
   String? _userId;

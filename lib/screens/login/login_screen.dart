@@ -39,14 +39,14 @@ class LoginScreen extends StatelessWidget {
         Column(
           children: [
             _buildSignInButton(
-              onTap: LoginScreenHandler.googleLogin,
+              onTap: () => LoginScreenHandler.googleLogin(context),
               color: Colors.white,
               text: CustomStrings.googleLogin,
               icon: SvgPicture.asset('assets/imgs/google.svg'),
             ),
             SizedBox(height: 60.0.w),
             _buildSignInButton(
-              onTap: LoginScreenHandler.appleLogin,
+              onTap: () => LoginScreenHandler.appleLogin(context),
               color: Colors.black,
               text: CustomStrings.appleLogin,
               icon: Icon(Icons.apple, color: Colors.white),
