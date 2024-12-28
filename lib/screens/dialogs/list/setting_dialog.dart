@@ -43,9 +43,9 @@ class SettingDialog extends StatelessWidget {
 
   Future<void> _logout(BuildContext context) async {
     final url =
-        Uri.parse('${dotenv.env['PROJECT_URL']}/functions/v1/api/logout');
+        Uri.parse('${dotenv.env['PROJECT_URL']}/functions/v1/api/auth/logout');
     await http.post(url);
-    await _secureStorage.delete(key: 'access');
+    await _secureStorage.delete(key: 'user_id');
 
     if (context.mounted) {
       context.read<AuthStatusProvider>().checkLoginStatus();

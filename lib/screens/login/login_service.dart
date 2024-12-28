@@ -15,7 +15,7 @@ class LoginService {
     BuildContext context,
   ) async {
     final url =
-        Uri.parse('${dotenv.env['PROJECT_URL']}/functions/v1/api/login');
+        Uri.parse('${dotenv.env['PROJECT_URL']}/functions/v1/api/auth/login');
 
     try {
       final response = await http.post(
@@ -26,7 +26,8 @@ class LoginService {
       final responseData = jsonDecode(response.body);
 
       if (responseData['code'] == 200) {
-        await _secureStorage.write(key: 'access', value: 'ACCESS');
+        final userId = responseData['result']['user_id'];
+        await _secureStorage.write(key: 'user_id', value: userId);
         if (context.mounted) {
           context.read<AuthStatusProvider>().checkLoginStatus();
         }

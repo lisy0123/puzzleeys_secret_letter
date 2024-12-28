@@ -13,7 +13,4 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
     );
 }
 
-export const supabase: SupabaseClient = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+export const supabase: SupabaseClient = createClient(SUPABASE_URL!, SUPABASE_KEY!);
