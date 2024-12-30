@@ -72,7 +72,7 @@ class _MissionDialogState extends State<MissionDialog> {
       child: Row(
         children: [
           Text(
-            '$index. ${CustomStrings.missionMessages[missionType]!}',
+            '$index. ${MessageStrings.missionMessages[missionType]!}',
             style: TextStyle(
               color: CustomColors.colorBase.withValues(alpha: 0.5),
               fontSize: 80.0.sp,

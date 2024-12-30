@@ -1,21 +1,19 @@
+import { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import { serve } from "https://deno.land/std@0.186.0/http/server.ts";
 import { createResponse } from "./../lib/response/response-format.ts";
 import { ResponseCode } from "./../lib/response/response-code.ts";
-import { AuthRouter } from "./auth/auth-router.ts";
+import authRouter from "./auth/auth-router.ts";
 
-serve(async (req: Request) => {
-    try {
-        if (req.url.includes("/api/auth/")) {
-            const response = await AuthRouter(req);
-             if (response) return response;
-        }
-        return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return createResponse(
-                ResponseCode.SERVER_ERROR, `Internal Server Error: ${error.message}`, null
-            );
-        }
-        return createResponse(ResponseCode.SERVER_ERROR, "Internal Server Error", null);
-    }
+const app = new Hono();
+
+app.basePath("/api").route("/auth", authRouter);
+
+app.all("/api/*", () => {
+    return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });
+
+app.all("*", () => {
+    return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
+});
+
+serve(app.fetch);

@@ -21,7 +21,7 @@ class WarningDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomText.textDisplay(
-          text: CustomStrings.warningMessages[dialogType]!,
+          text: MessageStrings.warningMessages[dialogType]!,
           context: context,
         ),
         CustomButton(

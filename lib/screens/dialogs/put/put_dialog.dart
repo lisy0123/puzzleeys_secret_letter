@@ -58,7 +58,7 @@ class _PutDialogState extends State<PutDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomText.textSmall(
-              text: CustomStrings.chooseMessage,
+              text: MessageStrings.chooseMessage,
               context: context,
             ),
             GestureDetector(
@@ -130,7 +130,7 @@ class _PutDialogState extends State<PutDialog> {
       style: Theme.of(context).textTheme.displayLarge,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
-        hintText: CustomStrings.namingMessage,
+        hintText: MessageStrings.namingMessage,
         hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
         counterText: '',
@@ -166,10 +166,10 @@ class _PutDialogState extends State<PutDialog> {
       context.read<WritingProvider>().updateOpacity();
       Navigator.popUntil(context, (route) => route.isFirst);
       CustomOverlay.show(
-        text: CustomStrings.overlayMessages[OverlayType.writeReply]!.message,
+        text: MessageStrings.overlayMessages[OverlayType.writeReply]![1],
         delayed: 1500,
         puzzleVis: true,
-        puzzleNum: CustomStrings.overlayMessages[OverlayType.writeReply]!.num,
+        puzzleNum: MessageStrings.overlayMessages[OverlayType.writeReply]![0],
         context: context,
       );
     }

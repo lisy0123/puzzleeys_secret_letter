@@ -80,7 +80,7 @@ class _QuestDialogState extends State<QuestDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText.textContent(
-          text: '${CustomStrings.questMessages[quest]} $goal',
+          text: '${MessageStrings.questMessages[quest]} $goal',
           context: context,
         ),
         CustomText.textContent(text: '$progress/$goal', context: context),

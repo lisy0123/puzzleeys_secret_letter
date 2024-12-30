@@ -35,12 +35,11 @@ class GetDialog extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             CustomOverlay.show(
-              text:
-                  CustomStrings.overlayMessages[OverlayType.getPuzzle]!.message,
+              text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
               delayed: 1500,
               puzzleVis: true,
               puzzleNum:
-                  CustomStrings.overlayMessages[OverlayType.getPuzzle]!.num,
+                  MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
               context: context,
             );
           },

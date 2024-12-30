@@ -1,22 +1,5 @@
 enum WarningType { cancel, limit, emptyName, emptyPuzzle }
 
-enum OverlayType {
-  attendance,
-  getPuzzle,
-  writeSubjectPuzzle,
-  writeGlobalPuzzle,
-  writePersonalPuzzle,
-  writePuzzleToMe,
-  writeReply;
-}
-
-class OverlayMessage {
-  final int num;
-  final String message;
-
-  const OverlayMessage(this.num, this.message);
-}
-
 enum MissionType {
   attendance,
   writeSubjectPuzzle,
@@ -33,3 +16,15 @@ class QuestData {
 
   const QuestData(this.count, this.goal);
 }
+
+enum OverlayType {
+  attendance,
+  getPuzzle,
+  writeSubjectPuzzle,
+  writeGlobalPuzzle,
+  writePersonalPuzzle,
+  writePuzzleToMe,
+  writeReply;
+}
+
+enum LoadingType { login, setting, sending }

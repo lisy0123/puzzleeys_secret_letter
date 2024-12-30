@@ -109,7 +109,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       maxLines: null,
       style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
-        hintText: CustomStrings.writingMessage,
+        hintText: MessageStrings.writingMessage,
         hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
       ),

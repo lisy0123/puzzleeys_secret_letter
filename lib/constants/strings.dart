@@ -37,6 +37,11 @@ class CustomStrings {
   static String put = '넣 기';
   static String logout = '로그아웃';
 
+  static List<String> questUnits = ['일', '회'];
+  static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};
+}
+
+class MessageStrings {
   static String writingMessage = '답장을 적어주세요.';
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.';
@@ -47,16 +52,6 @@ class CustomStrings {
     WarningType.limit: '최소 10자 이상\n작성해주세요!',
     WarningType.emptyName: '감정에\n이름을 붙여주세요!',
     WarningType.emptyPuzzle: '퍼즐에\n감정을 넣어주세요!',
-  };
-
-  static Map<Enum, OverlayMessage> overlayMessages = {
-    OverlayType.attendance: OverlayMessage(1, '출석했어요!'),
-    OverlayType.getPuzzle: OverlayMessage(1, '감정 퍼즐을 담았어요!'),
-    OverlayType.writeSubjectPuzzle: OverlayMessage(1, '오늘의 감정 퍼즐을 보냈어요!'),
-    OverlayType.writeGlobalPuzzle: OverlayMessage(1, '감정 퍼즐을 보냈어요!'),
-    OverlayType.writePersonalPuzzle: OverlayMessage(-1, '누군가에게 감정 퍼즐을 보냈어요!'),
-    OverlayType.writePuzzleToMe: OverlayMessage(-1, '나에게 감정 퍼즐을 보냈어요!'),
-    OverlayType.writeReply: OverlayMessage(-1, '답장을 보냈어요!'),
   };
 
   static Map<Enum, String> missionMessages = {
@@ -74,6 +69,19 @@ class CustomStrings {
     QuestType.writeReply: '답장 보내기',
   };
 
-  static List<String> questUnits = ['일', '회'];
-  static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};
+  static Map<Enum, List<dynamic>> overlayMessages = {
+    OverlayType.attendance: [1, '출석했어요!'],
+    OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
+    OverlayType.writeSubjectPuzzle: [1, '오늘의 감정 퍼즐을 보냈어요!'],
+    OverlayType.writeGlobalPuzzle: [1, '감정 퍼즐을 보냈어요!'],
+    OverlayType.writePersonalPuzzle: [-1, '누군가에게 감정 퍼즐을 보냈어요!'],
+    OverlayType.writePuzzleToMe: [-1, '나에게 감정 퍼즐을 보냈어요!'],
+    OverlayType.writeReply: [-1, '답장을 보냈어요!'],
+  };
+
+  static Map<Enum, String> loadingMessages = {
+    LoadingType.login: '로그인 중',
+    LoadingType.setting: '감정 불러오는 중',
+    LoadingType.sending: '보내는 중',
+  };
 }

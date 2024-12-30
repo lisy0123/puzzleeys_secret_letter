@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -15,17 +19,24 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthStatusProvider>().checkLoginStatus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthStatusProvider>().checkLoginStatus();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoggedIn = context.watch<AuthStatusProvider>().isLoggedIn;
+    final authStatus = context.watch<AuthStatusProvider>();
+    final isLoggedIn = authStatus.isLoggedIn;
+    final isLoading = authStatus.isLoading;
 
     return Stack(
       children: [
         MainScreen(),
         if (!isLoggedIn) LoginScreen(),
+        if (isLoading)
+          PuzzleLoadingScreen(
+              text: MessageStrings.loadingMessages[LoadingType.login]!),
       ],
     );
   }
