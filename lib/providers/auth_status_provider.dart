@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthStatusProvider with ChangeNotifier {
@@ -15,17 +14,11 @@ class AuthStatusProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final url = Uri.parse(
-        '${dotenv.env['PROJECT_URL']}/functions/v1/api/auth/check_user');
     final token = Supabase.instance.client.auth.currentSession?.accessToken;
-
     if (token != null) {
       try {
-        final response = await http.post(
-          url,
-          headers: {'Authorization': 'Bearer $token'},
-        );
-        final responseData = jsonDecode(response.body);
+        final responseData =
+        await apiRequest('/api/auth/check_user', ApiType.get);
 
         if (responseData['code'] != 200) {
           _isLoggedIn = false;

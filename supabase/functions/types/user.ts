@@ -3,5 +3,5 @@ export interface UserData {
     auth_user_id: string;
     email: string;
     provider: string;
-    created_at: Date;
+    created_at: string;
 }

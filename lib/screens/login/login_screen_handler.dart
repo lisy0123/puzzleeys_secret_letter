@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:puzzleeys_secret_letter/screens/login/login_service.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_validate.dart';
+import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreenHandler {
@@ -20,8 +23,9 @@ class LoginScreenHandler {
         idToken: googleAuth.idToken!,
         accessToken: googleAuth.accessToken!,
       );
+      await apiRequest('/api/auth/login', ApiType.post);
       if (context.mounted) {
-        await LoginService.supabaseLogin(context);
+        context.read<AuthStatusProvider>().checkLoginStatus();
       }
     } catch (error) {
       throw 'Google login failed: $error';

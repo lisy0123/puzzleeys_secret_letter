@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,9 +16,8 @@ class AccountDialog extends StatefulWidget {
   @override
   State<AccountDialog> createState() => _AccountDialogState();
 }
-//TODO: need to fix, using server!
+
 class _AccountDialogState extends State<AccountDialog> {
-  late final StreamSubscription _authSubscription;
   String? _userId;
   String? _userCreatedAt;
   late bool _isPressed = false;
@@ -25,43 +25,23 @@ class _AccountDialogState extends State<AccountDialog> {
   @override
   void initState() {
     super.initState();
-    _authSubscription =
-        Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-      if (mounted) {
-        _loadUserData(event.session!.user.email);
-      }
-    });
     final session = Supabase.instance.client.auth.currentSession;
     if (session != null) {
-      _loadUserData(session.user.email);
+      _loadData();
     }
   }
 
-  Future<void> _loadUserData(String? email) async {
-    if (email != null) {
-      final userResponse = await Supabase.instance.client
-          .from('user_list')
-          .select()
-          .eq('email', email)
-          .single();
-
-      if (mounted) {
-        setState(() {
-          _userId = userResponse['id'];
-          _userCreatedAt = Utils.convertUTCToKST(userResponse['created_at']);
-        });
-      } else {
-        throw "Error: $userResponse";
-      }
-    } else {
-      throw "Error: No User!";
+  Future<void> _loadData() async {
+    try {
+      final userData = await apiRequest('/api/user/me', ApiType.get);
+      setState(() {
+        _userId = userData['result']['user_id'];
+        _userCreatedAt =
+            Utils.convertUTCToKST(userData['result']['created_at']);
+      });
+    } catch (error) {
+      throw Exception('Error loading user data: $error');
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _authSubscription.cancel();
   }
 
   @override
@@ -78,11 +58,10 @@ class _AccountDialogState extends State<AccountDialog> {
             Text(
               _userId ?? '00000000000000000000==',
               style: TextStyle(
-                color: CustomColors.colorBase,
-                fontFamily: 'NANUM',
-                fontWeight: FontWeight.w900,
-                fontSize: 78.0.w
-              ),
+                  color: CustomColors.colorBase,
+                  fontFamily: 'NANUM',
+                  fontWeight: FontWeight.w900,
+                  fontSize: 78.0.w),
             ),
           ],
         ),
@@ -96,7 +75,7 @@ class _AccountDialogState extends State<AccountDialog> {
         _buildBottomContent(
           firstString: CustomStrings.userPuzzleeyDays,
           secondString:
-              '${_calculateDays(_userCreatedAt).toString().padLeft(3, '0')}일째',
+              Utils.calculateDays(_userCreatedAt).toString().padLeft(4, '0'),
           context: context,
         ),
       ],
@@ -121,7 +100,8 @@ class _AccountDialogState extends State<AccountDialog> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomText.textContentTitle(text: CustomStrings.userId, context: context),
+          CustomText.textContentTitle(
+              text: CustomStrings.userId, context: context),
           SvgPicture.asset(
             height: 110.0.w,
             'assets/imgs/btn_copy.svg',
@@ -148,17 +128,5 @@ class _AccountDialogState extends State<AccountDialog> {
         CustomText.textContent(text: secondString, context: context),
       ],
     );
-  }
-
-  int _calculateDays(String? userCreatedAt) {
-    if (_userCreatedAt != null) {
-      DateTime createdDate =
-          DateFormat("yyyy-MM-dd HH:mm").parse(userCreatedAt!);
-      DateTime currentDate = DateTime.now();
-      Duration difference = currentDate.difference(createdDate);
-      return difference.inDays;
-    } else {
-      return 0;
-    }
   }
 }

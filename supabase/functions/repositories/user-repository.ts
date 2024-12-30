@@ -6,6 +6,29 @@ import { uuidToBase64 } from "./../lib/utils/uuid-to-base64.ts";
 import { UserData } from "../types/user.ts";
 
 export class UserRepository {
+    static async insertUser(user: User): Promise<Response | void> {
+        const existingUser = await this.getUserWithId(user);
+        if (!existingUser) {
+            const { error: insertError } = await supabase
+                .from("user_list")
+                .insert({
+                    user_id: uuidToBase64(user.id),
+                    email: user.email,
+                    auth_user_id: user.id,
+                    provider: user.app_metadata?.provider,
+                    created_at: user.created_at,
+                });
+
+            if (insertError) {
+                return createResponse(
+                    ResponseCode.SERVER_ERROR,
+                    `Error inserting user data into user_list: ${insertError.message}`,
+                    null
+                );
+            }
+        }
+    }
+
     static async getUserWithId(user: User): Promise<Response | UserData> {
         const { data, error } = await supabase
             .from("user_list")
@@ -32,28 +55,5 @@ export class UserRepository {
             return (data as UserData).user_id;
         }
         return createResponse(ResponseCode.NOT_FOUND, "No user found.", null);
-    }
-
-    static async insertUser(user: User): Promise<Response | void> {
-        const existingUser = await this.getUserWithId(user);
-        if (!existingUser) {
-            const { error: insertError } = await supabase
-                .from("user_list")
-                .insert({
-                    user_id: uuidToBase64(user.id),
-                    email: user.email,
-                    auth_user_id: user.id,
-                    provider: user.app_metadata?.provider,
-                    created_at: user.created_at,
-                });
-
-            if (insertError) {
-                return createResponse(
-                    ResponseCode.SERVER_ERROR,
-                    `Error inserting user data into user_list: ${insertError.message}`,
-                    null
-                );
-            }
-        }
     }
 }

@@ -28,3 +28,5 @@ enum OverlayType {
 }
 
 enum LoadingType { login, setting, sending }
+
+enum ApiType { post, get, delete, patch, put }
