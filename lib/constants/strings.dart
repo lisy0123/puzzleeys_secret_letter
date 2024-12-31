@@ -27,6 +27,7 @@ class CustomStrings {
   static String userId = '회원 번호';
   static String userCreatedAt = '가입 날짜';
   static String userPuzzleeyDays = '퍼즐이가 된 지';
+  static String userPuzzleeyDayCount = '일째';
   static String userIdOverlay = '회원 번호를 복사했어요!';
 
   static String reply = '답 장';

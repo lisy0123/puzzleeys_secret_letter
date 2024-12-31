@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
@@ -19,6 +22,35 @@ class PuzzleBackground extends StatefulWidget {
 
 class _PuzzleBackgroundState extends State<PuzzleBackground> {
   late Offset _dragOffset = Offset.zero;
+  late List<Color> _cachedColors;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeColors();
+  }
+
+  void _initializeColors() {
+    final List<Color> colors = [
+      Colors.white,
+      Colors.white,
+      Colors.white,
+      Colors.white,
+      Colors.white,
+      CustomColors.colorPink,
+      CustomColors.colorRed,
+      CustomColors.colorOrange,
+      CustomColors.colorYellow,
+      CustomColors.colorGreen,
+      CustomColors.colorSkyBlue,
+      CustomColors.colorBlue,
+      CustomColors.colorPurple,
+    ];
+    _cachedColors = List.generate(
+      8 * 18,
+      (_) => colors[Random().nextInt(colors.length)],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +58,9 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     final PuzzleConfig config = PuzzleConfig(
       scaleFactor: scaleFactor,
       puzzleWidth: 900.0.w,
-      puzzleHeight: 600.0.w,
+      puzzleHeight: 545.0.w,
       horizontalSpacing: -375.0.w,
-      verticalSpacing: -75.0.w,
+      verticalSpacing: -20.0.w,
       itemsPerRow: 8,
       totalRows: 18,
     );
@@ -53,6 +85,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
             puzzleHeight: config.puzzleHeight,
             scaleFactor: scaleFactor,
             puzzleState: widget.puzzleState,
+            puzzleColor: _cachedColors[index],
           ),
         ),
       ),

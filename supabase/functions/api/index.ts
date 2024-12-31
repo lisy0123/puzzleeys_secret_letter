@@ -3,17 +3,19 @@ import { serve } from "https://deno.land/std@0.186.0/http/server.ts";
 import { createResponse } from "./../lib/response/response-format.ts";
 import { ResponseCode } from "./../lib/response/response-code.ts";
 import authRouter from "./auth/auth-router.ts";
-import userRouter from "./usesr/user-router.ts";
+import postRouter from "./post/post-router.ts";
 
 const app = new Hono();
 
 app.basePath("/api").route("/auth", authRouter);
-app.basePath("/api").route("/user", userRouter);
+app.basePath("/api").route("/post", postRouter);
 
 app.all("/api/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });
-
+app.all("/post/*", () => {
+    return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
+});
 app.all("*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });

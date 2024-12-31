@@ -1,10 +1,11 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
-import 'dart:math' as math;
+import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleContent extends StatelessWidget {
   final int row;
@@ -13,6 +14,7 @@ class PuzzleContent extends StatelessWidget {
   final double puzzleHeight;
   final double scaleFactor;
   final String puzzleState;
+  final Color puzzleColor;
 
   const PuzzleContent({
     super.key,
@@ -22,27 +24,40 @@ class PuzzleContent extends StatelessWidget {
     required this.puzzleHeight,
     required this.scaleFactor,
     required this.puzzleState,
+    required this.puzzleColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final puzzleColor = CustomColors.colorRed;
     final rotationAngle = _getRotationAngle();
 
     return LayoutId(
       id: index,
       child: GestureDetector(
         onTap: () => _showPuzzleDialog(puzzleColor, context),
-        child: Transform.rotate(
-          angle: rotationAngle,
-          child: SvgPicture.asset(
-            'assets/imgs/board_puzzle.svg',
-            height: puzzleHeight * scaleFactor,
-            fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(
-              CustomColors.colorBlue.withValues(alpha: 0.8),
-              BlendMode.srcATop,
-            ),
+        child: RepaintBoundary(
+          child: ValueListenableBuilder<double>(
+            valueListenable: ValueNotifier(scaleFactor),
+            builder: (context, scale, child) {
+              return Transform.rotate(
+                angle: rotationAngle,
+                child: CustomPaint(
+                  size: Size(
+                    puzzleHeight * scale,
+                    puzzleHeight * scale,
+                  ),
+                  painter: BoardPuzzle(puzzleColor: puzzleColor),
+                ),
+              );
+              // child: SvgPicture.asset(
+              //   'assets/imgs/board_puzzle.svg',
+              //   height: puzzleHeight * scaleFactor,
+              //   fit: BoxFit.contain,
+              //   colorFilter: ColorFilter.mode(
+              //     puzzleColor.withValues(alpha: 0.8),
+              //     BlendMode.srcATop,
+              //   ),
+            },
           ),
         ),
       ),
@@ -50,7 +65,7 @@ class PuzzleContent extends StatelessWidget {
   }
 
   double _getRotationAngle() {
-    return (row % 2 == column % 2) ? 90 * math.pi / 180 : 90 * math.pi / 90;
+    return (row % 2 == column % 2) ? pi / 2 : pi;
   }
 
   void _showPuzzleDialog(Color puzzleColor, BuildContext context) {

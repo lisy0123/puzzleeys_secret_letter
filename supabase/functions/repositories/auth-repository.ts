@@ -1,11 +1,11 @@
 import { User } from "jsr:@supabase/supabase-js@2";
-import { createResponse } from "./../lib/response/response-format.ts";
-import { ResponseCode } from "./../lib/response/response-code.ts";
-import { supabase, } from "./../lib/supabase-config.ts";
-import { uuidToBase64 } from "./../lib/utils/uuid-to-base64.ts";
+import { createResponse } from "../lib/response/response-format.ts";
+import { ResponseCode } from "../lib/response/response-code.ts";
+import { supabase, } from "../lib/supabase-config.ts";
+import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 import { UserData } from "../types/user.ts";
 
-export class UserRepository {
+export class AuthRepository {
     static async insertUser(user: User): Promise<Response | void> {
         const existingUser = await this.getUserWithId(user);
         if (!existingUser) {
@@ -44,16 +44,5 @@ export class UserRepository {
             );
         }
         return data as UserData;
-    }
-
-    static async getUserIdWithId(user: User): Promise<Response | string> {
-        const data = await this.getUserWithId(user);
-        if ("status" in data) {
-            return data;
-        }
-        if (data && (data as UserData).user_id) {
-            return (data as UserData).user_id;
-        }
-        return createResponse(ResponseCode.NOT_FOUND, "No user found.", null);
     }
 }

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
-import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/utils/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/user_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AccountDialog extends StatefulWidget {
   const AccountDialog({super.key});
@@ -25,19 +24,22 @@ class _AccountDialogState extends State<AccountDialog> {
   @override
   void initState() {
     super.initState();
-    final session = Supabase.instance.client.auth.currentSession;
-    if (session != null) {
-      _loadData();
-    }
+    _loadData();
   }
 
   Future<void> _loadData() async {
     try {
-      final userData = await apiRequest('/api/user/me', ApiType.get);
+      String? userId;
+      String? userCreatedAt;
+      userId = await SecureStorageUtils.get('userId');
+      userCreatedAt = await SecureStorageUtils.get('createdAt');
+
+      if (userId == null || userCreatedAt == null) {
+        (userId, userCreatedAt) = await UserRequest.reloadUserData();
+      }
       setState(() {
-        _userId = userData['result']['user_id'];
-        _userCreatedAt =
-            Utils.convertUTCToKST(userData['result']['created_at']);
+        _userId = userId;
+        _userCreatedAt = userCreatedAt;
       });
     } catch (error) {
       throw Exception('Error loading user data: $error');
@@ -46,6 +48,9 @@ class _AccountDialogState extends State<AccountDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final String puzzleDays =
+        Utils.calculateDays(_userCreatedAt).toString().padLeft(4, '0');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,8 +79,7 @@ class _AccountDialogState extends State<AccountDialog> {
         Utils.dialogDivider(),
         _buildBottomContent(
           firstString: CustomStrings.userPuzzleeyDays,
-          secondString:
-              Utils.calculateDays(_userCreatedAt).toString().padLeft(4, '0'),
+          secondString: '$puzzleDays${CustomStrings.userPuzzleeyDayCount}',
           context: context,
         ),
       ],

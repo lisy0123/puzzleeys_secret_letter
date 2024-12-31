@@ -1,11 +1,11 @@
 import { createResponse } from "./../../lib/response/response-format.ts";
 import { ResponseCode } from "./../../lib/response/response-code.ts";
-import { AuthService } from "./../../services/auth-service.ts";
+import { authService } from "../../services/auth-service.ts";
 import { User } from "jsr:@supabase/supabase-js@2";
 
-export async function AuthController(user: User): Promise<Response> {
+export async function authController(user: User): Promise<Response> {
     try {
-        return await AuthService.login(user);
+        return await authService(user);
     } catch (error: unknown) {
         if (error instanceof Error) {
             return createResponse(

@@ -25,10 +25,10 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
     super.initState();
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-          if (mounted) {
-            context.read<AuthStatusProvider>().checkLoginStatus();
-          }
-        });
+      if (mounted) {
+        context.read<AuthStatusProvider>().checkLoginStatus();
+      }
+    });
   }
 
   @override
