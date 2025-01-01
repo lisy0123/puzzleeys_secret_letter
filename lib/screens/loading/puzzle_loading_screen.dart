@@ -23,7 +23,7 @@ class _PuzzleLoadingScreenState extends State<PuzzleLoadingScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 700),
     )..repeat(reverse: true);
     _animation = Tween<double>(begin: -2.0, end: 2.0).animate(CurvedAnimation(
       parent: _controller,

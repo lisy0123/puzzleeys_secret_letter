@@ -1,6 +1,11 @@
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 
 class CustomStrings {
+  static const title = 'PUZZLEEY';
+  static String slogan = '퍼즐에 감정을 담다';
+  static String googleLogin = '구글로 시작하기';
+  static String appleLogin = '애플로 시작하기';
+
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
   static const Map<String, String> dialogNameLists = {
@@ -8,7 +13,11 @@ class CustomStrings {
     'bead': '감정 퍼즐 구슬',
     'alarm': '신고하기',
     'get': '감정 담기',
-    'put': '감정 넣기',
+    'putGlobal': '감정 넣기',
+    'putSubject': '감정 넣기',
+    'putPersonal': '감정 넣기',
+    'putReply': '감정 넣기',
+
     '0': '계 정',
     '1': '내 글',
     '2': '알 람',
@@ -19,10 +28,6 @@ class CustomStrings {
     '7': '지 원',
     '8': '설 정',
   };
-
-  static String slogan = '퍼즐에 감정을 담다';
-  static String googleLogin = '구글로 시작하기';
-  static String appleLogin = '애플로 시작하기';
 
   static String userId = '회원 번호';
   static String userCreatedAt = '가입 날짜';
@@ -43,7 +48,8 @@ class CustomStrings {
 }
 
 class MessageStrings {
-  static String writingMessage = '답장을 적어주세요.';
+  static String writingMessage = '자유롭게 감정을 적어주세요.';
+  static String writingReplyMessage = '답장을 적어주세요.';
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.';
   static String sentMessage = '감정 퍼즐을 보냈어요!';
@@ -73,16 +79,16 @@ class MessageStrings {
   static Map<Enum, List<dynamic>> overlayMessages = {
     OverlayType.attendance: [1, '출석했어요!'],
     OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
-    OverlayType.writeSubjectPuzzle: [1, '오늘의 감정 퍼즐을 보냈어요!'],
+    OverlayType.writeSubjectPuzzle: [-1, '오늘의 감정 퍼즐을 보냈어요!'],
     OverlayType.writeGlobalPuzzle: [1, '감정 퍼즐을 보냈어요!'],
     OverlayType.writePersonalPuzzle: [-1, '누군가에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writePuzzleToMe: [-1, '나에게 감정 퍼즐을 보냈어요!'],
-    OverlayType.writeReply: [-1, '답장을 보냈어요!'],
+    OverlayType.writeReply: [1, '답장을 보냈어요!'],
   };
 
   static Map<Enum, String> loadingMessages = {
-    LoadingType.login: '로그인 중',
-    LoadingType.setting: '감정 불러오는 중',
-    LoadingType.sending: '보내는 중',
+    LoadingType.login: '로그인 중...',
+    LoadingType.setting: '감정 불러오는 중...',
+    LoadingType.sending: '보내는 중...',
   };
 }

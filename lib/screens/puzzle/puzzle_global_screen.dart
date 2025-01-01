@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_background.dart';
 
 class PuzzleGlobalScreen extends StatefulWidget {
@@ -11,12 +12,11 @@ class PuzzleGlobalScreen extends StatefulWidget {
 class _PuzzleGlobalScreenState extends State<PuzzleGlobalScreen> {
   @override
   Widget build(BuildContext context) {
-    const  String puzzleState = 'Global';
 
     return const Stack(
       children: [
         PuzzleBackground(
-          puzzleState: puzzleState,
+          puzzleType: PuzzleType.global,
         ),
       ],
     );

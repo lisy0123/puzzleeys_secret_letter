@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_background.dart';
 
 class PuzzleSubjectScreen extends StatelessWidget {
@@ -6,12 +7,11 @@ class PuzzleSubjectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const  String puzzleState = 'Subject';
 
     return const Stack(
       children: [
         PuzzleBackground(
-          puzzleState: puzzleState,
+          puzzleType: PuzzleType.subject,
         ),
       ],
     );

@@ -1,19 +1,19 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 
 class PuzzleBackground extends StatefulWidget {
-  final String puzzleState;
+  final PuzzleType puzzleType;
 
   const PuzzleBackground({
     super.key,
-    required this.puzzleState,
+    required this.puzzleType,
   });
 
   @override
@@ -84,7 +84,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
             index: index,
             puzzleHeight: config.puzzleHeight,
             scaleFactor: scaleFactor,
-            puzzleState: widget.puzzleState,
+            puzzleType: widget.puzzleType,
             puzzleColor: _cachedColors[index],
           ),
         ),

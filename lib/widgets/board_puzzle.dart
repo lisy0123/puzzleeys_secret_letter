@@ -1,22 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
+import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 
 class BoardPuzzle extends CustomPainter {
   final Color puzzleColor;
   final double strokeWidth;
+  final double scaleFactor;
+
+  late final Paint paintFill;
+  late final Paint paintStroke;
+  late final LinearGradient gradient;
 
   BoardPuzzle({
     required this.puzzleColor,
+    required this.scaleFactor,
     this.strokeWidth = 2.0,
-  });
+  }) {
+    gradient = LinearGradient(
+      colors: [
+        puzzleColor,
+        ColorMatch(puzzleColor)(),
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomRight,
+    );
+
+    paintFill = Paint()
+      ..shader = gradient.createShader(Rect.fromLTRB(0, 0, 152, 92))
+      ..style = PaintingStyle.fill;
+
+    paintStroke = Paint()
+      ..color = CustomColors.colorBase.withValues(alpha: 0.3)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeJoin = StrokeJoin.round;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double width = size.width;
-    final double height = size.height;
+    canvas.save();
+    canvas.scale(scaleFactor);
 
-    final double scaleX = width / 152;
-    final double scaleY = height / 92;
+    final double scaleX = size.width / (152 * scaleFactor);
+    final double scaleY = size.height / (92 * scaleFactor);
 
     final path = Path()
       ..moveTo(31.297 * scaleX, 59.147 * scaleY)
@@ -76,18 +102,10 @@ class BoardPuzzle extends CustomPainter {
           56.743 * scaleY, 31.297 * scaleX, 59.147 * scaleY)
       ..close();
 
-    final paintFill = Paint()
-      ..color = puzzleColor
-      ..style = PaintingStyle.fill;
-
-    final paintStroke = Paint()
-      ..color = CustomColors.colorBase.withValues(alpha: 0.3)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeJoin = StrokeJoin.round;
-
     canvas.drawPath(path, paintFill);
     canvas.drawPath(path, paintStroke);
+
+    canvas.restore();
   }
 
   @override

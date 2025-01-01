@@ -48,8 +48,8 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         MainScreen(),
         if (!isLoggedIn) LoginScreen(),
         if (isLoading)
-          PuzzleLoadingScreen(
-              text: MessageStrings.loadingMessages[LoadingType.login]!),
+        PuzzleLoadingScreen(
+            text: MessageStrings.loadingMessages[LoadingType.login]!),
       ],
     );
   }

@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
-import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleContent extends StatelessWidget {
   final int row;
@@ -13,7 +12,7 @@ class PuzzleContent extends StatelessWidget {
   final int index;
   final double puzzleHeight;
   final double scaleFactor;
-  final String puzzleState;
+  final PuzzleType puzzleType;
   final Color puzzleColor;
 
   const PuzzleContent({
@@ -23,7 +22,7 @@ class PuzzleContent extends StatelessWidget {
     required this.index,
     required this.puzzleHeight,
     required this.scaleFactor,
-    required this.puzzleState,
+    required this.puzzleType,
     required this.puzzleColor,
   });
 
@@ -34,30 +33,26 @@ class PuzzleContent extends StatelessWidget {
     return LayoutId(
       id: index,
       child: GestureDetector(
-        onTap: () => _showPuzzleDialog(puzzleColor, context),
-        child: RepaintBoundary(
-          child: ValueListenableBuilder<double>(
-            valueListenable: ValueNotifier(scaleFactor),
-            builder: (context, scale, child) {
-              return Transform.rotate(
-                angle: rotationAngle,
-                child: CustomPaint(
-                  size: Size(
-                    puzzleHeight * scale,
-                    puzzleHeight * scale,
-                  ),
-                  painter: BoardPuzzle(puzzleColor: puzzleColor),
+        onTap: () => (puzzleColor == Colors.white)
+            ? PuzzleScreenHandler.navigateScreen(
+                barrierColor: Colors.white70,
+                child: PuzzleWritingScreen(
+                  puzzleType: puzzleType,
+                  reply: false,
                 ),
-              );
-              // child: SvgPicture.asset(
-              //   'assets/imgs/board_puzzle.svg',
-              //   height: puzzleHeight * scaleFactor,
-              //   fit: BoxFit.contain,
-              //   colorFilter: ColorFilter.mode(
-              //     puzzleColor.withValues(alpha: 0.8),
-              //     BlendMode.srcATop,
-              //   ),
-            },
+                context: context,
+              )
+            : _showPuzzleDialog(puzzleColor, context),
+        child: RepaintBoundary(
+          child: Transform.rotate(
+            angle: rotationAngle,
+            child: CustomPaint(
+              size: Size(puzzleHeight, puzzleHeight),
+              painter: BoardPuzzle(
+                puzzleColor: puzzleColor,
+                scaleFactor: scaleFactor,
+              ),
+            ),
           ),
         ),
       ),
@@ -69,14 +64,12 @@ class PuzzleContent extends StatelessWidget {
   }
 
   void _showPuzzleDialog(Color puzzleColor, BuildContext context) {
-    final Color puzzleLightColor = ColorMatch(puzzleColor)();
-
     PuzzleScreenHandler.navigateScreen(
       barrierColor: puzzleColor.withValues(alpha: 0.7),
       child: PuzzleDetailScreen(
         index: index,
-        puzzleColor: puzzleLightColor,
-        puzzleState: puzzleState,
+        puzzleColor: puzzleColor,
+        puzzleType: puzzleType,
       ),
       context: context,
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
@@ -12,13 +13,13 @@ import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 class PuzzleDetailScreen extends StatefulWidget {
   final int index;
   final Color puzzleColor;
-  final String puzzleState;
+  final PuzzleType puzzleType;
 
   const PuzzleDetailScreen({
     super.key,
     required this.index,
     required this.puzzleColor,
-    required this.puzzleState,
+    required this.puzzleType,
   });
 
   @override
@@ -71,13 +72,13 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     return GestureDetector(
       onDoubleTap: () => BuildDialog.show(
         iconName: 'get',
-        puzzleColor: ColorMatch(widget.puzzleColor)(),
+        puzzleColor: widget.puzzleColor,
         context: context,
       ),
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
-          color: widget.puzzleColor.withValues(alpha: 0.7),
+          color: widget.puzzleColor.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.symmetric(horizontal: 100.0.w),
@@ -126,7 +127,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
             child: Text(
               // '수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 글자수수수수기로 했어.동안 글자수수수수기로 했어.시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 00자, 한동일기를 쭉 써오다가',
-              '${widget.puzzleState} - ${widget.index}',
+              '${widget.puzzleType} - ${widget.index}',
               style: Theme.of(context).textTheme.displayLarge,
             ),
           ),
@@ -141,7 +142,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       text: '135',
       onTap: () => BuildDialog.show(
         iconName: 'get',
-        puzzleColor: ColorMatch(widget.puzzleColor)(),
+        puzzleColor: widget.puzzleColor,
         context: context,
       ),
       context: context,
@@ -154,8 +155,8 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       iconTitle: CustomStrings.reply,
       onTap: () {
         PuzzleScreenHandler.navigateScreen(
-          barrierColor: Colors.white.withValues(alpha: 0.3),
-          child: const PuzzleWritingScreen(),
+          barrierColor: Colors.white38,
+          child: PuzzleWritingScreen(puzzleType: widget.puzzleType),
           context: context,
         );
         context.read<WritingProvider>().updateOpacity();

@@ -13,13 +13,16 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 enum DialogType {
   list,
   get,
-  put,
-  emptyName,
-  emptyPuzzle,
   cancel,
   limit,
   bead,
   alarm,
+  emptyName,
+  emptyPuzzle,
+  putGlobal,
+  putSubject,
+  putPersonal,
+  putReply,
   list0,
   list1,
   list2,
@@ -38,8 +41,6 @@ enum DialogType {
         return ListDialog();
       case DialogType.get:
         return GetDialog(puzzleColor: puzzleColor);
-      case DialogType.put:
-        return PutDialog(puzzleColor: puzzleColor);
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
@@ -48,6 +49,27 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyName);
       case DialogType.emptyPuzzle:
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
+      case DialogType.putGlobal:
+        return PutDialog(
+          puzzleColor: puzzleColor,
+          puzzleType: PuzzleType.global,
+        );
+      case DialogType.putSubject:
+        return PutDialog(
+          puzzleColor: puzzleColor,
+          puzzleType: PuzzleType.subject,
+        );
+      case DialogType.putPersonal:
+        return PutDialog(
+          puzzleColor: puzzleColor,
+          puzzleType: PuzzleType.personal,
+        );
+      case DialogType.putReply:
+        return PutDialog(
+          puzzleColor: puzzleColor,
+          puzzleType: PuzzleType.reply,
+        );
+
       case DialogType.list0:
         return AccountDialog();
       case DialogType.list3:

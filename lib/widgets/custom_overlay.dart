@@ -8,7 +8,7 @@ class CustomOverlay {
 
   static void show({
     required String text,
-    int delayed = 700,
+    int delayed = 1500,
     bool puzzleVis = false,
     int puzzleNum = 1,
     required BuildContext context,

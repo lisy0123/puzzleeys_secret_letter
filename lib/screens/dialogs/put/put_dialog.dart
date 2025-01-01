@@ -17,10 +17,12 @@ import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
   final Color puzzleColor;
+  final PuzzleType puzzleType;
 
   const PutDialog({
     super.key,
     required this.puzzleColor,
+    required this.puzzleType,
   });
 
   @override
@@ -149,6 +151,22 @@ class _PutDialogState extends State<PutDialog> {
   void _showDialog(BuildContext context) {
     final Color color =
         Provider.of<ColorPickerProvider>(context, listen: false).selectedColor;
+    final OverlayType overlayType;
+
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        overlayType = OverlayType.writeGlobalPuzzle;
+        break;
+      case PuzzleType.subject:
+        overlayType = OverlayType.writeSubjectPuzzle;
+        break;
+      case PuzzleType.personal:
+        overlayType = OverlayType.writePersonalPuzzle;
+        break;
+      default:
+        overlayType = OverlayType.writeReply;
+        break;
+    }
 
     if (color == Colors.white) {
       BuildDialog.show(
@@ -166,10 +184,10 @@ class _PutDialogState extends State<PutDialog> {
       context.read<WritingProvider>().updateOpacity();
       Navigator.popUntil(context, (route) => route.isFirst);
       CustomOverlay.show(
-        text: MessageStrings.overlayMessages[OverlayType.writeReply]![1],
-        delayed: 1500,
+        text: MessageStrings.overlayMessages[overlayType]![1],
+        delayed: 2500,
         puzzleVis: true,
-        puzzleNum: MessageStrings.overlayMessages[OverlayType.writeReply]![0],
+        puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
         context: context,
       );
     }

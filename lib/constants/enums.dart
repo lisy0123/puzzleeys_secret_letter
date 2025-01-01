@@ -1,3 +1,5 @@
+enum PuzzleType{ reply, global, personal, subject }
+
 enum WarningType { cancel, limit, emptyName, emptyPuzzle }
 
 enum MissionType {
@@ -28,5 +30,4 @@ enum OverlayType {
 }
 
 enum LoadingType { login, setting, sending }
-
 enum ApiType { post, get, delete, patch, put }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen_handler.dart';
 
@@ -14,12 +15,12 @@ class LoginScreen extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.black12, Colors.black.withValues(alpha: 0.7)],
+          colors: [Colors.black26, Colors.black.withValues(alpha: 0.7)],
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.only(
-            left: 100.0.w, right: 100.0.w, top: 440.0.h, bottom: 60.0.h),
+        padding: EdgeInsets.symmetric(horizontal: 100.0.w)
+            .copyWith(top: 420.0.h, bottom: 60.0.h),
         child: _buildContent(context),
       ),
     );
@@ -31,7 +32,7 @@ class LoginScreen extends StatelessWidget {
       children: [
         Column(
           children: [
-            _buildText(),
+            _buildText(text: CustomStrings.title, isMainTitle: true),
             SizedBox(height: 40.0.w),
             _buildText(text: CustomStrings.slogan),
           ],
@@ -57,17 +58,48 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Text _buildText({String text = 'PUZZLEEY'}) {
-    final bool classify = text == 'PUZZLEEY';
+  Widget _buildText({required String text, bool isMainTitle = false}) {
+    return Stack(
+      children: [
+        _buildStrokedText(
+          text: text,
+          fontSize: isMainTitle ? 300.sp : 100.sp,
+          fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
+          strokeWidth: isMainTitle ? 8 : 6,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
+            fontSize: isMainTitle ? 300.sp : 100.sp,
+            fontWeight: FontWeight.w900,
+            letterSpacing: isMainTitle ? 6 : 3,
+          ),
+        ),
+      ],
+    );
+  }
 
+  Widget _buildStrokedText({
+    required String text,
+    required double fontSize,
+    required String fontFamily,
+    required double strokeWidth,
+  }) {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.white,
-        fontFamily: classify ? 'BMJUA' : 'NANUM',
-        fontSize: classify ? 280.sp : 100.sp,
+        fontFamily: fontFamily,
+        fontSize: fontSize,
         fontWeight: FontWeight.w900,
-        letterSpacing: classify ? 6 : 3,
+        letterSpacing: fontFamily == 'BMJUA' ? 6 : 3,
+        foreground: Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth
+          ..strokeJoin = StrokeJoin.round
+          ..strokeCap = StrokeCap.round
+          ..color = CustomColors.colorBase,
       ),
     );
   }
@@ -78,9 +110,6 @@ class LoginScreen extends StatelessWidget {
     required String text,
     required Widget icon,
   }) {
-    final bool isGoogle = color == Colors.white;
-    final Color textColor = isGoogle ? Colors.black : Colors.white;
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -98,10 +127,9 @@ class LoginScreen extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                color: textColor,
+                color: color == Colors.white ? Colors.black : Colors.white,
                 fontFamily: 'NANUM',
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2,
                 fontSize: 90.sp,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
@@ -7,7 +8,14 @@ import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleWritingScreen extends StatefulWidget {
-  const PuzzleWritingScreen({super.key});
+  final PuzzleType puzzleType;
+  final bool reply;
+
+  const PuzzleWritingScreen({
+    super.key,
+    required this.puzzleType,
+    this.reply = true,
+  });
 
   @override
   State<PuzzleWritingScreen> createState() => _PuzzleWritingScreenState();
@@ -90,7 +98,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return Container(
       height: _height,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.7),
+        color: Colors.white.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -109,7 +117,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       maxLines: null,
       style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
-        hintText: MessageStrings.writingMessage,
+        hintText: (widget.reply)
+            ? MessageStrings.writingReplyMessage
+            : MessageStrings.writingMessage,
         hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
       ),
@@ -125,10 +135,28 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   void _showDialog(BuildContext context) {
+    final String iconName;
+
+    if (widget.reply) {
+      iconName = 'putReply';
+    } else {
+      switch (widget.puzzleType) {
+        case PuzzleType.global:
+          iconName = 'putGlobal';
+          break;
+        case PuzzleType.subject:
+          iconName = 'putSubject';
+          break;
+        default:
+          iconName = 'putPersonal';
+          break;
+      }
+    }
+
     if (_textEditingController.text.length < 10) {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
-      BuildDialog.show(iconName: 'put', context: context);
+      BuildDialog.show(iconName: iconName, context: context);
     }
   }
 }

@@ -36,7 +36,7 @@ class GetDialog extends StatelessWidget {
             Navigator.pop(context);
             CustomOverlay.show(
               text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
-              delayed: 1500,
+              delayed: 2500,
               puzzleVis: true,
               puzzleNum:
                   MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
