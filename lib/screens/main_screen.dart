@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         children: [
           if (_tabController.index != 3) _buildActionButtons(),
           if (_tabController.index == 3) const ShopScreen(),
-          ButtomBar(
+          BottomBar(
             currentIndex: _tabController.index,
             onIconTap: navigateToTab,
           ),
@@ -106,10 +106,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             svgImage: 'cir_zoom',
             onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
           ),
-          CustomCircle(
-            svgImage: 'cir_shuffle',
-            onTap: () {},
-          ),
+          (_tabController.index == 0)
+              ? CustomCircle(svgImage: 'cir_shuffle', onTap: () {})
+              : SizedBox(height: 1),
         ],
       ),
     );

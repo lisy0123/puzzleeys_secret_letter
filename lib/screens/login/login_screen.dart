@@ -15,12 +15,12 @@ class LoginScreen extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomCenter,
-          colors: [Colors.black26, Colors.black.withValues(alpha: 0.7)],
+          colors: [Colors.black12, Colors.black.withValues(alpha: 0.6)],
         ),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100.0.w)
-            .copyWith(top: 420.0.h, bottom: 60.0.h),
+            .copyWith(top: 440.0.h, bottom: 60.0.h),
         child: _buildContent(context),
       ),
     );
@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
         Column(
           children: [
             _buildText(text: CustomStrings.title, isMainTitle: true),
-            SizedBox(height: 40.0.w),
+            SizedBox(height: 20.0.w),
             _buildText(text: CustomStrings.slogan),
           ],
         ),
@@ -63,16 +63,16 @@ class LoginScreen extends StatelessWidget {
       children: [
         _buildStrokedText(
           text: text,
-          fontSize: isMainTitle ? 300.sp : 100.sp,
+          fontSize: isMainTitle ? 280.sp : 100.sp,
           fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-          strokeWidth: isMainTitle ? 8 : 6,
+          strokeWidth: isMainTitle ? 6 : 3,
         ),
         Text(
           text,
           style: TextStyle(
             color: Colors.white,
             fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-            fontSize: isMainTitle ? 300.sp : 100.sp,
+            fontSize: isMainTitle ? 280.sp : 100.sp,
             fontWeight: FontWeight.w900,
             letterSpacing: isMainTitle ? 6 : 3,
           ),
@@ -131,6 +131,7 @@ class LoginScreen extends StatelessWidget {
                 fontFamily: 'NANUM',
                 fontWeight: FontWeight.w900,
                 fontSize: 90.sp,
+                letterSpacing: 2,
               ),
             ),
           ],

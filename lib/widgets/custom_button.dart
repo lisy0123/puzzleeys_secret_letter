@@ -13,6 +13,7 @@ class CustomButton extends StatefulWidget {
   final double height;
   final double iconHeight;
   final double borderStroke;
+  final bool disable;
 
   const CustomButton({
     super.key,
@@ -24,6 +25,7 @@ class CustomButton extends StatefulWidget {
     this.height = 240.0,
     this.iconHeight = 34.0,
     this.borderStroke = 2.0,
+    this.disable = false,
   });
 
   @override
@@ -102,7 +104,7 @@ class _CustomButtonState extends State<CustomButton> {
   }
 
   Color _overlayColor() {
-    return _isPressed
+    return (_isPressed || widget.disable)
         ? CustomColors.colorBase.withValues(alpha: 0.2)
         : Colors.transparent;
   }

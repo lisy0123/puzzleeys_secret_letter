@@ -5,11 +5,11 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
-class ButtomBar extends StatelessWidget {
+class BottomBar extends StatelessWidget {
   final int currentIndex;
   final void Function(int) onIconTap;
 
-  const ButtomBar({
+  const BottomBar({
     super.key,
     required this.currentIndex,
     required this.onIconTap,

@@ -24,27 +24,27 @@ class PuzzleWritingScreen extends StatefulWidget {
 class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  late double _height = 2800.0.w;
+  late double _height;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {
-        if (_focusNode.hasFocus) {
-          _height = 1200.0.w;
-        } else {
-          _height = 2800.0.w;
-        }
-      });
-    });
+    _height = 2800.0.w;
+    _focusNode.addListener(_handleFocusChange);
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.removeListener(_handleFocusChange);
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleFocusChange() {
+    setState(() {
+      _height = _focusNode.hasFocus ? 1200.0.w : 2800.0.w;
+    });
   }
 
   @override
@@ -64,9 +64,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             child: Column(
               children: [
                 _buildBackButton(context),
-                _buildMidContent(context),
+                _buildMidContent(),
                 SizedBox(height: 200.0.w),
-                _buildPutButton(context),
+                _buildPutButton(),
               ],
             ),
           ),
@@ -82,19 +82,17 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       child: PuzzleScreenHandler().buildIconButton(
         iconName: 'btn_back',
         text: CustomStrings.back,
-        onTap: () {
-          BuildDialog.show(
-            iconName: 'cancel',
-            simpleDialog: true,
-            context: context,
-          );
-        },
+        onTap: () => BuildDialog.show(
+          iconName: 'cancel',
+          simpleDialog: true,
+          context: context,
+        ),
         context: context,
       ),
     );
   }
 
-  Widget _buildMidContent(BuildContext context) {
+  Widget _buildMidContent() {
     return Container(
       height: _height,
       decoration: BoxDecoration(
@@ -102,13 +100,13 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 160.0.w, vertical: 80.0.w),
-        child: _buildTextField(context),
+        padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 40.0.w),
+        child: _buildTextField(),
       ),
     );
   }
 
-  Widget _buildTextField(BuildContext context) {
+  Widget _buildTextField() {
     return TextField(
       controller: _textEditingController,
       focusNode: _focusNode,
@@ -117,46 +115,60 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       maxLines: null,
       style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
-        hintText: (widget.reply)
-            ? MessageStrings.writingReplyMessage
-            : MessageStrings.writingMessage,
+        hintText: _getHintText(),
         hintStyle: Theme.of(context).textTheme.labelSmall,
         border: InputBorder.none,
       ),
     );
   }
 
-  Widget _buildPutButton(BuildContext context) {
+  String _getHintText() {
+    if (widget.reply) {
+      return MessageStrings.writingReplyMessage;
+    }
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        return MessageStrings.writingGlobalMessage;
+      case PuzzleType.subject:
+        return MessageStrings.writingSubjectMessage;
+      case PuzzleType.personal:
+        return MessageStrings.writingToOtherMessage;
+      default:
+        return MessageStrings.writingToMeMessage;
+    }
+  }
+
+  Widget _buildPutButton() {
     return CustomButton(
       iconName: 'btn_puzzle',
       iconTitle: CustomStrings.putEmotion,
-      onTap: () => _showDialog(context),
+      onTap: _handlePutButtonTap,
     );
   }
 
-  void _showDialog(BuildContext context) {
-    final String iconName;
-
-    if (widget.reply) {
-      iconName = 'putReply';
-    } else {
-      switch (widget.puzzleType) {
-        case PuzzleType.global:
-          iconName = 'putGlobal';
-          break;
-        case PuzzleType.subject:
-          iconName = 'putSubject';
-          break;
-        default:
-          iconName = 'putPersonal';
-          break;
-      }
-    }
-
+  void _handlePutButtonTap() {
     if (_textEditingController.text.length < 10) {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
-      BuildDialog.show(iconName: iconName, context: context);
+      BuildDialog.show(iconName: _getIconName(), context: context);
+    }
+  }
+
+  String _getIconName() {
+    if (widget.reply) {
+      return 'putReply';
+    }
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        return 'putGlobal';
+      case PuzzleType.subject:
+        return 'putSubject';
+      case PuzzleType.personal:
+        return 'putPersonal';
+      case PuzzleType.me:
+        return 'putMe';
+      default:
+        return 'putReply';
     }
   }
 }

@@ -58,6 +58,7 @@ class _QuestDialogState extends State<QuestDialog> {
               height: 260.0,
               width: 380.0,
               borderStroke: 1.3,
+              disable: true,
               onTap: () {},
             ),
           ],

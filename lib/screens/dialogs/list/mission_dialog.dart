@@ -30,6 +30,7 @@ class _MissionDialogState extends State<MissionDialog> {
             height: 260.0,
             width: 560.0,
             borderStroke: 1.3,
+            disable: false,
             onTap: () {},
           ),
         ],

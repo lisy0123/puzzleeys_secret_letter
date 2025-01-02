@@ -163,6 +163,9 @@ class _PutDialogState extends State<PutDialog> {
       case PuzzleType.personal:
         overlayType = OverlayType.writePersonalPuzzle;
         break;
+      case PuzzleType.me:
+        overlayType = OverlayType.writePuzzleToMe;
+        break;
       default:
         overlayType = OverlayType.writeReply;
         break;
@@ -181,15 +184,19 @@ class _PutDialogState extends State<PutDialog> {
         context: context,
       );
     } else {
-      context.read<WritingProvider>().updateOpacity();
-      Navigator.popUntil(context, (route) => route.isFirst);
-      CustomOverlay.show(
-        text: MessageStrings.overlayMessages[overlayType]![1],
-        delayed: 2500,
-        puzzleVis: true,
-        puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
-        context: context,
-      );
+      if (widget.puzzleType == PuzzleType.me) {
+        BuildDialog.show(iconName: 'setDays', context: context);
+      } else {
+        context.read<WritingProvider>().updateOpacity();
+        Navigator.popUntil(context, (route) => route.isFirst);
+        CustomOverlay.show(
+          text: MessageStrings.overlayMessages[overlayType]![1],
+          delayed: 2500,
+          puzzleVis: true,
+          puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
+          context: context,
+        );
+      }
     }
   }
 }

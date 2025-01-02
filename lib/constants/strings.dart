@@ -13,10 +13,13 @@ class CustomStrings {
     'bead': '감정 퍼즐 구슬',
     'alarm': '신고하기',
     'get': '감정 담기',
+
     'putGlobal': '감정 넣기',
     'putSubject': '감정 넣기',
     'putPersonal': '감정 넣기',
+    'putMe': '감정 넣기',
     'putReply': '감정 넣기',
+    'setDays': '언제 받을까요?',
 
     '0': '계 정',
     '1': '내 글',
@@ -33,6 +36,7 @@ class CustomStrings {
   static String userCreatedAt = '가입 날짜';
   static String userPuzzleeyDays = '퍼즐이가 된 지';
   static String userPuzzleeyDayCount = '일째';
+
   static String userIdOverlay = '회원 번호를 복사했어요!';
 
   static String reply = '답 장';
@@ -41,18 +45,27 @@ class CustomStrings {
   static String putEmotion = '감정 넣기';
   static String get = '담 기';
   static String put = '넣 기';
+  static String send = '보내기';
   static String logout = '로그아웃';
+
+  static String sendToWho = '누구에게 보낼 건가요?';
+  static String sendToOther = '누군가에게';
+  static String sendToMe = '미래의 나에게';
 
   static List<String> questUnits = ['일', '회'];
   static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};
 }
 
 class MessageStrings {
-  static String writingMessage = '자유롭게 감정을 적어주세요.';
+  static String writingGlobalMessage = '전하고 싶은 감정을 자유롭게 적어주세요.';
+  static String writingSubjectMessage = '주제에 대해 자유롭게 적어주세요.';
+  static String writingToOtherMessage = '누군가에게 전하고 싶은 감정을 적어주세요.';
+  static String writingToMeMessage = '미래의 나에게 전하고 싶은 감정을 적어주세요.';
   static String writingReplyMessage = '답장을 적어주세요.';
+
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.';
-  static String sentMessage = '감정 퍼즐을 보냈어요!';
+  static String setDaysMessage = '받을 날짜를 골라주세요.';
 
   static Map<Enum, String> warningMessages = {
     WarningType.cancel: '돌아가면\n편지가 지워져요!',
@@ -79,10 +92,10 @@ class MessageStrings {
   static Map<Enum, List<dynamic>> overlayMessages = {
     OverlayType.attendance: [1, '출석했어요!'],
     OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
-    OverlayType.writeSubjectPuzzle: [-1, '오늘의 감정 퍼즐을 보냈어요!'],
-    OverlayType.writeGlobalPuzzle: [1, '감정 퍼즐을 보냈어요!'],
+    OverlayType.writeGlobalPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
+    OverlayType.writeSubjectPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
     OverlayType.writePersonalPuzzle: [-1, '누군가에게 감정 퍼즐을 보냈어요!'],
-    OverlayType.writePuzzleToMe: [-1, '나에게 감정 퍼즐을 보냈어요!'],
+    OverlayType.writePuzzleToMe: [-1, '미래의 나에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writeReply: [1, '답장을 보냈어요!'],
   };
 

@@ -8,6 +8,8 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/quest_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 
 enum DialogType {
@@ -21,8 +23,11 @@ enum DialogType {
   emptyPuzzle,
   putGlobal,
   putSubject,
+  putWho,
   putPersonal,
+  putMe,
   putReply,
+  setDays,
   list0,
   list1,
   list2,
@@ -49,6 +54,7 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyName);
       case DialogType.emptyPuzzle:
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
+
       case DialogType.putGlobal:
         return PutDialog(
           puzzleColor: puzzleColor,
@@ -59,16 +65,25 @@ enum DialogType {
           puzzleColor: puzzleColor,
           puzzleType: PuzzleType.subject,
         );
+      case DialogType.putWho:
+        return ShowReceiverDialog();
       case DialogType.putPersonal:
         return PutDialog(
           puzzleColor: puzzleColor,
           puzzleType: PuzzleType.personal,
+        );
+      case DialogType.putMe:
+        return PutDialog(
+          puzzleColor: puzzleColor,
+          puzzleType: PuzzleType.me,
         );
       case DialogType.putReply:
         return PutDialog(
           puzzleColor: puzzleColor,
           puzzleType: PuzzleType.reply,
         );
+      case DialogType.setDays:
+        return SetDaysDialog();
 
       case DialogType.list0:
         return AccountDialog();

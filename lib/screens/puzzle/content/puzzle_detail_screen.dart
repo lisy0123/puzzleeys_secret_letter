@@ -81,7 +81,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           color: widget.puzzleColor.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 100.0.w),
+        padding: EdgeInsets.symmetric(horizontal: 60.0.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,22 +97,25 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   Widget _buildTopContent(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        PuzzleScreenHandler().buildSideText(
-          iconName: 'btn_clock',
-          text: '05:12:38',
-          context: context,
-        ),
-        PuzzleScreenHandler().buildIconButton(
-          iconName: 'btn_alarm',
-          text: CustomStrings.alarm,
-          onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
-          context: context,
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          PuzzleScreenHandler().buildSideText(
+            iconName: 'btn_clock',
+            text: '05:12:38',
+            context: context,
+          ),
+          PuzzleScreenHandler().buildIconButton(
+            iconName: 'btn_alarm',
+            text: CustomStrings.alarm,
+            onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
+            context: context,
+          ),
+        ],
+      ),
     );
   }
 

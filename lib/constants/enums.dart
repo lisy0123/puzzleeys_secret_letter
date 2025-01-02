@@ -1,4 +1,4 @@
-enum PuzzleType{ reply, global, personal, subject }
+enum PuzzleType{ global, subject, personal, me, reply }
 
 enum WarningType { cancel, limit, emptyName, emptyPuzzle }
 
