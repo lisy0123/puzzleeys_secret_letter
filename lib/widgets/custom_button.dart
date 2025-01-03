@@ -32,45 +32,86 @@ class CustomButton extends StatefulWidget {
   State<CustomButton> createState() => _CustomButtonState();
 }
 
-class _CustomButtonState extends State<CustomButton> {
+class _CustomButtonState extends State<CustomButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
   late bool _isPressed = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 50),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05)
+        .chain(
+          CurveTween(curve: Curves.fastOutSlowIn),
+        )
+        .animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTapState(bool pressed) {
+    setState(() {
+      _isPressed = pressed;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) {
-        setState(() {
-          _isPressed = false;
-          widget.onTap();
-        });
+      onTapDown: (_) async {
+        _handleTapState(true);
+        await _controller.forward();
+        await _controller.reverse();
       },
-      onTapCancel: () => setState(() => _isPressed = false),
-      child: Container(
-        width: widget.width.w,
-        height: widget.height.w,
-        decoration: _buttonDecoration(widget.borderStroke),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (widget.iconTopTitle != '')
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      onTapUp: (_) {
+        _handleTapState(false);
+        widget.onTap();
+      },
+      onTapCancel: () => _handleTapState(false),
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              width: widget.width.w,
+              height: widget.height.w,
+              decoration: _buttonDecoration(widget.borderStroke),
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  CustomText.textSmall(
-                    text: widget.iconTopTitle,
-                    context: context,
+                  if (widget.iconTopTitle != '')
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText.textSmall(
+                          text: widget.iconTopTitle,
+                          context: context,
+                        ),
+                        _buildRowContent(context),
+                      ],
+                    ),
+                  if (widget.iconTopTitle == '') _buildRowContent(context),
+                  Container(
+                    color: _overlayColor(),
                   ),
-                  _buildRowContent(context),
                 ],
               ),
-            if (widget.iconTopTitle == '') _buildRowContent(context),
-            Container(
-              color: _overlayColor(),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -57,10 +57,10 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     final double scaleFactor = context.watch<PuzzleScaleProvider>().scaleFactor;
     final PuzzleConfig config = PuzzleConfig(
       scaleFactor: scaleFactor,
-      puzzleWidth: 900.0.w,
-      puzzleHeight: 545.0.w,
-      horizontalSpacing: -375.0.w,
-      verticalSpacing: -20.0.w,
+      puzzleWidth: 840.0.w,
+      puzzleHeight: 510.0.w,
+      horizontalSpacing: -345.0.w,
+      verticalSpacing: -15.0.w,
       itemsPerRow: 8,
       totalRows: 18,
     );

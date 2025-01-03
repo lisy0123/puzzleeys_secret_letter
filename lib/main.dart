@@ -39,15 +39,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQueryData = MediaQuery.of(context).copyWith(boldText: false);
+
     // TODO: testing login (need to add apple login later)
     return ScreenUtilInit(
       designSize: const Size(2340, 1080),
       builder: (context, child) {
-        return MaterialApp(
-          theme: ThemeSetting.themeSetting(),
-          home: const Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: AuthCheckScreen(),
+        return MediaQuery(
+          data: mediaQueryData,
+          child: MaterialApp(
+            theme: ThemeSetting.themeSetting(),
+            home: const Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: AuthCheckScreen(),
+            ),
           ),
         );
       },
