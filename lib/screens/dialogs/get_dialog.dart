@@ -17,34 +17,40 @@ class GetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        TiltedPuzzle(puzzleColor: puzzleColor),
-        SizedBox(
-          height: 340.0.w,
-          width: double.infinity,
-          child: CustomText.textContent(
-            text: '글자수 30자글자수 30자글자수 30자글자수 30자글자dh',
-            context: context,
+    return Padding(
+      padding: EdgeInsets.only(top: 40.0.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          TiltedPuzzle(puzzleColor: puzzleColor),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+            child: SizedBox(
+              height: 340.0.w,
+              width: double.infinity,
+              child: CustomText.textContent(
+                text: '글자수 30자글자수 30자글자수 30자글자수 30자글자dh',
+                context: context,
+              ),
+            ),
           ),
-        ),
-        CustomButton(
-          iconName: 'btn_puzzle',
-          iconTitle: CustomStrings.get,
-          onTap: () {
-            Navigator.pop(context);
-            CustomOverlay.show(
-              text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
-              delayed: 2500,
-              puzzleVis: true,
-              puzzleNum:
-                  MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
-              context: context,
-            );
-          },
-        ),
-      ],
+          CustomButton(
+            iconName: 'btn_puzzle',
+            iconTitle: CustomStrings.get,
+            onTap: () {
+              Navigator.pop(context);
+              CustomOverlay.show(
+                text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
+                delayed: 2500,
+                puzzleVis: true,
+                puzzleNum:
+                    MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
+                context: context,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

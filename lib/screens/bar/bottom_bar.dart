@@ -50,7 +50,7 @@ class BottomBar extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/imgs/icon_$index.svg',
-            height: 36.0.h,
+            height: 38.0.h,
             colorFilter: ColorFilter.mode(
               isSelected
                   ? CustomColors.colorBase.withValues(alpha: 0.2)

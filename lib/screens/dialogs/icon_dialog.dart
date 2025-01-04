@@ -20,7 +20,7 @@ class IconDialog extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         'assets/imgs/icon_$iconName.svg',
-        height: 30.0.h,
+        height: 32.0.h,
       ),
     );
   }
@@ -64,7 +64,7 @@ class BuildDialog {
     if (simpleDialog) {
       return 1000.0.w;
     } else if (iconName == 'bead') {
-      return 2400.0.w;
+      return 2600.0.w;
     } else {
       return 2000.0.w;
     }

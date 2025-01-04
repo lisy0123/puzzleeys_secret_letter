@@ -78,7 +78,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
-          color: widget.puzzleColor.withValues(alpha: 0.8),
+          color: Colors.white70,
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.symmetric(horizontal: 60.0.w),
@@ -86,9 +86,9 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildTopContent(context),
-            SizedBox(height: 100.0.w),
+            SizedBox(height: 40.0.w),
             _buildMidContent(context),
-            SizedBox(height: 100.0.w),
+            SizedBox(height: 40.0.w),
             _buildBottomContent(context),
           ],
         ),
@@ -97,25 +97,22 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   Widget _buildTopContent(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          PuzzleScreenHandler().buildSideText(
-            iconName: 'btn_clock',
-            text: '05:12:38',
-            context: context,
-          ),
-          PuzzleScreenHandler().buildIconButton(
-            iconName: 'btn_alarm',
-            text: CustomStrings.alarm,
-            onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
-            context: context,
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        PuzzleScreenHandler().buildSideText(
+          iconName: 'btn_clock',
+          text: '05:12:38',
+          context: context,
+        ),
+        PuzzleScreenHandler().buildIconButton(
+          iconName: 'btn_alarm',
+          text: CustomStrings.alarm,
+          onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
+          context: context,
+        ),
+      ],
     );
   }
 
@@ -129,8 +126,8 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
             child: Text(
-              // '수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 글자수수수수기로 했어.동안 글자수수수수기로 했어.시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 00자, 한동일기를 쭉 써오다가',
-              '${widget.puzzleType} - ${widget.index}',
+              '수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 글자수수수수기로 했어.동안 글자수수수수기로 했어.시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 00자, 한동일기를 쭉 써오다가',
+              // '${widget.puzzleType} - ${widget.index}',
               style: Theme.of(context).textTheme.displayLarge,
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:puzzleeys_secret_letter/constants/colors.dart';
 class ThemeSetting {
   static TextStyle _textMain({
     Color textColor = CustomColors.colorBase,
-    double fontSize = 90.0,
+    double fontSize = 100.0,
   }) {
     return TextStyle(
       fontSize: fontSize.sp,
@@ -17,7 +17,7 @@ class ThemeSetting {
 
   static TextStyle _textMainStroke({
     Color textColor = Colors.white,
-    double fontSize = 90.0,
+    double fontSize = 100.0,
   }) {
     return _textMain(textColor: textColor).copyWith(
         fontSize: fontSize.sp,
@@ -42,46 +42,48 @@ class ThemeSetting {
         headlineLarge: _textMainStroke(textColor: CustomColors.colorBase),
         headlineMedium: _textMain(textColor: Colors.white),
         // dialog title
-        titleLarge: _textMainStroke(fontSize: 110.0),
-        titleMedium: _textMain(fontSize: 110.0),
+        titleLarge: _textMainStroke(fontSize: 120.0),
+        titleMedium: _textMain(fontSize: 120.0),
         // content title
-        titleSmall: _textMain().copyWith(
+        titleSmall: _textMain(fontSize: 94.0).copyWith(
           fontFamily: 'NANUM',
           fontWeight: FontWeight.w900,
           letterSpacing: 1,
           height: 1.8,
         ),
         // puzzle content
-        displayLarge: _textMain(fontSize: 80.0).copyWith(
+        displayLarge: _textMain(fontSize: 84.0).copyWith(
           fontFamily: 'NANUM',
           fontWeight: FontWeight.w900,
           letterSpacing: 1,
           height: 1.8,
         ),
-        // display stroke: dialog dia stroke
-        bodySmall: _textMainStroke(fontSize: 80.0),
-        // display: icon button
-        displayMedium: _textMain(fontSize: 80.0),
-        // icon disable
-        displaySmall: _textMain(
-          fontSize: 80.0,
-          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
-        ),
-        // bottom bar, small
-        labelLarge: _textMain(fontSize: 70.0),
-        labelMedium: _textMain(
-          fontSize: 70.0,
-          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
-        ),
         // puzzle hint content
         labelSmall: _textMain(
-          fontSize: 80.0,
+          fontSize: 84.0,
           textColor: CustomColors.colorBase.withValues(alpha: 0.6),
         ).copyWith(
           fontFamily: 'NANUM',
           fontWeight: FontWeight.w700,
           letterSpacing: 1,
           height: 1.8,
+        ),
+        // small
+        bodyMedium: _textMain(fontSize: 74.0),
+        // display stroke
+        bodySmall: _textMainStroke(fontSize: 82.0),
+        // display: icon button
+        displayMedium: _textMain(fontSize: 82.0),
+        // icon disable
+        displaySmall: _textMain(
+          fontSize: 82.0,
+          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
+        ),
+        // bottom bar
+        labelLarge: _textMain(fontSize: 72.0),
+        labelMedium: _textMain(
+          fontSize: 72.0,
+          textColor: CustomColors.colorBase.withValues(alpha: 0.4),
         ),
       ),
     );

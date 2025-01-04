@@ -21,7 +21,7 @@ class CustomButton extends StatefulWidget {
     required this.iconTitle,
     this.iconTopTitle = '',
     required this.onTap,
-    this.width = 620.0,
+    this.width = 630.0,
     this.height = 240.0,
     this.iconHeight = 34.0,
     this.borderStroke = 2.0,

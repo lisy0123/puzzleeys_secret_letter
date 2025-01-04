@@ -64,7 +64,7 @@ class MessageStrings {
   static String writingReplyMessage = '답장을 적어주세요.';
 
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
-  static String namingMessage = '감정에 이름을 붙여주세요.';
+  static String namingMessage = '감정에 이름을 붙여주세요.\n(30자 이내)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
 
   static Map<Enum, String> warningMessages = {

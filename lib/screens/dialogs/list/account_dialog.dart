@@ -63,10 +63,11 @@ class _AccountDialogState extends State<AccountDialog> {
             Text(
               _userId ?? '00000000000000000000==',
               style: TextStyle(
-                  color: CustomColors.colorBase,
-                  fontFamily: 'NANUM',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 78.0.w),
+                color: CustomColors.colorBase,
+                fontFamily: 'NANUM',
+                fontWeight: FontWeight.w900,
+                fontSize: 72.0.w,
+              ),
             ),
           ],
         ),

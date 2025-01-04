@@ -11,6 +11,7 @@ import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/auth_check_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(
@@ -41,15 +42,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context).copyWith(boldText: false);
 
-    // TODO: testing login (need to add apple login later)
+    // TODO: need to add apple login later
     return ScreenUtilInit(
       designSize: const Size(2340, 1080),
       builder: (context, child) {
         return MediaQuery(
           data: mediaQueryData,
           child: MaterialApp(
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [Locale('en'), Locale('ko')],
             theme: ThemeSetting.themeSetting(),
-            home: const Scaffold(
+            home: Scaffold(
               resizeToAvoidBottomInset: false,
               body: AuthCheckScreen(),
             ),

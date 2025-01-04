@@ -63,16 +63,16 @@ class LoginScreen extends StatelessWidget {
       children: [
         _buildStrokedText(
           text: text,
-          fontSize: isMainTitle ? 280.sp : 100.sp,
+          fontSize: isMainTitle ? 290.sp : 110.sp,
           fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-          strokeWidth: isMainTitle ? 6 : 3,
+          strokeWidth: isMainTitle ? 8 : 4,
         ),
         Text(
           text,
           style: TextStyle(
             color: Colors.white,
             fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-            fontSize: isMainTitle ? 280.sp : 100.sp,
+            fontSize: isMainTitle ? 290.sp : 110.sp,
             fontWeight: FontWeight.w900,
             letterSpacing: isMainTitle ? 6 : 3,
           ),
@@ -130,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                 color: color == Colors.white ? Colors.black : Colors.white,
                 fontFamily: 'NANUM',
                 fontWeight: FontWeight.w900,
-                fontSize: 90.sp,
+                fontSize: 94.sp,
                 letterSpacing: 2,
               ),
             ),

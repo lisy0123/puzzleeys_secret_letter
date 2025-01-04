@@ -18,7 +18,7 @@ class CustomOverlay {
     final overlayEntry = OverlayEntry(
       builder: (context) => Padding(
         padding: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height - 1700.0.w,
+          top: MediaQuery.of(context).size.height - 1600.0.w,
         ),
         child: Center(
           child: Material(

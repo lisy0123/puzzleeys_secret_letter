@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildMainBottom(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(40.0.w),
-      padding: EdgeInsets.only(bottom: 200.0.w),
+      padding: EdgeInsets.only(bottom: 160.0.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

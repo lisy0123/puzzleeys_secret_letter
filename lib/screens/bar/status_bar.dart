@@ -15,9 +15,9 @@ class StatusBar extends StatelessWidget {
     return Stack(
       children: [
         CustomBox(
-          height: 200.0,
-          left: 200.0,
-          top: 14.0,
+          height: 220.0,
+          left: 240.0,
+          top: 18.0,
           child: _buildMainBar(context),
         ),
         _buildBead(CustomVars.myGradientColors, context),
@@ -45,7 +45,7 @@ class StatusBar extends StatelessWidget {
       children: [
         SvgPicture.asset(
           'assets/imgs/bar_puzzle.svg',
-          height: 30.0.h,
+          height: 32.0.h,
         ),
         SizedBox(width: 30.0.w),
         CustomText.textTopBarNums(
@@ -55,7 +55,7 @@ class StatusBar extends StatelessWidget {
         SizedBox(width: 80.0.w),
         SvgPicture.asset(
           'assets/imgs/bar_dia.svg',
-          height: 30.0.h,
+          height: 32.0.h,
         ),
         SizedBox(width: 30.0.w),
         CustomText.textTopBarNums(
@@ -71,8 +71,8 @@ class StatusBar extends StatelessWidget {
       onTap: () => BuildDialog.show(iconName: 'bead', context: context),
       child: Container(
         margin: EdgeInsets.only(left: 40.0.w),
-        width: 320.0.w,
-        height: 320.0.w,
+        width: 360.0.w,
+        height: 360.0.w,
         decoration: BoxDecorations.bead(
           myGradientColors: myGradientColors,
         ),

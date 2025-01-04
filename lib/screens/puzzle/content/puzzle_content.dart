@@ -44,10 +44,7 @@ class PuzzleContent extends StatelessWidget {
         onTap = () {
           PuzzleScreenHandler.navigateScreen(
             barrierColor: Colors.white70,
-            child: PuzzleWritingScreen(
-              puzzleType: puzzleType,
-              reply: false,
-            ),
+            child: PuzzleWritingScreen(puzzleType: puzzleType, reply: false),
             context: context,
           );
         };
@@ -82,7 +79,7 @@ class PuzzleContent extends StatelessWidget {
 
   void _showPuzzleDialog(Color puzzleColor, BuildContext context) {
     PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleColor.withValues(alpha: 0.7),
+      barrierColor: puzzleColor.withValues(alpha: 0.8),
       child: PuzzleDetailScreen(
         index: index,
         puzzleColor: puzzleColor,

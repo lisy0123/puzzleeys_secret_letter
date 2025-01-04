@@ -104,7 +104,7 @@ class _CustomCircleState extends State<CustomCircle>
               ),
               child: SvgPicture.asset(
                 'assets/imgs/${widget.svgImage}.svg',
-                width: 260.0.w,
+                width: 280.0.w,
                 colorFilter: ColorFilter.mode(
                   _isPressed
                       ? CustomColors.colorBase.withValues(alpha: 0.2)

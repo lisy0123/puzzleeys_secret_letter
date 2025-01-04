@@ -56,20 +56,24 @@ class _PutDialogState extends State<PutDialog> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomText.textSmall(
               text: MessageStrings.chooseMessage,
               context: context,
             ),
-            GestureDetector(
-              onTap: () => context.read<ColorPickerProvider>().updateOpacity(),
-              child: _buildPuzzle(context),
-            ),
-            SizedBox(
-              height: 660.0.w,
-              child: _buildBottomContent(context),
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: () => context.read<ColorPickerProvider>().updateOpacity(),
+                  child: _buildPuzzle(context),
+                ),
+                SizedBox(
+                  height: 680.0.w,
+                  child: _buildBottomContent(context),
+                ),
+              ],
             ),
           ],
         ),
@@ -106,9 +110,12 @@ class _PutDialogState extends State<PutDialog> {
       child: opacity > 0.0
           ? Column(
               key: const ValueKey('visible'),
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildTextField(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                  child: _buildTextField(context),
+                ),
                 _buildPutButton(context),
               ],
             )

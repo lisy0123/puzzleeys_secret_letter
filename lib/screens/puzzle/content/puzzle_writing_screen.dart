@@ -59,7 +59,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
             padding: EdgeInsets.only(
               left: 200.0.w,
               right: 200.0.w,
-              top: (MediaQuery.of(context).size.height - 780.0.h) / 2,
+              top: (MediaQuery.of(context).size.height - 786.0.h) / 2,
             ),
             child: Column(
               children: [
@@ -78,7 +78,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   Widget _buildBackButton(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(vertical: 50.0.w, horizontal: 20.0.w),
       child: PuzzleScreenHandler().buildIconButton(
         iconName: 'btn_back',
         text: CustomStrings.back,
@@ -96,11 +95,13 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return Container(
       height: _height,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.8),
+        color: (widget.reply)
+            ? Colors.white.withValues(alpha: 0.7)
+            : Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 120.0.w, vertical: 40.0.w),
+        padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 10.0.w),
         child: _buildTextField(),
       ),
     );
