@@ -4,8 +4,11 @@ import { createResponse } from "./../lib/response/response-format.ts";
 import { ResponseCode } from "./../lib/response/response-code.ts";
 import authRouter from "./auth/auth-router.ts";
 import postRouter from "./post/post-router.ts";
+import { loggingMiddleware } from "./middleware/logging-middleware.ts";
 
 const app = new Hono();
+
+app.use(loggingMiddleware);
 
 app.basePath("/api").route("/auth", authRouter);
 app.basePath("/api").route("/post", postRouter);
