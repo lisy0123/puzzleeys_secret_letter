@@ -1,12 +1,12 @@
 import { ResponseCode } from "./response-code.ts";
 
-export interface ResponseFormat<T extends Record<string, unknown> | null> {
+interface ResponseFormat<T> {
     code: ResponseCode;
     message: string;
     result: T | null;
 }
 
-export function createResponse<T extends Record<string, unknown> | null>(
+export function createResponse<T>(
     code: ResponseCode,
     message: string,
     result: T | null

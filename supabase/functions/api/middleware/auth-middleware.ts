@@ -4,7 +4,10 @@ import { ResponseCode } from "../../lib/response/response-code.ts";
 import { User } from "jsr:@supabase/supabase-js@2";
 import { supabase } from "../../lib/supabase-config.ts";
 
-export async function authMiddleware(c: Context) {
+export async function withAuth(
+    c: Context,
+    handler: (c: Context, user: User) => Response | Promise<Response>
+) {
     const token = await AuthMiddleware.header(c.req);
     if (token instanceof Response) {
         return token;
@@ -13,7 +16,7 @@ export async function authMiddleware(c: Context) {
     if ("status" in user) {
         return user;
     }
-    return user;
+    return handler(c, user);
 }
 
 class AuthMiddleware {

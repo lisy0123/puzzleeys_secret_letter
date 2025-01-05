@@ -5,3 +5,14 @@ export interface UserData {
     provider: string;
     created_at: string;
 }
+
+export interface PostData {
+    id: string;
+    title: string;
+    content: string;
+    color: string;
+    receiver_id?: string;
+    views: number;
+    puzzle_count: number;
+    expires_at: string;
+}
