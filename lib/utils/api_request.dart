@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+enum ApiType { post, get, delete, patch, put }
 
 Future<Map<String, dynamic>> apiRequest(
   String endPoint,

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_validate.dart';

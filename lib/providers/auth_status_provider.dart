@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
