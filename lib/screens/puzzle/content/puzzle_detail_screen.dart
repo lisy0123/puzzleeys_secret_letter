@@ -121,7 +121,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       alignment: Alignment.center,
       height: 2300.0.w,
       child: RawScrollbar(
-        thumbColor: ColorMatch(widget.puzzleColor)(),
+        thumbColor: ColorMatch(baseColor: widget.puzzleColor)(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),

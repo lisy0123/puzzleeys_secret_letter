@@ -72,8 +72,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return SafeArea(
       top: true,
       child: Container(
-        margin: EdgeInsets.all(40.0.w),
-        child: const StatusBar(),
+        margin: EdgeInsets.symmetric(horizontal: 40.0.w),
+        child: StatusBar(),
       ),
     );
   }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
 class ColorMatch {
-  final Color baseColor;
+  final Color? baseColor;
+  final String? stringColor;
 
-  const ColorMatch(this.baseColor);
+  const ColorMatch({this.baseColor, this.stringColor});
 
   Color call() {
     final colorMap = {
@@ -16,17 +17,21 @@ class ColorMatch {
       CustomColors.colorSkyBlue: CustomColors.colorLightSkyBlue,
       CustomColors.colorBlue: CustomColors.colorLightBlue,
       CustomColors.colorPurple: CustomColors.colorLightPurple,
-
-      CustomColors.colorLightPink: CustomColors.colorPink,
-      CustomColors.colorLightRed: CustomColors.colorRed,
-      CustomColors.colorLightOrange: CustomColors.colorOrange,
-      CustomColors.colorLightYellow: CustomColors.colorYellow,
-      CustomColors.colorLightGreen: CustomColors.colorGreen,
-      CustomColors.colorLightSkyBlue: CustomColors.colorSkyBlue,
-      CustomColors.colorLightBlue: CustomColors.colorBlue,
-      CustomColors.colorLightPurple: CustomColors.colorPurple,
+      'Pink': CustomColors.colorPink,
+      'Red': CustomColors.colorRed,
+      'Orange': CustomColors.colorOrange,
+      'Yellow': CustomColors.colorYellow,
+      'Green': CustomColors.colorGreen,
+      'SkyBlue': CustomColors.colorSkyBlue,
+      'Blue': CustomColors.colorBlue,
+      'Purple': CustomColors.colorPurple,
     };
-
-    return colorMap[baseColor] ?? Colors.white;
+    if (baseColor != null) {
+      return colorMap[baseColor] ?? Colors.white;
+    } else if (stringColor != null) {
+      return colorMap[stringColor] ?? Colors.white;
+    } else {
+      return Colors.white;
+    }
   }
 }

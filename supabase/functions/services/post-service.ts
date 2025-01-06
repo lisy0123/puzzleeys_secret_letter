@@ -11,22 +11,39 @@ export class PostService {
             if ("status" in posts) {
                 return posts;
             }
-
-            return createResponse(ResponseCode.SUCCESS, "Login successful.", posts);
+            return createResponse(
+                ResponseCode.SUCCESS,
+                "Get global posts successful.",
+                posts
+            );
         });
     }
 
     static subject(): Promise<Response> {
         return ResponseUtils.handleRequest(async () => {
-            return createResponse(ResponseCode.SUCCESS, "Subject.", {});
+            const posts = await PostRepository.getSubjectPosts();
+            if ("status" in posts) {
+                return posts;
+            }
+            return createResponse(
+                ResponseCode.SUCCESS,
+                "Get subject posts successful.",
+                posts
+            );
         });
     }
 
     static personal(user: User): Promise<Response> {
         return ResponseUtils.handleRequest(async () => {
-            return createResponse(ResponseCode.SUCCESS, "Login successful.", {
-                user,
-            });
+            const posts = await PostRepository.getPersonalPosts(user);
+            if ("status" in posts) {
+                return posts;
+            }
+            return createResponse(
+                ResponseCode.SUCCESS,
+                "Get personal posts successful.",
+                posts
+            );
         });
     }
 }

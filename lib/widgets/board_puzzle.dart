@@ -19,7 +19,7 @@ class BoardPuzzle extends CustomPainter {
     gradient = LinearGradient(
       colors: [
         puzzleColor,
-        ColorMatch(puzzleColor)(),
+        ColorMatch(baseColor: puzzleColor)(),
       ],
       begin: Alignment.topCenter,
       end: Alignment.bottomRight,

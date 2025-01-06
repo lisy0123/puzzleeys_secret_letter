@@ -1,9 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
@@ -11,10 +10,7 @@ import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 class PuzzleBackground extends StatefulWidget {
   final PuzzleType puzzleType;
 
-  const PuzzleBackground({
-    super.key,
-    required this.puzzleType,
-  });
+  const PuzzleBackground({super.key, required this.puzzleType});
 
   @override
   State<PuzzleBackground> createState() => _PuzzleBackgroundState();
@@ -22,38 +18,18 @@ class PuzzleBackground extends StatefulWidget {
 
 class _PuzzleBackgroundState extends State<PuzzleBackground> {
   late Offset _dragOffset = Offset.zero;
-  late List<Color> _cachedColors;
 
   @override
   void initState() {
     super.initState();
-    _initializeColors();
-  }
-
-  void _initializeColors() {
-    final List<Color> colors = [
-      Colors.white,
-      Colors.white,
-      Colors.white,
-      Colors.white,
-      Colors.white,
-      CustomColors.colorPink,
-      CustomColors.colorRed,
-      CustomColors.colorOrange,
-      CustomColors.colorYellow,
-      CustomColors.colorGreen,
-      CustomColors.colorSkyBlue,
-      CustomColors.colorBlue,
-      CustomColors.colorPurple,
-    ];
-    _cachedColors = List.generate(
-      8 * 18,
-      (_) => colors[Random().nextInt(colors.length)],
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.watch<PuzzleProvider>().colors;
     final double scaleFactor = context.watch<PuzzleScaleProvider>().scaleFactor;
     final PuzzleConfig config = PuzzleConfig(
       scaleFactor: scaleFactor,
@@ -65,30 +41,35 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
       totalRows: 18,
     );
 
-    return GestureDetector(
-      onPanUpdate: (details) {
-        setState(() {
-          _dragOffset = _calculateNewOffset(details.delta, config);
-        });
-      },
-      child: CustomMultiChildLayout(
-        delegate: PuzzleLayoutDelegate(
-          config: config,
-          dragOffset: _dragOffset,
-        ),
-        children: List.generate(
-          config.totalItems,
-          (index) => PuzzleContent(
-            row: index ~/ config.itemsPerRow,
-            column: index % config.itemsPerRow,
-            index: index,
-            puzzleHeight: config.puzzleHeight,
-            scaleFactor: scaleFactor,
-            puzzleType: widget.puzzleType,
-            puzzleColor: _cachedColors[index],
+    return Stack(
+      children: [
+        GestureDetector(
+          onPanUpdate: (details) {
+            setState(() {
+              _dragOffset = _calculateNewOffset(details.delta, config);
+            });
+          },
+          child: CustomMultiChildLayout(
+            delegate: PuzzleLayoutDelegate(
+              config: config,
+              dragOffset: _dragOffset,
+            ),
+            children: List.generate(
+              config.totalItems,
+              (index) => PuzzleContent(
+                key: ValueKey(index),
+                row: index ~/ config.itemsPerRow,
+                column: index % config.itemsPerRow,
+                index: index,
+                puzzleHeight: config.puzzleHeight,
+                scaleFactor: scaleFactor,
+                puzzleType: widget.puzzleType,
+                puzzleColor: colors[index],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
