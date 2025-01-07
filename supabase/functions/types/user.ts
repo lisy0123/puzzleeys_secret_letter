@@ -8,6 +8,7 @@ export interface UserData {
 
 export interface PostData {
     id: string;
+    puzzle_index?: number;
     title: string;
     content: string;
     color: string;

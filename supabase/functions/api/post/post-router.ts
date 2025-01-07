@@ -17,7 +17,7 @@ function handleSubject(_c: Context, user: User) {
 }
 
 function handlePersonal(_c: Context, user: User) {
-    return postController.executeFunction("subject", user);
+    return postController.executeFunction("personal", user);
 }
 
 postRouter.get("/global", (c) => withAuth(c, handleGlobal));

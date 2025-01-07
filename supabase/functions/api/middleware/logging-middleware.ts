@@ -32,7 +32,9 @@ export class LoggingMiddleware {
             }
             const clonedResponse = c.res.clone();
             const responseBody = await LoggingMiddleware.processBody(
-                clonedResponse.body
+                clonedResponse.body,
+                c.req.method,
+                c.req.url
             );
 
             LoggingMiddleware.logRequestResponse(
@@ -92,15 +94,33 @@ export class LoggingMiddleware {
         );
     }
 
-    static async processBody(body: unknown): Promise<string | null> {
+    static async processBody(
+        body: unknown,
+        method: string,
+        url: string
+    ): Promise<string | null> {
         if (body instanceof ReadableStream) {
             const bodyContent = await LoggingMiddleware.readStream(body);
             const parsedBody = JSON.parse(bodyContent || "{}");
+
+            let result;
+            if (
+                parsedBody?.result != null &&
+                method === "GET" &&
+                (url.endsWith("/api/post/global") ||
+                    url.endsWith("/api/post/subject") ||
+                    url.endsWith("/api/post/personal"))
+            ) {
+                result = "[Readablestream]";
+            } else {
+                result = parsedBody?.result;
+            }
+
             return JSON.stringify(
                 {
                     code: parsedBody?.code,
                     message: parsedBody?.message,
-                    result: parsedBody?.result,
+                    result: result,
                 },
                 null,
                 2

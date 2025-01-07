@@ -6,9 +6,14 @@ import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_background.dart';
 
-class PuzzleSubjectScreen extends StatelessWidget {
+class PuzzleSubjectScreen extends StatefulWidget {
   const PuzzleSubjectScreen({super.key});
 
+  @override
+  State<PuzzleSubjectScreen> createState() => _PuzzleSubjectScreenState();
+}
+
+class _PuzzleSubjectScreenState extends State<PuzzleSubjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PuzzleProvider>(
@@ -18,7 +23,10 @@ class PuzzleSubjectScreen extends StatelessWidget {
             text: MessageStrings.loadingMessages[LoadingType.setting]!,
           );
         }
-        return PuzzleBackground(puzzleType: PuzzleType.subject);
+        return PuzzleBackground(
+          puzzleType: PuzzleType.subject,
+          colors: provider.colors,
+        );
       },
     );
   }

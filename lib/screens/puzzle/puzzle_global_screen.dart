@@ -23,8 +23,12 @@ class _PuzzleGlobalScreenState extends State<PuzzleGlobalScreen> {
             text: MessageStrings.loadingMessages[LoadingType.setting]!,
           );
         }
-        return PuzzleBackground(puzzleType: PuzzleType.global);
+        return PuzzleBackground(
+          puzzleType: PuzzleType.global,
+          colors: provider.colors,
+        );
       },
     );
   }
 }
+

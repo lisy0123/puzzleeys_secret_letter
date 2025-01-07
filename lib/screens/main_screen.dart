@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
@@ -58,8 +60,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildTabBarView() {
     return TabBarView(
       controller: _tabController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [
+      physics: NeverScrollableScrollPhysics(),
+      children: [
         PuzzleGlobalScreen(),
         PuzzleSubjectScreen(),
         PuzzlePersonalScreen(),
@@ -107,8 +109,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
           ),
           (_tabController.index == 0)
-              ? CustomCircle(svgImage: 'cir_shuffle', onTap: () {})
-              : SizedBox(height: 1),
+              ? CustomCircle(
+                  svgImage: 'cir_shuffle',
+                  onTap: () {
+                    context.read<PuzzleProvider>().updateShuffle(true);
+                    context
+                        .read<PuzzleProvider>()
+                        .initializeColors(PuzzleType.global);
+                  })
+              : SizedBox.shrink(),
         ],
       ),
     );

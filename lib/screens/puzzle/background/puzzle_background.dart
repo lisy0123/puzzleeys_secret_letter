@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -6,30 +7,45 @@ import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleBackground extends StatefulWidget {
   final PuzzleType puzzleType;
+  final List<Color> colors;
 
-  const PuzzleBackground({super.key, required this.puzzleType});
+  const PuzzleBackground({
+    super.key,
+    required this.puzzleType,
+    required this.colors,
+  });
 
   @override
   State<PuzzleBackground> createState() => _PuzzleBackgroundState();
 }
 
 class _PuzzleBackgroundState extends State<PuzzleBackground> {
+  late final StreamSubscription _authSubscription;
   late Offset _dragOffset = Offset.zero;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
+    _authSubscription =
+        Supabase.instance.client.auth.onAuthStateChange.listen((event) {
+      if (mounted) {
+        context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
+      }
     });
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _authSubscription.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final colors = context.watch<PuzzleProvider>().colors;
     final double scaleFactor = context.watch<PuzzleScaleProvider>().scaleFactor;
     final PuzzleConfig config = PuzzleConfig(
       scaleFactor: scaleFactor,
@@ -64,7 +80,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
                 puzzleHeight: config.puzzleHeight,
                 scaleFactor: scaleFactor,
                 puzzleType: widget.puzzleType,
-                puzzleColor: colors[index],
+                puzzleColor: widget.colors[index],
               ),
             ),
           ),

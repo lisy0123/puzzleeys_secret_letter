@@ -3,36 +3,50 @@ import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthStatusProvider with ChangeNotifier {
-  late bool _isLoggedIn = true;
-  late bool _isLoading = false;
+  bool _isLoggedIn = true;
+  bool _isLoading = false;
 
   bool get isLoggedIn => _isLoggedIn;
   bool get isLoading => _isLoading;
 
-  void checkLoginStatus() async {
-    _isLoading = true;
-    notifyListeners();
+  Future<void> checkLoginStatus() async {
+    _updateLoading(true);
 
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
-    if (token != null) {
-      try {
-        final responseData =
-        await apiRequest('/api/auth/check_user', ApiType.get);
-
-        if (responseData['code'] != 200) {
-          _isLoggedIn = false;
-          throw Exception('Error: ${responseData['message']}');
-        } else {
-          _isLoggedIn = true;
-        }
-      } catch (error) {
-        _isLoggedIn = false;
-        throw Exception('Error during user verification: $error');
+    try {
+      final currentSession = Supabase.instance.client.auth.currentSession;
+      if (currentSession == null) {
+        _updateLoginStatus(false);
+        return;
       }
-    } else {
-      _isLoggedIn = false;
+
+      final responseData =
+          await apiRequest('/api/auth/check_user', ApiType.get);
+
+      if (responseData['code'] == 200) {
+        _updateLoginStatus(true);
+      } else {
+        _updateLoginStatus(false);
+        debugPrint('Error: ${responseData['message']}');
+      }
+    } catch (error) {
+      _updateLoginStatus(false);
+      debugPrint('Error during user verification: $error');
+    } finally {
+      _updateLoading(false);
     }
-    _isLoading = false;
-    notifyListeners();
+  }
+
+  void _updateLoading(bool value) {
+    if (_isLoading != value) {
+      _isLoading = value;
+      notifyListeners();
+    }
+  }
+
+  void _updateLoginStatus(bool value) {
+    if (_isLoggedIn != value) {
+      _isLoggedIn = value;
+      notifyListeners();
+    }
   }
 }

@@ -48,7 +48,7 @@ export class PostRepository {
     }
 
     static async getPersonalPosts(user: User): Promise<Response | PostData[]> {
-        const posts = await this.fetchPosts("global_post", {
+        const posts = await this.fetchPosts("personal_post", {
             receiver_id: uuidToBase64(user.id),
         });
         return posts;

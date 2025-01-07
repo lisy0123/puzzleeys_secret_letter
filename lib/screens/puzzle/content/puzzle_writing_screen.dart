@@ -22,30 +22,23 @@ class PuzzleWritingScreen extends StatefulWidget {
 }
 
 class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  late double _height;
 
   @override
   void initState() {
     super.initState();
-    _height = 2800.0.w;
-    _focusNode.addListener(_handleFocusChange);
+    _focusNode.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    _textEditingController.dispose();
-    _focusNode.removeListener(_handleFocusChange);
+    _textController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
-  void _handleFocusChange() {
-    setState(() {
-      _height = _focusNode.hasFocus ? 1200.0.w : 2800.0.w;
-    });
-  }
+  double get _dynamicHeight => _focusNode.hasFocus ? 1200.0.w : 2800.0.w;
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +49,12 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         backgroundColor: Colors.transparent,
         body: Center(
           child: Padding(
-            padding: EdgeInsets.only(
-              left: 200.0.w,
-              right: 200.0.w,
+            padding: EdgeInsets.symmetric(horizontal: 200.0.w).copyWith(
               top: (MediaQuery.of(context).size.height - 786.0.h) / 2,
             ),
             child: Column(
               children: [
-                _buildBackButton(context),
+                _buildBackButton(),
                 _buildMidContent(),
                 SizedBox(height: 200.0.w),
                 _buildPutButton(),
@@ -75,8 +66,8 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     );
   }
 
-  Widget _buildBackButton(BuildContext context) {
-    return Container(
+  Widget _buildBackButton() {
+    return Align(
       alignment: Alignment.centerLeft,
       child: PuzzleScreenHandler().buildIconButton(
         iconName: 'btn_back',
@@ -92,12 +83,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   Widget _buildMidContent() {
-    return Container(
-      height: _height,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: _dynamicHeight,
       decoration: BoxDecoration(
-        color: (widget.reply)
-            ? Colors.white.withValues(alpha: 0.7)
-            : Colors.white.withValues(alpha: 0.9),
+        color: Colors.white.withValues(alpha: widget.reply ? 0.7 : 0.9),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -109,7 +99,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
 
   Widget _buildTextField() {
     return TextField(
-      controller: _textEditingController,
+      controller: _textController,
       focusNode: _focusNode,
       keyboardType: TextInputType.multiline,
       textInputAction: TextInputAction.newline,
@@ -124,19 +114,13 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   String _getHintText() {
-    if (widget.reply) {
-      return MessageStrings.writingReplyMessage;
-    }
-    switch (widget.puzzleType) {
-      case PuzzleType.global:
-        return MessageStrings.writingGlobalMessage;
-      case PuzzleType.subject:
-        return MessageStrings.writingSubjectMessage;
-      case PuzzleType.personal:
-        return MessageStrings.writingToOtherMessage;
-      default:
-        return MessageStrings.writingToMeMessage;
-    }
+    if (widget.reply) return MessageStrings.writingReplyMessage;
+    return {
+      PuzzleType.global: MessageStrings.writingGlobalMessage,
+      PuzzleType.subject: MessageStrings.writingSubjectMessage,
+      PuzzleType.personal: MessageStrings.writingToOtherMessage,
+      PuzzleType.me: MessageStrings.writingToMeMessage,
+    }[widget.puzzleType]!;
   }
 
   Widget _buildPutButton() {
@@ -148,7 +132,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   void _handlePutButtonTap() {
-    if (_textEditingController.text.length < 10) {
+    if (_textController.text.trim().length < 10) {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
       BuildDialog.show(iconName: _getIconName(), context: context);
@@ -156,20 +140,12 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   String _getIconName() {
-    if (widget.reply) {
-      return 'putReply';
-    }
-    switch (widget.puzzleType) {
-      case PuzzleType.global:
-        return 'putGlobal';
-      case PuzzleType.subject:
-        return 'putSubject';
-      case PuzzleType.personal:
-        return 'putPersonal';
-      case PuzzleType.me:
-        return 'putMe';
-      default:
-        return 'putReply';
-    }
+    if (widget.reply) return 'putReply';
+    return {
+      PuzzleType.global: 'putGlobal',
+      PuzzleType.subject: 'putSubject',
+      PuzzleType.personal: 'putPersonal',
+      PuzzleType.me: 'putMe',
+    }[widget.puzzleType]!;
   }
 }
