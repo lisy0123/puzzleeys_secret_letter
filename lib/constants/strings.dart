@@ -64,7 +64,7 @@ class MessageStrings {
   static String writingReplyMessage = '답장을 적어주세요.';
 
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
-  static String namingMessage = '감정에 이름을 붙여주세요.\n(30자 이내)';
+  static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
 
   static Map<Enum, String> warningMessages = {
@@ -97,11 +97,5 @@ class MessageStrings {
     OverlayType.writePersonalPuzzle: [-1, '누군가에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writePuzzleToMe: [-1, '미래의 나에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writeReply: [1, '답장을 보냈어요!'],
-  };
-
-  static Map<Enum, String> loadingMessages = {
-    LoadingType.login: '로그인 중...',
-    LoadingType.setting: '감정 불러오는 중...',
-    LoadingType.sending: '보내는 중...',
   };
 }

@@ -38,14 +38,14 @@ enum DialogType {
   list7,
   list8;
 
-  Widget showDialog(Color puzzleColor) {
+  Widget showDialog(Color? puzzleColor, String? puzzleText) {
     switch (this) {
       case DialogType.bead:
         return BeadDialog();
       case DialogType.list:
         return ListDialog();
       case DialogType.get:
-        return GetDialog(puzzleColor: puzzleColor);
+        return GetDialog(puzzleColor: puzzleColor!, puzzleText: puzzleText!);
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
@@ -56,32 +56,17 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
 
       case DialogType.putGlobal:
-        return PutDialog(
-          puzzleColor: puzzleColor,
-          puzzleType: PuzzleType.global,
-        );
+        return PutDialog(puzzleType: PuzzleType.global);
       case DialogType.putSubject:
-        return PutDialog(
-          puzzleColor: puzzleColor,
-          puzzleType: PuzzleType.subject,
-        );
+        return PutDialog(puzzleType: PuzzleType.subject);
       case DialogType.putWho:
         return ShowReceiverDialog();
       case DialogType.putPersonal:
-        return PutDialog(
-          puzzleColor: puzzleColor,
-          puzzleType: PuzzleType.personal,
-        );
+        return PutDialog(puzzleType: PuzzleType.personal);
       case DialogType.putMe:
-        return PutDialog(
-          puzzleColor: puzzleColor,
-          puzzleType: PuzzleType.me,
-        );
+        return PutDialog(puzzleType: PuzzleType.me);
       case DialogType.putReply:
-        return PutDialog(
-          puzzleColor: puzzleColor,
-          puzzleType: PuzzleType.reply,
-        );
+        return PutDialog(puzzleType: PuzzleType.reply);
       case DialogType.setDays:
         return SetDaysDialog();
 
@@ -110,18 +95,20 @@ extension DialogTypeExtension on DialogType {
 
 class DialogEnums extends StatelessWidget {
   final String iconName;
-  final Color puzzleColor;
+  final Color? puzzleColor;
+  final String? puzzleText;
 
   const DialogEnums({
     super.key,
     required this.iconName,
-    required this.puzzleColor,
+    this.puzzleColor,
+    this.puzzleText,
   });
 
   @override
   Widget build(BuildContext context) {
     final DialogType dialogType = DialogTypeExtension.fromString(
         (RegExp(r'^[0-8]$').hasMatch(iconName)) ? 'list$iconName' : iconName);
-    return dialogType.showDialog(puzzleColor);
+    return dialogType.showDialog(puzzleColor, puzzleText);
   }
 }

@@ -56,7 +56,7 @@ class _CustomCircleState extends State<CustomCircle>
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 50),
+      duration: const Duration(milliseconds: 100),
       vsync: this,
     );
 

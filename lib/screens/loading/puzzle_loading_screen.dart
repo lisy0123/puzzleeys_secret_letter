@@ -1,13 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleLoadingScreen extends StatefulWidget {
-  final String text;
-
-  const PuzzleLoadingScreen({super.key, required this.text});
+  const PuzzleLoadingScreen({super.key});
 
   @override
   State<PuzzleLoadingScreen> createState() => _PuzzleLoadingScreenState();
@@ -42,32 +39,20 @@ class _PuzzleLoadingScreenState extends State<PuzzleLoadingScreen>
     return Container(
       color: Colors.black54,
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(0, _animation.value),
-                  child: Transform.rotate(
-                    angle: -pi / 4,
-                    child: CustomPaint(
-                      size: Size(280.0.w, 280.0.w),
-                      painter: TiltedPuzzlePiece(puzzleColor: Colors.white),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 40.0.w),
-            CustomText.textDisplay(
-              text: widget.text,
-              stroke: true,
-              context: context,
-            ),
-          ],
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Transform.translate(
+              offset: Offset(0, _animation.value),
+              child: Transform.rotate(
+                angle: -pi / 4,
+                child: CustomPaint(
+                  size: Size(280.0.w, 280.0.w),
+                  painter: TiltedPuzzlePiece(puzzleColor: Colors.white),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

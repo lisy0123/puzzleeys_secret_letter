@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
@@ -47,9 +45,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
       children: [
         MainScreen(),
         if (!isLoggedIn) LoginScreen(),
-        if (isLoading)
-        PuzzleLoadingScreen(
-            text: MessageStrings.loadingMessages[LoadingType.login]!),
+        if (isLoading) PuzzleLoadingScreen(),
       ],
     );
   }

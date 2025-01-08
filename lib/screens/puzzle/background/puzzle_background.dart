@@ -11,12 +11,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleBackground extends StatefulWidget {
   final PuzzleType puzzleType;
-  final List<Color> colors;
+  final List<Map<String, dynamic>> puzzleList;
 
   const PuzzleBackground({
     super.key,
     required this.puzzleType,
-    required this.colors,
+    required this.puzzleList,
   });
 
   @override
@@ -80,7 +80,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
                 puzzleHeight: config.puzzleHeight,
                 scaleFactor: scaleFactor,
                 puzzleType: widget.puzzleType,
-                puzzleColor: widget.colors[index],
+                puzzleData: widget.puzzleList[index],
               ),
             ),
           ),

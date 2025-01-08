@@ -9,10 +9,12 @@ import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class GetDialog extends StatelessWidget {
   final Color puzzleColor;
+  final String puzzleText;
 
   const GetDialog({
     super.key,
     required this.puzzleColor,
+    required this.puzzleText,
   });
 
   @override
@@ -28,10 +30,7 @@ class GetDialog extends StatelessWidget {
             child: SizedBox(
               height: 340.0.w,
               width: double.infinity,
-              child: CustomText.textContent(
-                text: '글자수 30자글자수 30자글자수 30자글자수 30자글자dh',
-                context: context,
-              ),
+              child: CustomText.textContent(text: puzzleText, context: context),
             ),
           ),
           CustomButton(

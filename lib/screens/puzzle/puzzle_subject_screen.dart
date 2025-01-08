@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_background.dart';
@@ -19,13 +18,11 @@ class _PuzzleSubjectScreenState extends State<PuzzleSubjectScreen> {
     return Consumer<PuzzleProvider>(
       builder: (context, provider, child) {
         if (provider.isLoading) {
-          return PuzzleLoadingScreen(
-            text: MessageStrings.loadingMessages[LoadingType.setting]!,
-          );
+          return PuzzleLoadingScreen();
         }
         return PuzzleBackground(
           puzzleType: PuzzleType.subject,
-          colors: provider.colors,
+          puzzleList: provider.puzzleList,
         );
       },
     );

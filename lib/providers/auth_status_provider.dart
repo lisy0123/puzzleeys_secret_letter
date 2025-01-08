@@ -26,7 +26,6 @@ class AuthStatusProvider with ChangeNotifier {
         _updateLoginStatus(true);
       } else {
         _updateLoginStatus(false);
-        debugPrint('Error: ${responseData['message']}');
       }
     } catch (error) {
       _updateLoginStatus(false);

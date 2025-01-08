@@ -16,14 +16,9 @@ import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
-  final Color puzzleColor;
   final PuzzleType puzzleType;
 
-  const PutDialog({
-    super.key,
-    required this.puzzleColor,
-    required this.puzzleType,
-  });
+  const PutDialog({super.key, required this.puzzleType});
 
   @override
   State<PutDialog> createState() => _PutDialogState();
@@ -66,7 +61,8 @@ class _PutDialogState extends State<PutDialog> {
             Column(
               children: [
                 GestureDetector(
-                  onTap: () => context.read<ColorPickerProvider>().updateOpacity(),
+                  onTap: () =>
+                      context.read<ColorPickerProvider>().updateOpacity(),
                   child: _buildPuzzle(context),
                 ),
                 SizedBox(

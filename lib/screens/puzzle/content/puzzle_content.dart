@@ -14,7 +14,7 @@ class PuzzleContent extends StatelessWidget {
   final double puzzleHeight;
   final double scaleFactor;
   final PuzzleType puzzleType;
-  final Color puzzleColor;
+  final Map<String, dynamic> puzzleData;
 
   const PuzzleContent({
     super.key,
@@ -24,13 +24,15 @@ class PuzzleContent extends StatelessWidget {
     required this.puzzleHeight,
     required this.scaleFactor,
     required this.puzzleType,
-    required this.puzzleColor,
+    required this.puzzleData,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color puzzleColor = puzzleData['color'];
     final rotationAngle = _getRotationAngle();
     final void Function() onTap;
+
     if (puzzleColor == Colors.white) {
       if (puzzleType == PuzzleType.personal) {
         onTap = () {
@@ -50,7 +52,7 @@ class PuzzleContent extends StatelessWidget {
         };
       }
     } else {
-      onTap = () => _showPuzzleDialog(puzzleColor, context);
+      onTap = () => _showPuzzleDialog(puzzleData, context);
     }
 
     return LayoutId(
@@ -77,12 +79,12 @@ class PuzzleContent extends StatelessWidget {
     return (row % 2 == column % 2) ? pi / 2 : pi;
   }
 
-  void _showPuzzleDialog(Color puzzleColor, BuildContext context) {
+  void _showPuzzleDialog(Map<String, dynamic> puzzleData, BuildContext context) {
     PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleColor.withValues(alpha: 0.8),
+      barrierColor: puzzleData['color'].withValues(alpha: 0.8),
       child: PuzzleDetailScreen(
         index: index,
-        puzzleColor: puzzleColor,
+        puzzleData: puzzleData,
         puzzleType: puzzleType,
       ),
       context: context,

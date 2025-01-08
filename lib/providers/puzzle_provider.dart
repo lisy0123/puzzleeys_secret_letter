@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
@@ -6,12 +7,25 @@ import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleProvider extends ChangeNotifier {
-  List<Color> _colors = List.filled(8 * 18, Colors.white);
+  List<Map<String, dynamic>> _puzzleList = List<Map<String, dynamic>>.generate(
+    8 * 18,
+    (index) => {
+      'id': null,
+      'puzzle_index': index,
+      'title': null,
+      'content': null,
+      'color': Colors.white,
+      'receiver_id': null,
+      'views': null,
+      'puzzle_count': null,
+      'created_at': null,
+    },
+  );
   PuzzleType? _currentPuzzleType;
   bool _isLoading = false;
   bool _isShuffle = false;
 
-  List<Color> get colors => _colors;
+  List<Map<String, dynamic>> get puzzleList => _puzzleList;
   bool get isLoading => _isLoading;
   bool get isShuffle => _isShuffle;
 
@@ -27,23 +41,38 @@ class PuzzleProvider extends ChangeNotifier {
       return;
     }
 
+    _puzzleList = List<Map<String, dynamic>>.generate(
+      8 * 18,
+      (index) => {
+        'id': null,
+        'puzzle_index': index,
+        'title': null,
+        'content': null,
+        'color': Colors.white,
+        'receiver_id': null,
+        'puzzle_count': null,
+        'created_at': null,
+      },
+    );
+    notifyListeners();
+
+    final currentSession = Supabase.instance.client.auth.currentSession;
+    if (currentSession == null) {
+      updateShuffle(true);
+      return;
+    }
+
     try {
-      _colors = List.filled(8 * 18, Colors.white);
-      notifyListeners();
-
-      if (!await _hasValidToken()) return;
-
       _updateLoading(true);
       _currentPuzzleType = puzzleType;
 
       final puzzleResponse = await _fetchPuzzleResponse(puzzleType);
       if (puzzleResponse['code'] == 200) {
         final puzzleList = puzzleResponse['result'] as List<dynamic>;
-        _refreshPuzzleColors(puzzleList, puzzleType);
-      } else {
-        debugPrint('Error: ${puzzleResponse['message']}');
+        _refreshPuzzles(puzzleList, puzzleType);
       }
     } catch (error) {
+      updateShuffle(true);
       debugPrint('Error initializing puzzle: $error');
     } finally {
       _updateLoading(false);
@@ -61,31 +90,35 @@ class PuzzleProvider extends ChangeNotifier {
     return await apiRequest(url, ApiType.get);
   }
 
-  void _refreshPuzzleColors(List<dynamic> puzzleList, PuzzleType puzzleType) {
-    final updatedColors = List<Color>.from(_colors);
-    final indexes = List.generate(_colors.length, (index) => index);
+  void _refreshPuzzles(List<dynamic> puzzleData, PuzzleType puzzleType) {
+    final updatedPuzzleList = List<Map<String, dynamic>>.from(_puzzleList);
+    final indexes = List.generate(_puzzleList.length, (index) => index);
 
     if (puzzleType == PuzzleType.global) {
       indexes.shuffle();
     }
 
-    for (int i = 0; i < puzzleList.length; i++) {
-      final color = ColorMatch(stringColor: puzzleList[i]['color'])();
+    for (int i = 0; i < puzzleData.length; i++) {
       final targetIndex = (puzzleType == PuzzleType.global)
           ? indexes[i]
-          : puzzleList[i]['puzzle_index'];
-      updatedColors[targetIndex] = color;
+          : puzzleData[i]['puzzle_index'];
+
+      updatedPuzzleList[targetIndex] = {
+        ...updatedPuzzleList[targetIndex],
+        'id': puzzleData[i]['id'],
+        'title': puzzleData[i]['title'],
+        'content': puzzleData[i]['content'],
+        'color': ColorMatch(stringColor: puzzleData[i]['color'])(),
+        'receiver_id': puzzleData[i]['receiver_id'],
+        'puzzle_count': puzzleData[i]['puzzle_count'],
+        'created_at': puzzleData[i]['created_at'],
+      };
     }
 
-    if (!listEquals(_colors, updatedColors)) {
-      _colors = updatedColors;
+    if (!listEquals(_puzzleList, updatedPuzzleList)) {
+      _puzzleList = updatedPuzzleList;
       notifyListeners();
     }
-  }
-
-  Future<bool> _hasValidToken() async {
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
-    return token != null;
   }
 
   void _updateLoading(bool value) {

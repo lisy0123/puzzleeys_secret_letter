@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -8,17 +9,18 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_han
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/timer_util.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleDetailScreen extends StatefulWidget {
   final int index;
-  final Color puzzleColor;
+  final Map<String, dynamic> puzzleData;
   final PuzzleType puzzleType;
 
   const PuzzleDetailScreen({
     super.key,
     required this.index,
-    required this.puzzleColor,
+    required this.puzzleData,
     required this.puzzleType,
   });
 
@@ -27,12 +29,32 @@ class PuzzleDetailScreen extends StatefulWidget {
 }
 
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
+  late TimerUtil timerUtil;
+  StreamSubscription<String>? _timerSubscription;
+  String _remainingTime = '00:00:00';
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<WritingProvider>().updateOpacity(setToInitial: true);
     });
+
+    timerUtil = TimerUtil(widget.puzzleData['created_at']);
+    _timerSubscription = timerUtil.timeStream.listen((remainingTime) {
+      if (_remainingTime != remainingTime) {
+        setState(() {
+          _remainingTime = remainingTime;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timerSubscription?.cancel();
+    timerUtil.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,9 +78,9 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
                   ),
                   child: Column(
                     children: [
-                      _buildPuzzleDetails(context),
+                      _buildPuzzleDetails(widget.puzzleData),
                       SizedBox(height: 200.0.w),
-                      _buildReplyButton(context),
+                      _buildReplyButton(),
                     ],
                   ),
                 ),
@@ -68,11 +90,12 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  Widget _buildPuzzleDetails(BuildContext context) {
+  Widget _buildPuzzleDetails(Map<String, dynamic> puzzleData) {
     return GestureDetector(
       onDoubleTap: () => BuildDialog.show(
         iconName: 'get',
-        puzzleColor: widget.puzzleColor,
+        puzzleText: widget.puzzleData['title'],
+        puzzleColor: widget.puzzleData['color'],
         context: context,
       ),
       child: Container(
@@ -85,25 +108,25 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildTopContent(context),
+            _buildTopContent(),
             SizedBox(height: 40.0.w),
-            _buildMidContent(context),
+            _buildMidContent(),
             SizedBox(height: 40.0.w),
-            _buildBottomContent(context),
+            _buildBottomContent(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTopContent(BuildContext context) {
+  Widget _buildTopContent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PuzzleScreenHandler().buildSideText(
           iconName: 'btn_clock',
-          text: '05:12:38',
+          text: _remainingTime,
           context: context,
         ),
         PuzzleScreenHandler().buildIconButton(
@@ -116,18 +139,17 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  Widget _buildMidContent(BuildContext context) {
+  Widget _buildMidContent() {
     return Container(
       alignment: Alignment.center,
       height: 2300.0.w,
       child: RawScrollbar(
-        thumbColor: ColorMatch(baseColor: widget.puzzleColor)(),
+        thumbColor: ColorMatch(baseColor: widget.puzzleData['color'])(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
             child: Text(
-              // '수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 요즘 일기를 쓰지 않고 있었는데 오늘부터 다시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 글자수수수수기로 했어.동안 글자수수수수기로 했어.시 쓰기로 했어.날 다시 잡아서 균글자수 500자, 한동안 일기를 쭉 써오다가 00자, 한동일기를 쭉 써오다가',
-              '${widget.puzzleType} - ${widget.index}',
+              widget.puzzleData['content'],
               style: Theme.of(context).textTheme.displayLarge,
             ),
           ),
@@ -136,20 +158,21 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  Widget _buildBottomContent(BuildContext context) {
+  Widget _buildBottomContent() {
     return PuzzleScreenHandler().buildIconButton(
       iconName: 'bar_puzzle',
-      text: '135',
+      text: widget.puzzleData['puzzle_count'].toString(),
       onTap: () => BuildDialog.show(
         iconName: 'get',
-        puzzleColor: widget.puzzleColor,
+        puzzleText: widget.puzzleData['title'],
+        puzzleColor: widget.puzzleData['color'],
         context: context,
       ),
       context: context,
     );
   }
 
-  Widget _buildReplyButton(BuildContext context) {
+  Widget _buildReplyButton() {
     return CustomButton(
       iconName: 'btn_mail',
       iconTitle: CustomStrings.reply,

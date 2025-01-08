@@ -29,8 +29,9 @@ class IconDialog extends StatelessWidget {
 class BuildDialog {
   static void show({
     required String iconName,
+    String? puzzleText,
+    Color? puzzleColor,
     bool overlapped = false,
-    Color puzzleColor = Colors.transparent,
     bool simpleDialog = false,
     required BuildContext context,
   }) {
@@ -50,6 +51,7 @@ class BuildDialog {
               alignment: Alignment.topCenter,
               children: DialogContent(
                 iconName: iconName,
+                puzzleText: puzzleText,
                 puzzleColor: puzzleColor,
                 simpleDialog: simpleDialog,
               ).buildContent(context),

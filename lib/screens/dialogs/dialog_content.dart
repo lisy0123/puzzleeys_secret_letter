@@ -10,12 +10,14 @@ import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 
 class DialogContent {
   final String iconName;
-  final Color puzzleColor;
+  final String? puzzleText;
+  final Color? puzzleColor;
   final bool simpleDialog;
 
   const DialogContent({
     required this.iconName,
-    required this.puzzleColor,
+    this.puzzleText,
+    this.puzzleColor,
     required this.simpleDialog,
   });
 
@@ -57,8 +59,11 @@ class DialogContent {
   }
 
   Widget _buildBody(BuildContext context) {
-    final Widget dialogContent =
-        DialogEnums(iconName: iconName, puzzleColor: puzzleColor);
+    final Widget dialogContent = DialogEnums(
+      iconName: iconName,
+      puzzleColor: puzzleColor,
+      puzzleText: puzzleText,
+    );
 
     return Container(
       margin: EdgeInsets.only(top: simpleDialog ? 40.0.h : 90.0.h),

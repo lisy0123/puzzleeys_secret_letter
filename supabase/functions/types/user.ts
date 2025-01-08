@@ -13,7 +13,6 @@ export interface PostData {
     content: string;
     color: string;
     receiver_id?: string;
-    views: number;
     puzzle_count: number;
-    expires_at: string;
+    created_at: string;
 }

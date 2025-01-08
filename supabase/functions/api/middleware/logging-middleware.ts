@@ -6,193 +6,132 @@ export class LoggingMiddleware {
         const timestamp = new Date().toISOString();
 
         try {
-            const { requestHeaders, requestBody } =
-                await LoggingMiddleware.extractHeadersBody(c);
+            const { headers: requestHeaders, body: requestBody } =
+                await LoggingMiddleware.extractHeadersAndBody(c);
 
-            LoggingMiddleware.logRequestResponse(
-                "INFO",
+            LoggingMiddleware.log({
+                label: "REQUEST",
                 timestamp,
-                "Incoming Request",
-                c.req.method,
-                c.req.url,
-                requestHeaders,
-                requestBody
-                    ? JSON.stringify(
-                          LoggingMiddleware.maskSensitiveData(requestBody)
-                      )
-                    : null
-            );
+                method: c.req.method,
+                url: c.req.url,
+                headers: LoggingMiddleware.maskSensitiveData(requestHeaders),
+                body: requestBody,
+            });
 
             await next();
 
             const duration = Date.now() - start;
-            const responseHeaders: Record<string, string> = {};
-            for (const [key, value] of c.res.headers.entries()) {
-                responseHeaders[key] = value;
-            }
-            const clonedResponse = c.res.clone();
-            const responseBody = await LoggingMiddleware.processBody(
-                clonedResponse.body,
-                c.req.method,
-                c.req.url
-            );
+            const { headers: responseHeaders, body: responseBody } =
+                await LoggingMiddleware.extractResponseData(c);
 
-            LoggingMiddleware.logRequestResponse(
-                "INFO",
+            LoggingMiddleware.log({
+                label: "RESPONSE",
                 timestamp,
-                "Outgoing Response",
+                method: c.req.method,
+                url: c.req.url,
+                headers: responseHeaders,
+                body: responseBody,
+                duration,
+            });
+        } catch (error) {
+            LoggingMiddleware.logError(
+                timestamp,
                 c.req.method,
                 c.req.url,
-                responseHeaders,
-                responseBody,
-                duration
+                error as Error
             );
-        } catch (error: unknown) {
-            const timestamp = new Date().toISOString();
-            if (error instanceof Error) {
-                LoggingMiddleware.logError(
-                    timestamp,
-                    c.req.method,
-                    c.req.url,
-                    error
-                );
-            } else {
-                LoggingMiddleware.logError(timestamp, c.req.method, c.req.url);
-            }
             c.json("Internal Server Error", 500);
         }
     }
 
-    static maskSensitiveData(
-        data: Record<string, unknown>
-    ): Record<string, unknown> {
-        if (data && typeof data === "object") {
-            Object.keys(data).forEach((key) => {
-                if (
-                    typeof data[key] === "string" &&
-                    key.toLowerCase().includes("authorization")
-                ) {
-                    data[key] = "***";
-                }
-            });
+    static maskSensitiveData<T extends Record<string, string>>(
+        data: T
+    ): Record<string, string> {
+        const maskedData = Object.fromEntries(
+            Object.entries(data).map(([key, value]) =>
+                key.toLowerCase().includes("authorization")
+                    ? [key, "***"]
+                    : [key, value]
+            )
+        );
+        return maskedData as Record<string, string>;
+    }
+
+    static async extractHeadersAndBody(c: Context) {
+        const headers = ["content-type", "authorization"].reduce((acc, key) => {
+            const value = c.req.header(key);
+            if (value) acc[key] = value;
+            return acc;
+        }, {} as Record<string, string>);
+
+        let body: string | null = null;
+        try {
+            body = JSON.stringify(await c.req.json());
+        } catch {
+            body = null;
         }
-        return data;
+        return { headers, body };
+    }
+
+    static async extractResponseData(c: Context) {
+        const headers = Object.fromEntries(c.res.headers.entries());
+        const body =
+            c.res.body instanceof ReadableStream
+                ? await LoggingMiddleware.readStream(c.res.body)
+                : c.res.body
+                ? JSON.stringify(c.res.body)
+                : null;
+        return { headers, body };
     }
 
     static async readStream(stream: ReadableStream): Promise<string> {
         const reader = stream.getReader();
         const chunks: Uint8Array[] = [];
-        let done = false;
-
-        while (!done) {
-            const { value, done: isDone } = await reader.read();
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
             if (value) chunks.push(value);
-            done = isDone;
         }
-        return new TextDecoder().decode(
-            new Uint8Array(chunks.flatMap((chunk) => [...chunk]))
+
+        const combined = new Uint8Array(
+            chunks.reduce((total, chunk) => total + chunk.length, 0)
         );
-    }
-
-    static async processBody(
-        body: unknown,
-        method: string,
-        url: string
-    ): Promise<string | null> {
-        if (body instanceof ReadableStream) {
-            const bodyContent = await LoggingMiddleware.readStream(body);
-            const parsedBody = JSON.parse(bodyContent || "{}");
-
-            let result;
-            if (
-                parsedBody?.result != null &&
-                method === "GET" &&
-                (url.endsWith("/api/post/global") ||
-                    url.endsWith("/api/post/subject") ||
-                    url.endsWith("/api/post/personal"))
-            ) {
-                result = "[Readablestream]";
-            } else {
-                result = parsedBody?.result;
-            }
-
-            return JSON.stringify(
-                {
-                    code: parsedBody?.code,
-                    message: parsedBody?.message,
-                    result: result,
-                },
-                null,
-                2
-            );
+        
+        let offset = 0;
+        for (const chunk of chunks) {
+            combined.set(chunk, offset);
+            offset += chunk.length;
         }
-        return body
-            ? JSON.stringify(
-                  LoggingMiddleware.maskSensitiveData(
-                      body as Record<string, unknown>
-                  ),
-                  null,
-                  2
-              )
-            : null;
+        return new TextDecoder().decode(combined);
     }
 
-    static async extractHeadersBody(c: Context) {
-        let requestBody: Record<string, unknown> | null = null;
-        try {
-            requestBody = await c.req.json();
-        } catch (_error) {
-            requestBody = null;
-        }
-
-        const requestHeaders = ["content-type", "authorization"].reduce(
-            (acc, headerKey) => {
-                const headerValue = c.req.header(headerKey);
-                if (headerValue) acc[headerKey] = headerValue;
-                return acc;
-            },
-            {} as Record<string, string>
-        );
-
-        return { requestHeaders, requestBody };
-    }
-
-    static logRequestResponse(
-        type: string,
-        timestamp: string,
-        label: string,
-        method: string,
-        url: string,
-        headers: Record<string, string>,
-        body: string | null,
-        duration?: number
-    ) {
+    static log({
+        label,
+        timestamp,
+        method,
+        url,
+        headers,
+        body,
+        duration,
+    }: {
+        label: string;
+        timestamp: string;
+        method: string;
+        url: string;
+        headers: Record<string, string>;
+        body: string | null;
+        duration?: number;
+    }) {
         const logMessage = {
-            type,
-            timestamp,
             label,
+            timestamp,
             method,
             url,
-            headers: LoggingMiddleware.maskSensitiveData(headers),
-            body: body ? JSON.parse(body) : null,
+            headers,
+            body,
             duration,
         };
-        console.log(
-            JSON.stringify(
-                logMessage,
-                (key, value) => {
-                    if (
-                        key === "body" &&
-                        typeof value === "object" &&
-                        value !== null
-                    ) {
-                        return LoggingMiddleware.maskSensitiveData(value);
-                    }
-                    return value;
-                },
-                2
-            )
-        );
+        console.log(JSON.stringify(logMessage, null, 2));
     }
 
     static logError(
@@ -202,11 +141,12 @@ export class LoggingMiddleware {
         error?: Error
     ) {
         const errorLog = {
-            type: "ERROR",
+            label: "ERROR",
             timestamp,
-            requestInfo: { method, url },
-            message: error ? error.message : "An unknown error occurred",
-            stack: error instanceof Error ? error.stack : undefined,
+            method,
+            url,
+            message: error?.message || "An unknown error occurred",
+            stack: error?.stack,
             environment: Deno.env.get("ENV") || "local",
         };
         console.error(JSON.stringify(errorLog, null, 2));
