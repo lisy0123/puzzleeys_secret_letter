@@ -75,12 +75,22 @@ export class LoggingMiddleware {
 
     static async extractResponseData(c: Context) {
         const headers = Object.fromEntries(c.res.headers.entries());
-        const body =
-            c.res.body instanceof ReadableStream
-                ? await LoggingMiddleware.readStream(c.res.body)
-                : c.res.body
-                ? JSON.stringify(c.res.body)
-                : null;
+        let body: string | null = null;
+
+        if (c.res.body && c.res.body instanceof ReadableStream) {
+            const clonedResponse = c.res.clone();
+
+            body = await LoggingMiddleware.readStream(
+                clonedResponse.body as ReadableStream<Uint8Array>
+            );
+            Object.defineProperty(c.res, "body", {
+                value: clonedResponse.body,
+                writable: false,
+            });
+        } else if (c.res.body !== null) {
+            body = JSON.stringify(c.res.body);
+        }
+
         return { headers, body };
     }
 
@@ -96,7 +106,7 @@ export class LoggingMiddleware {
         const combined = new Uint8Array(
             chunks.reduce((total, chunk) => total + chunk.length, 0)
         );
-        
+
         let offset = 0;
         for (const chunk of chunks) {
             combined.set(chunk, offset);

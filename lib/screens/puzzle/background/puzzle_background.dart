@@ -53,7 +53,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
       puzzleHeight: 510.0.w,
       horizontalSpacing: -345.0.w,
       verticalSpacing: -15.0.w,
-      itemsPerRow: 8,
+      itemsPerRow: 9,
       totalRows: 18,
     );
 

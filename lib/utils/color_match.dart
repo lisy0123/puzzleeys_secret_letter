@@ -17,6 +17,8 @@ class ColorMatch {
       CustomColors.colorSkyBlue: CustomColors.colorLightSkyBlue,
       CustomColors.colorBlue: CustomColors.colorLightBlue,
       CustomColors.colorPurple: CustomColors.colorLightPurple,
+
+      'Base': Colors.white.withValues(alpha: 0.8),
       'Pink': CustomColors.colorPink,
       'Red': CustomColors.colorRed,
       'Orange': CustomColors.colorOrange,

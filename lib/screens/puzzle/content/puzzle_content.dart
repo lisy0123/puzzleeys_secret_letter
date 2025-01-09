@@ -33,27 +33,32 @@ class PuzzleContent extends StatelessWidget {
     final rotationAngle = _getRotationAngle();
     final void Function() onTap;
 
-    if (puzzleColor == Colors.white) {
-      if (puzzleType == PuzzleType.personal) {
-        onTap = () {
+    onTap = () {
+      if (puzzleColor == Colors.white) {
+        if (puzzleType == PuzzleType.personal) {
           BuildDialog.show(
             iconName: 'putWho',
             simpleDialog: true,
-            context: context,
+            context: context
           );
-        };
-      } else {
-        onTap = () {
+        } else {
           PuzzleScreenHandler.navigateScreen(
             barrierColor: Colors.white70,
             child: PuzzleWritingScreen(puzzleType: puzzleType, reply: false),
             context: context,
           );
-        };
+        }
+      } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
+        BuildDialog.show(
+          iconName: 'subject',
+          puzzleText: puzzleData['title'].replaceAll(r'\n', '\n'),
+          puzzleColor: puzzleData['color'],
+          context: context,
+        );
+      } else {
+        _showPuzzleDialog(puzzleData, context);
       }
-    } else {
-      onTap = () => _showPuzzleDialog(puzzleData, context);
-    }
+    };
 
     return LayoutId(
       id: index,
@@ -79,7 +84,8 @@ class PuzzleContent extends StatelessWidget {
     return (row % 2 == column % 2) ? pi / 2 : pi;
   }
 
-  void _showPuzzleDialog(Map<String, dynamic> puzzleData, BuildContext context) {
+  void _showPuzzleDialog(
+      Map<String, dynamic> puzzleData, BuildContext context) {
     PuzzleScreenHandler.navigateScreen(
       barrierColor: puzzleData['color'].withValues(alpha: 0.8),
       child: PuzzleDetailScreen(

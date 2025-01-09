@@ -14,7 +14,7 @@ interface PostQuery {
 
 export class PostRepository {
     static async getGlobalPosts(): Promise<Response | PostData[]> {
-        const allPosts = await this.fetchPosts("global_post", {}, 101);
+        const allPosts = await this.fetchPosts("global_post", {}, 111);
         if (this.isErrorResponse(allPosts)) {
             return allPosts;
         }
@@ -38,7 +38,7 @@ export class PostRepository {
             return remainingPosts;
         }
 
-        const randomPosts = this.getRandomPosts(remainingPosts, 70);
+        const randomPosts = this.getRandomPosts(remainingPosts, 80);
         return [...lowViewPosts, ...randomPosts];
     }
 

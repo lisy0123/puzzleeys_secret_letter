@@ -8,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleProvider extends ChangeNotifier {
   List<Map<String, dynamic>> _puzzleList = List<Map<String, dynamic>>.generate(
-    8 * 18,
+    9 * 18,
     (index) => {
       'id': null,
       'puzzle_index': index,
@@ -42,7 +42,7 @@ class PuzzleProvider extends ChangeNotifier {
     }
 
     _puzzleList = List<Map<String, dynamic>>.generate(
-      8 * 18,
+      9 * 18,
       (index) => {
         'id': null,
         'puzzle_index': index,
@@ -56,13 +56,8 @@ class PuzzleProvider extends ChangeNotifier {
     );
     notifyListeners();
 
-    final currentSession = Supabase.instance.client.auth.currentSession;
-    if (currentSession == null) {
-      updateShuffle(true);
-      return;
-    }
-
     try {
+      _waitForSession();
       _updateLoading(true);
       _currentPuzzleType = puzzleType;
 
@@ -71,13 +66,23 @@ class PuzzleProvider extends ChangeNotifier {
         final puzzleList = puzzleResponse['result'] as List<dynamic>;
         _refreshPuzzles(puzzleList, puzzleType);
       }
+      updateShuffle(false);
     } catch (error) {
       updateShuffle(true);
       debugPrint('Error initializing puzzle: $error');
+      return;
     } finally {
       _updateLoading(false);
-      updateShuffle(false);
     }
+  }
+
+  Future<void> _waitForSession() async {
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      return;
+    }
+    await Supabase.instance.client.auth.onAuthStateChange
+        .firstWhere((data) => data.session != null);
   }
 
   Future<Map<String, dynamic>> _fetchPuzzleResponse(

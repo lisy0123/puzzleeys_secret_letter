@@ -37,7 +37,7 @@ class _PuzzleLoadingScreenState extends State<PuzzleLoadingScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black54,
+      color: Colors.black38,
       child: Center(
         child: AnimatedBuilder(
           animation: _animation,

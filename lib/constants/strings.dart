@@ -20,6 +20,7 @@ class CustomStrings {
     'putMe': '감정 넣기',
     'putReply': '감정 넣기',
     'setDays': '언제 받을까요?',
+    'subject': '오늘 주제',
 
     '0': '계 정',
     '1': '내 글',
@@ -51,6 +52,8 @@ class CustomStrings {
   static String sendToWho = '누구에게 보낼 건가요?';
   static String sendToOther = '누군가에게';
   static String sendToMe = '미래의 나에게';
+
+  static String addToday = '오늘 하루';
 
   static List<String> questUnits = ['일', '회'];
   static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};

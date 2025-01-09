@@ -106,11 +106,11 @@ class _PutDialogState extends State<PutDialog> {
       child: opacity > 0.0
           ? Column(
               key: const ValueKey('visible'),
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-                  child: _buildTextField(context),
+                  child: Center(child: _buildTextField(context)),
                 ),
                 _buildPutButton(context),
               ],

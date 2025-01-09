@@ -10,6 +10,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/subject_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 
 enum DialogType {
@@ -28,6 +29,7 @@ enum DialogType {
   putMe,
   putReply,
   setDays,
+  subject,
   list0,
   list1,
   list2,
@@ -45,7 +47,10 @@ enum DialogType {
       case DialogType.list:
         return ListDialog();
       case DialogType.get:
-        return GetDialog(puzzleColor: puzzleColor!, puzzleText: puzzleText!);
+        return GetDialog(
+          puzzleColor: puzzleColor!,
+          puzzleText: puzzleText!,
+        );
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
@@ -69,7 +74,11 @@ enum DialogType {
         return PutDialog(puzzleType: PuzzleType.reply);
       case DialogType.setDays:
         return SetDaysDialog();
-
+      case DialogType.subject:
+        return SubjectDialog(
+          puzzleColor: puzzleColor!,
+          puzzleText: puzzleText!,
+        );
       case DialogType.list0:
         return AccountDialog();
       case DialogType.list3:

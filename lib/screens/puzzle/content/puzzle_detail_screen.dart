@@ -92,12 +92,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   Widget _buildPuzzleDetails(Map<String, dynamic> puzzleData) {
     return GestureDetector(
-      onDoubleTap: () => BuildDialog.show(
-        iconName: 'get',
-        puzzleText: widget.puzzleData['title'],
-        puzzleColor: widget.puzzleData['color'],
-        context: context,
-      ),
+      onDoubleTap: _showGetDialog,
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
@@ -149,7 +144,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
             child: Text(
-              widget.puzzleData['content'],
+              widget.puzzleData['content'].replaceAll(r'\n', '\n'),
               style: Theme.of(context).textTheme.displayLarge,
             ),
           ),
@@ -162,12 +157,16 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     return PuzzleScreenHandler().buildIconButton(
       iconName: 'bar_puzzle',
       text: widget.puzzleData['puzzle_count'].toString(),
-      onTap: () => BuildDialog.show(
-        iconName: 'get',
-        puzzleText: widget.puzzleData['title'],
-        puzzleColor: widget.puzzleData['color'],
-        context: context,
-      ),
+      onTap: _showGetDialog,
+      context: context,
+    );
+  }
+
+  void _showGetDialog() {
+    BuildDialog.show(
+      iconName: 'get',
+      puzzleText: widget.puzzleData['title'].replaceAll(r'\n', '\n'),
+      puzzleColor: widget.puzzleData['color'],
       context: context,
     );
   }
