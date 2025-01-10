@@ -57,7 +57,6 @@ class PuzzleProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _waitForSession();
       _updateLoading(true);
       _currentPuzzleType = puzzleType;
 
@@ -69,8 +68,12 @@ class PuzzleProvider extends ChangeNotifier {
       updateShuffle(false);
     } catch (error) {
       updateShuffle(true);
-      debugPrint('Error initializing puzzle: $error');
-      return;
+      if (error.toString().contains('Invalid or expired JWT')) {
+        await _waitForSession();
+        initializeColors(puzzleType);
+      } else {
+        debugPrint('Error initializing puzzle: $error');
+      }
     } finally {
       _updateLoading(false);
     }

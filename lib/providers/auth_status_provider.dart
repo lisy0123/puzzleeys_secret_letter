@@ -7,6 +7,7 @@ class AuthStatusProvider with ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoggedIn => _isLoggedIn;
+
   bool get isLoading => _isLoading;
 
   Future<void> checkLoginStatus() async {
@@ -29,7 +30,9 @@ class AuthStatusProvider with ChangeNotifier {
       }
     } catch (error) {
       _updateLoginStatus(false);
-      debugPrint('Error during user verification: $error');
+      if (!error.toString().contains('Invalid or expired JWT')) {
+        debugPrint('Error during user verification: $error');
+      }
     } finally {
       _updateLoading(false);
     }
