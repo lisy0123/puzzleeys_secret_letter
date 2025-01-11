@@ -194,7 +194,7 @@ class _PutDialogState extends State<PutDialog> {
         Navigator.popUntil(context, (route) => route.isFirst);
         CustomOverlay.show(
           text: MessageStrings.overlayMessages[overlayType]![1],
-          delayed: 2500,
+          delayed: 2000,
           puzzleVis: true,
           puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
           context: context,

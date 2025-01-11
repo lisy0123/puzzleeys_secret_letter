@@ -39,7 +39,7 @@ class PuzzleScreenHandler {
     required String text,
     required BuildContext context,
   }) {
-    final isLargeIcon = iconName == 'bar_puzzle' || iconName == 'btn_back';
+    final isLargeIcon = iconName == 'btn_back';
     final iconSize = isLargeIcon ? 140.0.w : 100.0.w;
 
     return Padding(

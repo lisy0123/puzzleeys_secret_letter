@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
@@ -39,7 +38,7 @@ class PuzzleContent extends StatelessWidget {
           BuildDialog.show(
             iconName: 'putWho',
             simpleDialog: true,
-            context: context
+            context: context,
           );
         } else {
           PuzzleScreenHandler.navigateScreen(
@@ -56,7 +55,13 @@ class PuzzleContent extends StatelessWidget {
           context: context,
         );
       } else {
-        _showPuzzleDialog(puzzleData, context);
+        BuildDialog.show(
+          iconName: 'more',
+          index: index,
+          puzzleData: puzzleData,
+          puzzleType: puzzleType,
+          context: context,
+        );
       }
     };
 
@@ -82,18 +87,5 @@ class PuzzleContent extends StatelessWidget {
 
   double _getRotationAngle() {
     return (row % 2 == column % 2) ? pi / 2 : pi;
-  }
-
-  void _showPuzzleDialog(
-      Map<String, dynamic> puzzleData, BuildContext context) {
-    PuzzleScreenHandler.navigateScreen(
-      barrierColor: puzzleData['color'].withValues(alpha: 0.8),
-      child: PuzzleDetailScreen(
-        index: index,
-        puzzleData: puzzleData,
-        puzzleType: puzzleType,
-      ),
-      context: context,
-    );
   }
 }

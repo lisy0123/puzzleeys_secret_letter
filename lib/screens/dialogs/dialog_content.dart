@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/dialog_enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
@@ -10,14 +11,20 @@ import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 
 class DialogContent {
   final String iconName;
-  final String? puzzleText;
+  final int? index;
   final Color? puzzleColor;
+  final String? puzzleText;
+  final Map<String, dynamic>? puzzleData;
+  final PuzzleType? puzzleType;
   final bool simpleDialog;
 
   const DialogContent({
     required this.iconName,
-    this.puzzleText,
+    this.index,
     this.puzzleColor,
+    this.puzzleText,
+    this.puzzleData,
+    this.puzzleType,
     required this.simpleDialog,
   });
 
@@ -61,8 +68,11 @@ class DialogContent {
   Widget _buildBody(BuildContext context) {
     final Widget dialogContent = DialogEnums(
       iconName: iconName,
+      index: index,
       puzzleColor: puzzleColor,
       puzzleText: puzzleText,
+      puzzleData: puzzleData,
+      puzzleType: puzzleType,
     );
 
     return Container(

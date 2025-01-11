@@ -46,7 +46,6 @@ class _CustomButtonState extends State<CustomButton>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
-
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05)
         .chain(
           CurveTween(curve: Curves.fastOutSlowIn),

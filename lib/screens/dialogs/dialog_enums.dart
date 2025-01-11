@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/get_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/more_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart';
@@ -15,7 +15,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 
 enum DialogType {
   list,
-  get,
+  more,
   cancel,
   limit,
   bead,
@@ -40,16 +40,23 @@ enum DialogType {
   list7,
   list8;
 
-  Widget showDialog(Color? puzzleColor, String? puzzleText) {
+  Widget showDialog(
+    int? index,
+    Color? puzzleColor,
+    String? puzzleText,
+    Map<String, dynamic>? puzzleData,
+    PuzzleType? puzzleType,
+  ) {
     switch (this) {
       case DialogType.bead:
         return BeadDialog();
       case DialogType.list:
         return ListDialog();
-      case DialogType.get:
-        return GetDialog(
-          puzzleColor: puzzleColor!,
-          puzzleText: puzzleText!,
+      case DialogType.more:
+        return MoreDialog(
+          index: index!,
+          puzzleData: puzzleData!,
+          puzzleType: puzzleType!,
         );
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
@@ -104,20 +111,32 @@ extension DialogTypeExtension on DialogType {
 
 class DialogEnums extends StatelessWidget {
   final String iconName;
+  final int? index;
   final Color? puzzleColor;
   final String? puzzleText;
+  final Map<String, dynamic>? puzzleData;
+  final PuzzleType? puzzleType;
 
   const DialogEnums({
     super.key,
     required this.iconName,
+    this.index,
     this.puzzleColor,
     this.puzzleText,
+    this.puzzleData,
+    this.puzzleType,
   });
 
   @override
   Widget build(BuildContext context) {
     final DialogType dialogType = DialogTypeExtension.fromString(
         (RegExp(r'^[0-8]$').hasMatch(iconName)) ? 'list$iconName' : iconName);
-    return dialogType.showDialog(puzzleColor, puzzleText);
+    return dialogType.showDialog(
+      index,
+      puzzleColor,
+      puzzleText,
+      puzzleData,
+      puzzleType,
+    );
   }
 }

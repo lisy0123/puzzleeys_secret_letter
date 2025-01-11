@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,12 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/utils/timer_util.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleDetailScreen extends StatefulWidget {
   final int index;
@@ -32,6 +36,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   late TimerUtil timerUtil;
   StreamSubscription<String>? _timerSubscription;
   String _remainingTime = '00:00:00';
+  Color _puzzleButton = Colors.white;
 
   @override
   void initState() {
@@ -92,7 +97,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   Widget _buildPuzzleDetails(Map<String, dynamic> puzzleData) {
     return GestureDetector(
-      onDoubleTap: _showGetDialog,
+      onDoubleTap: _getPuzzle,
       child: Container(
         height: 3000.0.w,
         decoration: BoxDecoration(
@@ -106,7 +111,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
             _buildTopContent(),
             SizedBox(height: 40.0.w),
             _buildMidContent(),
-            SizedBox(height: 40.0.w),
+            SizedBox(height: 20.0.w),
             _buildBottomContent(),
           ],
         ),
@@ -137,7 +142,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   Widget _buildMidContent() {
     return Container(
       alignment: Alignment.center,
-      height: 2300.0.w,
+      height: 2320.0.w,
       child: RawScrollbar(
         thumbColor: ColorMatch(baseColor: widget.puzzleData['color'])(),
         child: SingleChildScrollView(
@@ -154,21 +159,50 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   Widget _buildBottomContent() {
-    return PuzzleScreenHandler().buildIconButton(
-      iconName: 'bar_puzzle',
-      text: widget.puzzleData['puzzle_count'].toString(),
-      onTap: _showGetDialog,
-      context: context,
+    return IconButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      padding: EdgeInsets.symmetric(vertical: 10.0.w),
+      constraints: BoxConstraints(),
+      onPressed: _getPuzzle,
+      icon: SizedBox(
+        width: 600.0.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Transform.rotate(
+              angle: -pi / 4,
+              child: CustomPaint(
+                size: Size(220.0.w, 220.0.w),
+                painter: TiltedPuzzlePiece(
+                  puzzleColor: _puzzleButton,
+                  strokeWidth: 1.5,
+                ),
+              ),
+            ),
+            SizedBox(width: 40.0.w),
+            CustomText.textDisplay(
+              text: widget.puzzleData['puzzle_count'].toString(),
+              context: context,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  void _showGetDialog() {
-    BuildDialog.show(
-      iconName: 'get',
-      puzzleText: widget.puzzleData['title'].replaceAll(r'\n', '\n'),
-      puzzleColor: widget.puzzleData['color'],
+  void _getPuzzle() {
+    CustomOverlay.show(
+      text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
+      delayed: 2000,
+      puzzleVis: true,
+      puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
       context: context,
     );
+    setState(() {
+      _puzzleButton = widget.puzzleData['color'];
+    });
   }
 
   Widget _buildReplyButton() {

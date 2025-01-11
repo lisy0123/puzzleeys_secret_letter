@@ -12,7 +12,7 @@ class CustomStrings {
     'list': '더 보 기',
     'bead': '감정 퍼즐 구슬',
     'alarm': '신고하기',
-    'get': '감정 담기',
+    'more': '감정 보기',
 
     'putGlobal': '감정 넣기',
     'putSubject': '감정 넣기',
@@ -20,7 +20,7 @@ class CustomStrings {
     'putMe': '감정 넣기',
     'putReply': '감정 넣기',
     'setDays': '언제 받을까요?',
-    'subject': '오늘 주제',
+    'subject': '오늘의 주제',
 
     '0': '계 정',
     '1': '내 글',
@@ -44,7 +44,7 @@ class CustomStrings {
   static String alarm = '신고하기';
   static String back = '돌아가기';
   static String putEmotion = '감정 넣기';
-  static String get = '담 기';
+  static String more = '더 보 기';
   static String put = '넣 기';
   static String send = '보내기';
   static String logout = '로그아웃';

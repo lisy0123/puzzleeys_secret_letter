@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/dialog_content.dart';
 
 class IconDialog extends StatelessWidget {
@@ -29,8 +30,11 @@ class IconDialog extends StatelessWidget {
 class BuildDialog {
   static void show({
     required String iconName,
-    String? puzzleText,
+    int? index,
     Color? puzzleColor,
+    String? puzzleText,
+    Map<String, dynamic>? puzzleData,
+    PuzzleType? puzzleType,
     bool overlapped = false,
     bool simpleDialog = false,
     required BuildContext context,
@@ -51,8 +55,11 @@ class BuildDialog {
               alignment: Alignment.topCenter,
               children: DialogContent(
                 iconName: iconName,
-                puzzleText: puzzleText,
+                index: index,
                 puzzleColor: puzzleColor,
+                puzzleText: puzzleText,
+                puzzleData: puzzleData,
+                puzzleType: puzzleType,
                 simpleDialog: simpleDialog,
               ).buildContent(context),
             ),
