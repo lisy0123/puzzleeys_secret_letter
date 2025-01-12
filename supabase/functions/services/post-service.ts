@@ -33,15 +33,15 @@ export class PostService {
         });
     }
 
-    static personal(user: User): Promise<Response> {
+    static userPost(user: User, table: string): Promise<Response> {
         return ResponseUtils.handleRequest(async () => {
-            const posts = await PostRepository.getPersonalPosts(user);
+            const posts = await PostRepository.getUserPosts(user, table);
             if ("status" in posts) {
                 return posts;
             }
             return createResponse(
                 ResponseCode.SUCCESS,
-                "Get personal posts successful.",
+                `Get ${table}s successful.`,
                 posts
             );
         });

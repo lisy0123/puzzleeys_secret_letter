@@ -30,7 +30,6 @@ class SetDaysDialog extends StatelessWidget {
             CustomOverlay.show(
               text: MessageStrings
                   .overlayMessages[OverlayType.writePuzzleToMe]![1],
-              delayed: 2000,
               puzzleVis: true,
               puzzleNum: MessageStrings
                   .overlayMessages[OverlayType.writePuzzleToMe]![0],

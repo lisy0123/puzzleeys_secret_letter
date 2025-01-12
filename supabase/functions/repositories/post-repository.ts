@@ -19,24 +19,36 @@ export class PostRepository {
     }
 
     static getSubjectPosts(): Promise<Response | PostData[]> {
-        return this.fetchPosts("subject_post", {});
+        return this.fetchPosts("subject_post");
     }
 
-    static getPersonalPosts(user: User): Promise<Response | PostData[]> {
-        return this.fetchPosts("personal_post", {
-            receiver_id: uuidToBase64(user.id),
-        });
+    static getUserPosts(
+        user: User,
+        table: string
+    ): Promise<Response | PostData[]> {
+        let condition;
+        const body = uuidToBase64(user.id);
+
+        if (table == "personal_post") {
+            condition = { receiver_id: body };
+        } else if (table == "global_post") {
+            condition = { author_id: body };
+        }
+
+        return this.fetchPosts(table, condition);
     }
 
     static async fetchPosts(
         table: string,
-        query: {receiver_id?: string},
+        query?: { receiver_id?: string; author_id?: string }
     ): Promise<PostData[] | Response> {
         const queryBuilder = supabase.from(table).select("*");
 
-        Object.entries(query).forEach(([key, value]) => {
-            queryBuilder.filter(key, "eq", value);
-        });
+        if (query != null) {
+            Object.entries(query).forEach(([key, value]) => {
+                queryBuilder.filter(key, "eq", value);
+            });
+        }
 
         const { data, error } = await queryBuilder;
         if (error) {

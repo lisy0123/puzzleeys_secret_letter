@@ -57,7 +57,7 @@ class _QuestDialogState extends State<QuestDialog> {
               iconTopTitle: CustomStrings.questButtons[false]!,
               height: 260.0,
               width: 380.0,
-              borderStroke: 1.3,
+              borderStroke: 1.5,
               disable: true,
               onTap: () {},
             ),

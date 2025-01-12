@@ -20,7 +20,9 @@ export interface PostData {
     title: string;
     content: string;
     color: string;
+    author_id?: string;
     receiver_id?: string;
+    sender_id?: string;
     puzzle_count: number;
     created_at: string;
 }

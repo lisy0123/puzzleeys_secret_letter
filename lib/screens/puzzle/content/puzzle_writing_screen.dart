@@ -57,7 +57,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
                 _buildBackButton(),
                 _buildMidContent(),
                 SizedBox(height: 200.0.w),
-                _buildPutButton(),
+                CustomButton(
+                  iconName: 'btn_puzzle',
+                  iconTitle: CustomStrings.putEmotion,
+                  onTap: _handlePutButtonTap,
+                ),
               ],
             ),
           ),
@@ -91,24 +95,28 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 80.0.w, vertical: 10.0.w),
+        padding: EdgeInsets.symmetric(horizontal: 80.0.w),
         child: _buildTextField(),
       ),
     );
   }
 
   Widget _buildTextField() {
-    return TextField(
-      controller: _textController,
-      focusNode: _focusNode,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.newline,
-      maxLines: null,
-      style: Theme.of(context).textTheme.displayLarge,
-      decoration: InputDecoration(
-        hintText: _getHintText(),
-        hintStyle: Theme.of(context).textTheme.labelSmall,
-        border: InputBorder.none,
+    return RawScrollbar(
+      padding: EdgeInsets.symmetric(vertical: 60.0.w),
+      radius: Radius.circular(10),
+      child: TextField(
+        controller: _textController,
+        focusNode: _focusNode,
+        keyboardType: TextInputType.multiline,
+        textInputAction: TextInputAction.newline,
+        maxLines: null,
+        style: Theme.of(context).textTheme.displayLarge,
+        decoration: InputDecoration(
+          hintText: _getHintText(),
+          hintStyle: Theme.of(context).textTheme.labelSmall,
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -121,14 +129,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       PuzzleType.personal: MessageStrings.writingToOtherMessage,
       PuzzleType.me: MessageStrings.writingToMeMessage,
     }[widget.puzzleType]!;
-  }
-
-  Widget _buildPutButton() {
-    return CustomButton(
-      iconName: 'btn_puzzle',
-      iconTitle: CustomStrings.putEmotion,
-      onTap: _handlePutButtonTap,
-    );
   }
 
   void _handlePutButtonTap() {

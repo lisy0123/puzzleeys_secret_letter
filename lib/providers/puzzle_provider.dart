@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/api_request.dart';
@@ -15,8 +14,9 @@ class PuzzleProvider extends ChangeNotifier {
       'title': null,
       'content': null,
       'color': Colors.white,
+      'author_id': null,
       'receiver_id': null,
-      'views': null,
+      'sender_id': null,
       'puzzle_count': null,
       'created_at': null,
     },
@@ -37,45 +37,50 @@ class PuzzleProvider extends ChangeNotifier {
   }
 
   Future<void> initializeColors(PuzzleType puzzleType) async {
-    if (!_isShuffle && _currentPuzzleType == puzzleType && !_isLoading) {
-      return;
-    }
-
-    _puzzleList = List<Map<String, dynamic>>.generate(
-      9 * 18,
-      (index) => {
-        'id': null,
-        'puzzle_index': index,
-        'title': null,
-        'content': null,
-        'color': Colors.white,
-        'receiver_id': null,
-        'puzzle_count': null,
-        'created_at': null,
-      },
-    );
-    notifyListeners();
-
-    try {
-      _updateLoading(true);
-      _currentPuzzleType = puzzleType;
-
-      final puzzleResponse = await _fetchPuzzleResponse(puzzleType);
-      if (puzzleResponse['code'] == 200) {
-        final puzzleList = puzzleResponse['result'] as List<dynamic>;
-        _refreshPuzzles(puzzleList, puzzleType);
+    while (true) {
+      if (!_isShuffle && _currentPuzzleType == puzzleType && !_isLoading) {
+        return;
       }
-      updateShuffle(false);
-    } catch (error) {
-      updateShuffle(true);
-      if (error.toString().contains('Invalid or expired JWT')) {
-        await _waitForSession();
-        initializeColors(puzzleType);
-      } else {
-        debugPrint('Error initializing puzzle: $error');
+
+      _puzzleList = List<Map<String, dynamic>>.generate(
+        9 * 18,
+        (index) => {
+          'id': null,
+          'puzzle_index': index,
+          'title': null,
+          'content': null,
+          'color': Colors.white,
+          'author_id': null,
+          'receiver_id': null,
+          'sender_id': null,
+          'puzzle_count': null,
+          'created_at': null,
+        },
+      );
+      notifyListeners();
+
+      try {
+        _updateLoading(true);
+        _currentPuzzleType = puzzleType;
+
+        final puzzleResponse = await _fetchPuzzleResponse(puzzleType);
+        if (puzzleResponse['code'] == 200) {
+          final puzzleList = puzzleResponse['result'] as List<dynamic>;
+          _refreshPuzzles(puzzleList, puzzleType);
+        }
+        updateShuffle(false);
+        _updateLoading(false);
+        break;
+      } catch (error) {
+        updateShuffle(true);
+        if (error.toString().contains('Invalid or expired JWT')) {
+          await _waitForSession();
+        } else {
+          debugPrint('Error initializing puzzle: $error');
+          _updateLoading(false);
+          break;
+        }
       }
-    } finally {
-      _updateLoading(false);
     }
   }
 
@@ -117,16 +122,16 @@ class PuzzleProvider extends ChangeNotifier {
         'title': puzzleData[i]['title'],
         'content': puzzleData[i]['content'],
         'color': ColorMatch(stringColor: puzzleData[i]['color'])(),
+        'author_id': puzzleData[i]['author_id'],
         'receiver_id': puzzleData[i]['receiver_id'],
+        'sender_id': puzzleData[i]['sender_id'],
         'puzzle_count': puzzleData[i]['puzzle_count'],
         'created_at': puzzleData[i]['created_at'],
       };
     }
 
-    if (!listEquals(_puzzleList, updatedPuzzleList)) {
-      _puzzleList = updatedPuzzleList;
-      notifyListeners();
-    }
+    _puzzleList = updatedPuzzleList;
+    notifyListeners();
   }
 
   void _updateLoading(bool value) {

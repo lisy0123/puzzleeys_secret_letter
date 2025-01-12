@@ -36,7 +36,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   late TimerUtil timerUtil;
   StreamSubscription<String>? _timerSubscription;
   String _remainingTime = '00:00:00';
-  Color _puzzleButton = Colors.white;
+  Color _puzzleButtonColor = Colors.white;
 
   @override
   void initState() {
@@ -53,6 +53,8 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         });
       }
     });
+
+    // TODO: check puzzle exist, and decide to color or not.
   }
 
   @override
@@ -144,6 +146,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       alignment: Alignment.center,
       height: 2320.0.w,
       child: RawScrollbar(
+        radius: Radius.circular(10),
         thumbColor: ColorMatch(baseColor: widget.puzzleData['color'])(),
         child: SingleChildScrollView(
           child: Container(
@@ -176,7 +179,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
               child: CustomPaint(
                 size: Size(220.0.w, 220.0.w),
                 painter: TiltedPuzzlePiece(
-                  puzzleColor: _puzzleButton,
+                  puzzleColor: _puzzleButtonColor,
                   strokeWidth: 1.5,
                 ),
               ),
@@ -193,16 +196,22 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   void _getPuzzle() {
-    CustomOverlay.show(
-      text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
-      delayed: 2000,
-      puzzleVis: true,
-      puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
-      context: context,
-    );
-    setState(() {
-      _puzzleButton = widget.puzzleData['color'];
-    });
+    if (_puzzleButtonColor == Colors.white) {
+      CustomOverlay.show(
+        text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
+        puzzleVis: true,
+        puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
+        context: context,
+      );
+      setState(() {
+        _puzzleButtonColor = widget.puzzleData['color'];
+      });
+    } else {
+      CustomOverlay.show(
+        text: MessageStrings.puzzleExistOverlay,
+        context: context,
+      );
+    }
   }
 
   Widget _buildReplyButton() {

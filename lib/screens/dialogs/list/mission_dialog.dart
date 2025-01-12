@@ -29,7 +29,7 @@ class _MissionDialogState extends State<MissionDialog> {
             iconTopTitle: CustomStrings.questButtons[true]!,
             height: 260.0,
             width: 560.0,
-            borderStroke: 1.3,
+            borderStroke: 1.5,
             disable: false,
             onTap: () {},
           ),

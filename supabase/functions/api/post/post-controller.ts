@@ -14,7 +14,9 @@ export class PostController {
         this.functionMap["subject"] = () =>
             ResponseUtils.handleRequest(PostService.subject);
         this.functionMap["personal"] = (user: User) =>
-            ResponseUtils.handleRequest(PostService.personal, user);
+            ResponseUtils.handleRequest(PostService.userPost,user, "personal_post");
+        this.functionMap["globalUser"] = (user: User) =>
+            ResponseUtils.handleRequest(PostService.userPost, user, "global_post");
     }
 
     public executeFunction(

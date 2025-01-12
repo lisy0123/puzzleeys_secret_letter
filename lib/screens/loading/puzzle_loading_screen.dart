@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleLoadingScreen extends StatefulWidget {
-  const PuzzleLoadingScreen({super.key});
+  final bool overlay;
+
+  const PuzzleLoadingScreen({super.key, this.overlay = true});
 
   @override
   State<PuzzleLoadingScreen> createState() => _PuzzleLoadingScreenState();
@@ -37,7 +39,7 @@ class _PuzzleLoadingScreenState extends State<PuzzleLoadingScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black38,
+      color: (widget.overlay) ? Colors.black38 : Colors.transparent,
       child: Center(
         child: AnimatedBuilder(
           animation: _animation,

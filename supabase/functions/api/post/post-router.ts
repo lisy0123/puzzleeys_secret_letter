@@ -11,18 +11,24 @@ const postController = new PostController();
 function handleGlobal(_c: Context, user: User) {
     return postController.executeFunction("global", user);
 }
-
 function handleSubject(_c: Context, user: User) {
     return postController.executeFunction("subject", user);
 }
-
 function handlePersonal(_c: Context, user: User) {
     return postController.executeFunction("personal", user);
+}
+function handleGlobalUser(_c: Context, user: User) {
+    return postController.executeFunction("globalUser", user);
 }
 
 postRouter.get("/global", (c) => withAuth(c, handleGlobal));
 postRouter.get("/subject", (c) => withAuth(c, handleSubject));
 postRouter.get("/personal", (c) => withAuth(c, handlePersonal));
+postRouter.get("/global_user", (c) => withAuth(c, handleGlobalUser));
+
+postRouter.post("/global", (c) => withAuth(c, handleGlobal));
+postRouter.post("/subject", (c) => withAuth(c, handleSubject));
+postRouter.post("/personal", (c) => withAuth(c, handlePersonal));
 
 postRouter.all("/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);

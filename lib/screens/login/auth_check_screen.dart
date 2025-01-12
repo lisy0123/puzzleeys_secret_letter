@@ -38,22 +38,13 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthStatusProvider>();
-    final overlay = _buildOverlay(authStatus);
 
     return Stack(
       children: [
-        const MainScreen(),
-        if (overlay != null) overlay,
+        MainScreen(),
+        if (!authStatus.isLoggedIn && !authStatus.isLoading) LoginScreen(),
+        if (authStatus.isLoading) PuzzleLoadingScreen(),
       ],
     );
-  }
-
-  Widget? _buildOverlay(AuthStatusProvider authStatus) {
-    if (authStatus.isLoading) {
-      return PuzzleLoadingScreen();
-    } else if (!authStatus.isLoggedIn) {
-      return LoginScreen();
-    }
-    return null;
   }
 }

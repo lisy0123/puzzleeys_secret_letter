@@ -8,7 +8,6 @@ class CustomOverlay {
 
   static void show({
     required String text,
-    int delayed = 1500,
     bool puzzleVis = false,
     int puzzleNum = 1,
     required BuildContext context,
@@ -45,7 +44,7 @@ class CustomOverlay {
     overlay.insert(overlayEntry);
     _overlayEntries.add(overlayEntry);
 
-    Future.delayed(Duration(milliseconds: delayed), () {
+    Future.delayed(Duration(milliseconds: 2000), () {
       if (overlayEntry.mounted) {
         overlayEntry.remove();
         _overlayEntries.remove(overlayEntry);

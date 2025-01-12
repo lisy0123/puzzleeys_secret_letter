@@ -115,10 +115,7 @@ class _PutDialogState extends State<PutDialog> {
                 _buildPutButton(context),
               ],
             )
-          : const SizedBox(
-              key: ValueKey('hidden'),
-              child: ColorPicker(),
-            ),
+          : const SizedBox(key: ValueKey('hidden'), child: ColorPicker()),
     );
   }
 
@@ -180,7 +177,7 @@ class _PutDialogState extends State<PutDialog> {
         simpleDialog: true,
         context: context,
       );
-    } else if (_textEditingController.text.isEmpty) {
+    } else if (_textEditingController.text.trim().isEmpty) {
       BuildDialog.show(
         iconName: 'emptyName',
         simpleDialog: true,
@@ -194,7 +191,6 @@ class _PutDialogState extends State<PutDialog> {
         Navigator.popUntil(context, (route) => route.isFirst);
         CustomOverlay.show(
           text: MessageStrings.overlayMessages[overlayType]![1],
-          delayed: 2000,
           puzzleVis: true,
           puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
           context: context,

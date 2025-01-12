@@ -7,7 +7,6 @@ class AuthStatusProvider with ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoggedIn => _isLoggedIn;
-
   bool get isLoading => _isLoading;
 
   Future<void> checkLoginStatus() async {

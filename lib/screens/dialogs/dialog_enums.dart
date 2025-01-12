@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/more_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
@@ -88,6 +89,8 @@ enum DialogType {
         );
       case DialogType.list0:
         return AccountDialog();
+      case DialogType.list1:
+        return MyDialog();
       case DialogType.list3:
         return MissionDialog();
       case DialogType.list5:

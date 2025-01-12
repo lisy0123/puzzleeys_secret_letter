@@ -4,11 +4,19 @@ import { User } from "jsr:@supabase/supabase-js@2";
 
 export class ResponseUtils {
     static async handleRequest<T>(
-        callback: (user: User) => Promise<Response> | (() => Promise<Response>),
-        user?: User
+        callback: (
+            user: User,
+            table: string
+        ) => Promise<Response> | (() => Promise<Response>),
+        user?: User,
+        table?: string
     ): Promise<Response> {
         try {
-            if (user) {
+            if (table) {
+                return await (
+                    callback as (user: User, table: string) => Promise<Response>
+                )(user!, table);
+            } else if (user) {
                 return await (callback as (user: User) => Promise<Response>)(
                     user
                 );

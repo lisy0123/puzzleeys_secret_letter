@@ -34,6 +34,9 @@ class ListDialog extends StatelessWidget {
   }
 
   Widget _buildIcon(int index, BuildContext context) {
+    if ([2, 3, 5, 6].contains(index)) {
+      index = 4;
+    }
     return Column(
       children: [
         IconButton(
