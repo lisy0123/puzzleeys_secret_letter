@@ -1,17 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 
 class CountdownTimer extends StatefulWidget {
   final String createdAt;
-  final bool isUserList;
 
-  const CountdownTimer({
-    super.key,
-    required this.createdAt,
-    this.isUserList = false,
-  });
+  const CountdownTimer({super.key, required this.createdAt});
 
   @override
   State<CountdownTimer> createState() => _CountdownTimerState();
@@ -45,18 +39,13 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isUserList) {
-      return CustomText.textSmall(text: _remainingTime, context: context);
-    } else {
-      return PuzzleScreenHandler().buildSideText(
-        iconName: 'btn_clock',
-        text: _remainingTime,
-        context: context,
-      );
-    }
+    return PuzzleScreenHandler().buildSideText(
+      iconName: 'btn_clock',
+      text: _remainingTime,
+      context: context,
+    );
   }
 }
-
 
 class TimerUtil {
   final DateTime targetTime;

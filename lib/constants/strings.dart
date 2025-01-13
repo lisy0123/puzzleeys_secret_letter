@@ -46,6 +46,8 @@ class CustomStrings {
   static String put = '넣 기';
   static String send = '보내기';
   static String logout = '로그아웃';
+  static String deleteShort = '삭 제';
+  static String deleteLong = '삭제하기';
 
   static String sendToWho = '누구에게 보낼 건가요?';
   static String sendToOther = '누군가에게';
@@ -67,6 +69,8 @@ class MessageStrings {
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
+  static String emptyWritingMessage = '작성한 글이 없어요!';
+  static String deleteMessage = '지금 당장 삭제할까요?';
 
   static Map<Enum, String> warningMessages = {
     WarningType.cancel: '돌아가면\n편지가 지워져요!',

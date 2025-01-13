@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +10,7 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_sc
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
-import 'package:puzzleeys_secret_letter/utils/timer_util.dart';
+import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
@@ -33,9 +32,6 @@ class PuzzleDetailScreen extends StatefulWidget {
 }
 
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
-  late TimerUtil timerUtil;
-  StreamSubscription<String>? _timerSubscription;
-  String _remainingTime = '00:00:00';
   Color _puzzleButtonColor = Colors.white;
 
   @override
@@ -45,23 +41,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       context.read<WritingProvider>().updateOpacity(setToInitial: true);
     });
 
-    timerUtil = TimerUtil(widget.puzzleData['created_at']);
-    _timerSubscription = timerUtil.timeStream.listen((remainingTime) {
-      if (_remainingTime != remainingTime) {
-        setState(() {
-          _remainingTime = remainingTime;
-        });
-      }
-    });
-
     // TODO: check puzzle exist, and decide to color or not.
-  }
-
-  @override
-  void dispose() {
-    _timerSubscription?.cancel();
-    timerUtil.dispose();
-    super.dispose();
   }
 
   @override
@@ -126,11 +106,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        PuzzleScreenHandler().buildSideText(
-          iconName: 'btn_clock',
-          text: _remainingTime,
-          context: context,
-        ),
+        CountdownTimer(createdAt: widget.puzzleData['created_at']),
         PuzzleScreenHandler().buildIconButton(
           iconName: 'btn_alarm',
           text: CustomStrings.alarm,

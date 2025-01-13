@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/more_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
@@ -17,6 +18,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
 enum DialogType {
   list,
   more,
+  delete,
   cancel,
   limit,
   bead,
@@ -59,6 +61,8 @@ enum DialogType {
           puzzleData: puzzleData!,
           puzzleType: puzzleType!,
         );
+      case DialogType.delete:
+        return DeleteDialog();
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
