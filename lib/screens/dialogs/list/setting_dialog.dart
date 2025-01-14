@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/vars.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
@@ -43,6 +44,7 @@ class SettingDialog extends StatelessWidget {
     SecureStorageUtils.clear();
     if (context.mounted) {
       context.read<AuthStatusProvider>().checkLoginStatus();
+      context.read<FcmTokenProvider>().deleteFcm();
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }

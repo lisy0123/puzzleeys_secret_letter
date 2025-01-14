@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
@@ -16,10 +17,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(
-      widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
-  await dotenv.load(fileName: ".env");
+    widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
+  );
 
+  await dotenv.load(fileName: ".env");
   await Supabase.initialize(
     url: dotenv.env['PROJECT_URL']!,
     anonKey: dotenv.env['API_KEY']!,
@@ -36,6 +39,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ColorPickerProvider()),
       ChangeNotifierProvider(create: (_) => AuthStatusProvider()),
       ChangeNotifierProvider(create: (_) => PuzzleProvider()),
+      ChangeNotifierProvider(create: (_) => FcmTokenProvider()),
     ],
     child: const MyApp(),
   ));
@@ -48,7 +52,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context).copyWith(boldText: false);
 
-    // TODO: need to add apple login later
     return ScreenUtilInit(
       designSize: const Size(2340, 1080),
       builder: (context, child) {

@@ -6,19 +6,16 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 AndroidNotificationChannel? channel;
 const String notificationIcon = '@mipmap/ic_launcher';
 
-class FPPushNotificationService {
-  // 싱글톤 패턴을 사용하여 FPPushNotificationService 인스턴스를 하나만 유지
-  static final FPPushNotificationService _instance =
-  FPPushNotificationService._internal();
+class PushNotification {
+  static final PushNotification _instance = PushNotification._internal();
 
-  // 싱글톤 인스턴스를 반환하는 팩토리 생성자
-  factory FPPushNotificationService() => _instance;
+  factory PushNotification() => _instance;
 
-  FPPushNotificationService._internal();
+  PushNotification._internal();
 
   // 푸시 알림 초기화 (로컬 알림, 안드로이드 채널, Firebase 메시징 초기화)
   Future<void> initialize() async {
@@ -68,7 +65,7 @@ class FPPushNotificationService {
 
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+                AndroidFlutterLocalNotificationsPlugin>()
             ?.createNotificationChannel(channel!);
       } catch (error) {
         debugPrint(
@@ -82,6 +79,7 @@ class FPPushNotificationService {
   Future<void> _initFirebaseMessaging() async {
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
     FirebaseMessaging.onMessage.listen(_messageHandler);
+    // FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationClick);
   }
 
   // 푸시 메시지를 처리하는 핸들러 (알림 또는 데이터를 처리)
@@ -195,10 +193,10 @@ class FPPushNotificationService {
 
   // 로컬 알림의 실제 표시를 처리하는 메서드
   static Future<void> _showNotificationBody(
-      int id,
-      String? title,
-      String? body,
-      ) async {
+    int id,
+    String? title,
+    String? body,
+  ) async {
     if (channel == null) {
       debugPrint(
         "Notification channel is not initialized. Please check the initialization process.",
@@ -225,4 +223,14 @@ class FPPushNotificationService {
       debugPrint("Error displaying notification: $error");
     }
   }
+
+  // 네비게이션 처리
+  // void _handleNotificationClick(RemoteMessage message) {
+  //   String? route = message.data['route'];
+  //   if (route != null) {
+  //     Navigator.pushNamed(context, route);
+  //   } else {
+  //     Navigator.pushNamed(context, '/home');
+  //   }
+  // }
 }

@@ -59,6 +59,12 @@ class PuzzleProvider extends ChangeNotifier {
       );
       notifyListeners();
 
+      final session = Supabase.instance.client.auth.currentSession;
+      if (session?.accessToken == null) {
+        updateShuffle(true);
+        return;
+      }
+
       try {
         _updateLoading(true);
         _currentPuzzleType = puzzleType;

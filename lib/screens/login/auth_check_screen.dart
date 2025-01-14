@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen.dart';
@@ -27,6 +28,11 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         context.read<AuthStatusProvider>().checkLoginStatus();
       }
     });
+    _initializeFcm();
+  }
+
+  void _initializeFcm() async {
+    await context.read<FcmTokenProvider>().initialize();
   }
 
   @override
