@@ -5,25 +5,30 @@ import { PostService } from "../../services/post-service.ts";
 import { ResponseUtils } from "../../lib/response/response-utils.ts";
 
 export class PostController {
-    private functionMap: { [key: string]: (user: User) => Promise<Response> } =
-        {};
+    private functionMap: {
+        [key: string]: (user: User, id?: unknown) => Promise<Response>;
+    } = {};
 
     constructor() {
-        this.functionMap["global"] = () =>
+        this.functionMap["getGlobal"] = () =>
             ResponseUtils.handleRequest(PostService.global);
-        this.functionMap["subject"] = () =>
+        this.functionMap["getSubject"] = () =>
             ResponseUtils.handleRequest(PostService.subject);
-        this.functionMap["personal"] = (user: User) =>
-            ResponseUtils.handleRequest(PostService.userPost,user, "personal_post");
-        this.functionMap["globalUser"] = (user: User) =>
+        this.functionMap["getPersonal"] = (user: User) =>
+            ResponseUtils.handleRequest(PostService.userPost, user, "personal_post");
+        this.functionMap["getGlobalUser"] = (user: User) =>
             ResponseUtils.handleRequest(PostService.userPost, user, "global_post");
     }
 
     public executeFunction(
         action: string,
-        user: User
+        user: User,
+        id?: unknown
     ): Response | Promise<Response> {
         if (this.functionMap[action]) {
+            if (id) {
+                return this.functionMap[action](user, id);
+            }
             return this.functionMap[action](user);
         } else {
             return createResponse(
