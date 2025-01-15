@@ -8,7 +8,7 @@ export async function withAuth(
     c: Context,
     handler: (c: Context, user: User) => Response | Promise<Response>
 ) {
-    const token = await AuthMiddleware.header(c.req);
+    const token = AuthMiddleware.header(c.req);
     if (token instanceof Response) {
         return token;
     }
@@ -20,8 +20,8 @@ export async function withAuth(
 }
 
 class AuthMiddleware {
-    static async header(req: HonoRequest): Promise<Response | string> {
-        const authHeader = await req.header("authorization");
+    static header(req: HonoRequest): Response | string {
+        const authHeader = req.header("authorization");
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return createResponse(
                 ResponseCode.UNAUTHORIZED,

@@ -7,16 +7,20 @@ export class ResponseUtils {
         callback: (
             user: User,
             table: string
-        ) => Promise<Response> | (() => Promise<Response>),
+        ) => Promise<Response> | Response | (() => Promise<Response>),
         user?: User,
-        table?: string
+        tableOrBody?: unknown
     ): Promise<Response> {
         try {
-            if (table) {
-                return await (
-                    callback as (user: User, table: string) => Promise<Response>
-                )(user!, table);
-            } else if (user) {
+            if (tableOrBody) {
+                return await(
+                    callback as (
+                        user: User,
+                        tableOrBody: unknown
+                    ) => Promise<Response>
+                )(user!, tableOrBody);
+            }
+            if (user) {
                 return await (callback as (user: User) => Promise<Response>)(
                     user
                 );
