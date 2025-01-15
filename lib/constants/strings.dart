@@ -1,10 +1,11 @@
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 
 class CustomStrings {
-  static const title = 'PUZZLEEY';
-  static String slogan = '퍼즐에 감정을 담다';
-  static String googleLogin = '구글로 시작하기';
-  static String appleLogin = '애플로 시작하기';
+  static const String email = 'puzzleey@puzzleletter.com';
+  static const String title = 'PUZZLEEY';
+  static const String slogan = '퍼즐에 감정을 담다';
+  static const String googleLogin = '구글로 시작하기';
+  static const String appleLogin = '애플로 시작하기';
 
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
@@ -29,7 +30,7 @@ class CustomStrings {
     '4': '???',
     '5': '업 적',
     '6': '공 지',
-    '7': '지 원',
+    '7': '문 의',
     '8': '설 정',
   };
 
@@ -37,6 +38,9 @@ class CustomStrings {
   static String userCreatedAt = '가입 날짜';
   static String userPuzzleeyDays = '퍼즐이가 된 지';
   static String userPuzzleeyDayCount = '일째';
+
+  static String feedback = '문의하기';
+  static String version = '버 전';
 
   static String reply = '답 장';
   static String alarm = '신고하기';

@@ -6,7 +6,7 @@ import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
-import 'package:puzzleeys_secret_letter/utils/user_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 
 class AccountDialog extends StatefulWidget {

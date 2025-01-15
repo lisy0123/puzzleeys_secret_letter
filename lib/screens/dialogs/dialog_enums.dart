@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/delete_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/more_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
@@ -13,7 +13,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/subject_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/warning_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
 enum DialogType {
   list,

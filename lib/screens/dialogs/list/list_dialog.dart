@@ -4,9 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/utils/feedback_email.dart';
 
-class ListDialog extends StatelessWidget {
+class ListDialog extends StatefulWidget {
   const ListDialog({super.key});
+
+  @override
+  State<ListDialog> createState() => _ListDialogState();
+}
+
+class _ListDialogState extends State<ListDialog> {
+
+  @override
+  void initState() {
+    FeedbackEmail.initialize();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +47,7 @@ class ListDialog extends StatelessWidget {
   }
 
   Widget _buildIcon(int index, BuildContext context) {
+    // TODO: need to fix later
     if ([2, 3, 5, 6].contains(index)) {
       index = 4;
     }
@@ -68,8 +82,11 @@ class ListDialog extends StatelessWidget {
     );
   }
 
-  void _showIconDialog(int index, BuildContext context) {
-    if (index != 4) {
+  void _showIconDialog(int index, BuildContext context) async {
+    // TODO: need to fix later
+    if (index == 7) {
+      FeedbackEmail.send();
+    } else if (index != 4) {
       BuildDialog.show(
         iconName: index.toString(),
         overlapped: true,

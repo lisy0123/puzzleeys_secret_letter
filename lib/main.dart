@@ -23,11 +23,17 @@ void main() async {
   );
 
   await dotenv.load(fileName: ".env");
-  await Supabase.initialize(
-    url: dotenv.env['PROJECT_URL']!,
-    anonKey: dotenv.env['API_KEY']!,
-  );
-  await Firebase.initializeApp();
+  try {
+    await Future.wait([
+      Supabase.initialize(
+        url: dotenv.env['PROJECT_URL']!,
+        anonKey: dotenv.env['API_KEY']!,
+      ),
+      Firebase.initializeApp(),
+    ]);
+  } catch (error) {
+    throw Exception("Error initializing services: $error");
+  }
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   FlutterNativeSplash.remove();
