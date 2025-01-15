@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_validate.dart';
 import 'package:puzzleeys_secret_letter/utils/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
@@ -25,20 +26,31 @@ class LoginScreenHandler {
         accessToken: googleAuth.accessToken!,
       );
 
-      final userData = await apiRequest('/api/auth/login', ApiType.post);
-      if (userData['code'] == 200) {
-        await SecureStorageUtils.save('userId', userData['result']['user_id']);
-        await SecureStorageUtils.save('createdAt',
-            Utils.convertUTCToKST(userData['result']['created_at']));
+      if (context.mounted) {
+        final token = await context.read<FcmTokenProvider>().getFcm();
+        final responseData = await apiRequest(
+          '/api/auth/login',
+          ApiType.post,
+          headers: {'Content-Type': 'application/json'},
+          bodies: {'fcm_token': token},
+        );
 
-        if (context.mounted) {
-          context.read<AuthStatusProvider>().checkLoginStatus();
+        if (responseData['code'] == 200) {
+          final userData = responseData['result'];
+          final createdAt = Utils.convertUTCToKST(userData['created_at']);
+
+          await Future.wait([
+            SecureStorageUtils.save('userId', userData['user_id']),
+            SecureStorageUtils.save('createdAt', createdAt),
+            if (context.mounted)
+              context.read<AuthStatusProvider>().checkLoginStatus(),
+          ]);
+        } else {
+          throw Exception('Error: ${responseData['message']}');
         }
-      } else {
-        throw Exception('Error: ${userData['message']}');
       }
     } catch (error) {
-      throw 'Google login failed: $error';
+      throw Exception('Google login failed: $error');
     }
   }
 

@@ -40,12 +40,16 @@ class SettingDialog extends StatelessWidget {
   }
 
   Future<void> _logout(BuildContext context) async {
-    Supabase.instance.client.auth.signOut();
-    SecureStorageUtils.clear();
-    if (context.mounted) {
-      context.read<AuthStatusProvider>().checkLoginStatus();
-      context.read<FcmTokenProvider>().deleteFcm();
-      Navigator.popUntil(context, (route) => route.isFirst);
+    final responseData = await context.read<FcmTokenProvider>().deleteFcm();
+    if (responseData['code'] == 200) {
+      await Future.wait([
+        Supabase.instance.client.auth.signOut(),
+        SecureStorageUtils.clear(),
+      ]);
+      if (context.mounted) {
+        context.read<AuthStatusProvider>().checkLoginStatus();
+        Navigator.popUntil(context, (route) => route.isFirst);
+      }
     }
   }
 }

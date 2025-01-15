@@ -30,7 +30,7 @@ class AuthStatusProvider with ChangeNotifier {
     } catch (error) {
       _updateLoginStatus(false);
       if (!error.toString().contains('Invalid or expired JWT')) {
-        debugPrint('Error during user verification: $error');
+        throw Exception('Error during user verification: $error');
       }
     } finally {
       _updateLoading(false);

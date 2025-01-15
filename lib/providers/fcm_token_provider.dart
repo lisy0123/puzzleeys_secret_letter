@@ -22,38 +22,50 @@ class FcmTokenProvider with ChangeNotifier {
         onTokenUpdated: (newToken) async {
       final session = Supabase.instance.client.auth.currentSession;
       if (newToken != null && session?.accessToken != null) {
-        await _sendFcmTokenRequest('/api/auth/upsert_fcm', newToken);
+        _sendFcmTokenRequest('/api/auth/upsert_fcm', newToken);
       }
     });
   }
 
-  Future<String?> getFcm() async {
+  Future<String> getFcm() async {
     try {
-      return await _pushNotification.getToken();
+      final token = await _pushNotification.getToken();
+      if (token != null) {
+        return token;
+      } else {
+        throw Exception("There is no FCM token.");
+      }
     } catch (error) {
-      throw "Error fetching FCM token: $error";
+      throw Exception("Error fetching FCM token: $error");
     }
   }
 
-  Future<void> deleteFcm() async {
+  Future<Map<String, dynamic>> deleteFcm() async {
     final token = await getFcm();
-    if (token != null) {
-      _sendFcmTokenRequest('/api/auth/logout', token);
-    } else {
-      throw "There is no FCM token.";
-    }
+    final responseData = _sendFcmTokenRequest('/api/auth/logout', token);
+    return responseData;
   }
 
-  Future<void> _sendFcmTokenRequest(String endpoint, String token) async {
-    try {
-      await apiRequest(
-        endpoint,
-        ApiType.post,
-        headers: {'Content-Type': 'application/json'},
-        bodies: {'fcm_token': token},
-      );
-    } catch (error) {
-      throw "Error sending FCM token request: $error";
+  Future<Map<String, dynamic>> _sendFcmTokenRequest(
+    String endpoint,
+    String token,
+  ) async {
+    while (true) {
+      try {
+        final responseData = await apiRequest(
+          endpoint,
+          ApiType.post,
+          headers: {'Content-Type': 'application/json'},
+          bodies: {'fcm_token': token},
+        );
+        return responseData;
+      } catch (error) {
+        if (error.toString().contains('Invalid or expired JWT')) {
+          await waitForSession();
+        } else {
+          throw Exception("Error sending FCM token request: $error");
+        }
+      }
     }
   }
 }

@@ -31,8 +31,13 @@ class _AccountDialogState extends State<AccountDialog> {
     try {
       String? userId;
       String? userCreatedAt;
-      userId = await SecureStorageUtils.get('userId');
-      userCreatedAt = await SecureStorageUtils.get('createdAt');
+
+      final results = await Future.wait([
+        SecureStorageUtils.get('userId'),
+        SecureStorageUtils.get('createdAt'),
+      ]);
+      userId = results[0];
+      userCreatedAt = results[1];
 
       if (userId == null || userCreatedAt == null) {
         (userId, userCreatedAt) = await UserRequest.reloadUserData();
