@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 
@@ -10,6 +11,12 @@ class Utils {
     if (focusNode.hasFocus) {
       focusNode.unfocus();
     }
+  }
+
+  static Future<String> getAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    final String version = packageInfo.version;
+    return version;
   }
 
   static String convertUTCToKST(String utcTime) {

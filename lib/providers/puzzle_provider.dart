@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/utils/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,6 +42,7 @@ class PuzzleProvider extends ChangeNotifier {
         return;
       }
 
+      _updateLoading(true);
       _puzzleList = List<Map<String, dynamic>>.generate(
         9 * 18,
         (index) => {
@@ -62,11 +63,11 @@ class PuzzleProvider extends ChangeNotifier {
       final session = Supabase.instance.client.auth.currentSession;
       if (session?.accessToken == null) {
         updateShuffle(true);
+        _updateLoading(false);
         return;
       }
 
       try {
-        _updateLoading(true);
         _currentPuzzleType = puzzleType;
 
         final puzzleResponse = await _fetchPuzzleResponse(puzzleType);
@@ -80,23 +81,13 @@ class PuzzleProvider extends ChangeNotifier {
       } catch (error) {
         updateShuffle(true);
         if (error.toString().contains('Invalid or expired JWT')) {
-          await _waitForSession();
+          await waitForSession();
         } else {
-          debugPrint('Error initializing puzzle: $error');
           _updateLoading(false);
-          break;
+          throw Exception('Error initializing puzzle: $error');
         }
       }
     }
-  }
-
-  Future<void> _waitForSession() async {
-    final session = Supabase.instance.client.auth.currentSession;
-    if (session != null) {
-      return;
-    }
-    await Supabase.instance.client.auth.onAuthStateChange
-        .firstWhere((data) => data.session != null);
   }
 
   Future<Map<String, dynamic>> _fetchPuzzleResponse(
@@ -117,13 +108,16 @@ class PuzzleProvider extends ChangeNotifier {
       indexes.shuffle();
     }
 
+    final getTargetIndex = puzzleType == PuzzleType.global
+        ? (int i) => indexes[i]
+        : (int i) => puzzleData[i]['puzzle_index'];
+
     for (int i = 0; i < puzzleData.length; i++) {
-      final targetIndex = (puzzleType == PuzzleType.global)
-          ? indexes[i]
-          : puzzleData[i]['puzzle_index'];
+      final targetIndex = getTargetIndex(i);
+      final updatedItem = updatedPuzzleList[targetIndex];
 
       updatedPuzzleList[targetIndex] = {
-        ...updatedPuzzleList[targetIndex],
+        ...updatedItem,
         'id': puzzleData[i]['id'],
         'title': puzzleData[i]['title'],
         'content': puzzleData[i]['content'],

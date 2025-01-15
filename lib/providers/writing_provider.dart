@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WritingProvider extends ChangeNotifier {
-  late double _opacity = 1.0;
+  double _opacity = 1.0;
   double get opacity => _opacity;
 
   void updateOpacity({bool? setToInitial}) {

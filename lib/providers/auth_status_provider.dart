@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/utils/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthStatusProvider with ChangeNotifier {
@@ -30,7 +30,7 @@ class AuthStatusProvider with ChangeNotifier {
     } catch (error) {
       _updateLoginStatus(false);
       if (!error.toString().contains('Invalid or expired JWT')) {
-        debugPrint('Error during user verification: $error');
+        throw Exception('Error during user verification: $error');
       }
     } finally {
       _updateLoading(false);

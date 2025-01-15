@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100.0.w)
-            .copyWith(top: 440.0.h, bottom: 60.0.h),
+            .copyWith(top: 450.0.h, bottom: 60.0.h),
         child: _buildContent(context),
       ),
     );
@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
         Column(
           children: [
             _buildText(text: CustomStrings.title, isMainTitle: true),
-            SizedBox(height: 20.0.w),
+            SizedBox(height: 40.0.w),
             _buildText(text: CustomStrings.slogan),
           ],
         ),
@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
       children: [
         _buildStrokedText(
           text: text,
-          fontSize: isMainTitle ? 290.sp : 110.sp,
+          fontSize: isMainTitle ? 280.sp : 100.sp,
           fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
           strokeWidth: isMainTitle ? 8 : 4,
         ),
@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
             fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-            fontSize: isMainTitle ? 290.sp : 110.sp,
+            fontSize: isMainTitle ? 280.sp : 100.sp,
             fontWeight: FontWeight.w900,
             letterSpacing: isMainTitle ? 6 : 3,
           ),

@@ -6,10 +6,12 @@ import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
+import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,39 +22,55 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  late final TabController _tabController;
+  TabController? _tabController;
 
   @override
   void initState() {
+    super.initState();
+    _initializeTabController();
+  }
+
+  Future<void> _initializeTabController() async {
+    final savedIndex = await SecureStorageUtils.get('tab');
+    final int index = (savedIndex == null) ? 0 : int.tryParse(savedIndex) ?? 0;
+
     _tabController = TabController(
       length: 4,
+      initialIndex: index,
       vsync: this,
       animationDuration: Duration.zero,
     );
-    super.initState();
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  void navigateToTab(int index) {
-    if (_tabController.index != index) {
+  void navigateToTab(int index) async {
+    if (_tabController!.index != index) {
       setState(() {
-        _tabController.animateTo(index);
+        _tabController!.animateTo(index);
       });
+      await SecureStorageUtils.save('tab', index.toString());
     }
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_tabController == null) {
+      return PuzzleLoadingScreen();
+    }
     return Stack(
       children: [
         _buildTabBarView(),
-        _buildMainTop(context),
-        _buildMainBottom(context),
+        _buildMainTop(),
+        _buildMainBottom(_tabController!.index),
       ],
     );
   }
@@ -70,7 +88,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildMainTop(BuildContext context) {
+  Widget _buildMainTop() {
     return SafeArea(
       top: true,
       child: Container(
@@ -80,19 +98,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildMainBottom(BuildContext context) {
+  Widget _buildMainBottom(int index) {
     return Container(
       margin: EdgeInsets.all(40.0.w),
       padding: EdgeInsets.only(bottom: 160.0.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_tabController.index != 3) _buildActionButtons(),
-          if (_tabController.index == 3) const ShopScreen(),
-          BottomBar(
-            currentIndex: _tabController.index,
-            onIconTap: navigateToTab,
-          ),
+          if (index != 3) _buildActionButtons(),
+          if (index == 3) const ShopScreen(),
+          BottomBar(currentIndex: index, onIconTap: navigateToTab),
         ],
       ),
     );
@@ -108,7 +123,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             svgImage: 'cir_zoom',
             onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
           ),
-          (_tabController.index == 0)
+          (_tabController!.index == 0)
               ? CustomCircle(
                   svgImage: 'cir_shuffle',
                   onTap: () {
