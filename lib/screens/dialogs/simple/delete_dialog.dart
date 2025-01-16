@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
-import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
 class DeleteDialog extends StatelessWidget {
-  const DeleteDialog({super.key});
+  final String puzzleId;
+
+  const DeleteDialog({super.key, required this.puzzleId});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CustomText.textDisplay(
-          text: MessageStrings.deleteMessage,
-          context: context,
-        ),
-        CustomButton(
-          iconName: 'btn_trash',
-          iconTitle: CustomStrings.deleteLong,
-          onTap: () {
-            Navigator.pop(context);
-            // TODO: need to add backup api
-          },
-        ),
-      ],
+    return CustomSimpleDialog(
+      text: MessageStrings.deleteMessage,
+      iconName: 'btn_trash',
+      iconTitle: CustomStrings.deleteLong,
+      onTap: () => _onTap(context),
     );
+  }
+
+  void _onTap(BuildContext context) async {
+    try {
+      // TODO: add api in server side.
+      final responseData =
+          await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
+      if (responseData['code'] == 200) {
+        if (context.mounted) Navigator.pop(context);
+      }
+    } catch (error) {
+      throw Exception('Error deleting global post: $error');
+    }
   }
 }

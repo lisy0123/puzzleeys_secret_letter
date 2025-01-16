@@ -35,6 +35,7 @@ class BuildDialog {
     String? puzzleText,
     Map<String, dynamic>? puzzleData,
     PuzzleType? puzzleType,
+    String? puzzleId,
     bool overlapped = false,
     bool simpleDialog = false,
     required BuildContext context,
@@ -56,6 +57,7 @@ class BuildDialog {
               children: DialogContent(
                 iconName: iconName,
                 index: index,
+                puzzleId: puzzleId,
                 puzzleColor: puzzleColor,
                 puzzleText: puzzleText,
                 puzzleData: puzzleData,

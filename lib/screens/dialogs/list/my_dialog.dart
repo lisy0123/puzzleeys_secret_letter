@@ -141,6 +141,7 @@ class _MyDialogState extends State<MyDialog> {
                   BuildDialog.show(
                     iconName: 'delete',
                     simpleDialog: true,
+                    puzzleId: item['id'],
                     context: context,
                   );
                 },

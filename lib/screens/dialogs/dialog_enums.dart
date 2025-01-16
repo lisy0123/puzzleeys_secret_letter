@@ -45,6 +45,7 @@ enum DialogType {
 
   Widget showDialog(
     int? index,
+    String? puzzleId,
     Color? puzzleColor,
     String? puzzleText,
     Map<String, dynamic>? puzzleData,
@@ -62,7 +63,7 @@ enum DialogType {
           puzzleType: puzzleType!,
         );
       case DialogType.delete:
-        return DeleteDialog();
+        return DeleteDialog(puzzleId: puzzleId!);
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
@@ -119,6 +120,7 @@ extension DialogTypeExtension on DialogType {
 class DialogEnums extends StatelessWidget {
   final String iconName;
   final int? index;
+  final String? puzzleId;
   final Color? puzzleColor;
   final String? puzzleText;
   final Map<String, dynamic>? puzzleData;
@@ -128,6 +130,7 @@ class DialogEnums extends StatelessWidget {
     super.key,
     required this.iconName,
     this.index,
+    this.puzzleId,
     this.puzzleColor,
     this.puzzleText,
     this.puzzleData,
@@ -140,6 +143,7 @@ class DialogEnums extends StatelessWidget {
         (RegExp(r'^[0-8]$').hasMatch(iconName)) ? 'list$iconName' : iconName);
     return dialogType.showDialog(
       index,
+      puzzleId,
       puzzleColor,
       puzzleText,
       puzzleData,

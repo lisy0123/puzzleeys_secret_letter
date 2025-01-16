@@ -49,7 +49,10 @@ class CustomStrings {
   static String more = '더 보 기';
   static String put = '넣 기';
   static String send = '보내기';
+
   static String logout = '로그아웃';
+  static String deleteUser = '회원 탈퇴';
+
   static String deleteShort = '삭 제';
   static String deleteLong = '삭제하기';
 
