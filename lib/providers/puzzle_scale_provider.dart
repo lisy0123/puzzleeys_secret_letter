@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 
 class PuzzleScaleProvider extends ChangeNotifier {
   double _scaleFactor = 1.0;

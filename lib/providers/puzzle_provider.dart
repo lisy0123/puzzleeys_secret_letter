@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleProvider extends ChangeNotifier {
@@ -81,7 +82,7 @@ class PuzzleProvider extends ChangeNotifier {
       } catch (error) {
         updateShuffle(true);
         if (error.toString().contains('Invalid or expired JWT')) {
-          await waitForSession();
+          await Utils.waitForSession();
         } else {
           _updateLoading(false);
           throw Exception('Error initializing puzzle: $error');

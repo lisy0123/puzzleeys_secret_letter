@@ -11,7 +11,7 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.da
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
-import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class MainScreen extends StatefulWidget {

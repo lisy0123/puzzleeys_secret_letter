@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/push_notification.dart';
+import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FcmTokenProvider with ChangeNotifier {
@@ -61,7 +62,7 @@ class FcmTokenProvider with ChangeNotifier {
         return responseData;
       } catch (error) {
         if (error.toString().contains('Invalid or expired JWT')) {
-          await waitForSession();
+          await Utils.waitForSession();
         } else {
           throw Exception("Error sending FCM token request: $error");
         }

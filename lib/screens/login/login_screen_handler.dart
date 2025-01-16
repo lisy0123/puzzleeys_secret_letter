@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_validate.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
-import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
