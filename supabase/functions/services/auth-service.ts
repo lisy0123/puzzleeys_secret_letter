@@ -102,4 +102,17 @@ export class AuthService {
             )
         );
     }
+
+    static deleteUser(user: User): Promise<Response> {
+        return ResponseUtils.handleRequest(async () => {
+            const withdrawResponse = await AuthRepository.deleteUser(user);
+            if (withdrawResponse) return withdrawResponse;
+
+            return createResponse(
+                ResponseCode.SUCCESS,
+                "User deletion successful.",
+                null
+            );
+        });
+    }
 }

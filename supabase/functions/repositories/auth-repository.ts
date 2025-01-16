@@ -45,4 +45,15 @@ export class AuthRepository {
         }
         return data as UserData;
     }
+
+    static async deleteUser(user: User): Promise<Response | void> {
+        const { error } = await supabase.auth.admin.deleteUser(user.id);
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+    }
 }
