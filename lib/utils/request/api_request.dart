@@ -5,15 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 enum ApiType { post, get, delete, patch, put }
 
-Future<void> waitForSession() async {
-  final session = Supabase.instance.client.auth.currentSession;
-  if (session != null) {
-    return;
-  }
-  await Supabase.instance.client.auth.onAuthStateChange
-      .firstWhere((data) => data.session != null);
-}
-
 Future<Map<String, dynamic>> apiRequest(
   String endPoint,
   ApiType method, {

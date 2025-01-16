@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:puzzleeys_secret_letter/utils/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
-import 'dart:ui' as ui;
+import 'package:apple_product_name/apple_product_name.dart';
+import 'dart:ui' show PlatformDispatcher;
+import 'dart:io' show Platform;
 
 class FeedbackEmail {
   static String _appVersion = '';
@@ -19,13 +20,14 @@ class FeedbackEmail {
     String osVersion = '';
     String? userId;
 
-    if (TargetPlatform.android.toString() == 'TargetPlatform.android') {
-      final androidInfo = await deviceInfoPlugin.androidInfo;
-      deviceInfo = '${androidInfo.manufacturer} ${androidInfo.model}';
-      osVersion = 'Android ${androidInfo.version.release}';
-    } else if (TargetPlatform.iOS.toString() == 'TargetPlatform.iOS') {
+    if (Platform.isAndroid) {
+      final aosInfo = await deviceInfoPlugin.androidInfo;
+      deviceInfo = '${aosInfo.manufacturer} ${aosInfo.model}';
+      osVersion =
+          'Android ${aosInfo.version.release} (SDK ${aosInfo.version.sdkInt})';
+    } else if (Platform.isIOS) {
       final iosInfo = await deviceInfoPlugin.iosInfo;
-      deviceInfo = '${iosInfo.name} ${iosInfo.model}';
+      deviceInfo = iosInfo.utsname.productName;
       osVersion = 'iOS ${iosInfo.systemVersion}';
     }
 
@@ -49,15 +51,17 @@ class FeedbackEmail {
       query: _encodeQueryParameters(<String, String>{
         'subject': '[PUZZLEEY][${_osVersion.split(' ')[0]}] Feedback',
         'body': '''
+
 여기에 내용을 입력해주세요.
------------------------------------------------------------------
+
+--------------------------------
 아래 정보는 여러분의 소중한 의견을 원활하게 해결해 드리기 위한 정보예요.
 삭제하지 말아 주세요.
 
 - App Version: $_appVersion
 - OS Version: $_osVersion
 - Device Info: $_deviceInfo
-- Language: ${ui.PlatformDispatcher.instance.locale.languageCode}
+- Language: ${PlatformDispatcher.instance.locale.languageCode}
 - User Id: $_userId
         '''
       }),
@@ -73,7 +77,7 @@ class FeedbackEmail {
   static String? _encodeQueryParameters(Map<String, String> params) {
     return params.entries
         .map((e) =>
-    '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
         .join('&');
   }
 }

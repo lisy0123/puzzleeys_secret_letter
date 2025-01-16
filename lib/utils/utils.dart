@@ -5,8 +5,18 @@ import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Utils {
+  static Future<void> waitForSession() async {
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      return;
+    }
+    await Supabase.instance.client.auth.onAuthStateChange
+        .firstWhere((data) => data.session != null);
+  }
+
   static void dismissKeyboard({required FocusNode focusNode}) {
     if (focusNode.hasFocus) {
       focusNode.unfocus();
