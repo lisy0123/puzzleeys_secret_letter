@@ -6,6 +6,7 @@ import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 // import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
@@ -89,6 +90,7 @@ class _SettingDialogState extends State<SettingDialog> {
     await Future.wait([
       Supabase.instance.client.auth.signOut(),
       SecureStorageUtils.clear(),
+      SharedPreferencesUtils.clear(),
     ]);
     if (mounted) {
       context.read<AuthStatusProvider>().checkLoginStatus();

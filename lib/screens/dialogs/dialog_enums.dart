@@ -12,6 +12,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/subject_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
@@ -22,7 +23,7 @@ enum DialogType {
   cancel,
   limit,
   bead,
-  alarm,
+  report,
   emptyName,
   emptyPuzzle,
   putGlobal,
@@ -54,6 +55,8 @@ enum DialogType {
     switch (this) {
       case DialogType.bead:
         return BeadDialog();
+      case DialogType.report:
+        return ReportDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.list:
         return ListDialog();
       case DialogType.more:

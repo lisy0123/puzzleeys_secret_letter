@@ -12,7 +12,7 @@ class CustomStrings {
   static const Map<String, String> dialogNameLists = {
     'list': '더 보 기',
     'bead': '감정 퍼즐 구슬',
-    'alarm': '신고하기',
+    'report': '신고하기',
     'more': '감정 보기',
 
     'putGlobal': '감정 넣기',
@@ -43,7 +43,7 @@ class CustomStrings {
   static String version = '버 전';
 
   static String reply = '답 장';
-  static String alarm = '신고하기';
+  static String report = '신고하기';
   static String back = '돌아가기';
   static String putEmotion = '감정 넣기';
   static String more = '더 보 기';
@@ -78,6 +78,7 @@ class MessageStrings {
   static String setDaysMessage = '받을 날짜를 골라주세요.';
   static String emptyWritingMessage = '작성한 글이 없어요!';
   static String deleteMessage = '지금 당장\n삭제할까요?';
+  static String reportMessage = '해당 글을\n신고할까요?';
 
   static Map<Enum, String> warningMessages = {
     WarningType.cancel: '돌아가면\n편지가 지워져요!',

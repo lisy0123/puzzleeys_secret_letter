@@ -109,8 +109,14 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         CountdownTimer(createdAt: widget.puzzleData['created_at']),
         PuzzleScreenHandler().buildIconButton(
           iconName: 'btn_alarm',
-          text: CustomStrings.alarm,
-          onTap: () => BuildDialog.show(iconName: 'alarm', context: context),
+          text: CustomStrings.report,
+          onTap: () => BuildDialog.show(
+            iconName: 'report',
+            puzzleId: widget.puzzleData['id'],
+            puzzleType: widget.puzzleType,
+            simpleDialog: true,
+            context: context,
+          ),
           context: context,
         ),
       ],

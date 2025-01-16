@@ -11,7 +11,7 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.da
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class MainScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _initializeTabController() async {
-    final savedIndex = await SecureStorageUtils.get('tab');
+    final savedIndex = await SharedPreferencesUtils.get('tab');
     final int index = (savedIndex == null) ? 0 : int.tryParse(savedIndex) ?? 0;
 
     _tabController = TabController(
@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       setState(() {
         _tabController!.animateTo(index);
       });
-      await SecureStorageUtils.save('tab', index.toString());
+      await SharedPreferencesUtils.save('tab', index.toString());
     }
   }
 
