@@ -4,11 +4,11 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
-class SubjectDialog extends StatelessWidget {
+class PuzzleSubjectDialog extends StatelessWidget {
   final Color puzzleColor;
   final String puzzleText;
 
-  const SubjectDialog({
+  const PuzzleSubjectDialog({
     super.key,
     required this.puzzleColor,
     required this.puzzleText,

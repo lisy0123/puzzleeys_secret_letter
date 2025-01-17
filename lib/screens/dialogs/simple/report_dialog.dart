@@ -27,10 +27,11 @@ class ReportDialog extends StatelessWidget {
   void _onTap(BuildContext context) async {
     if (context.mounted) Navigator.pop(context);
     try {
-      // TODO: add api in server side.
+      if (context.mounted) Navigator.pop(context);
+      // TODO: api
       final responseData = await _fetchResponse(puzzleType, puzzleId);
       if (responseData['code'] == 200) {
-        if (context.mounted) Navigator.pop(context);
+        print("ddd");
       }
     } catch (error) {
       throw Exception('Error reporting post: $error');

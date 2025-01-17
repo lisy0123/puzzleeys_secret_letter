@@ -4,21 +4,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/has_subject_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/utils/line_limiting_text_input_formatter.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
+import 'package:puzzleeys_secret_letter/widgets/complete_puzzle.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
+  final Map<String, dynamic> puzzleData;
   final PuzzleType puzzleType;
 
-  const PutDialog({super.key, required this.puzzleType});
+  const PutDialog({
+    super.key,
+    required this.puzzleData,
+    required this.puzzleType,
+  });
 
   @override
   State<PutDialog> createState() => _PutDialogState();
@@ -184,17 +190,30 @@ class _PutDialogState extends State<PutDialog> {
         context: context,
       );
     } else {
+      // TODO: refactoring
+      final Color selectedColor =
+          Provider.of<ColorPickerProvider>(context, listen: false)
+              .selectedColor;
+
+      widget.puzzleData['title'] = _textEditingController.text;
+      widget.puzzleData['color'] = ColorUtils.colorToString(selectedColor);
+
       if (widget.puzzleType == PuzzleType.me) {
-        BuildDialog.show(iconName: 'setDays', context: context);
-      } else {
-        context.read<WritingProvider>().updateOpacity();
-        Navigator.popUntil(context, (route) => route.isFirst);
-        CustomOverlay.show(
-          text: MessageStrings.overlayMessages[overlayType]![1],
-          puzzleVis: true,
-          puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
+        BuildDialog.show(
+          iconName: 'setDays',
+          puzzleData: widget.puzzleData,
           context: context,
         );
+      } else {
+        if (widget.puzzleType == PuzzleType.subject) {
+          context.read<HasSubjectProvider>().save();
+        }
+        CompletePuzzle(
+          overlayType: overlayType,
+          puzzleType: widget.puzzleType,
+          puzzleData: widget.puzzleData,
+          context: context,
+        ).post();
       }
     }
   }

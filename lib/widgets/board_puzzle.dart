@@ -17,10 +17,7 @@ class BoardPuzzle extends CustomPainter {
     this.strokeWidth = 2.0,
   }) {
     gradient = LinearGradient(
-      colors: [
-        puzzleColor,
-        ColorMatch(baseColor: puzzleColor)(),
-      ],
+      colors: [puzzleColor, ColorUtils.colorMatch(baseColor: puzzleColor)],
       begin: Alignment.topCenter,
       end: Alignment.bottomRight,
     );

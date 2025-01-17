@@ -4,17 +4,24 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
+import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleWritingScreen extends StatefulWidget {
   final PuzzleType puzzleType;
+  final int? index;
   final bool reply;
+  final String? parentId;
+  final Color? parentColor;
 
   const PuzzleWritingScreen({
     super.key,
     required this.puzzleType,
+    this.index,
     this.reply = true,
+    this.parentId,
+    this.parentColor,
   });
 
   @override
@@ -23,6 +30,7 @@ class PuzzleWritingScreen extends StatefulWidget {
 
 class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -34,6 +42,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   @override
   void dispose() {
     _textController.dispose();
+    _scrollController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -103,19 +112,22 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
 
   Widget _buildTextField() {
     return RawScrollbar(
-      padding: EdgeInsets.symmetric(vertical: 60.0.w),
+      controller: _scrollController,
       radius: Radius.circular(10),
-      child: TextField(
-        controller: _textController,
-        focusNode: _focusNode,
-        keyboardType: TextInputType.multiline,
-        textInputAction: TextInputAction.newline,
-        maxLines: null,
-        style: Theme.of(context).textTheme.displayLarge,
-        decoration: InputDecoration(
-          hintText: _getHintText(),
-          hintStyle: Theme.of(context).textTheme.labelSmall,
-          border: InputBorder.none,
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: TextField(
+          controller: _textController,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          maxLines: null,
+          style: Theme.of(context).textTheme.displayLarge,
+          decoration: InputDecoration(
+            hintText: _getHintText(),
+            hintStyle: Theme.of(context).textTheme.labelSmall,
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
@@ -135,8 +147,33 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     if (_textController.text.trim().length < 10) {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
-      BuildDialog.show(iconName: _getIconName(), context: context);
+      final Map<String, dynamic> puzzleData = {'content': _textController.text};
+      if (widget.puzzleType == PuzzleType.subject && !widget.reply) {
+        puzzleData['puzzle_index'] = widget.index!.toString();
+      }
+      if (widget.reply) {
+        puzzleData['receiver_id'] = widget.parentId;
+        puzzleData['parent_post_color'] =
+            ColorUtils.colorToString(widget.parentColor!);
+        puzzleData['parent_post_type'] = _getType();
+      }
+
+      BuildDialog.show(
+        iconName: _getIconName(),
+        puzzleData: puzzleData,
+        context: context,
+      );
     }
+  }
+
+  String _getType() {
+    return {
+      PuzzleType.global: 'global',
+      PuzzleType.subject: 'subject',
+      PuzzleType.personal: 'personal',
+      PuzzleType.me: 'personal',
+      PuzzleType.reply: 'personal',
+    }[widget.puzzleType]!;
   }
 
   String _getIconName() {

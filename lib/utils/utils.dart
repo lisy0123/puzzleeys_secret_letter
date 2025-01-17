@@ -38,7 +38,7 @@ class Utils {
   static int calculateDays(String? userCreatedAt) {
     if (userCreatedAt != null) {
       DateTime createdDate =
-      DateFormat("yyyy-MM-dd HH:mm").parse(userCreatedAt);
+          DateFormat("yyyy-MM-dd HH:mm").parse(userCreatedAt);
       DateTime currentDate = DateTime.now();
       Duration difference = currentDate.difference(createdDate);
       return difference.inDays;

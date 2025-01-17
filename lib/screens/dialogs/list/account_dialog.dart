@@ -85,7 +85,7 @@ class _AccountDialogState extends State<AccountDialog> {
         Utils.dialogDivider(),
         _buildBottomContent(
           firstString: CustomStrings.userPuzzleeyDays,
-          secondString: '$puzzleDays${CustomStrings.userPuzzleeyDayCount}',
+          secondString: '$puzzleDays${CustomStrings.dayCount}',
           context: context,
         ),
       ],

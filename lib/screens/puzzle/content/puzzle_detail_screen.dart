@@ -129,7 +129,9 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
       height: 2320.0.w,
       child: RawScrollbar(
         radius: Radius.circular(10),
-        thumbColor: ColorMatch(baseColor: widget.puzzleData['color'])(),
+        thumbColor: ColorUtils.colorMatch(
+          baseColor: widget.puzzleData['color'],
+        ),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 60.0.w),
@@ -197,13 +199,27 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   Widget _buildReplyButton() {
+    final String? parentId;
+
+    if (widget.puzzleType == PuzzleType.global ||
+        widget.puzzleType == PuzzleType.subject) {
+      parentId = widget.puzzleData['author_id'];
+    } else {
+      parentId = widget.puzzleData['sender_id'];
+    }
+
     return CustomButton(
       iconName: 'btn_mail',
       iconTitle: CustomStrings.reply,
       onTap: () {
         PuzzleScreenHandler.navigateScreen(
           barrierColor: Colors.white38,
-          child: PuzzleWritingScreen(puzzleType: widget.puzzleType),
+          child: PuzzleWritingScreen(
+            puzzleType: widget.puzzleType,
+            index: widget.index,
+            parentId: parentId,
+            parentColor: widget.puzzleData['color'],
+          ),
           context: context,
         );
         context.read<WritingProvider>().updateOpacity();

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
-class ColorMatch {
-  final Color? baseColor;
-  final String? stringColor;
-
-  const ColorMatch({this.baseColor, this.stringColor});
-
-  Color call() {
-    final colorMap = {
+class ColorUtils {
+  static Color colorMatch({Color? baseColor, String? stringColor}) {
+    final Map<dynamic, Color> colorMap = {
       CustomColors.colorPink: CustomColors.colorLightPink,
       CustomColors.colorRed: CustomColors.colorLightRed,
       CustomColors.colorOrange: CustomColors.colorLightOrange,
@@ -34,6 +29,24 @@ class ColorMatch {
       return colorMap[stringColor] ?? Colors.white;
     } else {
       return Colors.white;
+    }
+  }
+
+  static String colorToString(Color color) {
+    final Map<Color, String> colorMap = {
+      CustomColors.colorPink: 'Pink',
+      CustomColors.colorRed: 'Red',
+      CustomColors.colorOrange: 'Orange',
+      CustomColors.colorYellow: 'Yellow',
+      CustomColors.colorGreen: 'Green',
+      CustomColors.colorSkyBlue: 'SkyBlue',
+      CustomColors.colorBlue: 'Blue',
+      CustomColors.colorPurple: 'Purple',
+    };
+    if (colorMap[color] == null) {
+      throw Exception('Error: Wrong color.');
+    } else {
+      return colorMap[color]!;
     }
   }
 }

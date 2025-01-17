@@ -8,12 +8,12 @@ import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
-class MoreDialog extends StatelessWidget {
+class PuzzlePreviewDialog extends StatelessWidget {
   final int index;
   final Map<String, dynamic> puzzleData;
   final PuzzleType puzzleType;
 
-  const MoreDialog({
+  const PuzzlePreviewDialog({
     super.key,
     required this.index,
     required this.puzzleData,
@@ -43,7 +43,7 @@ class MoreDialog extends StatelessWidget {
           ),
           CustomButton(
             iconName: 'btn_puzzle',
-            iconTitle: CustomStrings.more,
+            iconTitle: CustomStrings.preview,
             onTap: () {
               Navigator.pop(context);
               PuzzleScreenHandler.navigateScreen(

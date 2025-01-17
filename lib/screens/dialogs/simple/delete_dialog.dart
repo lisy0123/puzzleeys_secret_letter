@@ -20,11 +20,12 @@ class DeleteDialog extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     try {
-      // TODO: add api in server side.
+      if (context.mounted) Navigator.pop(context);
+      // TODO: api
       final responseData =
           await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
       if (responseData['code'] == 200) {
-        if (context.mounted) Navigator.pop(context);
+        print("vvv");
       }
     } catch (error) {
       throw Exception('Error deleting global post: $error');

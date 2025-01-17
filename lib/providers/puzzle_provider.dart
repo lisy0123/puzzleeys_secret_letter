@@ -122,7 +122,7 @@ class PuzzleProvider extends ChangeNotifier {
         'id': puzzleData[i]['id'],
         'title': puzzleData[i]['title'],
         'content': puzzleData[i]['content'],
-        'color': ColorMatch(stringColor: puzzleData[i]['color'])(),
+        'color': ColorUtils.colorMatch(stringColor: puzzleData[i]['color']),
         'author_id': puzzleData[i]['author_id'],
         'receiver_id': puzzleData[i]['receiver_id'],
         'sender_id': puzzleData[i]['sender_id'],

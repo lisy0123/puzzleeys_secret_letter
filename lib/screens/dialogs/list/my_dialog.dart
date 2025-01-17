@@ -80,7 +80,9 @@ class _MyDialogState extends State<MyDialog> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset('assets/imgs/btn_trash.svg', height: 200.0.w),
-        SizedBox(height: 80.0.w,),
+        SizedBox(
+          height: 80.0.w,
+        ),
         CustomText.textContent(
           text: MessageStrings.emptyWritingMessage,
           context: context,
@@ -117,7 +119,7 @@ class _MyDialogState extends State<MyDialog> {
         CustomPaint(
           size: Size(500.0.w, 500.0.w),
           painter: TiltedPuzzlePiece(
-            puzzleColor: ColorMatch(stringColor: item['color'])(),
+            puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
           ),
         ),
         SizedBox(

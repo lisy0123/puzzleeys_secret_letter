@@ -10,10 +10,11 @@ class CustomStrings {
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
   static const Map<String, String> dialogNameLists = {
-    'list': '더 보 기',
     'bead': '감정 퍼즐 구슬',
+    'list': '더 보 기',
+    'puzzlePreview': '감정 보기',
+    'puzzleSubject': '오늘의 주제',
     'report': '신고하기',
-    'more': '감정 보기',
 
     'putGlobal': '감정 넣기',
     'putSubject': '감정 넣기',
@@ -21,7 +22,6 @@ class CustomStrings {
     'putMe': '감정 넣기',
     'putReply': '감정 넣기',
     'setDays': '언제 받을까요?',
-    'subject': '오늘의 주제',
 
     '0': '계 정',
     '1': '내 글',
@@ -37,7 +37,8 @@ class CustomStrings {
   static String userId = '회원 번호';
   static String userCreatedAt = '가입 날짜';
   static String userPuzzleeyDays = '퍼즐이가 된 지';
-  static String userPuzzleeyDayCount = '일째';
+  static String dayCount = '일째';
+  static String day = '일 뒤';
 
   static String feedback = '문의하기';
   static String version = '버 전';
@@ -46,7 +47,7 @@ class CustomStrings {
   static String report = '신고하기';
   static String back = '돌아가기';
   static String putEmotion = '감정 넣기';
-  static String more = '더 보 기';
+  static String preview = '더 보 기';
   static String put = '넣 기';
   static String send = '보내기';
 
@@ -85,6 +86,8 @@ class MessageStrings {
     WarningType.limit: '최소 10자 이상\n작성해주세요!',
     WarningType.emptyName: '감정에\n이름을 붙여주세요!',
     WarningType.emptyPuzzle: '퍼즐에\n감정을 넣어주세요!',
+    WarningType.isExists: '이미 오늘의 주제에\n감정 퍼즐을 공유했어요!',
+    WarningType.isUsed: '해당 퍼즐은\n누군가가 사용하고 있어요!',
   };
 
   static Map<Enum, String> missionMessages = {

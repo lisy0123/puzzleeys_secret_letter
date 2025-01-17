@@ -3,7 +3,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/more_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_preview_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart';
@@ -13,19 +13,24 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/subject_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_subject_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
 enum DialogType {
+  bead,
   list,
-  more,
+  puzzlePreview,
+  puzzleSubject,
+
+  report,
   delete,
   cancel,
   limit,
-  bead,
-  report,
   emptyName,
   emptyPuzzle,
+  isExists,
+  isUsed,
+
   putGlobal,
   putSubject,
   putWho,
@@ -33,7 +38,7 @@ enum DialogType {
   putMe,
   putReply,
   setDays,
-  subject,
+
   list0,
   list1,
   list2,
@@ -55,16 +60,22 @@ enum DialogType {
     switch (this) {
       case DialogType.bead:
         return BeadDialog();
-      case DialogType.report:
-        return ReportDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.list:
         return ListDialog();
-      case DialogType.more:
-        return MoreDialog(
+      case DialogType.puzzlePreview:
+        return PuzzlePreviewDialog(
           index: index!,
           puzzleData: puzzleData!,
           puzzleType: puzzleType!,
         );
+      case DialogType.puzzleSubject:
+        return PuzzleSubjectDialog(
+          puzzleColor: puzzleColor!,
+          puzzleText: puzzleText!,
+        );
+
+      case DialogType.report:
+        return ReportDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.delete:
         return DeleteDialog(puzzleId: puzzleId!);
       case DialogType.cancel:
@@ -75,26 +86,41 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyName);
       case DialogType.emptyPuzzle:
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
+      case DialogType.isExists:
+        return WarningDialog(dialogType: WarningType.isExists);
+      case DialogType.isUsed:
+        return WarningDialog(dialogType: WarningType.isUsed);
 
       case DialogType.putGlobal:
-        return PutDialog(puzzleType: PuzzleType.global);
+        return PutDialog(
+          puzzleData: puzzleData!,
+          puzzleType: PuzzleType.global,
+        );
       case DialogType.putSubject:
-        return PutDialog(puzzleType: PuzzleType.subject);
+        return PutDialog(
+          puzzleData: puzzleData!,
+          puzzleType: PuzzleType.subject,
+        );
       case DialogType.putWho:
         return ShowReceiverDialog();
       case DialogType.putPersonal:
-        return PutDialog(puzzleType: PuzzleType.personal);
-      case DialogType.putMe:
-        return PutDialog(puzzleType: PuzzleType.me);
-      case DialogType.putReply:
-        return PutDialog(puzzleType: PuzzleType.reply);
-      case DialogType.setDays:
-        return SetDaysDialog();
-      case DialogType.subject:
-        return SubjectDialog(
-          puzzleColor: puzzleColor!,
-          puzzleText: puzzleText!,
+        return PutDialog(
+          puzzleData: puzzleData!,
+          puzzleType: PuzzleType.personal,
         );
+      case DialogType.putMe:
+        return PutDialog(
+          puzzleData: puzzleData!,
+          puzzleType: PuzzleType.me,
+        );
+      case DialogType.putReply:
+        return PutDialog(
+          puzzleData: puzzleData!,
+          puzzleType: PuzzleType.reply,
+        );
+      case DialogType.setDays:
+        return SetDaysDialog(puzzleData: puzzleData!);
+
       case DialogType.list0:
         return AccountDialog();
       case DialogType.list1:

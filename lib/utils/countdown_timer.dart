@@ -68,14 +68,14 @@ class TimerUtil {
   }
 
   void _startTimer() {
-    final now = DateTime.now().add(Duration(hours: 9));
+    final now = DateTime.now().toUtc().add(Duration(hours: 9));
     Duration remainingTime =
         targetTime.isAfter(now) ? targetTime.difference(now) : Duration.zero;
 
     _timeStreamController.add(_formatTime(remainingTime));
 
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
-      final now = DateTime.now().add(Duration(hours: 9));
+      final now = DateTime.now().toUtc().add(Duration(hours: 9));
       remainingTime =
           targetTime.isAfter(now) ? targetTime.difference(now) : Duration.zero;
 
