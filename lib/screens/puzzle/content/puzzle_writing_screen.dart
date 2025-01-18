@@ -170,10 +170,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     return {
       PuzzleType.global: 'global',
       PuzzleType.subject: 'subject',
-      PuzzleType.personal: 'personal',
-      PuzzleType.me: 'personal',
-      PuzzleType.reply: 'personal',
-    }[widget.puzzleType]!;
+    }[widget.puzzleType] ?? 'personal';
   }
 
   String _getIconName() {
