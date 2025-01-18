@@ -46,15 +46,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     }
   }
 
-  void navigateToTab(int index) async {
-    if (_tabController!.index != index) {
-      setState(() {
-        _tabController!.animateTo(index);
-      });
-      await SharedPreferencesUtils.save('tab', index.toString());
-    }
-  }
-
   @override
   void dispose() {
     _tabController!.dispose();
@@ -107,7 +98,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         children: [
           if (index != 3) _buildActionButtons(),
           if (index == 3) const ShopScreen(),
-          BottomBar(currentIndex: index, onIconTap: navigateToTab),
+          BottomBar(currentIndex: index, onIconTap: _navigateToTab),
         ],
       ),
     );
@@ -136,6 +127,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  void _navigateToTab(int index) async {
+    if (_tabController!.index != index) {
+      setState(() {
+        _tabController!.animateTo(index);
+      });
+      await SharedPreferencesUtils.save('tab', index.toString());
+    }
   }
 }
 

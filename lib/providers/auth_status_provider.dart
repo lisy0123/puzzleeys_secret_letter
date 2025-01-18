@@ -10,15 +10,14 @@ class AuthStatusProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> checkLoginStatus() async {
+    final currentSession = Supabase.instance.client.auth.currentSession;
+    if (currentSession == null) {
+      _updateLoginStatus(false);
+      return;
+    }
+
     _updateLoading(true);
-
     try {
-      final currentSession = Supabase.instance.client.auth.currentSession;
-      if (currentSession == null) {
-        _updateLoginStatus(false);
-        return;
-      }
-
       final responseData =
           await apiRequest('/api/auth/check_user', ApiType.get);
 

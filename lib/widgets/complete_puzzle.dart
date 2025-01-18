@@ -6,7 +6,6 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 
 class CompletePuzzle {
@@ -49,11 +48,7 @@ class CompletePuzzle {
       PuzzleType.subject: '/api/post/subject',
     };
     final String url = urlMap[puzzleType] ?? '/api/post/personal';
-
-    String? userId = await SecureStorageUtils.get('userId');
-    if (userId == null) {
-      (userId, _) = await UserRequest.reloadUserData();
-    }
+    final String userId = await UserRequest.getUserId();
 
     final Map<String, String> body = Map<String, String>.from(puzzleData);
     if (puzzleType == PuzzleType.reply) {

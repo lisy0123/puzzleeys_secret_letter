@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/has_subject_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
@@ -24,18 +23,14 @@ void main() async {
   );
 
   await dotenv.load(fileName: ".env");
-  try {
-    await Future.wait([
-      Supabase.initialize(
-        url: dotenv.env['PROJECT_URL']!,
-        anonKey: dotenv.env['API_KEY']!,
-      ),
-      Firebase.initializeApp(),
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-    ]);
-  } catch (error) {
-    throw Exception("Error initializing services: $error");
-  }
+  await Future.wait([
+    Supabase.initialize(
+      url: dotenv.env['PROJECT_URL']!,
+      anonKey: dotenv.env['API_KEY']!,
+    ),
+    Firebase.initializeApp(),
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+  ]);
   FlutterNativeSplash.remove();
 
   runApp(MultiProvider(
@@ -46,7 +41,6 @@ void main() async {
       ChangeNotifierProvider(create: (_) => AuthStatusProvider()),
       ChangeNotifierProvider(create: (_) => PuzzleProvider()),
       ChangeNotifierProvider(create: (_) => FcmTokenProvider()),
-      ChangeNotifierProvider(create: (_) => HasSubjectProvider()),
     ],
     child: const MyApp(),
   ));

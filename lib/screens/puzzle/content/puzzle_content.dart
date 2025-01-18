@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/has_subject_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
@@ -33,7 +33,7 @@ class PuzzleContent extends StatelessWidget {
     final Color puzzleColor = puzzleData['color'];
     final rotationAngle = _getRotationAngle();
     final void Function() onTap;
-    final String hasSubject = context.read<HasSubjectProvider>().hasSubject;
+    final String hasSubject = context.watch<PuzzleProvider>().hasSubject;
 
     onTap = () {
       if (puzzleColor == Colors.white) {

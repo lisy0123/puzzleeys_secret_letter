@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
-import 'package:puzzleeys_secret_letter/providers/has_subject_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
@@ -157,25 +156,6 @@ class _PutDialogState extends State<PutDialog> {
   void _showDialog(BuildContext context) {
     final Color color =
         Provider.of<ColorPickerProvider>(context, listen: false).selectedColor;
-    final OverlayType overlayType;
-
-    switch (widget.puzzleType) {
-      case PuzzleType.global:
-        overlayType = OverlayType.writeGlobalPuzzle;
-        break;
-      case PuzzleType.subject:
-        overlayType = OverlayType.writeSubjectPuzzle;
-        break;
-      case PuzzleType.personal:
-        overlayType = OverlayType.writePersonalPuzzle;
-        break;
-      case PuzzleType.me:
-        overlayType = OverlayType.writePuzzleToMe;
-        break;
-      default:
-        overlayType = OverlayType.writeReply;
-        break;
-    }
 
     if (color == Colors.white) {
       BuildDialog.show(
@@ -190,31 +170,37 @@ class _PutDialogState extends State<PutDialog> {
         context: context,
       );
     } else {
-      // TODO: refactoring
-      final Color selectedColor =
-          Provider.of<ColorPickerProvider>(context, listen: false)
-              .selectedColor;
-
-      widget.puzzleData['title'] = _textEditingController.text;
-      widget.puzzleData['color'] = ColorUtils.colorToString(selectedColor);
-
-      if (widget.puzzleType == PuzzleType.me) {
-        BuildDialog.show(
-          iconName: 'setDays',
-          puzzleData: widget.puzzleData,
-          context: context,
-        );
-      } else {
-        if (widget.puzzleType == PuzzleType.subject) {
-          context.read<HasSubjectProvider>().save();
-        }
-        CompletePuzzle(
-          overlayType: overlayType,
-          puzzleType: widget.puzzleType,
-          puzzleData: widget.puzzleData,
-          context: context,
-        ).post();
-      }
+      _finalize(color);
     }
+  }
+
+  void _finalize(Color color) {
+    widget.puzzleData['title'] = _textEditingController.text;
+    widget.puzzleData['color'] = ColorUtils.colorToString(color);
+
+    if (widget.puzzleType == PuzzleType.me) {
+      BuildDialog.show(
+        iconName: 'setDays',
+        puzzleData: widget.puzzleData,
+        context: context,
+      );
+    } else {
+      CompletePuzzle(
+        overlayType: _getOverlayType(),
+        puzzleType: widget.puzzleType,
+        puzzleData: widget.puzzleData,
+        context: context,
+      ).post();
+    }
+  }
+
+  OverlayType _getOverlayType() {
+    return {
+      PuzzleType.global: OverlayType.writeGlobalPuzzle,
+      PuzzleType.subject: OverlayType.writeSubjectPuzzle,
+      PuzzleType.personal: OverlayType.writePersonalPuzzle,
+      PuzzleType.me: OverlayType.writePuzzleToMe,
+      PuzzleType.reply: OverlayType.writeReply,
+    }[widget.puzzleType]!;
   }
 }

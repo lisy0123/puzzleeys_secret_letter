@@ -3,7 +3,16 @@ import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart'
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 
 class UserRequest {
+  static Future<String> getUserId() async {
+    String? userId = await SecureStorageUtils.get('userId');
+    if (userId == null) {
+      (userId, _) = await UserRequest.reloadUserData();
+    }
+    return userId;
+  }
+
   static Future<(String, String)> reloadUserData() async {
+    await Utils.waitForSession();
     try {
       final responseData = await apiRequest('/api/auth/me', ApiType.get);
 

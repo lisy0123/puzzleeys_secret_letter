@@ -33,6 +33,8 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       if (mounted) {
+        context.read<PuzzleScaleProvider>().initialize();
+        context.read<PuzzleProvider>().initializeHasSubject();
         context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
       }
     });

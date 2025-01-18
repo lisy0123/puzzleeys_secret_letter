@@ -2,7 +2,6 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
 import 'package:apple_product_name/apple_product_name.dart';
 import 'dart:ui' show PlatformDispatcher;
@@ -18,7 +17,6 @@ class FeedbackEmail {
     final deviceInfoPlugin = DeviceInfoPlugin();
     String deviceInfo = '';
     String osVersion = '';
-    String? userId;
 
     if (Platform.isAndroid) {
       final aosInfo = await deviceInfoPlugin.androidInfo;
@@ -32,11 +30,7 @@ class FeedbackEmail {
     }
 
     final String appVersion = await Utils.getAppVersion();
-
-    userId = await SecureStorageUtils.get('userId');
-    if (userId == null) {
-      (userId, _) = await UserRequest.reloadUserData();
-    }
+    final String userId = await UserRequest.getUserId();
 
     _appVersion = appVersion;
     _osVersion = osVersion;
