@@ -30,89 +30,94 @@ export class AuthService {
     }
 
     static login(user: User, body: unknown): Promise<Response> {
-        return ResponseUtils.handleRequest(() =>
-            AuthService.handleFcmTokenRequest(
-                user,
-                body,
-                async (userId, fcmToken) => {
-                    const upsertResponse = await UserRepository.upsertFCM(
-                        userId,
-                        fcmToken
-                    );
-                    if (upsertResponse) return upsertResponse;
+        return ResponseUtils.handleRequest({
+            callback: () =>
+                AuthService.handleFcmTokenRequest(
+                    user,
+                    body,
+                    async (userId, fcmToken) => {
+                        const upsertResponse = await UserRepository.upsertFCM(
+                            userId,
+                            fcmToken
+                        );
+                        if (upsertResponse) return upsertResponse;
 
-                    const insertResponse = await AuthRepository.insertUser(
-                        user
-                    );
-                    if (insertResponse) return insertResponse;
+                        const insertResponse = await AuthRepository.insertUser(
+                            user
+                        );
+                        if (insertResponse) return insertResponse;
 
-                    return createResponse(
-                        ResponseCode.SUCCESS,
-                        "Login and FCM token upsert successful.",
-                        {
-                            user_id: uuidToBase64(user.id),
-                            created_at: user.created_at,
-                        }
-                    );
-                }
-            )
-        );
+                        return createResponse(
+                            ResponseCode.SUCCESS,
+                            "Login and FCM token upsert successful.",
+                            {
+                                user_id: uuidToBase64(user.id),
+                                created_at: user.created_at,
+                            }
+                        );
+                    }
+                ),
+        });
     }
 
     static logout(user: User, body: unknown): Promise<Response> {
-        return ResponseUtils.handleRequest(() =>
-            AuthService.handleFcmTokenRequest(
-                user,
-                body,
-                async (userId, fcmToken) => {
-                    const deleteResponse = await UserRepository.deleteFCM(
-                        userId,
-                        fcmToken
-                    );
-                    if (deleteResponse) return deleteResponse;
+        return ResponseUtils.handleRequest({
+            callback: () =>
+                AuthService.handleFcmTokenRequest(
+                    user,
+                    body,
+                    async (userId, fcmToken) => {
+                        const deleteResponse = await UserRepository.deleteFCM(
+                            userId,
+                            fcmToken
+                        );
+                        if (deleteResponse) return deleteResponse;
 
-                    return createResponse(
-                        ResponseCode.SUCCESS,
-                        "FCM token deletion successful.",
-                        null
-                    );
-                }
-            )
-        );
+                        return createResponse(
+                            ResponseCode.SUCCESS,
+                            "FCM token deletion successful.",
+                            null
+                        );
+                    }
+                ),
+        });
     }
 
     static upsertFcm(user: User, body: unknown): Promise<Response> {
-        return ResponseUtils.handleRequest(() =>
-            AuthService.handleFcmTokenRequest(
-                user,
-                body,
-                async (userId, fcmToken) => {
-                    const upsertResponse = await UserRepository.upsertFCM(
-                        userId,
-                        fcmToken
-                    );
-                    if (upsertResponse) return upsertResponse;
+        return ResponseUtils.handleRequest({
+            callback: () =>
+                AuthService.handleFcmTokenRequest(
+                    user,
+                    body,
+                    async (userId, fcmToken) => {
+                        const upsertResponse = await UserRepository.upsertFCM(
+                            userId,
+                            fcmToken
+                        );
+                        if (upsertResponse) return upsertResponse;
 
-                    return createResponse(
-                        ResponseCode.SUCCESS,
-                        "FCM token upsert successful.",
-                        null
-                    );
-                }
-            )
-        );
+                        return createResponse(
+                            ResponseCode.SUCCESS,
+                            "FCM token upsert successful.",
+                            null
+                        );
+                    }
+                ),
+        });
     }
 
     static deleteUser(user: User): Promise<Response> {
-        return ResponseUtils.handleRequest(async () => {
-            const withdrawResponse = await AuthRepository.deleteUser(user);
-            if (withdrawResponse) return withdrawResponse;
+        return ResponseUtils.handleRequest({
+            callback: async () => {
+                const withdrawResponse = await AuthRepository.deleteUser(user);
+                if (withdrawResponse) return withdrawResponse;
 
-            return createResponse(
-                ResponseCode.SUCCESS,
-                "User deletion successful.",
-                null
-            );
+                return createResponse(
+                    ResponseCode.SUCCESS,
+                    "User deletion successful.",
+                    null
+                );
+            },
         });
     }
 }

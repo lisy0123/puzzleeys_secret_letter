@@ -60,4 +60,16 @@ export class PostRepository {
         }
         return data;
     }
+
+    static async deleteGlobalUser(id: string): Promise<Response | PostData[]> {
+        const { data, error } = await supabase.rpc("delete_global_user");
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+        return data;
+    }
 }

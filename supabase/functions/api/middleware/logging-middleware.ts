@@ -9,34 +9,50 @@ export class LoggingMiddleware {
         const timestamp = new Date().toISOString();
 
         try {
-            const requestHeader = Extract.extractHeaders(c);
-            const requestBody = await Extract.extractRequestBody(c);
+            const extractedUrl = c.req.url.includes(".com")
+                ? c.req.url.split(".com")[1]
+                : null;
+            if (
+                !(
+                    extractedUrl! == "/api/post/global" ||
+                    extractedUrl! == "/api/post/subject" ||
+                    extractedUrl! == "/api/post/personal" ||
+                    extractedUrl! == "/api/post/global_user"
+                ) &&
+                c.req.method != "GET"
+            ) {
+                const requestHeader = Extract.extractHeaders(c);
+                const requestBody = await Extract.extractRequestBody(c);
 
-            LoggingMiddleware.log({
-                label: "[ REQUEST ]",
-                timestamp,
-                method: c.req.method,
-                url: c.req.url,
-                headers: requestHeader,
-                body: requestBody,
-            });
+                LoggingMiddleware.log({
+                    label: "[ REQUEST ]",
+                    timestamp,
+                    method: c.req.method,
+                    url: extractedUrl,
+                    headers: requestHeader,
+                    body: requestBody,
+                });
+            }
 
             await next();
 
-            const duration = Date.now() - start;
-            const responseHeader = Extract.extractHeaders(c);
             const responseBody = await Extract.extractResponseData(c);
             const responseLabel = GetLabel.getLabel(responseBody);
 
-            LoggingMiddleware.log({
-                label: responseLabel,
-                timestamp,
-                method: c.req.method,
-                url: c.req.url,
-                headers: responseHeader,
-                body: responseBody,
-                duration,
-            });
+            if (responseLabel != "[ SUCCESS ]") {
+                const duration = Date.now() - start;
+                const responseHeader = Extract.extractHeaders(c);
+
+                LoggingMiddleware.log({
+                    label: responseLabel,
+                    timestamp,
+                    method: c.req.method,
+                    url: extractedUrl,
+                    headers: responseHeader,
+                    body: responseBody,
+                    duration,
+                });
+            }
         } catch (error) {
             LoggingMiddleware.logError(
                 timestamp,
@@ -60,17 +76,16 @@ export class LoggingMiddleware {
         label: string;
         timestamp: string;
         method: string;
-        url: string;
+        url: string | null;
         headers: Record<string, string>;
         body: Record<string, string> | string | ResponseFormat<T> | null;
         duration?: number;
     }) {
-        const extractedUrl = url.includes(".com") ? url.split(".com")[1] : null;
         const logMessage = {
             label,
             timestamp,
             method,
-            url: extractedUrl,
+            url,
             headers,
             body,
             duration,

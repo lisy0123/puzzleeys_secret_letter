@@ -9,18 +9,33 @@ import { ResponseCode } from "../../lib/response/response-code.ts";
 export class AuthController {
     static async login(c: Context, user: User) {
         const body = await c.req.json();
-        return ResponseUtils.handleRequest(AuthService.login, user, body);
+        return ResponseUtils.handleRequest({
+            callback: AuthService.login,
+            user: user,
+            tableOrBody: body,
+        });
     }
     static async logout(c: Context, user: User) {
         const body = await c.req.json();
-        return ResponseUtils.handleRequest(AuthService.logout, user, body);
+        return ResponseUtils.handleRequest({
+            callback: AuthService.logout,
+            user: user,
+            tableOrBody: body,
+        });
     }
     static async upsertFcm(c: Context, user: User) {
         const body = await c.req.json();
-        return ResponseUtils.handleRequest(AuthService.upsertFcm, user, body);
+        return ResponseUtils.handleRequest({
+            callback: AuthService.upsertFcm,
+            user: user,
+            tableOrBody: body,
+        });
     }
     static deleteUser(_c: Context, user: User) {
-        return ResponseUtils.handleRequest(AuthService.deleteUser, user);
+        return ResponseUtils.handleRequest({
+            callback: AuthService.deleteUser,
+            user: user,
+        });
     }
 
     static checkUser() {

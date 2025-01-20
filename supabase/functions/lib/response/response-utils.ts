@@ -3,17 +3,36 @@ import { ResponseCode } from "./response-code.ts";
 import { User } from "jsr:@supabase/supabase-js@2";
 
 export class ResponseUtils {
-    static async handleRequest<T>(
+    static async handleRequest<T>(params: {
         callback: (
             user: User,
-            table: string
-        ) => Promise<Response> | Response | (() => Promise<Response>),
-        user?: User,
-        tableOrBody?: unknown
-    ): Promise<Response> {
+            table?: string,
+            id?: string
+        ) => Promise<Response> | Response | (() => Promise<Response>);
+        user?: User;
+        tableOrBody?: unknown;
+        id?: string;
+        only_id?: string;
+    }): Promise<Response> {
+        const { callback, user, tableOrBody, id, only_id } = params;
+
         try {
-            if (tableOrBody) {
+            if (only_id) {
+                return await (
+                    callback as (user: User, id: string) => Promise<Response>
+                )(user!, only_id);
+            }
+            if (id) {
                 return await(
+                    callback as (
+                        user: User,
+                        tableOrBody: unknown,
+                        id: string
+                    ) => Promise<Response>
+                )(user!, tableOrBody, id as string);
+            }
+            if (tableOrBody) {
+                return await (
                     callback as (
                         user: User,
                         tableOrBody: unknown
