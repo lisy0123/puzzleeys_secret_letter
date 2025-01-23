@@ -32,26 +32,33 @@ export class LoggingMiddleware {
                     headers: requestHeader,
                     body: requestBody,
                 });
-            }
 
-            await next();
+                await next();
 
-            const responseBody = await Extract.extractResponseData(c);
-            const responseLabel = GetLabel.getLabel(responseBody);
+                const responseBody = await Extract.extractResponseData(c);
+                const responseLabel = GetLabel.getLabel(responseBody);
 
-            if (responseLabel != "[ SUCCESS ]") {
-                const duration = Date.now() - start;
-                const responseHeader = Extract.extractHeaders(c);
+                if (responseLabel != "[ SUCCESS ]") {
+                    const duration = Date.now() - start;
+                    const responseHeader = Extract.extractHeaders(c);
 
-                LoggingMiddleware.log({
-                    label: responseLabel,
-                    timestamp,
-                    method: c.req.method,
-                    url: extractedUrl,
-                    headers: responseHeader,
-                    body: responseBody,
-                    duration,
-                });
+                    LoggingMiddleware.log({
+                        label: responseLabel,
+                        timestamp,
+                        method: c.req.method,
+                        url: extractedUrl,
+                        headers: responseHeader,
+                        body: responseBody,
+                        duration,
+                    });
+                } else {
+                    const logMessage = {
+                        label: "[ SUCCESS ]",
+                        method: c.req.method,
+                        url: extractedUrl,
+                    };
+                    console.log(JSON.stringify(logMessage, null, 2));
+                }
             }
         } catch (error) {
             LoggingMiddleware.logError(

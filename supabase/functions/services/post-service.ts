@@ -117,17 +117,16 @@ export class PostService {
     static report(_user: User, table: unknown, id: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const posts = await PostRepository.getUserPosts(
-                    _user,
-                    table as string
+                const error = await PostRepository.report(
+                    table as string,
+                    id as string
                 );
-                if ("status" in posts) {
-                    return posts;
-                }
+                if (error) return error;
+                
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Get ${table}s successful.`,
-                    posts
+                    `Report ${table} post successful.`,
+                    null
                 );
             },
         });
@@ -136,18 +135,15 @@ export class PostService {
     static deleteGlobalUser(_user: User, id: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const table = '';
-                const posts = await PostRepository.getUserPosts(
-                    _user,
-                    table as string
+                const error = await PostRepository.deleteGlobalUser(
+                    id as string
                 );
-                if ("status" in posts) {
-                    return posts;
-                }
+                if (error) return error;
+
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Get ${table}s successful.`,
-                    posts
+                    `Delete user's global post successful.`,
+                    null
                 );
             },
         });

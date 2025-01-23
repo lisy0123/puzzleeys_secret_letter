@@ -61,8 +61,14 @@ export class PostRepository {
         return data;
     }
 
-    static async deleteGlobalUser(id: string): Promise<Response | PostData[]> {
-        const { data, error } = await supabase.rpc("delete_global_user");
+    // need to check
+    static async report(table: string, id: string): Promise<Response | void> {
+        const { error } = await supabase
+            .from(table)
+            .update({ extra: { Report: true } })
+            .eq("id", id)
+            .select();
+
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
@@ -70,6 +76,21 @@ export class PostRepository {
                 null
             );
         }
-        return data;
+    }
+
+    // need to check
+    static async deleteGlobalUser(id: string): Promise<Response | void> {
+        const { error } = await supabase.rpc("delete_user_posts", {
+            id_input: id,
+            base_table: "global_post",
+            backup_table: "backup_global_post",
+        });
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
     }
 }
