@@ -116,4 +116,5 @@ class MessageStrings {
   };
   static String userIdOverlay = '회원 번호를 복사했어요!';
   static String puzzleExistOverlay = '이미 담은 감정 퍼즐이에요!';
+  static String reportOverlay = '해당 감정 퍼즐을 신고했어요!';
 }

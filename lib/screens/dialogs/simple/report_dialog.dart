@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
 class ReportDialog extends StatelessWidget {
@@ -25,14 +26,13 @@ class ReportDialog extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) async {
-    if (context.mounted) Navigator.pop(context);
+    Navigator.popUntil(context, (route) => route.isFirst);
+    CustomOverlay.show(
+      text: MessageStrings.reportOverlay,
+      context: context,
+    );
     try {
-      if (context.mounted) Navigator.pop(context);
-      // TODO: api
-      final responseData = await _fetchResponse(puzzleType, puzzleId);
-      if (responseData['code'] == 200) {
-        print("ddd");
-      }
+      await _fetchResponse(puzzleType, puzzleId);
     } catch (error) {
       throw Exception('Error reporting post: $error');
     }

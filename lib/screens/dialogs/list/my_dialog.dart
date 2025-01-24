@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
@@ -46,24 +48,29 @@ class _MyDialogState extends State<MyDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>?>(
-      future: _futureData,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return PuzzleLoadingScreen(overlay: false);
-        }
-        if (snapshot.hasError) {
-          return _buildErrorText(snapshot.error);
-        }
-        if (!snapshot.hasData ||
-            snapshot.data == null ||
-            snapshot.data!.isEmpty) {
-          return _buildErrorText(null);
-        } else {
-          return _buildItem(snapshot);
-        }
-      },
-    );
+    return Consumer<DeleteDialogProvider>(builder: (context, provider, child) {
+      if (!provider.isLoading) {
+        _futureData = fetchData();
+      }
+      return FutureBuilder<List<Map<String, dynamic>>?>(
+        future: _futureData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return PuzzleLoadingScreen(overlay: false);
+          }
+          if (snapshot.hasError) {
+            return _buildErrorText(snapshot.error);
+          }
+          if (!snapshot.hasData ||
+              snapshot.data == null ||
+              snapshot.data!.isEmpty) {
+            return _buildErrorText(null);
+          } else {
+            return _buildItem(snapshot);
+          }
+        },
+      );
+    });
   }
 
   Widget _buildErrorText(Object? error) {

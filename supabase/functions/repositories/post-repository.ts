@@ -49,6 +49,7 @@ export class PostRepository {
                 queryBuilder.filter(key, "eq", value);
             });
         }
+        queryBuilder.filter("report", "eq", false);
 
         const { data, error } = await queryBuilder;
         if (error) {
@@ -61,13 +62,12 @@ export class PostRepository {
         return data;
     }
 
-    // need to check
     static async report(table: string, id: string): Promise<Response | void> {
         const { error } = await supabase
             .from(table)
-            .update({ extra: { Report: true } })
+            .update({ report: true })
             .eq("id", id)
-            .select();
+            .is("report", false);
 
         if (error) {
             return createResponse(
@@ -78,7 +78,6 @@ export class PostRepository {
         }
     }
 
-    // need to check
     static async deleteGlobalUser(id: string): Promise<Response | void> {
         const { error } = await supabase.rpc("delete_user_posts", {
             id_input: id,

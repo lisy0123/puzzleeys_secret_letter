@@ -14,10 +14,10 @@ export class LoggingMiddleware {
                 : null;
             if (
                 !(
-                    extractedUrl! == "/api/post/global" ||
-                    extractedUrl! == "/api/post/subject" ||
-                    extractedUrl! == "/api/post/personal" ||
-                    extractedUrl! == "/api/post/global_user"
+                    extractedUrl!.includes("/api/post/global") ||
+                    extractedUrl!.includes("/api/post/subject") ||
+                    extractedUrl!.includes("/api/post/personal") ||
+                    extractedUrl!.includes("/api/post/global_user")
                 ) &&
                 c.req.method != "GET"
             ) {
@@ -32,9 +32,19 @@ export class LoggingMiddleware {
                     headers: requestHeader,
                     body: requestBody,
                 });
+            }
 
-                await next();
+            await next();
 
+            if (
+                !(
+                    extractedUrl!.includes("/api/post/global") ||
+                    extractedUrl!.includes("/api/post/subject") ||
+                    extractedUrl!.includes("/api/post/personal") ||
+                    extractedUrl!.includes("/api/post/global_user")
+                ) &&
+                c.req.method != "GET"
+            ) {
                 const responseBody = await Extract.extractResponseData(c);
                 const responseLabel = GetLabel.getLabel(responseBody);
 
@@ -51,13 +61,6 @@ export class LoggingMiddleware {
                         body: responseBody,
                         duration,
                     });
-                } else {
-                    const logMessage = {
-                        label: "[ SUCCESS ]",
-                        method: c.req.method,
-                        url: extractedUrl,
-                    };
-                    console.log(JSON.stringify(logMessage, null, 2));
                 }
             }
         } catch (error) {

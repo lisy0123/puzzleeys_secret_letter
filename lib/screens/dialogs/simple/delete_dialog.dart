@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
@@ -20,14 +22,17 @@ class DeleteDialog extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     try {
-      if (context.mounted) Navigator.pop(context);
-      // TODO: api
-      final responseData =
-          await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
-      if (responseData['code'] == 200) {
-        print("vvv");
+      context.read<DeleteDialogProvider>().updateLoading(setLoading: true);
+      await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
+      if (context.mounted) {
+        context.read<DeleteDialogProvider>().updateLoading(setLoading: false);
+        Navigator.pop(context);
       }
     } catch (error) {
+      if (context.mounted) {
+        context.read<DeleteDialogProvider>().updateLoading(setLoading: false);
+        Navigator.pop(context);
+      }
       throw Exception('Error deleting global post: $error');
     }
   }
