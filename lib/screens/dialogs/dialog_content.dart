@@ -11,7 +11,6 @@ import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 
 class DialogContent {
   final String iconName;
-  final int? index;
   final String? puzzleId;
   final Color? puzzleColor;
   final String? puzzleText;
@@ -21,7 +20,6 @@ class DialogContent {
 
   const DialogContent({
     required this.iconName,
-    this.index,
     this.puzzleId,
     this.puzzleColor,
     this.puzzleText,
@@ -70,7 +68,6 @@ class DialogContent {
   Widget _buildBody(BuildContext context) {
     final Widget dialogContent = DialogEnums(
       iconName: iconName,
-      index: index,
       puzzleId: puzzleId,
       puzzleColor: puzzleColor,
       puzzleText: puzzleText,

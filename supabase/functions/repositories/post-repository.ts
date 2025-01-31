@@ -92,4 +92,28 @@ export class PostRepository {
             );
         }
     }
+
+    static async post(table: string, body: JSON): Promise<Response | void> {
+        const { error } = await supabase.from(table).insert([body]);
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+    }
+
+    static async postPersonal(body: JSON): Promise<Response | void> {
+        const { error } = await supabase.rpc("post_personal", {
+            body: body,
+        });
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+    }
 }

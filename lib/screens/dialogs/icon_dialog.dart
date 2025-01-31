@@ -30,7 +30,6 @@ class IconDialog extends StatelessWidget {
 class BuildDialog {
   static void show({
     required String iconName,
-    int? index,
     Color? puzzleColor,
     String? puzzleText,
     Map<String, dynamic>? puzzleData,
@@ -56,7 +55,6 @@ class BuildDialog {
               alignment: Alignment.topCenter,
               children: DialogContent(
                 iconName: iconName,
-                index: index,
                 puzzleId: puzzleId,
                 puzzleColor: puzzleColor,
                 puzzleText: puzzleText,

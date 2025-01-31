@@ -3,7 +3,6 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_preview_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/mission_dialog.dart';
@@ -50,7 +49,6 @@ enum DialogType {
   list8;
 
   Widget showDialog(
-    int? index,
     String? puzzleId,
     Color? puzzleColor,
     String? puzzleText,
@@ -62,12 +60,6 @@ enum DialogType {
         return BeadDialog();
       case DialogType.list:
         return ListDialog();
-      case DialogType.puzzlePreview:
-        return PuzzlePreviewDialog(
-          index: index!,
-          puzzleData: puzzleData!,
-          puzzleType: puzzleType!,
-        );
       case DialogType.puzzleSubject:
         return PuzzleSubjectDialog(
           puzzleColor: puzzleColor!,
@@ -148,7 +140,6 @@ extension DialogTypeExtension on DialogType {
 
 class DialogEnums extends StatelessWidget {
   final String iconName;
-  final int? index;
   final String? puzzleId;
   final Color? puzzleColor;
   final String? puzzleText;
@@ -158,7 +149,6 @@ class DialogEnums extends StatelessWidget {
   const DialogEnums({
     super.key,
     required this.iconName,
-    this.index,
     this.puzzleId,
     this.puzzleColor,
     this.puzzleText,
@@ -171,7 +161,6 @@ class DialogEnums extends StatelessWidget {
     final DialogType dialogType = DialogTypeExtension.fromString(
         (RegExp(r'^[0-8]$').hasMatch(iconName)) ? 'list$iconName' : iconName);
     return dialogType.showDialog(
-      index,
       puzzleId,
       puzzleColor,
       puzzleText,

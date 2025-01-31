@@ -93,7 +93,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
             _buildTopContent(),
             SizedBox(height: 40.0.w),
             _buildMidContent(),
-            SizedBox(height: 20.0.w),
+            SizedBox(height: 40.0.w),
             _buildBottomContent(),
           ],
         ),
@@ -161,7 +161,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
             Transform.rotate(
               angle: -pi / 4,
               child: CustomPaint(
-                size: Size(220.0.w, 220.0.w),
+                size: Size(200.0.w, 200.0.w),
                 painter: TiltedPuzzlePiece(
                   puzzleColor: _puzzleButtonColor,
                   strokeWidth: 1.5,
@@ -169,10 +169,12 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
               ),
             ),
             SizedBox(width: 40.0.w),
-            CustomText.textDisplay(
-              text: widget.puzzleData['puzzle_count'].toString(),
-              context: context,
-            ),
+            CustomText.textDisplay(text: CustomStrings.get, context: context),
+            //  TODO: Will put them in later update
+            // CustomText.textDisplay(
+            //   text: widget.puzzleData['puzzle_count'].toString(),
+            //   context: context,
+            // ),
           ],
         ),
       ),
@@ -181,15 +183,15 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   void _getPuzzle() {
     if (_puzzleButtonColor == Colors.white) {
+      setState(() {
+        _puzzleButtonColor = widget.puzzleData['color'];
+      });
       CustomOverlay.show(
         text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
         puzzleVis: true,
         puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
         context: context,
       );
-      setState(() {
-        _puzzleButtonColor = widget.puzzleData['color'];
-      });
     } else {
       CustomOverlay.show(
         text: MessageStrings.puzzleExistOverlay,

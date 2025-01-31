@@ -50,6 +50,7 @@ class CustomStrings {
   static String preview = '더 보 기';
   static String put = '넣 기';
   static String send = '보내기';
+  static String get = '퍼즐 담기';
 
   static String logout = '로그아웃';
   static String deleteUser = '회원 탈퇴';
@@ -74,6 +75,7 @@ class MessageStrings {
   static String writingToMeMessage = '미래의 나에게 전하고 싶은 감정을 적어주세요.';
   static String writingReplyMessage = '답장을 적어주세요.';
 
+  static String previewMessage = '퍼즐을 클릭해서 더 알아보세요.';
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';

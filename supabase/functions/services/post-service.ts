@@ -56,59 +56,54 @@ export class PostService {
         });
     }
 
-    // TODO: need to fix!!!
-    static postGlobal(_user: User, table: unknown): Promise<Response> {
+    static postGlobal(_user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const posts = await PostRepository.getUserPosts(
-                    _user,
-                    table as string
+                const error = await PostRepository.post(
+                    "global_post",
+                    body as JSON
                 );
-                if ("status" in posts) {
-                    return posts;
-                }
+                if (error) return error;
+
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Get ${table}s successful.`,
-                    posts
+                    `Post global successful.`,
+                    null,
                 );
             },
         });
     }
 
-    static postSubject(_user: User, table: unknown): Promise<Response> {
+    static postSubject(_user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const posts = await PostRepository.getUserPosts(
-                    _user,
-                    table as string
+                const error = await PostRepository.post(
+                    "subject_post",
+                    body as JSON
                 );
-                if ("status" in posts) {
-                    return posts;
-                }
+                if (error) return error;
+
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Get ${table}s successful.`,
-                    posts
+                    `Post global successful.`,
+                    null
                 );
             },
         });
     }
 
-    static postPersonal(_user: User, table: unknown): Promise<Response> {
+    static postPersonal(_user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const posts = await PostRepository.getUserPosts(
-                    _user,
-                    table as string
+                const error = await PostRepository.postPersonal(
+                    body as JSON
                 );
-                if ("status" in posts) {
-                    return posts;
-                }
+                if (error) return error;
+
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Get ${table}s successful.`,
-                    posts
+                    `Post global successful.`,
+                    null
                 );
             },
         });

@@ -4,14 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_match.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class MyDialog extends StatefulWidget {
@@ -124,7 +122,7 @@ class _MyDialogState extends State<MyDialog> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomPaint(
-          size: Size(500.0.w, 500.0.w),
+          size: Size(540.0.w, 540.0.w),
           painter: TiltedPuzzlePiece(
             puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
           ),
@@ -134,30 +132,35 @@ class _MyDialogState extends State<MyDialog> {
           child: CustomText.textContent(text: item['title'], context: context),
         ),
         SizedBox(
-          width: 1000.0.w,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CountdownTimer(createdAt: item['created_at']),
-              CustomButton(
-                iconName: 'none',
-                iconTitle: CustomStrings.deleteShort,
-                height: 180,
-                width: 360,
-                borderStroke: 1.5,
-                onTap: () {
-                  BuildDialog.show(
-                    iconName: 'delete',
-                    simpleDialog: true,
-                    puzzleId: item['id'],
-                    context: context,
-                  );
-                },
-              ),
-            ],
-          ),
+          height: 220.0.w,
+          child: CountdownTimer(createdAt: item['created_at']),
         ),
+        //  TODO: Will put them in later update
+        // SizedBox(
+        //   width: 1000.0.w,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       CountdownTimer(createdAt: item['created_at']),
+        //       CustomButton(
+        //         iconName: 'none',
+        //         iconTitle: CustomStrings.deleteShort,
+        //         height: 180,
+        //         width: 360,
+        //         borderStroke: 1.5,
+        //         onTap: () {
+        //           BuildDialog.show(
+        //             iconName: 'delete',
+        //             simpleDialog: true,
+        //             puzzleId: item['id'],
+        //             context: context,
+        //           );
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

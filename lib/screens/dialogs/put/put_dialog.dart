@@ -71,7 +71,7 @@ class _PutDialogState extends State<PutDialog> {
                   child: _buildPuzzle(context),
                 ),
                 SizedBox(
-                  height: 680.0.w,
+                  height: 700.0.w,
                   child: _buildBottomContent(context),
                 ),
               ],

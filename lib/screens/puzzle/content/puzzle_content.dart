@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
@@ -77,11 +78,13 @@ class PuzzleContent extends StatelessWidget {
           context: context,
         );
       } else {
-        BuildDialog.show(
-          iconName: 'puzzlePreview',
-          index: index,
-          puzzleData: puzzleData,
-          puzzleType: puzzleType,
+        PuzzleScreenHandler.navigateScreen(
+          barrierColor: puzzleData['color'].withValues(alpha: 0.8),
+          child: PuzzleDetailScreen(
+            index: index,
+            puzzleData: puzzleData,
+            puzzleType: puzzleType,
+          ),
           context: context,
         );
       }

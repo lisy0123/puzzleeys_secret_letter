@@ -26,17 +26,16 @@ class CompletePuzzle {
   void post() async {
     try {
       // TODO: api
-      final responseData = await _fetchResponse();
-      if (responseData['code'] == 200 && context.mounted) {
-        context.read<WritingProvider>().updateOpacity();
-        Navigator.popUntil(context, (route) => route.isFirst);
-        CustomOverlay.show(
-          text: MessageStrings.overlayMessages[overlayType]![1],
-          puzzleVis: true,
-          puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
-          context: context,
-        );
-      }
+      CustomOverlay.show(
+        text: MessageStrings.overlayMessages[overlayType]![1],
+        puzzleVis: true,
+        puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
+        delayed: 4000,
+        context: context,
+      );
+      context.read<WritingProvider>().updateOpacity();
+      Navigator.popUntil(context, (route) => route.isFirst);
+      await _fetchResponse();
     } catch (error) {
       throw Exception('Error posting puzzle: $error');
     }
