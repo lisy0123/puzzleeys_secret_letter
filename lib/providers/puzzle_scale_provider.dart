@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 
 class PuzzleScaleProvider extends ChangeNotifier {
-  double _scaleFactor = 1.0;
+  double _scaleFactor = 0.5;
   double get scaleFactor => _scaleFactor;
 
   Future<void> initialize() async {
     final storedScale = await SharedPreferencesUtils.get('scaleFactor');
     if (storedScale != null) {
-      _scaleFactor = double.tryParse(storedScale) ?? 1.0;
+      _scaleFactor = double.tryParse(storedScale) ?? 0.5;
     } else {
-      _scaleFactor = 1.0;
+      _scaleFactor = 0.5;
     }
     notifyListeners();
   }

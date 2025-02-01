@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
@@ -25,17 +26,19 @@ class CompletePuzzle {
 
   void post() async {
     try {
-      // TODO: api
       CustomOverlay.show(
         text: MessageStrings.overlayMessages[overlayType]![1],
         puzzleVis: true,
         puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
-        delayed: 4000,
         context: context,
       );
       context.read<WritingProvider>().updateOpacity();
-      Navigator.popUntil(context, (route) => route.isFirst);
       await _fetchResponse();
+      if (context.mounted) {
+        context.read<PuzzleProvider>().updateShuffle(true);
+        context.read<PuzzleProvider>().initializeColors(puzzleType);
+        Navigator.popUntil(context, (route) => route.isFirst);
+      }
     } catch (error) {
       throw Exception('Error posting puzzle: $error');
     }

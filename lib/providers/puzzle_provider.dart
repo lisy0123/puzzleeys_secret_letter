@@ -109,14 +109,20 @@ class PuzzleProvider extends ChangeNotifier {
   void _refreshPuzzles(List<dynamic> puzzleData, PuzzleType puzzleType) async {
     final updatedPuzzleList = List<Map<String, dynamic>>.from(_puzzleList);
     final indexes = List.generate(_puzzleList.length, (index) => index);
+    final int baseColorIndex = 85;
 
-    if (puzzleType == PuzzleType.global) {
+    if (puzzleType != PuzzleType.personal) {
       indexes.shuffle();
     }
 
-    final getTargetIndex = puzzleType == PuzzleType.global
-        ? (int i) => indexes[i]
-        : (int i) => puzzleData[i]['puzzle_index'];
+    int getTargetIndex(int i) {
+      if (puzzleType == PuzzleType.personal) {
+        return puzzleData[i]['puzzle_index'] ?? -1;
+      }
+      return puzzleData[i]['color'] == 'Base'
+          ? baseColorIndex
+          : (i < indexes.length ? indexes[i] : -1);
+    }
 
     bool isExisted = false;
 

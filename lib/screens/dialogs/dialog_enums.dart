@@ -28,7 +28,6 @@ enum DialogType {
   emptyName,
   emptyPuzzle,
   isExists,
-  isUsed,
 
   putGlobal,
   putSubject,
@@ -80,8 +79,6 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
       case DialogType.isExists:
         return WarningDialog(dialogType: WarningType.isExists);
-      case DialogType.isUsed:
-        return WarningDialog(dialogType: WarningType.isUsed);
 
       case DialogType.putGlobal:
         return PutDialog(

@@ -114,19 +114,24 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             svgImage: 'cir_zoom',
             onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
           ),
-          (_tabController!.index == 0)
-              ? CustomCircle(
-                  svgImage: 'cir_shuffle',
-                  onTap: () {
-                    context.read<PuzzleProvider>().updateShuffle(true);
-                    context
-                        .read<PuzzleProvider>()
-                        .initializeColors(PuzzleType.global);
-                  })
-              : SizedBox.shrink(),
+          CustomCircle(svgImage: 'cir_shuffle', onTap: _shuffle),
         ],
       ),
     );
+  }
+
+  void _shuffle() {
+    final PuzzleType puzzleType = _getPuzzleType(_tabController!.index);
+    context.read<PuzzleProvider>().updateShuffle(true);
+    context.read<PuzzleProvider>().initializeColors(puzzleType);
+  }
+
+  PuzzleType _getPuzzleType(int index) {
+    return {
+      0: PuzzleType.global,
+      1: PuzzleType.subject,
+      2: PuzzleType.personal,
+    }[index]!;
   }
 
   void _navigateToTab(int index) async {

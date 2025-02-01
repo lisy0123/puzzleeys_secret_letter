@@ -11,7 +11,6 @@ postRouter.get("/subject", (c) => withAuth(c, PostController.getSubject));
 postRouter.get("/personal", (c) => withAuth(c, PostController.getPersonal));
 postRouter.get("/global_user", (c) => withAuth(c, PostController.getGlobalUser));
 
-// TODO: need to add post/delete
 postRouter.post("/global", (c) => withAuth(c, PostController.postGlobal));
 postRouter.post("/subject", (c) => withAuth(c, PostController.postSubject));
 postRouter.post("/personal", (c) => withAuth(c, PostController.postPersonal));

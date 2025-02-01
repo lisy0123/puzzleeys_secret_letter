@@ -148,9 +148,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
       final Map<String, dynamic> puzzleData = {'content': _textController.text};
-      if (widget.puzzleType == PuzzleType.subject && !widget.reply) {
-        puzzleData['puzzle_index'] = widget.index!.toString();
-      }
       if (widget.reply) {
         puzzleData['receiver_id'] = widget.parentId;
         puzzleData['parent_post_color'] =

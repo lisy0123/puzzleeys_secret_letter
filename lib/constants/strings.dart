@@ -75,7 +75,6 @@ class MessageStrings {
   static String writingToMeMessage = '미래의 나에게 전하고 싶은 감정을 적어주세요.';
   static String writingReplyMessage = '답장을 적어주세요.';
 
-  static String previewMessage = '퍼즐을 클릭해서 더 알아보세요.';
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
@@ -89,7 +88,6 @@ class MessageStrings {
     WarningType.emptyName: '감정에\n이름을 붙여주세요!',
     WarningType.emptyPuzzle: '퍼즐에\n감정을 넣어주세요!',
     WarningType.isExists: '이미 오늘의 주제에\n감정 퍼즐을 공유했어요!',
-    WarningType.isUsed: '해당 퍼즐은\n누군가가 사용하고 있어요!',
   };
 
   static Map<Enum, String> missionMessages = {

@@ -14,6 +14,12 @@ export interface UserData {
     created_at: string;
 }
 
+export interface PostQuery {
+    receiver_id?: string;
+    author_id?: string;
+    created_at?: { lt: string };
+}
+
 export interface PostData {
     id: string;
     puzzle_index?: number;

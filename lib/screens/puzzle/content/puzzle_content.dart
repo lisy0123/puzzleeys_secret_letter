@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle_personal_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
@@ -9,7 +10,7 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_han
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
 
-class PuzzleContent extends StatelessWidget {
+class PuzzleContent extends StatefulWidget {
   final int row;
   final int column;
   final int index;
@@ -30,78 +31,37 @@ class PuzzleContent extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final Color puzzleColor = puzzleData['color'];
-    final rotationAngle = _getRotationAngle();
-    final void Function() onTap;
-    final String hasSubject = context.watch<PuzzleProvider>().hasSubject;
+  State<PuzzleContent> createState() => _PuzzleContentState();
+}
 
-    onTap = () {
-      if (puzzleColor == Colors.white) {
-        // TODO: 트랜잭션
-        if (false) {
-          BuildDialog.show(
-            iconName: 'isUsed',
-            simpleDialog: true,
-            context: context,
-          );
-        } else {
-          if (puzzleType == PuzzleType.personal) {
-            BuildDialog.show(
-              iconName: 'putWho',
-              simpleDialog: true,
-              context: context,
-            );
-          } else if (puzzleType == PuzzleType.subject && hasSubject == 'Y') {
-            BuildDialog.show(
-              iconName: 'isExists',
-              simpleDialog: true,
-              context: context,
-            );
-          } else {
-            PuzzleScreenHandler.navigateScreen(
-              barrierColor: Colors.white70,
-              child: PuzzleWritingScreen(
-                puzzleType: puzzleType,
-                index: index,
-                reply: false,
-              ),
-              context: context,
-            );
-          }
-        }
-      } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
-        BuildDialog.show(
-          iconName: 'puzzleSubject',
-          puzzleText: puzzleData['title'].replaceAll(r'\n', '\n'),
-          puzzleColor: puzzleData['color'],
-          context: context,
-        );
-      } else {
-        PuzzleScreenHandler.navigateScreen(
-          barrierColor: puzzleData['color'].withValues(alpha: 0.8),
-          child: PuzzleDetailScreen(
-            index: index,
-            puzzleData: puzzleData,
-            puzzleType: puzzleType,
-          ),
-          context: context,
-        );
-      }
-    };
+class _PuzzleContentState extends State<PuzzleContent> {
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  void _initialize() async {
+    await context.read<PuzzlePersonalProvider>().initialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final rotationAngle = (widget.row % 2 == widget.column % 2) ? pi / 2 : pi;
 
     return LayoutId(
-      id: index,
+      id: widget.index,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: _onTap,
         child: RepaintBoundary(
           child: Transform.rotate(
             angle: rotationAngle,
             child: CustomPaint(
-              size: Size(puzzleHeight, puzzleHeight),
+              size: Size(widget.puzzleHeight, widget.puzzleHeight),
               painter: BoardPuzzle(
-                puzzleColor: puzzleColor,
-                scaleFactor: scaleFactor,
+                // TODO: check personal
+                puzzleColor: widget.puzzleData['color'],
+                scaleFactor: widget.scaleFactor,
               ),
             ),
           ),
@@ -110,7 +70,64 @@ class PuzzleContent extends StatelessWidget {
     );
   }
 
-  double _getRotationAngle() {
-    return (row % 2 == column % 2) ? pi / 2 : pi;
+  void _onTap() {
+    final Color puzzleColor = widget.puzzleData['color'];
+
+    if (puzzleColor == Colors.white) {
+      _whitePuzzle();
+    } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
+      BuildDialog.show(
+        iconName: 'puzzleSubject',
+        puzzleText: widget.puzzleData['title'].replaceAll(r'\n', '\n'),
+        puzzleColor: widget.puzzleData['color'],
+        context: context,
+      );
+    } else {
+      _detailPuzzle();
+    }
+  }
+
+  void _whitePuzzle() {
+    final String hasSubject = context.watch<PuzzleProvider>().hasSubject;
+
+    if (widget.puzzleType == PuzzleType.personal) {
+      BuildDialog.show(
+        iconName: 'putWho',
+        simpleDialog: true,
+        context: context,
+      );
+    } else if (widget.puzzleType == PuzzleType.subject && hasSubject == 'Y') {
+      BuildDialog.show(
+        iconName: 'isExists',
+        simpleDialog: true,
+        context: context,
+      );
+    } else {
+      PuzzleScreenHandler.navigateScreen(
+        barrierColor: Colors.white70,
+        child: PuzzleWritingScreen(
+          puzzleType: widget.puzzleType,
+          index: widget.index,
+          reply: false,
+        ),
+        context: context,
+      );
+    }
+  }
+
+  void _detailPuzzle() {
+    if (widget.puzzleType == PuzzleType.personal) {
+      // TODO: check personal
+    }
+
+    PuzzleScreenHandler.navigateScreen(
+      barrierColor: widget.puzzleData['color'].withValues(alpha: 0.8),
+      child: PuzzleDetailScreen(
+        index: widget.index,
+        puzzleData: widget.puzzleData,
+        puzzleType: widget.puzzleType,
+      ),
+      context: context,
+    );
   }
 }

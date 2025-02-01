@@ -16,9 +16,6 @@ app.basePath("/api").route("/post", postRouter);
 app.all("/api/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });
-app.all("/post/*", () => {
-    return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
-});
 app.all("*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });
