@@ -34,36 +34,90 @@ class PuzzleContent extends StatefulWidget {
   State<PuzzleContent> createState() => _PuzzleContentState();
 }
 
-class _PuzzleContentState extends State<PuzzleContent> {
+class _PuzzleContentState extends State<PuzzleContent>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  Animation<Color?>? _animation;
+  bool? isExist;
+
   @override
   void initState() {
     super.initState();
-    _initialize();
+    _updateExistState();
   }
 
-  void _initialize() async {
-    await context.read<PuzzlePersonalProvider>().initialize();
+  void _updateExistState() {
+    bool exist = _isPuzzleExist();
+    if (isExist != exist) {
+      setState(() {
+        isExist = exist;
+      });
+      if (!exist) {
+        _initializeAnimation();
+      } else {
+        _animation = AlwaysStoppedAnimation(widget.puzzleData['color']);
+      }
+    }
+  }
+
+  bool _isPuzzleExist() {
+    if (widget.puzzleType == PuzzleType.personal) {
+      final String puzzleId = widget.puzzleData['id'] ?? '';
+      if (puzzleId.isNotEmpty) {
+        return context.read<PuzzlePersonalProvider>().isPuzzleRead(puzzleId);
+      }
+    }
+    return true;
+  }
+
+  void _initializeAnimation() {
+    if (_controller == null) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 500),
+      )..repeat(reverse: true);
+
+      _animation = ColorTween(
+        begin: widget.puzzleData['color'],
+        end: Color.lerp(widget.puzzleData['color'], Colors.white, 0.5)!,
+      ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final rotationAngle = (widget.row % 2 == widget.column % 2) ? pi / 2 : pi;
+    context.watch<PuzzlePersonalProvider>().readPuzzleIds;
+    _updateExistState();
 
     return LayoutId(
       id: widget.index,
       child: GestureDetector(
         onTap: _onTap,
-        child: RepaintBoundary(
-          child: Transform.rotate(
-            angle: rotationAngle,
-            child: CustomPaint(
-              size: Size(widget.puzzleHeight, widget.puzzleHeight),
-              painter: BoardPuzzle(
-                // TODO: check personal
-                puzzleColor: widget.puzzleData['color'],
-                scaleFactor: widget.scaleFactor,
-              ),
-            ),
+        child: Transform.rotate(
+          angle: rotationAngle,
+          child: AnimatedBuilder(
+            animation: _animation ??
+                AlwaysStoppedAnimation(widget.puzzleData['color']),
+            builder: (context, child) {
+              final puzzleColor = isExist == true
+                  ? widget.puzzleData['color']
+                  : _animation?.value ?? widget.puzzleData['color'];
+
+              return CustomPaint(
+                size: Size(widget.puzzleHeight, widget.puzzleHeight),
+                painter: BoardPuzzle(
+                  puzzleColor: puzzleColor,
+                  scaleFactor: widget.scaleFactor,
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -74,7 +128,7 @@ class _PuzzleContentState extends State<PuzzleContent> {
     final Color puzzleColor = widget.puzzleData['color'];
 
     if (puzzleColor == Colors.white) {
-      _whitePuzzle();
+      _handleWhitePuzzle();
     } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
       BuildDialog.show(
         iconName: 'puzzleSubject',
@@ -83,25 +137,31 @@ class _PuzzleContentState extends State<PuzzleContent> {
         context: context,
       );
     } else {
-      _detailPuzzle();
+      if (widget.puzzleType == PuzzleType.personal) {
+        context
+            .read<PuzzlePersonalProvider>()
+            .markAsRead(widget.puzzleData['id']);
+      }
+      PuzzleScreenHandler.navigateScreen(
+        barrierColor: widget.puzzleData['color'].withValues(alpha: 0.8),
+        child: PuzzleDetailScreen(
+          index: widget.index,
+          puzzleData: widget.puzzleData,
+          puzzleType: widget.puzzleType,
+        ),
+        context: context,
+      );
     }
   }
 
-  void _whitePuzzle() {
-    final String hasSubject = context.watch<PuzzleProvider>().hasSubject;
+  void _handleWhitePuzzle() {
+    final String hasSubject =
+        Provider.of<PuzzleProvider>(context, listen: false).hasSubject;
 
     if (widget.puzzleType == PuzzleType.personal) {
-      BuildDialog.show(
-        iconName: 'putWho',
-        simpleDialog: true,
-        context: context,
-      );
+      _showDialog('putWho');
     } else if (widget.puzzleType == PuzzleType.subject && hasSubject == 'Y') {
-      BuildDialog.show(
-        iconName: 'isExists',
-        simpleDialog: true,
-        context: context,
-      );
+      _showDialog('isExists');
     } else {
       PuzzleScreenHandler.navigateScreen(
         barrierColor: Colors.white70,
@@ -115,19 +175,7 @@ class _PuzzleContentState extends State<PuzzleContent> {
     }
   }
 
-  void _detailPuzzle() {
-    if (widget.puzzleType == PuzzleType.personal) {
-      // TODO: check personal
-    }
-
-    PuzzleScreenHandler.navigateScreen(
-      barrierColor: widget.puzzleData['color'].withValues(alpha: 0.8),
-      child: PuzzleDetailScreen(
-        index: widget.index,
-        puzzleData: widget.puzzleData,
-        puzzleType: widget.puzzleType,
-      ),
-      context: context,
-    );
+  void _showDialog(String iconName) {
+    BuildDialog.show(iconName: iconName, simpleDialog: true, context: context);
   }
 }

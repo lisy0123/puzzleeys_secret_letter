@@ -3,6 +3,7 @@ import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.d
 
 class PuzzlePersonalProvider with ChangeNotifier {
   Set<String> _readPuzzleIds = {};
+
   Set<String> get readPuzzleIds => _readPuzzleIds;
 
   Future<void> initialize() async {
@@ -24,4 +25,23 @@ class PuzzlePersonalProvider with ChangeNotifier {
   }
 
   bool isPuzzleRead(String puzzleId) => _readPuzzleIds.contains(puzzleId);
+
+  Future<void> cleanUp(List<Map<String, dynamic>> puzzles) async {
+    final puzzleIds = puzzles
+        .where((puzzle) => puzzle['id'] != null)
+        .map((puzzle) => puzzle['id'] as String)
+        .toSet();
+
+    _readPuzzleIds.removeWhere((id) => !puzzleIds.contains(id));
+
+    if (_readPuzzleIds.isNotEmpty) {
+      await SharedPreferencesUtils.save(
+        'readPuzzleIds',
+        _readPuzzleIds.join(','),
+      );
+    } else {
+      await SharedPreferencesUtils.save('readPuzzleIds', '');
+    }
+    notifyListeners();
+  }
 }
