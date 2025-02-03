@@ -46,29 +46,32 @@ class _MyDialogState extends State<MyDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DeleteDialogProvider>(builder: (context, provider, child) {
-      if (!provider.isLoading) {
-        _futureData = fetchData();
-      }
-      return FutureBuilder<List<Map<String, dynamic>>?>(
-        future: _futureData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return PuzzleLoadingScreen(overlay: false);
-          }
-          if (snapshot.hasError) {
-            return _buildErrorText(snapshot.error);
-          }
-          if (!snapshot.hasData ||
-              snapshot.data == null ||
-              snapshot.data!.isEmpty) {
-            return _buildErrorText(null);
-          } else {
-            return _buildItem(snapshot);
-          }
-        },
-      );
-    });
+    return Selector<DeleteDialogProvider, bool>(
+      selector: (context, provider) => provider.isLoading,
+      builder: (context, isLoading, child) {
+        if (!isLoading) {
+          _futureData = fetchData();
+        }
+        return FutureBuilder<List<Map<String, dynamic>>?>(
+          future: _futureData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return PuzzleLoadingScreen(overlay: false);
+            }
+            if (snapshot.hasError) {
+              return _buildErrorText(snapshot.error);
+            }
+            if (!snapshot.hasData ||
+                snapshot.data == null ||
+                snapshot.data!.isEmpty) {
+              return _buildErrorText(null);
+            } else {
+              return _buildItem(snapshot);
+            }
+          },
+        );
+      },
+    );
   }
 
   Widget _buildErrorText(Object? error) {

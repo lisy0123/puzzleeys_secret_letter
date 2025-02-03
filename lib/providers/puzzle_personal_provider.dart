@@ -6,42 +6,45 @@ class PuzzlePersonalProvider with ChangeNotifier {
 
   Set<String> get readPuzzleIds => _readPuzzleIds;
 
-  Future<void> initialize() async {
-    final savedPuzzleIds = await SharedPreferencesUtils.get('readPuzzleIds');
-    if (savedPuzzleIds != null) {
-      _readPuzzleIds = savedPuzzleIds.split(',').toSet();
+  Future<void> initialize(List<Map<String, dynamic>> puzzleList) async {
+    final String? savedIds = await SharedPreferencesUtils.get('readPuzzleIds');
+    if (savedIds != null) {
+      _setIds(savedIds, puzzleList);
     } else {
       _readPuzzleIds = {};
     }
     notifyListeners();
   }
 
-  Future<void> markAsRead(String puzzleId) async {
-    if (_readPuzzleIds.add(puzzleId)) {
+  void _setIds(String savedIds, List<Map<String, dynamic>> puzzleList) async {
+    _readPuzzleIds = savedIds.split(',').toSet();
+
+    final int beforeCount = _readPuzzleIds.length;
+    final Set<String> validIds = puzzleList
+        .map((p) => p['id']?.toString())
+        .where((id) => id != null && id.isNotEmpty)
+        .cast<String>()
+        .toSet();
+
+    _readPuzzleIds.removeWhere((id) => !validIds.contains(id));
+
+    if (_readPuzzleIds.length != beforeCount) {
       await SharedPreferencesUtils.save(
-          'readPuzzleIds', _readPuzzleIds.join(','));
+        'readPuzzleIds',
+        _readPuzzleIds.join(','),
+      );
+    }
+  }
+
+  Future<void> markAsRead(String puzzleId) async {
+    if (_readPuzzleIds.add(puzzleId.toString())) {
+      await SharedPreferencesUtils.save(
+        'readPuzzleIds',
+        _readPuzzleIds.join(','),
+      );
       notifyListeners();
     }
   }
 
   bool isPuzzleRead(String puzzleId) => _readPuzzleIds.contains(puzzleId);
-
-  Future<void> cleanUp(List<Map<String, dynamic>> puzzles) async {
-    final puzzleIds = puzzles
-        .where((puzzle) => puzzle['id'] != null)
-        .map((puzzle) => puzzle['id'] as String)
-        .toSet();
-
-    _readPuzzleIds.removeWhere((id) => !puzzleIds.contains(id));
-
-    if (_readPuzzleIds.isNotEmpty) {
-      await SharedPreferencesUtils.save(
-        'readPuzzleIds',
-        _readPuzzleIds.join(','),
-      );
-    } else {
-      await SharedPreferencesUtils.save('readPuzzleIds', '');
-    }
-    notifyListeners();
-  }
 }

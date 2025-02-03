@@ -36,8 +36,10 @@ class CompletePuzzle {
       await _fetchResponse();
       if (context.mounted) {
         context.read<PuzzleProvider>().updateShuffle(true);
-        context.read<PuzzleProvider>().initializeColors(puzzleType);
-        Navigator.popUntil(context, (route) => route.isFirst);
+        await context.read<PuzzleProvider>().initializeColors(puzzleType);
+        if (context.mounted) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
       }
     } catch (error) {
       throw Exception('Error posting puzzle: $error');

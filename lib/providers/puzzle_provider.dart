@@ -80,8 +80,10 @@ class PuzzleProvider extends ChangeNotifier {
         if (puzzleResponse['code'] == 200) {
           final puzzleList = puzzleResponse['result'] as List<dynamic>;
           _refreshPuzzles(puzzleList, puzzleType);
+          updateShuffle(false);
+        } else {
+          updateShuffle(true);
         }
-        updateShuffle(false);
         _updateLoading(false);
         break;
       } catch (error) {
@@ -101,8 +103,7 @@ class PuzzleProvider extends ChangeNotifier {
     final url = {
       PuzzleType.global: '/api/post/global',
       PuzzleType.subject: '/api/post/subject',
-      PuzzleType.personal: '/api/post/personal',
-    }[puzzleType]!;
+    }[puzzleType] ?? '/api/post/personal';
     return await apiRequest(url, ApiType.get);
   }
 
@@ -142,8 +143,10 @@ class PuzzleProvider extends ChangeNotifier {
         'puzzle_count': puzzleData[i]['puzzle_count'],
         'created_at': puzzleData[i]['created_at'],
       };
-      if (!isExisted && puzzleData[i]['author_id'] == userId) {
-        isExisted = true;
+      if (puzzleType == PuzzleType.subject) {
+        if (!isExisted && puzzleData[i]['author_id'] == userId) {
+          isExisted = true;
+        }
       }
     }
 

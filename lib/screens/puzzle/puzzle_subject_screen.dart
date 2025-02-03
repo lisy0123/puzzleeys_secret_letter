@@ -15,14 +15,15 @@ class PuzzleSubjectScreen extends StatefulWidget {
 class _PuzzleSubjectScreenState extends State<PuzzleSubjectScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<PuzzleProvider>(
-      builder: (context, provider, child) {
-        if (provider.isLoading) {
+    return Selector<PuzzleProvider, bool>(
+      selector: (context, provider) => provider.isLoading,
+      builder: (context, isLoading, child) {
+        if (isLoading) {
           return PuzzleLoadingScreen();
         }
         return PuzzleBackground(
           puzzleType: PuzzleType.subject,
-          puzzleList: provider.puzzleList,
+          puzzleList: context.read<PuzzleProvider>().puzzleList,
         );
       },
     );
