@@ -170,11 +170,6 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
             ),
             SizedBox(width: 40.0.w),
             CustomText.textDisplay(text: CustomStrings.get, context: context),
-            //  TODO: Will put them in later update
-            // CustomText.textDisplay(
-            //   text: widget.puzzleData['puzzle_count'].toString(),
-            //   context: context,
-            // ),
           ],
         ),
       ),

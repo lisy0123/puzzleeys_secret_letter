@@ -53,7 +53,6 @@ class PuzzleProvider extends ChangeNotifier {
       'author_id': null,
       'receiver_id': null,
       'sender_id': null,
-      'puzzle_count': null,
       'created_at': null,
     };
   }
@@ -140,7 +139,6 @@ class PuzzleProvider extends ChangeNotifier {
         'author_id': puzzleData[i]['author_id'],
         'receiver_id': puzzleData[i]['receiver_id'],
         'sender_id': puzzleData[i]['sender_id'],
-        'puzzle_count': puzzleData[i]['puzzle_count'],
         'created_at': puzzleData[i]['created_at'],
       };
       if (puzzleType == PuzzleType.subject) {

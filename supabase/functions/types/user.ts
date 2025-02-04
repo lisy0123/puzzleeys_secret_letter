@@ -29,6 +29,5 @@ export interface PostData {
     author_id?: string;
     receiver_id?: string;
     sender_id?: string;
-    puzzle_count: number;
     created_at: string;
 }
