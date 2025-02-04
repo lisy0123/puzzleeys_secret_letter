@@ -88,9 +88,7 @@ class _MyDialogState extends State<MyDialog> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset('assets/imgs/btn_trash.svg', height: 200.0.w),
-        SizedBox(
-          height: 80.0.w,
-        ),
+        SizedBox(height: 80.0.w),
         CustomText.textContent(
           text: MessageStrings.emptyWritingMessage,
           context: context,

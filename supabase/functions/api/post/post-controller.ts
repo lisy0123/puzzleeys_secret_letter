@@ -7,8 +7,12 @@ export class PostController {
     static getGlobal(_c: Context, _user: User) {
         return ResponseUtils.handleRequest({ callback: PostService.global });
     }
-    static getSubject(_c: Context, _user: User) {
-        return ResponseUtils.handleRequest({ callback: PostService.subject });
+    static getSubject(_c: Context, user: User) {
+        return ResponseUtils.handleRequest({
+            callback: PostService.user,
+            user: user,
+            tableOrBody: "subject_post",
+        });
     }
     static getPersonal(_c: Context, user: User) {
         return ResponseUtils.handleRequest({

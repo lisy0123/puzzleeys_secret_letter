@@ -30,4 +30,6 @@ export interface PostData {
     receiver_id?: string;
     sender_id?: string;
     created_at: string;
+    parent_post_type?: string;
+    parent_post_color?: string;
 }

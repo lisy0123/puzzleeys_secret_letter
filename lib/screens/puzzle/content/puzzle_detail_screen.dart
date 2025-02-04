@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
@@ -65,7 +66,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
                   ),
                   child: Column(
                     children: [
-                      _buildPuzzleDetails(widget.puzzleData),
+                      _buildPuzzleDetails(),
                       SizedBox(height: 200.0.w),
                       _buildReplyButton(),
                     ],
@@ -77,7 +78,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  Widget _buildPuzzleDetails(Map<String, dynamic> puzzleData) {
+  Widget _buildPuzzleDetails() {
     return GestureDetector(
       onDoubleTap: _getPuzzle,
       child: Container(
@@ -102,25 +103,67 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   }
 
   Widget _buildTopContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
       children: [
-        CountdownTimer(createdAt: widget.puzzleData['created_at']),
-        PuzzleScreenHandler().buildIconButton(
-          iconName: 'btn_alarm',
-          text: CustomStrings.report,
-          onTap: () => BuildDialog.show(
-            iconName: 'report',
-            puzzleId: widget.puzzleData['id'],
-            puzzleType: widget.puzzleType,
-            simpleDialog: true,
-            context: context,
-          ),
-          context: context,
+        _buildParentPost(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CountdownTimer(createdAt: widget.puzzleData['created_at']),
+            PuzzleScreenHandler().buildIconButton(
+              iconName: 'btn_alarm',
+              text: CustomStrings.report,
+              onTap: () => BuildDialog.show(
+                iconName: 'report',
+                puzzleId: widget.puzzleData['id'],
+                puzzleType: widget.puzzleType,
+                simpleDialog: true,
+                context: context,
+              ),
+              context: context,
+            ),
+          ],
         ),
       ],
     );
+  }
+
+  Widget _buildParentPost() {
+    if (widget.puzzleType == PuzzleType.personal &&
+        widget.puzzleData['parent_post_color'] != null) {
+      final Map<String, int> typeMap = {'global': 0, 'subject': 1};
+      final int iconIndex = typeMap[widget.puzzleData['parent_post_type']] ?? 2;
+
+      return Padding(
+        padding: EdgeInsets.all(20.0.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 80.0.w),
+            Transform.rotate(
+              angle: -pi / 4,
+              child: CustomPaint(
+                size: Size(180.0.w, 180.0.w),
+                painter: TiltedPuzzlePiece(
+                  puzzleColor: ColorUtils.colorMatch(
+                    stringColor: widget.puzzleData['parent_post_color'],
+                  ),
+                  strokeWidth: 1.2,
+                ),
+              ),
+            ),
+            if (iconIndex != 2) SizedBox(width: 20.0.w),
+            SvgPicture.asset(
+              'assets/imgs/icon_${iconIndex.toString()}.svg',
+              height: (iconIndex == 2) ? 160.0.w : 150.0.w,
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox.shrink();
   }
 
   Widget _buildMidContent() {

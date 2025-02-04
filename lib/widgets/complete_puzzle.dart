@@ -32,14 +32,12 @@ class CompletePuzzle {
         puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
         context: context,
       );
-      context.read<WritingProvider>().updateOpacity();
-      await _fetchResponse();
+      _fetchResponse();
+      context.read<PuzzleProvider>().updateShuffle(true);
+      await context.read<PuzzleProvider>().initializeColors(puzzleType);
       if (context.mounted) {
-        context.read<PuzzleProvider>().updateShuffle(true);
-        await context.read<PuzzleProvider>().initializeColors(puzzleType);
-        if (context.mounted) {
-          Navigator.popUntil(context, (route) => route.isFirst);
-        }
+        Navigator.popUntil(context, (route) => route.isFirst);
+        context.read<WritingProvider>().updateOpacity();
       }
     } catch (error) {
       throw Exception('Error posting puzzle: $error');

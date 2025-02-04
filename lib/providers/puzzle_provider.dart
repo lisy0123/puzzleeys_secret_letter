@@ -20,8 +20,11 @@ class PuzzleProvider extends ChangeNotifier {
   String _hasSubject = '';
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
+
   bool get isLoading => _isLoading;
+
   bool get isShuffle => _isShuffle;
+
   String get hasSubject => _hasSubject;
 
   PuzzleProvider() {
@@ -54,6 +57,8 @@ class PuzzleProvider extends ChangeNotifier {
       'receiver_id': null,
       'sender_id': null,
       'created_at': null,
+      'parent_post_type': null,
+      'parent_post_color': null,
     };
   }
 
@@ -100,9 +105,10 @@ class PuzzleProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> _fetchPuzzleResponse(
       PuzzleType puzzleType) async {
     final url = {
-      PuzzleType.global: '/api/post/global',
-      PuzzleType.subject: '/api/post/subject',
-    }[puzzleType] ?? '/api/post/personal';
+          PuzzleType.global: '/api/post/global',
+          PuzzleType.subject: '/api/post/subject',
+        }[puzzleType] ??
+        '/api/post/personal';
     return await apiRequest(url, ApiType.get);
   }
 
@@ -140,6 +146,8 @@ class PuzzleProvider extends ChangeNotifier {
         'receiver_id': puzzleData[i]['receiver_id'],
         'sender_id': puzzleData[i]['sender_id'],
         'created_at': puzzleData[i]['created_at'],
+        'parent_post_type': puzzleData[i]['parent_post_type'],
+        'parent_post_color': puzzleData[i]['parent_post_color'],
       };
       if (puzzleType == PuzzleType.subject) {
         if (!isExisted && puzzleData[i]['author_id'] == userId) {

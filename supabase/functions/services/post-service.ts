@@ -21,22 +21,6 @@ export class PostService {
         });
     }
 
-    static subject(): Promise<Response> {
-        return ResponseUtils.handleRequest({
-            callback: async () => {
-                const posts = await PostRepository.getSubjectPosts();
-                if ("status" in posts) {
-                    return posts;
-                }
-                return createResponse(
-                    ResponseCode.SUCCESS,
-                    "Get subject posts successful.",
-                    posts
-                );
-            },
-        });
-    }
-
     static user(user: User, table: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {

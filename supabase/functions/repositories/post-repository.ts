@@ -18,14 +18,14 @@ export class PostRepository {
         return data;
     }
 
-    static getSubjectPosts(): Promise<Response | PostData[]> {
-        return this.fetchPosts("subject_post");
-    }
-
     static getUserPosts(
         user: User,
         table: string
     ): Promise<Response | PostData[]> {
+        if (table == "subject_post") {
+            return this.fetchPosts(table);
+        }
+
         let condition: PostQuery = {};
         const body = uuidToBase64(user.id);
 
@@ -58,6 +58,9 @@ export class PostRepository {
             });
         }
         queryBuilder.filter("report", "eq", false);
+        if (table == "global_post") {
+            queryBuilder.order("created_at", { ascending: true }); 
+        }
 
         const { data, error } = await queryBuilder;
         if (error) {

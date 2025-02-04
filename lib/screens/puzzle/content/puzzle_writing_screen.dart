@@ -37,6 +37,9 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   void initState() {
     super.initState();
     _focusNode.addListener(() => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
   }
 
   @override
@@ -165,9 +168,10 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
 
   String _getType() {
     return {
-      PuzzleType.global: 'global',
-      PuzzleType.subject: 'subject',
-    }[widget.puzzleType] ?? 'personal';
+          PuzzleType.global: 'global',
+          PuzzleType.subject: 'subject',
+        }[widget.puzzleType] ??
+        'personal';
   }
 
   String _getIconName() {
