@@ -135,8 +135,12 @@ class _MyDialogState extends State<MyDialog> {
           child: CustomText.textContent(text: item['title'], context: context),
         ),
         SizedBox(
-          height: 220.0.w,
-          child: CountdownTimer(createdAt: item['created_at']),
+          height: 240.0.w,
+          width: 640.0.w,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: CountdownTimer(createdAt: item['created_at']),
+          ),
         ),
         //  TODO: Will put them in later update
         // SizedBox(
