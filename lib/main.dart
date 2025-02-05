@@ -10,7 +10,7 @@ import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_personal_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
@@ -45,7 +45,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PuzzleProvider()),
       ChangeNotifierProvider(create: (_) => FcmTokenProvider()),
       ChangeNotifierProvider(create: (_) => DeleteDialogProvider()),
-      ChangeNotifierProvider(create: (_) => PuzzlePersonalProvider()),
+      ChangeNotifierProvider(create: (_) => ReadPuzzleProvider()),
       ChangeNotifierProvider(create: (_) => CheckScreenProvider()),
     ],
     child: const MyApp(),

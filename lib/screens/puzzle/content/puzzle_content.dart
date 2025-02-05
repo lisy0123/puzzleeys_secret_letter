@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_personal_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
@@ -39,9 +39,12 @@ class _PuzzleContentState extends State<PuzzleContent>
   AnimationController? _controller;
   Animation<Color?>? _animation;
   bool? isExist;
+  late final ReadPuzzleProvider _readProvider;
 
   @override
   void initState() {
+    _readProvider = context.read<ReadPuzzleProvider>();
+
     super.initState();
     _updateExistState();
   }
@@ -64,7 +67,7 @@ class _PuzzleContentState extends State<PuzzleContent>
     if (widget.puzzleType == PuzzleType.personal) {
       final String puzzleId = widget.puzzleData['id'] ?? '';
       if (puzzleId.isNotEmpty) {
-        return context.read<PuzzlePersonalProvider>().isPuzzleRead(puzzleId);
+        return _readProvider.isPuzzleRead(puzzleId);
       }
     }
     return true;
@@ -93,7 +96,7 @@ class _PuzzleContentState extends State<PuzzleContent>
   @override
   Widget build(BuildContext context) {
     final rotationAngle = (widget.row % 2 == widget.column % 2) ? pi / 2 : pi;
-    context.watch<PuzzlePersonalProvider>().readPuzzleIds;
+    context.watch<ReadPuzzleProvider>().readPuzzleIds;
     _updateExistState();
 
     return LayoutId(
@@ -106,7 +109,7 @@ class _PuzzleContentState extends State<PuzzleContent>
             animation: _animation ??
                 AlwaysStoppedAnimation(widget.puzzleData['color']),
             builder: (context, child) {
-              final puzzleColor = isExist == true
+              final Color puzzleColor = isExist == true
                   ? widget.puzzleData['color']
                   : _animation?.value ?? widget.puzzleData['color'];
 
@@ -138,9 +141,7 @@ class _PuzzleContentState extends State<PuzzleContent>
       );
     } else {
       if (widget.puzzleType == PuzzleType.personal) {
-        context
-            .read<PuzzlePersonalProvider>()
-            .markAsRead(widget.puzzleData['id']);
+        _readProvider.markAsRead(widget.puzzleData['id']);
       }
       PuzzleScreenHandler.navigateScreen(
         barrierColor: widget.puzzleData['color'].withValues(alpha: 0.8),

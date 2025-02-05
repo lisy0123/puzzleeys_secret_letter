@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
         Column(
           children: [
             _buildText(text: CustomStrings.title, isMainTitle: true),
-            SizedBox(height: 40.0.w),
+            SizedBox(height: 20.0.w),
             _buildText(text: CustomStrings.slogan),
           ],
         ),
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
           text: text,
           fontSize: isMainTitle ? 280.sp : 100.sp,
           fontFamily: isMainTitle ? 'BMJUA' : 'NANUM',
-          strokeWidth: isMainTitle ? 8 : 4,
+          strokeWidth: isMainTitle ? 6 : 4,
         ),
         Text(
           text,

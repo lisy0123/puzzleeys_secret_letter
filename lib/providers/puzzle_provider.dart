@@ -20,11 +20,8 @@ class PuzzleProvider extends ChangeNotifier {
   String _hasSubject = '';
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
-
   bool get isLoading => _isLoading;
-
   bool get isShuffle => _isShuffle;
-
   String get hasSubject => _hasSubject;
 
   PuzzleProvider() {

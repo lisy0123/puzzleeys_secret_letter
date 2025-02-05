@@ -53,11 +53,16 @@ class FcmTokenProvider with ChangeNotifier {
   ) async {
     while (true) {
       try {
+        final Map<String, String> headers = {
+          'Content-Type': 'application/json'
+        };
+        final Map<String, String> bodies = {'fcm_token': token};
+
         final responseData = await apiRequest(
           endpoint,
           ApiType.post,
-          headers: {'Content-Type': 'application/json'},
-          bodies: {'fcm_token': token},
+          headers: headers,
+          bodies: bodies,
         );
         return responseData;
       } catch (error) {

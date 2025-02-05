@@ -21,16 +21,19 @@ class DeleteDialog extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) async {
+    final DeleteDialogProvider deleteProvider =
+        context.read<DeleteDialogProvider>();
+
     try {
-      context.read<DeleteDialogProvider>().updateLoading(setLoading: true);
+      deleteProvider.updateLoading(setLoading: true);
       await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
       if (context.mounted) {
-        context.read<DeleteDialogProvider>().updateLoading(setLoading: false);
+        deleteProvider.updateLoading(setLoading: false);
         Navigator.pop(context);
       }
     } catch (error) {
       if (context.mounted) {
-        context.read<DeleteDialogProvider>().updateLoading(setLoading: false);
+        deleteProvider.updateLoading(setLoading: false);
         Navigator.pop(context);
       }
       throw Exception('Error deleting global post: $error');

@@ -29,14 +29,18 @@ class ReportDialog extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     try {
+      final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
+
       CustomOverlay.show(
         text: MessageStrings.reportOverlay,
         context: context,
       );
       await _fetchResponse(puzzleType, puzzleId);
+
+      puzzleProvider.updateShuffle(true);
+      puzzleProvider.initializeColors(puzzleType);
+
       if (context.mounted) {
-        context.read<PuzzleProvider>().updateShuffle(true);
-        context.read<PuzzleProvider>().initializeColors(puzzleType);
         Navigator.popUntil(context, (route) => route.isFirst);
       }
     } catch (error) {

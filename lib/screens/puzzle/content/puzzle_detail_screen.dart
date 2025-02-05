@@ -47,34 +47,39 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double opacity = context.watch<WritingProvider>().opacity;
+    final height = MediaQuery.of(context).size.height;
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 100),
-      switchInCurve: Curves.easeIn,
-      switchOutCurve: Curves.easeOut,
-      child: opacity > 0.0
-          ? Stack(
-              key: const ValueKey('visible'),
-              children: [
-                GestureDetector(onTap: () => Navigator.pop(context)),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 200.0.w,
-                    right: 200.0.w,
-                    top: (MediaQuery.of(context).size.height - 760.0.h) / 2,
-                  ),
-                  child: Column(
-                    children: [
-                      _buildPuzzleDetails(),
-                      SizedBox(height: 200.0.w),
-                      _buildReplyButton(),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          : const SizedBox.shrink(key: ValueKey('hidden')),
+    return Selector<WritingProvider, double>(
+      selector: (_, provider) => provider.opacity,
+      builder: (context, opacity, child) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 100),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeOut,
+          child: opacity > 0.0
+              ? Stack(
+                  key: const ValueKey('visible'),
+                  children: [
+                    GestureDetector(onTap: () => Navigator.pop(context)),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 200.0.w,
+                        right: 200.0.w,
+                        top: (height - 760.0.h) / 2,
+                      ),
+                      child: Column(
+                        children: [
+                          _buildPuzzleDetails(),
+                          SizedBox(height: 200.0.w),
+                          _buildReplyButton(),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(key: ValueKey('hidden')),
+        );
+      },
     );
   }
 

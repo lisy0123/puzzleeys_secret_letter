@@ -43,7 +43,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authStatus = context.watch<AuthStatusProvider>();
+    final AuthStatusProvider authStatus = context.watch<AuthStatusProvider>();
 
     return Stack(
       children: [

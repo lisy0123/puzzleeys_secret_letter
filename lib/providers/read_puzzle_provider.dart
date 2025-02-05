@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 
-class PuzzlePersonalProvider with ChangeNotifier {
+class ReadPuzzleProvider with ChangeNotifier {
   Set<String> _readPuzzleIds = {};
-
   Set<String> get readPuzzleIds => _readPuzzleIds;
 
   Future<void> initialize(List<Map<String, dynamic>> puzzleList) async {

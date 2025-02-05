@@ -37,9 +37,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   void initState() {
     super.initState();
     _focusNode.addListener(() => setState(() {}));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
   }
 
   @override
@@ -54,6 +51,8 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () => Utils.dismissKeyboard(focusNode: _focusNode),
       child: Scaffold(
@@ -62,7 +61,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         body: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 200.0.w).copyWith(
-              top: (MediaQuery.of(context).size.height - 786.0.h) / 2,
+              top: (height - 786.0.h) / 2,
             ),
             child: Column(
               children: [
@@ -122,6 +121,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         child: TextField(
           controller: _textController,
           focusNode: _focusNode,
+          autofocus: true,
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           maxLines: null,

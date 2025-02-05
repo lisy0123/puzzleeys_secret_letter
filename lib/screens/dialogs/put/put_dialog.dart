@@ -32,13 +32,16 @@ class PutDialog extends StatefulWidget {
 class _PutDialogState extends State<PutDialog> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  late final ColorPickerProvider _colorProvider;
 
   @override
   void initState() {
+    _colorProvider = context.read<ColorPickerProvider>();
+
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ColorPickerProvider>().updateOpacity(setToInitial: true);
-      context.read<ColorPickerProvider>().updateColor(setToInitial: true);
+      _colorProvider.updateOpacity(setToInitial: true);
+      _colorProvider.updateColor(setToInitial: true);
     });
   }
 
@@ -66,8 +69,7 @@ class _PutDialogState extends State<PutDialog> {
             Column(
               children: [
                 GestureDetector(
-                  onTap: () =>
-                      context.read<ColorPickerProvider>().updateOpacity(),
+                  onTap: () => _colorProvider.updateOpacity(),
                   child: _buildPuzzle(context),
                 ),
                 SizedBox(
@@ -83,44 +85,49 @@ class _PutDialogState extends State<PutDialog> {
   }
 
   Widget _buildPuzzle(BuildContext context) {
-    final Color selectedColor =
-        context.watch<ColorPickerProvider>().selectedColor;
-
-    return SizedBox(
-      height: 600.0.w,
-      child: Stack(
-        children: [
-          Opacity(
-            opacity: (selectedColor == Colors.white) ? 0.4 : 1.0,
-            child: Center(
-              child: TiltedPuzzle(puzzleColor: selectedColor),
-            ),
+    return Selector<ColorPickerProvider, Color>(
+      selector: (context, provider) => provider.selectedColor,
+      builder: (context, selectedColor, child) {
+        return SizedBox(
+          height: 600.0.w,
+          child: Stack(
+            children: [
+              Opacity(
+                opacity: (selectedColor == Colors.white) ? 0.4 : 1.0,
+                child: Center(
+                  child: TiltedPuzzle(puzzleColor: selectedColor),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildBottomContent(BuildContext context) {
-    final double opacity = context.watch<ColorPickerProvider>().opacity;
-
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 100),
-      switchInCurve: Curves.easeIn,
-      switchOutCurve: Curves.easeOut,
-      child: opacity > 0.0
-          ? Column(
-              key: const ValueKey('visible'),
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-                  child: Center(child: _buildTextField(context)),
-                ),
-                _buildPutButton(context),
-              ],
-            )
-          : const SizedBox(key: ValueKey('hidden'), child: ColorPicker()),
+    return Selector<ColorPickerProvider, double>(
+      selector: (context, provider) => provider.opacity,
+      builder: (context, opacity, child) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 100),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeOut,
+          child: opacity > 0.0
+              ? Column(
+                  key: const ValueKey('visible'),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                      child: Center(child: _buildTextField(context)),
+                    ),
+                    _buildPutButton(context),
+                  ],
+                )
+              : const SizedBox(key: ValueKey('hidden'), child: ColorPicker()),
+        );
+      },
     );
   }
 
@@ -154,8 +161,7 @@ class _PutDialogState extends State<PutDialog> {
   }
 
   void _showDialog(BuildContext context) {
-    final Color color =
-        Provider.of<ColorPickerProvider>(context, listen: false).selectedColor;
+    final Color color = _colorProvider.selectedColor;
 
     if (color == Colors.white) {
       BuildDialog.show(

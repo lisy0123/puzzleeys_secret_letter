@@ -5,6 +5,7 @@ class ColorPickerProvider extends ChangeNotifier {
   Color _selectedColor = Colors.white;
 
   double get opacity => _opacity;
+  Color get selectedColor => _selectedColor;
 
   void updateOpacity({bool? setToInitial}) {
     if (setToInitial ?? false) {
@@ -14,8 +15,6 @@ class ColorPickerProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  Color get selectedColor => _selectedColor;
 
   void updateColor({bool? setToInitial, Color color = Colors.white}) {
     if (setToInitial ?? false) {

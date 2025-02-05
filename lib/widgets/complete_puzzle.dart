@@ -26,15 +26,17 @@ class CompletePuzzle {
 
   void post() async {
     try {
+      final puzzleProvider = context.read<PuzzleProvider>();
+
       CustomOverlay.show(
         text: MessageStrings.overlayMessages[overlayType]![1],
         puzzleVis: true,
         puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
         context: context,
       );
-      _fetchResponse();
-      context.read<PuzzleProvider>().updateShuffle(true);
-      await context.read<PuzzleProvider>().initializeColors(puzzleType);
+      await _fetchResponse();
+      puzzleProvider.updateShuffle(true);
+      await puzzleProvider.initializeColors(puzzleType);
       if (context.mounted) {
         Navigator.popUntil(context, (route) => route.isFirst);
         context.read<WritingProvider>().updateOpacity();
@@ -52,29 +54,39 @@ class CompletePuzzle {
     final String url = urlMap[puzzleType] ?? '/api/post/personal';
     final String userId = await UserRequest.getUserId();
 
-    final Map<String, String> body = Map<String, String>.from(puzzleData);
-    if (puzzleType == PuzzleType.reply) {
-      body['sender_id'] = userId;
-      body['receiver_id'] = puzzleData['receiver_id'];
-      body['parent_post_color'] = puzzleData['parent_post_color'];
-      body['parent_post_type'] = puzzleData['parent_post_type'];
-    } else if (puzzleType == PuzzleType.me) {
-      final sendAt =
-          DateTime.now().toUtc().add(Duration(hours: sendDays! * 24));
-      body['sender_id'] = userId;
-      body['receiver_id'] = userId;
-      body['created_at'] = _formatDate(sendAt);
-    } else if (puzzleType == PuzzleType.personal) {
-      body['sender_id'] = userId;
-    } else {
-      body['author_id'] = userId;
+    final Map<String, String> bodies = {...puzzleData};
+    final Map<String, String> headers = {'Content-Type': 'application/json'};
+
+    switch (puzzleType) {
+      case PuzzleType.reply:
+        bodies.addAll({
+          'sender_id': userId,
+          'receiver_id': puzzleData['receiver_id'],
+          'parent_post_color': puzzleData['parent_post_color'],
+          'parent_post_type': puzzleData['parent_post_type'],
+        });
+        break;
+      case PuzzleType.me:
+        final sendAt =
+            DateTime.now().toUtc().add(Duration(hours: sendDays! * 24));
+        bodies.addAll({
+          'sender_id': userId,
+          'receiver_id': userId,
+          'created_at': _formatDate(sendAt),
+        });
+        break;
+      case PuzzleType.personal:
+        bodies['sender_id'] = userId;
+        break;
+      default:
+        bodies['author_id'] = userId;
     }
 
     return await apiRequest(
       url,
       ApiType.post,
-      headers: {'Content-Type': 'application/json'},
-      bodies: body,
+      headers: headers,
+      bodies: bodies,
     );
   }
 

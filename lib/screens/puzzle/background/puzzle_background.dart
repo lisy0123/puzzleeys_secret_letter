@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_personal_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
@@ -31,24 +31,28 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
 
   @override
   void initState() {
+    final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
+
     super.initState();
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
+      puzzleProvider.initializeColors(widget.puzzleType);
+      puzzleProvider.initializeHasSubject();
       if (mounted) {
         context.read<PuzzleScaleProvider>().initialize();
-        context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
-        context.read<PuzzleProvider>().initializeHasSubject();
         _initialize();
       }
     });
   }
 
-  void _initialize() async {
-    final bool check = context.read<CheckScreenProvider>().check;
+  void _initialize() {
+    final CheckScreenProvider checkProvider =
+        context.read<CheckScreenProvider>();
+    final bool check = checkProvider.check;
 
     if (check && widget.puzzleType == PuzzleType.personal) {
-      context.read<CheckScreenProvider>().toggleCheck(false);
-      context.read<PuzzlePersonalProvider>().initialize(widget.puzzleList);
+      checkProvider.toggleCheck(false);
+      context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
     }
   }
 

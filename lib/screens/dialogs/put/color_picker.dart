@@ -35,6 +35,8 @@ class ColorPicker extends StatelessWidget {
 
   Widget _buildColorPicker(int index, BuildContext context) {
     final Color color = CustomVars.myColorPickers[index];
+    final ColorPickerProvider colorProvider =
+        context.read<ColorPickerProvider>();
 
     return Container(
       width: 260.0.w,
@@ -42,8 +44,8 @@ class ColorPicker extends StatelessWidget {
       margin: EdgeInsets.only(left: 20.0.w, top: 40.0.w),
       child: GestureDetector(
         onTap: () {
-          context.read<ColorPickerProvider>().updateColor(color: color);
-          context.read<ColorPickerProvider>().updateOpacity();
+          colorProvider.updateColor(color: color);
+          colorProvider.updateOpacity();
         },
         child: Container(
           padding: EdgeInsets.zero,

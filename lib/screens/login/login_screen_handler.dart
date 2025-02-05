@@ -27,12 +27,17 @@ class LoginScreenHandler {
       );
 
       if (context.mounted) {
-        final token = await context.read<FcmTokenProvider>().getFcm();
+        final String token = await context.read<FcmTokenProvider>().getFcm();
+        final Map<String, String> headers = {
+          'Content-Type': 'application/json'
+        };
+        final Map<String, String> bodies = {'fcm_token': token};
+
         final responseData = await apiRequest(
           '/api/auth/login',
           ApiType.post,
-          headers: {'Content-Type': 'application/json'},
-          bodies: {'fcm_token': token},
+          headers: headers,
+          bodies: bodies,
         );
 
         if (responseData['code'] == 200) {
