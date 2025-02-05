@@ -16,10 +16,8 @@ export class LoggingMiddleware {
                 !(
                     extractedUrl!.includes("/api/post/global") ||
                     extractedUrl!.includes("/api/post/subject") ||
-                    extractedUrl!.includes("/api/post/personal") ||
-                    extractedUrl!.includes("/api/post/global_user")
-                ) &&
-                c.req.method != "GET"
+                    extractedUrl!.includes("/api/post/personal")
+                )
             ) {
                 const requestHeader = Extract.extractHeaders(c);
                 const requestBody = await Extract.extractRequestBody(c);
@@ -40,10 +38,8 @@ export class LoggingMiddleware {
                 !(
                     extractedUrl!.includes("/api/post/global") ||
                     extractedUrl!.includes("/api/post/subject") ||
-                    extractedUrl!.includes("/api/post/personal") ||
-                    extractedUrl!.includes("/api/post/global_user")
-                ) &&
-                c.req.method != "GET"
+                    extractedUrl!.includes("/api/post/personal")
+                )
             ) {
                 const responseBody = await Extract.extractResponseData(c);
                 const responseLabel = GetLabel.getLabel(responseBody);

@@ -32,4 +32,5 @@ export interface PostData {
     created_at: string;
     parent_post_type?: string;
     parent_post_color?: string;
+    read?: boolean;
 }

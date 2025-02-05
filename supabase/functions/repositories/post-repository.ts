@@ -59,7 +59,7 @@ export class PostRepository {
         }
         queryBuilder.filter("report", "eq", false);
         if (table == "global_post") {
-            queryBuilder.order("created_at", { ascending: true }); 
+            queryBuilder.order("created_at", { ascending: true });
         }
 
         const { data, error } = await queryBuilder;
@@ -73,12 +73,39 @@ export class PostRepository {
         return data;
     }
 
-    static async report(table: string, id: string): Promise<Response | void> {
+    static async postPost(table: string, body: JSON): Promise<Response | void> {
+        let error;
+
+        if (table === "personal_post") {
+            const { error: rpcError } = await supabase.rpc("post_personal", {
+                body: body,
+            });
+            error = rpcError;
+        } else {
+            const { error: insertError } = await supabase
+                .from(table)
+                .insert([body]);
+            error = insertError;
+        }
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+    }
+
+    static async updatePost(
+        table: string,
+        field: string,
+        id: string
+    ): Promise<Response | void> {
         const { error } = await supabase
             .from(table)
-            .update({ report: true })
+            .update({ [field]: true })
             .eq("id", id)
-            .is("report", false);
+            .is(field, false);
 
         if (error) {
             return createResponse(
@@ -94,30 +121,6 @@ export class PostRepository {
             id_input: id,
             base_table: "global_post",
             backup_table: "backup_global_post",
-        });
-        if (error) {
-            return createResponse(
-                ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
-                null
-            );
-        }
-    }
-
-    static async post(table: string, body: JSON): Promise<Response | void> {
-        const { error } = await supabase.from(table).insert([body]);
-        if (error) {
-            return createResponse(
-                ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
-                null
-            );
-        }
-    }
-
-    static async postPersonal(body: JSON): Promise<Response | void> {
-        const { error } = await supabase.rpc("post_personal", {
-            body: body,
         });
         if (error) {
             return createResponse(

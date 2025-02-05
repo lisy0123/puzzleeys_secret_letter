@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 
 class ReadPuzzleProvider with ChangeNotifier {
@@ -6,28 +7,15 @@ class ReadPuzzleProvider with ChangeNotifier {
   Set<String> get readPuzzleIds => _readPuzzleIds;
 
   Future<void> initialize(List<Map<String, dynamic>> puzzleList) async {
-    final String? savedIds = await SharedPreferencesUtils.get('readPuzzleIds');
-    if (savedIds != null) {
-      _setIds(savedIds, puzzleList);
-    } else {
-      _readPuzzleIds = {};
-    }
-    notifyListeners();
-  }
-
-  void _setIds(String savedIds, List<Map<String, dynamic>> puzzleList) async {
-    _readPuzzleIds = savedIds.split(',').toSet();
-
-    final int beforeCount = _readPuzzleIds.length;
     final Set<String> validIds = puzzleList
-        .map((p) => p['id']?.toString())
-        .where((id) => id != null && id.isNotEmpty)
-        .cast<String>()
+        .where((p) => p['read'] == true)
+        .map((p) => p['id'] as String)
         .toSet();
 
-    _readPuzzleIds.removeWhere((id) => !validIds.contains(id));
+    if (_readPuzzleIds != validIds) {
+      _readPuzzleIds = validIds;
+      notifyListeners();
 
-    if (_readPuzzleIds.length != beforeCount) {
       await SharedPreferencesUtils.save(
         'readPuzzleIds',
         _readPuzzleIds.join(','),
@@ -36,12 +24,15 @@ class ReadPuzzleProvider with ChangeNotifier {
   }
 
   Future<void> markAsRead(String puzzleId) async {
-    if (_readPuzzleIds.add(puzzleId.toString())) {
+    final puzzleIdStr = puzzleId.toString();
+
+    if (_readPuzzleIds.add(puzzleIdStr)) {
+      notifyListeners();
       await SharedPreferencesUtils.save(
         'readPuzzleIds',
         _readPuzzleIds.join(','),
       );
-      notifyListeners();
+      await apiRequest('/api/post/personal_read/$puzzleId', ApiType.post);
     }
   }
 

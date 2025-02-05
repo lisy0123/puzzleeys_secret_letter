@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-enum ApiType { post, get, delete, patch, put }
+enum ApiType { post, get, delete }
 
 Future<Map<String, dynamic>> apiRequest(
   String endPoint,
@@ -33,7 +33,6 @@ Future<Map<String, dynamic>> apiRequest(
             await http.delete(uri, headers: requestHeaders, body: requestBody);
         break;
       case ApiType.get:
-      default:
         response = await http.get(uri, headers: requestHeaders);
         break;
     }

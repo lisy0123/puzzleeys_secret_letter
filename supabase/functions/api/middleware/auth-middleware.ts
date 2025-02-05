@@ -6,7 +6,12 @@ import { supabase } from "../../lib/supabase-config.ts";
 
 export async function withAuth(
     c: Context,
-    handler: (c: Context, user: User) => Response | Promise<Response>
+    handler: (
+        c: Context,
+        user: User,
+        postType?: string
+    ) => Response | Promise<Response>,
+    postType?: string
 ) {
     const token = AuthMiddleware.header(c.req);
     if (token instanceof Response) {
@@ -16,7 +21,7 @@ export async function withAuth(
     if ("status" in user) {
         return user;
     }
-    return handler(c, user);
+    return handler(c, user, postType);
 }
 
 class AuthMiddleware {

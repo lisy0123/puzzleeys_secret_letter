@@ -56,6 +56,7 @@ class PuzzleProvider extends ChangeNotifier {
       'created_at': null,
       'parent_post_type': null,
       'parent_post_color': null,
+      'read': false,
     };
   }
 
@@ -145,6 +146,7 @@ class PuzzleProvider extends ChangeNotifier {
         'created_at': puzzleData[i]['created_at'],
         'parent_post_type': puzzleData[i]['parent_post_type'],
         'parent_post_color': puzzleData[i]['parent_post_color'],
+        'read': puzzleData[i]['read'],
       };
       if (puzzleType == PuzzleType.subject) {
         if (!isExisted && puzzleData[i]['author_id'] == userId) {

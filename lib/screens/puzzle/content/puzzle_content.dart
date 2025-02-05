@@ -82,7 +82,7 @@ class _PuzzleContentState extends State<PuzzleContent>
 
       _animation = ColorTween(
         begin: widget.puzzleData['color'],
-        end: Color.lerp(widget.puzzleData['color'], Colors.white, 0.5)!,
+        end: Color.lerp(widget.puzzleData['color'], Colors.white, 0.7)!,
       ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
     }
   }

@@ -5,76 +5,38 @@ import { Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 
 export class PostController {
     static getGlobal(_c: Context, _user: User) {
-        return ResponseUtils.handleRequest({ callback: PostService.global });
+        return ResponseUtils.handleRequest({ callback: PostService.getGlobal });
     }
-    static getSubject(_c: Context, user: User) {
+    static getUser(_c: Context, user: User, postType?: string) {
         return ResponseUtils.handleRequest({
-            callback: PostService.user,
+            callback: PostService.getUser,
             user: user,
-            tableOrBody: "subject_post",
-        });
-    }
-    static getPersonal(_c: Context, user: User) {
-        return ResponseUtils.handleRequest({
-            callback: PostService.user,
-            user: user,
-            tableOrBody: "personal_post",
-        });
-    }
-    static getGlobalUser(_c: Context, user: User) {
-        return ResponseUtils.handleRequest({
-            callback: PostService.user,
-            user: user,
-            tableOrBody: "global_post",
+            tableOrBody: postType,
         });
     }
 
-    static async postGlobal(c: Context, _user: User) {
+    static async postPost(c: Context, _user: User, postType?: string) {
         const body = await c.req.json();
         return ResponseUtils.handleRequest({
-            callback: PostService.postGlobal,
-            tableOrBody: body,
-        });
-    }
-    static async postSubject(c: Context, _user: User) {
-        const body = await c.req.json();
-        return ResponseUtils.handleRequest({
-            callback: PostService.postSubject,
-            tableOrBody: body,
-        });
-    }
-    static async postPersonal(c: Context, _user: User) {
-        const body = await c.req.json();
-        return ResponseUtils.handleRequest({
-            callback: PostService.postPersonal,
-            tableOrBody: body,
+            callback: PostService.postPost,
+            tableOrBody: [postType, body],
         });
     }
 
-    static postGlobalReport(c: Context, _user: User) {
+    static reportPost(c: Context, _user: User, postType?: string) {
         const id = c.req.param("id");
         return ResponseUtils.handleRequest({
-            callback: PostService.report,
-            user: _user,
-            tableOrBody: "global_post",
+            callback: PostService.updatePost,
+            tableOrBody: [postType, "report"],
             id: id,
         });
     }
-    static postSubjectReport(c: Context, _user: User) {
+
+    static readPost(c: Context, _user: User) {
         const id = c.req.param("id");
         return ResponseUtils.handleRequest({
-            callback: PostService.report,
-            user: _user,
-            tableOrBody: "subject_post",
-            id: id,
-        });
-    }
-    static postPersonalReport(c: Context, _user: User) {
-        const id = c.req.param("id");
-        return ResponseUtils.handleRequest({
-            callback: PostService.report,
-            user: _user,
-            tableOrBody: "personal_post",
+            callback: PostService.updatePost,
+            tableOrBody: ["personal_post", "read"],
             id: id,
         });
     }
@@ -83,7 +45,6 @@ export class PostController {
         const id = c.req.param("id");
         return ResponseUtils.handleRequest({
             callback: PostService.deleteGlobalUser,
-            user: _user,
             only_id: id,
         });
     }
