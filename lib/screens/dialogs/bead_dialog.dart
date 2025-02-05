@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/vars.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
@@ -31,8 +32,7 @@ class _BeadDialogState extends State<BeadDialog> {
 
   Future<List<Map<String, dynamic>>?> fetchData() async {
     try {
-      final responseData =
-          await apiRequest('/api/post/global_user', ApiType.get);
+      final responseData = await apiRequest('/api/bead/user', ApiType.get);
 
       if (responseData['code'] == 200) {
         final List<dynamic> data = responseData['result'] as List<dynamic>;
@@ -48,21 +48,31 @@ class _BeadDialogState extends State<BeadDialog> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 80.0.w),
-        Container(
-          width: 800.0.w,
-          height: 800.0.w,
-          decoration: BoxDecorations.bead(
-            myGradientColors: CustomVars.myGradientColors,
-          ),
+        SizedBox(width: 1),
+        Stack(
+          children: [
+            Container(
+              width: 800.0.w,
+              height: 800.0.w,
+              decoration: BoxDecorations.bead(
+                myGradientColors: CustomVars.myGradientColors,
+              ),
+            ),
+            Image.asset('/assets/imgs/puzzle_pattern.png', width: 800.0.w),
+          ],
         ),
-        SizedBox(height: 80.0.w),
-        Utils.dialogDivider(),
-        SizedBox(height: 40.0.w),
-        SizedBox(height: 1000.0.w, child: _buildList()),
+        CustomText.textDisplay(
+          text: '9999${CustomStrings.puzzleCount}',
+          stroke: true,
+          context: context,
+        ),
+        Column(children: [
+          Utils.dialogDivider(),
+          SizedBox(height: 1200.0.w, child: _buildList()),
+        ]),
       ],
     );
   }
@@ -99,10 +109,7 @@ class _BeadDialogState extends State<BeadDialog> {
   Widget _buildErrorText(Object? error) {
     if (error != null) {
       return Center(
-        child: CustomText.textContent(
-          text: 'Error: $error',
-          context: context,
-        ),
+        child: CustomText.textContent(text: 'Error: $error', context: context),
       );
     }
     return Column(
@@ -128,7 +135,7 @@ class _BeadDialogState extends State<BeadDialog> {
           return Column(
             children: [
               SizedBox(
-                height: 400.0.w,
+                height: 500.0.w,
                 child: _buildContent(snapshot.data![index]),
               ),
               Utils.dialogDivider(),
@@ -140,46 +147,48 @@ class _BeadDialogState extends State<BeadDialog> {
   }
 
   Widget _buildContent(Map<String, dynamic> item) {
+    final Color color = ColorUtils.colorMatch(stringColor: item['color']);
+    final String date = Utils.convertUTCToKST(item['created_at'])
+        .split(' ')[0]
+        .replaceAll("-", "/");
+
     return Stack(
       alignment: Alignment.center,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomPaint(
               size: Size(360.0.w, 360.0.w),
-              painter: TiltedPuzzlePiece(
-                puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
-              ),
+              painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
             ),
             SizedBox(
-              width: 800.0.w,
-              height: 360.0.w,
-              child: Center(
-                child: CustomText.textContent(
-                  text: item['title'],
-                  context: context,
-                ),
-              ),
+              width: 1000.0.w,
+              child: Center(child: _text(item['title'])),
             ),
           ],
         ),
-        // Align(
-        //   alignment: Alignment.bottomRight,
-        //   child: SizedBox(
-        //     height: 240.0.w,
-        //     width: 640.0.w,
-        //     child: Align(
-        //       alignment: Alignment.centerLeft,
-        //       child: CustomText.textContent(
-        //         text: item['created_at'],
-        //         context: context,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: _text(date, date: true),
+        ),
       ],
+    );
+  }
+
+  Text _text(String str, {bool date = false}) {
+    return Text(
+      str,
+      style: TextStyle(
+        color: date
+            ? CustomColors.colorBase.withValues(alpha: 0.6)
+            : CustomColors.colorBase,
+        fontFamily: 'NANUM',
+        fontWeight: FontWeight.w900,
+        letterSpacing: 1,
+        fontSize: date ? 64.sp : 74.0.sp,
+      ),
     );
   }
 }

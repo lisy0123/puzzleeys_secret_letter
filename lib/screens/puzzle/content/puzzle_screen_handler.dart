@@ -29,7 +29,10 @@ class PuzzleScreenHandler {
       onTap: onTap,
       child: Container(
         color: Colors.transparent,
-        child: buildSideText(iconName: iconName, text: text, context: context),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 60.0.w),
+          child: buildSideText(iconName: iconName, text: text, context: context),
+        ),
       ),
     );
   }
@@ -42,20 +45,17 @@ class PuzzleScreenHandler {
     final isLargeIcon = iconName == 'btn_back';
     final iconSize = isLargeIcon ? 140.0.w : 100.0.w;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 60.0.w),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset('assets/imgs/$iconName.svg', height: iconSize),
-          SizedBox(width: 30.0.w),
-          isLargeIcon
-              ? CustomText.textDisplay(text: text, context: context)
-              : CustomText.textSmall(text: text, context: context),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SvgPicture.asset('assets/imgs/$iconName.svg', height: iconSize),
+        SizedBox(width: 30.0.w),
+        isLargeIcon
+            ? CustomText.textDisplay(text: text, context: context)
+            : CustomText.textSmall(text: text, context: context),
+      ],
     );
   }
 }

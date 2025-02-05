@@ -115,7 +115,10 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CountdownTimer(createdAt: widget.puzzleData['created_at']),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+              child: CountdownTimer(createdAt: widget.puzzleData['created_at']),
+            ),
             PuzzleScreenHandler().buildIconButton(
               iconName: 'btn_alarm',
               text: CustomStrings.report,

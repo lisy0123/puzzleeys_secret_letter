@@ -54,7 +54,6 @@ class CustomStrings {
 
   static String logout = '로그아웃';
   static String deleteUser = '회원 탈퇴';
-
   static String deleteShort = '삭 제';
   static String deleteLong = '삭제하기';
 
@@ -63,6 +62,7 @@ class CustomStrings {
   static String sendToMe = '미래의 나에게';
 
   static String addToday = '오늘 하루';
+  static String puzzleCount = '개의 감정 퍼즐을 담았어요!';
 
   static List<String> questUnits = ['일', '회'];
   static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};

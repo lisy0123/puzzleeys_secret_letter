@@ -73,7 +73,7 @@ class BuildDialog {
     if (simpleDialog) {
       return 1000.0.w;
     } else if (iconName == 'bead') {
-      return 2600.0.w;
+      return 3000.0.w;
     } else {
       return 2000.0.w;
     }
