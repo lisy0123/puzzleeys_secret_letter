@@ -12,7 +12,13 @@ class ReadPuzzleProvider with ChangeNotifier {
         .map((p) => p['id'] as String)
         .toSet();
 
-    if (_readPuzzleIds != validIds) {
+    final String? savedIds = await SharedPreferencesUtils.get('readPuzzleIds');
+    _readPuzzleIds = savedIds != null ? savedIds.split(',').toSet() : {};
+
+    final bool hasChanges = !_readPuzzleIds.containsAll(validIds) ||
+        _readPuzzleIds.any((id) => !validIds.contains(id));
+
+    if (hasChanges) {
       _readPuzzleIds = validIds;
       notifyListeners();
 
