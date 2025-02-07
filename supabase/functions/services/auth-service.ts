@@ -16,7 +16,7 @@ export class AuthService {
     static handleFcmTokenRequest(
         user: User,
         body: unknown,
-        action: (userId: string, fcmToken: string) => Promise<Response>
+        action: (authId: string, fcmToken: string) => Promise<Response>
     ): Promise<Response> | Response {
         const fcmToken = AuthService.extractFcmToken(body);
         if (!fcmToken) {
@@ -29,35 +29,65 @@ export class AuthService {
         return action(user.id, fcmToken);
     }
 
-    static login(user: User, body: unknown): Promise<Response> {
+    private static async processFcmAction(
+        user: User,
+        fcmToken: string,
+        isLogin: boolean
+    ): Promise<Response> {
+        const upsertResponse = await UserRepository.upsertFCM(
+            user.id,
+            fcmToken
+        );
+        if (upsertResponse) return upsertResponse;
+
+        if (isLogin) {
+            const insertResponse = await AuthRepository.insertUser(user);
+            if (insertResponse) return insertResponse;
+
+            return createResponse(
+                ResponseCode.SUCCESS,
+                "Login and FCM token upsert successful.",
+                {
+                    user_id: uuidToBase64(user.id),
+                    created_at: user.created_at,
+                }
+            );
+        }
+
+        return createResponse(
+            ResponseCode.SUCCESS,
+            "FCM token upsert successful.",
+            null
+        );
+    }
+
+    static processFcmRequest(
+        user: User,
+        body: unknown,
+        isLogin: boolean
+    ): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: () =>
                 AuthService.handleFcmTokenRequest(
                     user,
                     body,
-                    async (userId, fcmToken) => {
-                        const upsertResponse = await UserRepository.upsertFCM(
-                            userId,
-                            fcmToken
-                        );
-                        if (upsertResponse) return upsertResponse;
-
-                        const insertResponse = await AuthRepository.insertUser(
-                            user
-                        );
-                        if (insertResponse) return insertResponse;
-
-                        return createResponse(
-                            ResponseCode.SUCCESS,
-                            "Login and FCM token upsert successful.",
-                            {
-                                user_id: uuidToBase64(user.id),
-                                created_at: user.created_at,
-                            }
+                    async (_authId, fcmToken) => {
+                        return await AuthService.processFcmAction(
+                            user,
+                            fcmToken,
+                            isLogin
                         );
                     }
                 ),
         });
+    }
+
+    static login(user: User, body: unknown): Promise<Response> {
+        return AuthService.processFcmRequest(user, body, true);
+    }
+
+    static upsertFcm(user: User, body: unknown): Promise<Response> {
+        return AuthService.processFcmRequest(user, body, false);
     }
 
     static logout(user: User, body: unknown): Promise<Response> {
@@ -66,9 +96,9 @@ export class AuthService {
                 AuthService.handleFcmTokenRequest(
                     user,
                     body,
-                    async (userId, fcmToken) => {
+                    async (authId, fcmToken) => {
                         const deleteResponse = await UserRepository.deleteFCM(
-                            userId,
+                            authId,
                             fcmToken
                         );
                         if (deleteResponse) return deleteResponse;
@@ -83,33 +113,12 @@ export class AuthService {
         });
     }
 
-    static upsertFcm(user: User, body: unknown): Promise<Response> {
-        return ResponseUtils.handleRequest({
-            callback: () =>
-                AuthService.handleFcmTokenRequest(
-                    user,
-                    body,
-                    async (userId, fcmToken) => {
-                        const upsertResponse = await UserRepository.upsertFCM(
-                            userId,
-                            fcmToken
-                        );
-                        if (upsertResponse) return upsertResponse;
-
-                        return createResponse(
-                            ResponseCode.SUCCESS,
-                            "FCM token upsert successful.",
-                            null
-                        );
-                    }
-                ),
-        });
-    }
-
     static deleteUser(user: User): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const withdrawResponse = await AuthRepository.deleteUser(user);
+                const withdrawResponse = await AuthRepository.deleteUser(
+                    user.id
+                );
                 if (withdrawResponse) return withdrawResponse;
 
                 return createResponse(

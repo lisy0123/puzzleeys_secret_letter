@@ -6,7 +6,8 @@ import { BeadController } from "./bead-controller.ts";
 
 const beadRouter = new Hono();
 
-beadRouter.get("/user", (c) => withAuth(c, BeadController.user));
+beadRouter.get("/user", (c) => withAuth(c, BeadController.getUser));
+beadRouter.post("/user", (c) => withAuth(c, BeadController.postUser));
 
 beadRouter.all("/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);

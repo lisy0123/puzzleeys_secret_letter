@@ -34,3 +34,11 @@ export interface PostData {
     parent_post_color?: string;
     read?: boolean;
 }
+
+export interface BeadData {
+    id: string;
+    title: string;
+    color: string;
+    post_type: string;
+    created_at: string;
+}

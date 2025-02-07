@@ -7,7 +7,7 @@ import { UserData } from "../types/user.ts";
 
 export class AuthRepository {
     static async insertUser(user: User): Promise<Response | void> {
-        const existingUser = await this.getUserWithId(user);
+        const existingUser = await this.getUserWithId(user.id);
         if (!existingUser) {
             const { error: insertError } = await supabase
                 .from("user_list")
@@ -29,11 +29,11 @@ export class AuthRepository {
         }
     }
 
-    static async getUserWithId(user: User): Promise<Response | UserData> {
+    static async getUserWithId(authId: string): Promise<Response | UserData> {
         const { data, error } = await supabase
             .from("user_list")
             .select("*")
-            .eq("auth_user_id", user.id)
+            .eq("auth_user_id", authId)
             .single();
 
         if (error && error.code !== "PGRST116") {
@@ -46,8 +46,8 @@ export class AuthRepository {
         return data as UserData;
     }
 
-    static async deleteUser(user: User): Promise<Response | void> {
-        const { error } = await supabase.auth.admin.deleteUser(user.id);
+    static async deleteUser(authId: string): Promise<Response | void> {
+        const { error } = await supabase.auth.admin.deleteUser(authId);
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,

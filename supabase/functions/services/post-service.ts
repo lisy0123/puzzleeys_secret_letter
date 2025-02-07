@@ -3,6 +3,7 @@ import { ResponseCode } from "./../lib/response/response-code.ts";
 import { User } from "jsr:@supabase/supabase-js@2";
 import { ResponseUtils } from "../lib/response/response-utils.ts";
 import { PostRepository } from "../repositories/post-repository.ts";
+import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 
 export class PostService {
     static getGlobal(): Promise<Response> {
@@ -24,8 +25,10 @@ export class PostService {
     static getUser(user: User, table: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
+                const userId = uuidToBase64(user.id);
+                
                 const posts = await PostRepository.getUserPosts(
-                    user,
+                    userId,
                     table as string
                 );
                 if ("status" in posts) {
@@ -73,7 +76,7 @@ export class PostService {
 
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `${list[1]} ${list[0]} post successful.`,
+                    `${list[1]} ${list[0]} successful.`,
                     null
                 );
             },

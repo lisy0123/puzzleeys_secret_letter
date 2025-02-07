@@ -1,9 +1,7 @@
-import { User } from "jsr:@supabase/supabase-js@2";
 import { ResponseCode } from "../lib/response/response-code.ts";
 import { createResponse } from "../lib/response/response-format.ts";
 import { supabase } from "../lib/supabase-config.ts";
 import { PostData, PostQuery } from "../types/user.ts";
-import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 
 export class PostRepository {
     static async getGlobalPosts(): Promise<Response | PostData[]> {
@@ -19,7 +17,7 @@ export class PostRepository {
     }
 
     static getUserPosts(
-        user: User,
+        userId: string,
         table: string
     ): Promise<Response | PostData[]> {
         if (table == "subject_post") {
@@ -27,16 +25,15 @@ export class PostRepository {
         }
 
         let condition: PostQuery = {};
-        const body = uuidToBase64(user.id);
 
         if (table == "personal_post") {
             const currentDateUTC = new Date().toISOString();
             condition = {
-                receiver_id: body,
+                receiver_id: userId,
                 created_at: { lt: currentDateUTC },
             };
         } else if (table == "global_post") {
-            condition = { author_id: body };
+            condition = { author_id: userId };
         }
 
         return this.fetchPosts(table, condition);
@@ -46,9 +43,12 @@ export class PostRepository {
         table: string,
         query?: PostQuery
     ): Promise<PostData[] | Response> {
-        const queryBuilder = supabase.from(table).select("*");
+        const queryBuilder = supabase
+            .from(table)
+            .select("*")
+            .filter("report", "eq", false);
 
-        if (query != null) {
+        if (query) {
             Object.entries(query).forEach(([key, value]) => {
                 if (key === "created_at") {
                     queryBuilder.filter(key, "lt", value.lt);
@@ -57,7 +57,6 @@ export class PostRepository {
                 }
             });
         }
-        queryBuilder.filter("report", "eq", false);
         if (table == "global_post") {
             queryBuilder.order("created_at", { ascending: true });
         }
