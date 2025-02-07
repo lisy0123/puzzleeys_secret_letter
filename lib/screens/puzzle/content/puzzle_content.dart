@@ -96,7 +96,7 @@ class _PuzzleContentState extends State<PuzzleContent>
   @override
   Widget build(BuildContext context) {
     final rotationAngle = (widget.row % 2 == widget.column % 2) ? pi / 2 : pi;
-    context.watch<ReadPuzzleProvider>().readPuzzleIds;
+    context.watch<ReadPuzzleProvider>().readIds;
     _updateExistState();
 
     return LayoutId(

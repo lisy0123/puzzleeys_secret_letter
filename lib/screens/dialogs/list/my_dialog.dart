@@ -7,7 +7,7 @@ import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';

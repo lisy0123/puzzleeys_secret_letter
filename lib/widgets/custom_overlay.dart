@@ -44,7 +44,7 @@ class CustomOverlay {
     overlay.insert(overlayEntry);
     _overlayEntries.add(overlayEntry);
 
-    Future.delayed(Duration(milliseconds: 4000), () {
+    Future.delayed(Duration(milliseconds: 3000), () {
       if (overlayEntry.mounted) {
         overlayEntry.remove();
         _overlayEntries.remove(overlayEntry);

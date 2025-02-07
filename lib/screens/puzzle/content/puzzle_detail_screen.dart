@@ -5,12 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
 import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
@@ -34,15 +35,23 @@ class PuzzleDetailScreen extends StatefulWidget {
 
 class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   Color _puzzleButtonColor = Colors.white;
+  late BeadProvider _beadProvider;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<WritingProvider>().updateOpacity(setToInitial: true);
-    });
+      _beadProvider = context.read<BeadProvider>();
+      final bool isExist =
+          _beadProvider.beadIds.contains(widget.puzzleData['id']);
 
-    // TODO: check puzzle exist, and decide to color or not.
+      context.read<WritingProvider>().updateOpacity(setToInitial: true);
+      if (isExist) {
+        setState(() {
+          _puzzleButtonColor = widget.puzzleData['color'];
+        });
+      }
+    });
   }
 
   @override
@@ -140,8 +149,11 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
   Widget _buildParentPost() {
     if (widget.puzzleType == PuzzleType.personal &&
         widget.puzzleData['parent_post_color'] != null) {
-      final Map<String, int> typeMap = {'global': 0, 'subject': 1};
-      final int iconIndex = typeMap[widget.puzzleData['parent_post_type']] ?? 2;
+      final int iconIndex = switch (widget.puzzleData['parent_post_type']) {
+        'global' => 0,
+        'subject' => 1,
+        _ => 2,
+      };
 
       return Padding(
         padding: EdgeInsets.all(20.0.w),
@@ -227,7 +239,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
     );
   }
 
-  void _getPuzzle() {
+  void _getPuzzle() async {
     if (_puzzleButtonColor == Colors.white) {
       setState(() {
         _puzzleButtonColor = widget.puzzleData['color'];
@@ -238,6 +250,7 @@ class _PuzzleDetailScreenState extends State<PuzzleDetailScreen> {
         puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
         context: context,
       );
+      _beadProvider.putIntoBead(widget.puzzleData, widget.puzzleType);
     } else {
       CustomOverlay.show(
         text: MessageStrings.puzzleExistOverlay,

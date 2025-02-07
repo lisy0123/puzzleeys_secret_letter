@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
@@ -47,6 +48,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => DeleteDialogProvider()),
       ChangeNotifierProvider(create: (_) => ReadPuzzleProvider()),
       ChangeNotifierProvider(create: (_) => CheckScreenProvider()),
+      ChangeNotifierProvider(create: (_) => BeadProvider()),
     ],
     child: const MyApp(),
   ));

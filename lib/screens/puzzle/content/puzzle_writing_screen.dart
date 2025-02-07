@@ -4,7 +4,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
@@ -155,7 +155,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         puzzleData['receiver_id'] = widget.parentId;
         puzzleData['parent_post_color'] =
             ColorUtils.colorToString(widget.parentColor!);
-        puzzleData['parent_post_type'] = _getType();
+        puzzleData['parent_post_type'] = Utils.getType(widget.puzzleType);
       }
 
       BuildDialog.show(
@@ -164,14 +164,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
         context: context,
       );
     }
-  }
-
-  String _getType() {
-    return {
-          PuzzleType.global: 'global',
-          PuzzleType.subject: 'subject',
-        }[widget.puzzleType] ??
-        'personal';
   }
 
   String _getIconName() {

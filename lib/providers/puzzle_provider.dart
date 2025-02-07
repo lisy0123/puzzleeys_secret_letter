@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
@@ -23,6 +24,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   TabController? _tabController;
+  late PuzzleProvider _puzzleProvider;
+  late PuzzleScaleProvider _puzzleScaleProvider;
 
   @override
   void initState() {
@@ -42,7 +45,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
 
     if (mounted) {
-      setState(() {});
+      _puzzleProvider = context.read<PuzzleProvider>();
+      _puzzleScaleProvider = context.read<PuzzleScaleProvider>();
+
+      _puzzleProvider.initializeHasSubject();
+      _puzzleScaleProvider.initialize();
+      context.read<BeadProvider>().initialize();
     }
   }
 
@@ -112,7 +120,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         children: [
           CustomCircle(
             svgImage: 'cir_zoom',
-            onTap: () => context.read<PuzzleScaleProvider>().toggleScale(),
+            onTap: _puzzleScaleProvider.toggleScale,
           ),
           CustomCircle(svgImage: 'cir_shuffle', onTap: _shuffle),
         ],
@@ -121,11 +129,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void _shuffle() {
-    final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
     final PuzzleType puzzleType = _getPuzzleType(_tabController!.index);
 
-    puzzleProvider.updateShuffle(true);
-    puzzleProvider.initializeColors(puzzleType);
+    _puzzleProvider.updateShuffle(true);
+    _puzzleProvider.initializeColors(puzzleType);
   }
 
   PuzzleType _getPuzzleType(int index) {

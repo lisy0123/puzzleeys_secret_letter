@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 
 class BoardPuzzle extends CustomPainter {
   final Color puzzleColor;

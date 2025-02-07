@@ -9,6 +9,7 @@ class CustomVars {
   static final List<Color> myGradientColors = [
     CustomColors.colorBlue,
     CustomColors.colorPink,
+    CustomColors.colorYellow,
   ];
 
   static final List<Color> myColorPickers = [

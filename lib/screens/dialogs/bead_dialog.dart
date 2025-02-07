@@ -12,7 +12,7 @@ import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.da
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
-import 'package:puzzleeys_secret_letter/utils/color_match.dart';
+import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
@@ -34,9 +34,7 @@ class _BeadDialogState extends State<BeadDialog> {
 
   Future<List<Map<String, dynamic>>?> fetchData() async {
     try {
-      final responseData =
-          await apiRequest('/api/post/global_user', ApiType.get);
-      // final responseData = await apiRequest('/api/bead/user', ApiType.get);
+      final responseData = await apiRequest('/api/bead/user', ApiType.get);
 
       if (responseData['code'] == 200) {
         final List<dynamic> data = responseData['result'] as List<dynamic>;
@@ -152,6 +150,31 @@ class _BeadDialogState extends State<BeadDialog> {
 
   Widget _buildContent(Map<String, dynamic> item) {
     final Color color = ColorUtils.colorMatch(stringColor: item['color']);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomPaint(
+          size: Size(360.0.w, 360.0.w),
+          painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 80.0.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _itemTop(item),
+              SizedBox(height: 20.0.w),
+              SizedBox(width: 980.0.w, child: _text(item['title'])),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _itemTop(Map<String, dynamic> item) {
     final String date = Utils.convertUTCToKST(item['created_at'])
         .split(' ')[0]
         .replaceAll("-", "/");
@@ -160,48 +183,48 @@ class _BeadDialogState extends State<BeadDialog> {
       'subject' => PuzzleType.subject,
       _ => PuzzleType.personal,
     };
+    final int iconIndex = switch (item['post_type']) {
+      'global' => 0,
+      'subject' => 1,
+      _ => 2,
+    };
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CustomPaint(
-          size: Size(400.0.w, 400.0.w),
-          painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 80.0.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return SizedBox(
+      width: 980.0.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 940.0.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _text(date, date: true),
-                    GestureDetector(
-                      onTap: () => BuildDialog.show(
-                        iconName: 'report',
-                        puzzleId: item['id'] ?? '',
-                        puzzleType: puzzleType,
-                        simpleDialog: true,
-                        context: context,
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/imgs/btn_alarm.svg',
-                        height: 90.0.w,
-                      ),
-                    ),
-                  ],
+              _text(date, date: true),
+              if (iconIndex != 2) SizedBox(width: 20.0.w),
+              SvgPicture.asset(
+                'assets/imgs/icon_${iconIndex.toString()}.svg',
+                height: (iconIndex == 2) ? 110.0.w : 100.0.w,
+                colorFilter: ColorFilter.mode(
+                  CustomColors.colorBase.withValues(alpha: 0.2),
+                  BlendMode.srcATop,
                 ),
               ),
-              SizedBox(height: 20.0.w),
-              SizedBox(width: 940.0.w, child: _text(item['title'])),
             ],
           ),
-        ),
-      ],
+          GestureDetector(
+            onTap: () => BuildDialog.show(
+              iconName: 'report',
+              puzzleId: item['id'],
+              puzzleType: puzzleType,
+              simpleDialog: true,
+              context: context,
+            ),
+            child: SvgPicture.asset(
+              'assets/imgs/btn_alarm.svg',
+              height: 90.0.w,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -215,7 +238,7 @@ class _BeadDialogState extends State<BeadDialog> {
         fontFamily: 'NANUM',
         fontWeight: FontWeight.w900,
         letterSpacing: 1,
-        fontSize: date ? 70.sp : 74.0.sp,
+        fontSize: date ? 70.sp : 72.0.sp,
       ),
     );
   }
