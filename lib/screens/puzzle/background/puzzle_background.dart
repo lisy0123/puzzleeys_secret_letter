@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';

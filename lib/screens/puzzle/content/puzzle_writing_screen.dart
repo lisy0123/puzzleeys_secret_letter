@@ -5,6 +5,7 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
@@ -113,6 +114,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   Widget _buildTextField() {
+    final String hintText = GetPuzzleType.typeToHintText(
+      puzzleType: widget.puzzleType,
+      reply: widget.reply,
+    );
+
     return RawScrollbar(
       controller: _scrollController,
       radius: Radius.circular(10),
@@ -127,7 +133,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
           maxLines: null,
           style: Theme.of(context).textTheme.displayLarge,
           decoration: InputDecoration(
-            hintText: _getHintText(),
+            hintText: hintText,
             hintStyle: Theme.of(context).textTheme.labelSmall,
             border: InputBorder.none,
           ),
@@ -136,43 +142,29 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
     );
   }
 
-  String _getHintText() {
-    if (widget.reply) return MessageStrings.writingReplyMessage;
-    return {
-      PuzzleType.global: MessageStrings.writingGlobalMessage,
-      PuzzleType.subject: MessageStrings.writingSubjectMessage,
-      PuzzleType.personal: MessageStrings.writingToOtherMessage,
-      PuzzleType.me: MessageStrings.writingToMeMessage,
-    }[widget.puzzleType]!;
-  }
-
   void _handlePutButtonTap() {
     if (_textController.text.trim().length < 10) {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
       final Map<String, dynamic> puzzleData = {'content': _textController.text};
+      final String iconName = GetPuzzleType.typeToIconName(
+        puzzleType: widget.puzzleType,
+        reply: widget.reply,
+      );
+
       if (widget.reply) {
         puzzleData['receiver_id'] = widget.parentId;
         puzzleData['parent_post_color'] =
             ColorUtils.colorToString(widget.parentColor!);
-        puzzleData['parent_post_type'] = Utils.getType(widget.puzzleType);
+        puzzleData['parent_post_type'] =
+            GetPuzzleType.typeToString(widget.puzzleType);
       }
 
       BuildDialog.show(
-        iconName: _getIconName(),
+        iconName: iconName,
         puzzleData: puzzleData,
         context: context,
       );
     }
-  }
-
-  String _getIconName() {
-    if (widget.reply) return 'putReply';
-    return {
-      PuzzleType.global: 'putGlobal',
-      PuzzleType.subject: 'putSubject',
-      PuzzleType.personal: 'putPersonal',
-      PuzzleType.me: 'putMe',
-    }[widget.puzzleType]!;
   }
 }

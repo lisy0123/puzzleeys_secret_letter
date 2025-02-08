@@ -11,9 +11,11 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
+import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
+import 'package:puzzleeys_secret_letter/widgets/parent_widget.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class BeadDialog extends StatefulWidget {
@@ -66,15 +68,7 @@ class _BeadDialogState extends State<BeadDialog> {
             Image.asset('assets/imgs/puzzle_pattern.png', width: 800.0.w),
           ],
         ),
-        CustomText.textDisplay(
-          text: '9999${CustomStrings.puzzleCount}',
-          stroke: true,
-          context: context,
-        ),
-        Column(children: [
-          Utils.dialogDivider(),
-          SizedBox(height: 1300.0.w, child: _buildList()),
-        ]),
+        SizedBox(height: 1500.0.w, child: _buildList()),
       ],
     );
   }
@@ -129,48 +123,65 @@ class _BeadDialogState extends State<BeadDialog> {
   }
 
   Widget _buildItem(AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
-    return RawScrollbar(
-      radius: Radius.circular(10),
-      child: ListView.builder(
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              SizedBox(
-                height: 500.0.w,
-                child: _buildContent(snapshot.data![index]),
-              ),
-              Utils.dialogDivider(),
-            ],
-          );
-        },
-      ),
+    final int puzzleCount = snapshot.data!.length;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomText.textDisplay(
+          text: '${puzzleCount.toString()}${CustomStrings.puzzleCount}',
+          stroke: true,
+          context: context,
+        ),
+        SizedBox(height: 40.0.w),
+        Utils.dialogDivider(),
+        SizedBox(
+          height: 1300.0.w,
+          child: RawScrollbar(
+            radius: Radius.circular(10),
+            child: ListView.builder(
+              itemCount: puzzleCount,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    _buildContent(snapshot.data![index]),
+                    Utils.dialogDivider(),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildContent(Map<String, dynamic> item) {
     final Color color = ColorUtils.colorMatch(stringColor: item['color']);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CustomPaint(
-          size: Size(360.0.w, 360.0.w),
-          painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 80.0.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _itemTop(item),
-              SizedBox(height: 20.0.w),
-              SizedBox(width: 980.0.w, child: _text(item['title'])),
-            ],
+    return SizedBox(
+      height: 500.0.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CustomPaint(
+            size: Size(360.0.w, 360.0.w),
+            painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
           ),
-        ),
-      ],
+          Padding(
+            padding: EdgeInsets.only(top: 40.0.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _itemTop(item),
+                SizedBox(width: 1000.0.w, child: _text(item['title'])),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -178,19 +189,10 @@ class _BeadDialogState extends State<BeadDialog> {
     final String date = Utils.convertUTCToKST(item['created_at'])
         .split(' ')[0]
         .replaceAll("-", "/");
-    final PuzzleType puzzleType = switch (item['post_type']) {
-      'global' => PuzzleType.global,
-      'subject' => PuzzleType.subject,
-      _ => PuzzleType.personal,
-    };
-    final int iconIndex = switch (item['post_type']) {
-      'global' => 0,
-      'subject' => 1,
-      _ => 2,
-    };
+    final PuzzleType puzzleType = GetPuzzleType.stringToType(item['post_type']);
 
     return SizedBox(
-      width: 980.0.w,
+      width: 1000.0.w,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -199,15 +201,7 @@ class _BeadDialogState extends State<BeadDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _text(date, date: true),
-              if (iconIndex != 2) SizedBox(width: 20.0.w),
-              SvgPicture.asset(
-                'assets/imgs/icon_${iconIndex.toString()}.svg',
-                height: (iconIndex == 2) ? 110.0.w : 100.0.w,
-                colorFilter: ColorFilter.mode(
-                  CustomColors.colorBase.withValues(alpha: 0.2),
-                  BlendMode.srcATop,
-                ),
-              ),
+              ParentWidget(parentPostType: item['post_type']),
             ],
           ),
           GestureDetector(
@@ -220,7 +214,7 @@ class _BeadDialogState extends State<BeadDialog> {
             ),
             child: SvgPicture.asset(
               'assets/imgs/btn_alarm.svg',
-              height: 90.0.w,
+              height: 100.0.w,
             ),
           ),
         ],
@@ -238,7 +232,7 @@ class _BeadDialogState extends State<BeadDialog> {
         fontFamily: 'NANUM',
         fontWeight: FontWeight.w900,
         letterSpacing: 1,
-        fontSize: date ? 70.sp : 72.0.sp,
+        fontSize: date ? 70.sp : 74.0.sp,
       ),
     );
   }

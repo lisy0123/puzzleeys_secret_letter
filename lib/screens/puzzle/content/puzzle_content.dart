@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content_handler.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
 
 class PuzzleContent extends StatefulWidget {
@@ -39,12 +35,9 @@ class _PuzzleContentState extends State<PuzzleContent>
   AnimationController? _controller;
   Animation<Color?>? _animation;
   bool? isExist;
-  late final ReadPuzzleProvider _readProvider;
 
   @override
   void initState() {
-    _readProvider = context.read<ReadPuzzleProvider>();
-
     super.initState();
     _updateExistState();
   }
@@ -67,7 +60,7 @@ class _PuzzleContentState extends State<PuzzleContent>
     if (widget.puzzleType == PuzzleType.personal) {
       final String puzzleId = widget.puzzleData['id'] ?? '';
       if (puzzleId.isNotEmpty) {
-        return _readProvider.isPuzzleRead(puzzleId);
+        return context.read<ReadPuzzleProvider>().isPuzzleRead(puzzleId);
       }
     }
     return true;
@@ -102,7 +95,12 @@ class _PuzzleContentState extends State<PuzzleContent>
     return LayoutId(
       id: widget.index,
       child: GestureDetector(
-        onTap: _onTap,
+        onTap: () => PuzzleContentHandler.handler(
+          index: widget.index,
+          puzzleType: widget.puzzleType,
+          puzzleData: widget.puzzleData,
+          context: context,
+        ),
         child: Transform.rotate(
           angle: rotationAngle,
           child: AnimatedBuilder(
@@ -125,58 +123,5 @@ class _PuzzleContentState extends State<PuzzleContent>
         ),
       ),
     );
-  }
-
-  void _onTap() {
-    final Color puzzleColor = widget.puzzleData['color'];
-
-    if (puzzleColor == Colors.white) {
-      _handleWhitePuzzle();
-    } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
-      BuildDialog.show(
-        iconName: 'puzzleSubject',
-        puzzleText: widget.puzzleData['title'].replaceAll(r'\n', '\n'),
-        puzzleColor: widget.puzzleData['color'],
-        context: context,
-      );
-    } else {
-      if (widget.puzzleType == PuzzleType.personal) {
-        _readProvider.markAsRead(widget.puzzleData['id']);
-      }
-      PuzzleScreenHandler.navigateScreen(
-        barrierColor: widget.puzzleData['color'].withValues(alpha: 0.8),
-        child: PuzzleDetailScreen(
-          index: widget.index,
-          puzzleData: widget.puzzleData,
-          puzzleType: widget.puzzleType,
-        ),
-        context: context,
-      );
-    }
-  }
-
-  void _handleWhitePuzzle() {
-    final String hasSubject =
-        Provider.of<PuzzleProvider>(context, listen: false).hasSubject;
-
-    if (widget.puzzleType == PuzzleType.personal) {
-      _showDialog('putWho');
-    } else if (widget.puzzleType == PuzzleType.subject && hasSubject == 'Y') {
-      _showDialog('isExists');
-    } else {
-      PuzzleScreenHandler.navigateScreen(
-        barrierColor: Colors.white70,
-        child: PuzzleWritingScreen(
-          puzzleType: widget.puzzleType,
-          index: widget.index,
-          reply: false,
-        ),
-        context: context,
-      );
-    }
-  }
-
-  void _showDialog(String iconName) {
-    BuildDialog.show(iconName: iconName, simpleDialog: true, context: context);
   }
 }

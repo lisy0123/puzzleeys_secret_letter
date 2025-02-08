@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
-import 'package:puzzleeys_secret_letter/utils/utils.dart';
 
 class BeadProvider with ChangeNotifier {
   Set<String> _beadIds = {};
@@ -50,7 +50,7 @@ class BeadProvider with ChangeNotifier {
         'author_id': puzzleType == PuzzleType.personal
             ? puzzleData['sender_id']
             : puzzleData['author_id'],
-        'post_type': Utils.getType(puzzleType),
+        'post_type': GetPuzzleType.typeToString(puzzleType),
       };
       final Map<String, String> headers = {'Content-Type': 'application/json'};
 
