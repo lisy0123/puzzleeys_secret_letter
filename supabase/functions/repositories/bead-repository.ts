@@ -32,4 +32,29 @@ export class BeadRepository {
             );
         }
     }
+
+    static async updatePost<T>(
+        table: string,
+        field: string,
+        id: string
+    ): Promise<Response | string | null> {
+        const { data, error } = await supabase
+            .from(table)
+            .update({ [field]: true })
+            .eq("id", id)
+            .is(field, false)
+            .select();
+
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+        if (data.length == 0) {
+            return null;
+        }
+        return "Y";
+    }
 }

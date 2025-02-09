@@ -18,4 +18,13 @@ export class BeadController {
             tableOrBody: body,
         });
     }
+
+    static reportPost(c: Context, _user: User, postType?: string) {
+        const id = c.req.param("id");
+        return ResponseUtils.handleRequest({
+            callback: BeadService.updatePost,
+            tableOrBody: [postType, "report"],
+            id: id,
+        });
+    }
 }
