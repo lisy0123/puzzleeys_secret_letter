@@ -60,7 +60,7 @@ class _PuzzleContentState extends State<PuzzleContent>
     if (widget.puzzleType == PuzzleType.personal) {
       final String puzzleId = widget.puzzleData['id'] ?? '';
       if (puzzleId.isNotEmpty) {
-        return context.read<ReadPuzzleProvider>().isPuzzleRead(puzzleId);
+        return context.read<ReadPuzzleProvider>().isExist(puzzleId);
       }
     }
     return true;

@@ -35,5 +35,5 @@ class ReadPuzzleProvider with ChangeNotifier {
     }
   }
 
-  bool isPuzzleRead(String puzzleId) => _readIds.contains(puzzleId);
+  bool isExist(String puzzleId) => _readIds.contains(puzzleId);
 }

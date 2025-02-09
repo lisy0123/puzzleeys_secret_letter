@@ -6,7 +6,7 @@ import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/constants/vars.dart';
-import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
@@ -74,7 +74,7 @@ class _BeadDialogState extends State<BeadDialog> {
   }
 
   Widget _buildList() {
-    return Selector<DeleteDialogProvider, bool>(
+    return Selector<BeadProvider, bool>(
       selector: (context, provider) => provider.isLoading,
       builder: (context, isLoading, child) {
         if (!isLoading) {
@@ -109,15 +109,31 @@ class _BeadDialogState extends State<BeadDialog> {
       );
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset('assets/imgs/btn_trash.svg', height: 200.0.w),
-        SizedBox(height: 80.0.w),
-        CustomText.textContent(
-          text: MessageStrings.emptyWritingMessage,
-          context: context,
+        Column(
+          children: [
+            CustomText.textDisplay(
+              text: '0${CustomStrings.puzzleCount}',
+              stroke: true,
+              context: context,
+            ),
+            SizedBox(height: 40.0.w),
+            Utils.dialogDivider(),
+          ],
         ),
+        Column(
+          children: [
+            SvgPicture.asset('assets/imgs/btn_trash.svg', height: 200.0.w),
+            SizedBox(height: 80.0.w),
+            CustomText.textContent(
+              text: MessageStrings.emptyPuzzleMessage,
+              context: context,
+            ),
+          ],
+        ),
+        SizedBox(height: 1),
       ],
     );
   }
@@ -126,7 +142,7 @@ class _BeadDialogState extends State<BeadDialog> {
     final int puzzleCount = snapshot.data!.length;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomText.textDisplay(
@@ -206,7 +222,7 @@ class _BeadDialogState extends State<BeadDialog> {
           ),
           GestureDetector(
             onTap: () => BuildDialog.show(
-              iconName: 'report',
+              iconName: 'beadReport',
               puzzleId: item['id'],
               puzzleType: puzzleType,
               simpleDialog: true,

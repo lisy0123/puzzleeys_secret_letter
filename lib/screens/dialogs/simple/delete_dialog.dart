@@ -27,15 +27,13 @@ class DeleteDialog extends StatelessWidget {
     try {
       deleteProvider.updateLoading(setLoading: true);
       await apiRequest('/api/post/global/$puzzleId', ApiType.delete);
-      if (context.mounted) {
-        deleteProvider.updateLoading(setLoading: false);
-        Navigator.pop(context);
-      }
+
+      deleteProvider.updateLoading(setLoading: false);
+      if (context.mounted) Navigator.pop(context);
     } catch (error) {
-      if (context.mounted) {
-        deleteProvider.updateLoading(setLoading: false);
-        Navigator.pop(context);
-      }
+      deleteProvider.updateLoading(setLoading: false);
+      if (context.mounted) Navigator.pop(context);
+
       throw Exception('Error deleting global post: $error');
     }
   }

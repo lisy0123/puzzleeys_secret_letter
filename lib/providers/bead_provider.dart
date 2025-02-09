@@ -8,7 +8,19 @@ import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.d
 
 class BeadProvider with ChangeNotifier {
   Set<String> _beadIds = {};
+  bool _isLoading = false;
+
   Set<String> get beadIds => _beadIds;
+  bool get isLoading => _isLoading;
+
+  void updateLoading({required bool setLoading}) {
+    if (setLoading) {
+      _isLoading = true;
+    } else {
+      _isLoading = false;
+    }
+    notifyListeners();
+  }
 
   Future<void> initialize() async {
     final String? savedIds = await SharedPreferencesUtils.get('beadIds');

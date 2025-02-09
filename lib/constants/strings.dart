@@ -14,7 +14,6 @@ class CustomStrings {
     'list': '더 보 기',
     'puzzlePreview': '감정 보기',
     'puzzleSubject': '오늘의 주제',
-    'report': '신고하기',
 
     'putGlobal': '감정 넣기',
     'putSubject': '감정 넣기',
@@ -78,7 +77,10 @@ class MessageStrings {
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
   static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
+
   static String emptyWritingMessage = '작성한 글이 없어요!';
+  static String emptyPuzzleMessage = '담은 감정 퍼즐이 없어요!';
+
   static String deleteMessage = '지금 당장\n삭제할까요?';
   static String reportMessage = '해당 글을\n신고할까요?';
 
