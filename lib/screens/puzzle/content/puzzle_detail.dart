@@ -93,7 +93,7 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
               iconName: 'btn_alarm',
               text: CustomStrings.report,
               onTap: () => BuildDialog.show(
-                iconName: 'report',
+                iconName: 'reportPost',
                 puzzleId: widget.puzzleData['id'],
                 puzzleType: widget.puzzleType,
                 simpleDialog: true,

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/simple/bead_report_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/bead/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
@@ -12,8 +11,9 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/list/setting_dialog.dart
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/put_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/set_days_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_subject_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_post_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
 enum DialogType {
@@ -22,8 +22,8 @@ enum DialogType {
   puzzlePreview,
   puzzleSubject,
 
-  beadReport,
-  report,
+  reportBead,
+  reportPost,
   delete,
   cancel,
   limit,
@@ -67,10 +67,10 @@ enum DialogType {
           puzzleText: puzzleText!,
         );
 
-      case DialogType.beadReport:
-        return BeadReportDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
-      case DialogType.report:
-        return ReportDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
+      case DialogType.reportBead:
+        return ReportBeadDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
+      case DialogType.reportPost:
+        return ReportPostDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.delete:
         return DeleteDialog(puzzleId: puzzleId!);
       case DialogType.cancel:

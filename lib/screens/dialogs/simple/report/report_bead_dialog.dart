@@ -4,15 +4,15 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/report_request.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
-class BeadReportDialog extends StatelessWidget {
+class ReportBeadDialog extends StatelessWidget {
   final String puzzleId;
   final PuzzleType puzzleType;
 
-  const BeadReportDialog({
+  const ReportBeadDialog({
     super.key,
     required this.puzzleId,
     required this.puzzleType,
@@ -36,7 +36,11 @@ class BeadReportDialog extends StatelessWidget {
       final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
       CustomOverlay.show(text: MessageStrings.reportOverlay, context: context);
-      final response = await _fetchResponse(puzzleType, puzzleId);
+      final response = await ReportRequest.fetch(
+        puzzleType: puzzleType,
+        puzzleId: puzzleId,
+        api: 'bead',
+      );
 
       if (response['code'] == 200 && response['result'] != null) {
         final String isExist = response['result'] as String;
@@ -55,17 +59,5 @@ class BeadReportDialog extends StatelessWidget {
 
       throw Exception('Error reporting post: $error');
     }
-  }
-
-  Future<Map<String, dynamic>> _fetchResponse(
-    PuzzleType puzzleType,
-    String puzzleId,
-  ) async {
-    final url = {
-      PuzzleType.global: '/api/bead/global_report/$puzzleId',
-      PuzzleType.subject: '/api/bead/subject_report/$puzzleId',
-      PuzzleType.personal: '/api/bead/personal_report/$puzzleId',
-    }[puzzleType]!;
-    return await apiRequest(url, ApiType.post);
   }
 }

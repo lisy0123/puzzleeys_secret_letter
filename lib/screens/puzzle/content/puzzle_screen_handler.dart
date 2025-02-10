@@ -31,7 +31,12 @@ class PuzzleScreenHandler {
         color: Colors.transparent,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 60.0.w),
-          child: buildSideText(iconName: iconName, text: text, context: context),
+          child: buildSideText(
+            iconName: iconName,
+            text: text,
+            grayText: false,
+            context: context,
+          ),
         ),
       ),
     );
@@ -40,10 +45,25 @@ class PuzzleScreenHandler {
   Widget buildSideText({
     required String iconName,
     required String text,
+    required bool grayText,
     required BuildContext context,
   }) {
-    final isLargeIcon = iconName == 'btn_back';
-    final iconSize = isLargeIcon ? 140.0.w : 100.0.w;
+    final bool isLargeIcon = iconName == 'btn_back';
+    late double iconSize;
+    late Widget customText;
+
+    if (grayText) {
+      iconSize = 90.0.w;
+      customText = CustomText.dialogPuzzleText(text, date: true);
+    } else {
+      if (isLargeIcon) {
+        iconSize = 140.0.w;
+        customText = CustomText.textDisplay(text: text, context: context);
+      } else {
+        iconSize = 100.0.w;
+        customText = CustomText.textSmall(text: text, context: context);
+      }
+    }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -52,9 +72,7 @@ class PuzzleScreenHandler {
       children: [
         SvgPicture.asset('assets/imgs/$iconName.svg', height: iconSize),
         SizedBox(width: 30.0.w),
-        isLargeIcon
-            ? CustomText.textDisplay(text: text, context: context)
-            : CustomText.textSmall(text: text, context: context),
+        customText,
       ],
     );
   }

@@ -3,15 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/report_request.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
-class ReportDialog extends StatelessWidget {
+class ReportPostDialog extends StatelessWidget {
   final String puzzleId;
   final PuzzleType puzzleType;
 
-  const ReportDialog({
+  const ReportPostDialog({
     super.key,
     required this.puzzleId,
     required this.puzzleType,
@@ -32,7 +32,11 @@ class ReportDialog extends StatelessWidget {
       final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
       CustomOverlay.show(text: MessageStrings.reportOverlay, context: context);
-      await _fetchResponse(puzzleType, puzzleId);
+      await ReportRequest.fetch(
+        puzzleType: puzzleType,
+        puzzleId: puzzleId,
+        api: 'post',
+      );
 
       puzzleProvider.updateShuffle(true);
       puzzleProvider.initializeColors(puzzleType);
@@ -41,19 +45,11 @@ class ReportDialog extends StatelessWidget {
         Navigator.popUntil(context, (route) => route.isFirst);
       }
     } catch (error) {
+      if (context.mounted) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+      }
+
       throw Exception('Error reporting post: $error');
     }
-  }
-
-  Future<Map<String, dynamic>> _fetchResponse(
-    PuzzleType puzzleType,
-    String puzzleId,
-  ) async {
-    final url = {
-      PuzzleType.global: '/api/post/global_report/$puzzleId',
-      PuzzleType.subject: '/api/post/subject_report/$puzzleId',
-      PuzzleType.personal: '/api/post/personal_report/$puzzleId',
-    }[puzzleType]!;
-    return await apiRequest(url, ApiType.post);
   }
 }

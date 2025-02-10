@@ -106,7 +106,7 @@ class _MyDialogState extends State<MyDialog> {
           return Column(
             children: [
               SizedBox(
-                height: 1200.0.w,
+                height: 880.0.w,
                 child: _buildContent(snapshot.data![index]),
               ),
               Utils.dialogDivider(),
@@ -119,25 +119,29 @@ class _MyDialogState extends State<MyDialog> {
 
   Widget _buildContent(Map<String, dynamic> item) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomPaint(
-          size: Size(540.0.w, 540.0.w),
+          size: Size(400.0.w, 400.0.w),
           painter: TiltedPuzzlePiece(
             puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
+            strokeWidth: 1.5,
           ),
         ),
         SizedBox(
-          width: 1400.0.w,
-          child: CustomText.textContent(text: item['title'], context: context),
+          width: 1200.0.w,
+          child: CustomText.dialogPuzzleText(item['title']),
         ),
         SizedBox(
           height: 180.0.w,
           width: 540.0.w,
           child: Align(
             alignment: Alignment.centerLeft,
-            child: CountdownTimer(createdAt: item['created_at']),
+            child: CountdownTimer(
+              createdAt: item['created_at'],
+              grayText: true,
+            ),
           ),
         ),
         //  TODO: Will put them in later update

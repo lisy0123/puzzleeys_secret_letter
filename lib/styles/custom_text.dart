@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:puzzleeys_secret_letter/constants/colors.dart';
 
 class CustomText {
   static List<Text> _buildTextVariants({
@@ -106,6 +108,22 @@ class CustomText {
       text,
       style: Theme.of(context).textTheme.titleSmall,
       textAlign: TextAlign.center,
+    );
+  }
+
+  static Text dialogPuzzleText(String str, {bool date = false}) {
+    return Text(
+      str,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: date
+            ? CustomColors.colorBase.withValues(alpha: 0.6)
+            : CustomColors.colorBase,
+        fontFamily: 'NANUM',
+        fontWeight: FontWeight.w900,
+        letterSpacing: 1,
+        fontSize: date ? 70.sp : 74.0.sp,
+      ),
     );
   }
 }

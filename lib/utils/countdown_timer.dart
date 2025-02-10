@@ -4,8 +4,13 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_han
 
 class CountdownTimer extends StatefulWidget {
   final String createdAt;
+  final bool grayText;
 
-  const CountdownTimer({super.key, required this.createdAt});
+  const CountdownTimer({
+    super.key,
+    required this.createdAt,
+    this.grayText = false,
+  });
 
   @override
   State<CountdownTimer> createState() => _CountdownTimerState();
@@ -42,6 +47,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
     return PuzzleScreenHandler().buildSideText(
       iconName: 'btn_clock',
       text: _remainingTime,
+      grayText: widget.grayText,
       context: context,
     );
   }

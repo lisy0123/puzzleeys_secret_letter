@@ -73,9 +73,7 @@ class StatusBar extends StatelessWidget {
         margin: EdgeInsets.only(left: 40.0.w),
         width: 360.0.w,
         height: 360.0.w,
-        decoration: BoxDecorations.bead(
-          myGradientColors: myGradientColors,
-        ),
+        decoration: BoxDecorations.bead(gradientColors: myGradientColors),
       ),
     );
   }

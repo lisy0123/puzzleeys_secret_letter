@@ -30,13 +30,13 @@ class BoxDecorations {
     );
   }
 
-  static BoxDecoration bead({required List<Color> myGradientColors}) {
+  static BoxDecoration bead({required List<Color> gradientColors}) {
     return _shadowBorder().copyWith(
       shape: BoxShape.circle,
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: myGradientColors,
+        colors: gradientColors,
       ),
     );
   }
