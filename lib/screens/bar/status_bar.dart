@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/vars.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
@@ -12,6 +14,8 @@ class StatusBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Color> gradientColors = context.watch<BeadProvider>().beadColor;
+
     return Stack(
       children: [
         CustomBox(
@@ -20,7 +24,15 @@ class StatusBar extends StatelessWidget {
           top: 18.0,
           child: _buildMainBar(context),
         ),
-        _buildBead(CustomVars.myGradientColors, context),
+        GestureDetector(
+          child: Container(
+            margin: EdgeInsets.only(left: 40.0.w),
+            width: 360.0.w,
+            height: 360.0.w,
+            decoration: BoxDecorations.bead(gradientColors: gradientColors),
+          ),
+          onTap: () => BuildDialog.show(iconName: 'bead', context: context),
+        ),
       ],
     );
   }
@@ -63,18 +75,6 @@ class StatusBar extends StatelessWidget {
           context: context,
         ),
       ],
-    );
-  }
-
-  Widget _buildBead(List<Color> myGradientColors, BuildContext context) {
-    return GestureDetector(
-      onTap: () => BuildDialog.show(iconName: 'bead', context: context),
-      child: Container(
-        margin: EdgeInsets.only(left: 40.0.w),
-        width: 360.0.w,
-        height: 360.0.w,
-        decoration: BoxDecorations.bead(gradientColors: myGradientColors),
-      ),
     );
   }
 }

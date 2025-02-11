@@ -30,10 +30,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _initializeTabController();
+    _initialize();
   }
 
-  Future<void> _initializeTabController() async {
+  Future<void> _initialize() async {
     final savedIndex = await SharedPreferencesUtils.get('tab');
     final int index = (savedIndex == null) ? 0 : int.tryParse(savedIndex) ?? 0;
 

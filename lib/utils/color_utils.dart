@@ -34,6 +34,7 @@ class ColorUtils {
 
   static String colorToString(Color color) {
     final Map<Color, String> colorMap = {
+      Colors.white: 'White',
       CustomColors.colorPink: 'Pink',
       CustomColors.colorRed: 'Red',
       CustomColors.colorOrange: 'Orange',

@@ -4,7 +4,6 @@ import { User } from "jsr:@supabase/supabase-js@2";
 import { ResponseUtils } from "../lib/response/response-utils.ts";
 import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 import { BeadRepository } from "../repositories/bead-repository.ts";
-import { PostRepository } from "../repositories/post-repository.ts";
 
 export class BeadService {
     static getUser(user: User): Promise<Response> {
@@ -48,25 +47,27 @@ export class BeadService {
             callback: async () => {
                 const list = body as Array<string>;
                 
-                const error = await PostRepository.updatePost(
-                    "bead_user_list",
+                const beadColor = await BeadRepository.updateBead(
                     list[1],
                     id as string
                 );
-                if (error) return error; 
+                if (beadColor instanceof Response) {
+                    return beadColor;
+                } 
 
-                const posts = await BeadRepository.updatePost(
+                const isExist = await BeadRepository.updatePost(
                     list[0],
                     list[1],
                     id as string
                 );
-                if (posts instanceof Response) {
-                    return posts;
+                if (isExist instanceof Response) {
+                    return isExist;
                 }
+
                 return createResponse(
                     ResponseCode.SUCCESS,
                     `${list[1]} ${list[0]} & bead_user_list successful.`,
-                    posts,
+                    { beadColor: beadColor, isExist: isExist }
                 );
             },
         });

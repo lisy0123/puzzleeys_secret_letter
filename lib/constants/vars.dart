@@ -6,12 +6,6 @@ class CustomVars {
   static final int puzzleNums = 9876;
   static final int diaNums = 0000;
 
-  static final List<Color> myGradientColors = [
-    CustomColors.colorBlue,
-    CustomColors.colorPink,
-    CustomColors.colorYellow,
-  ];
-
   static final List<Color> myColorPickers = [
     CustomColors.colorPink,
     CustomColors.colorRed,

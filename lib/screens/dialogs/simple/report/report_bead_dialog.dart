@@ -42,10 +42,13 @@ class ReportBeadDialog extends StatelessWidget {
         api: 'bead',
       );
 
-      if (response['code'] == 200 && response['result'] != null) {
-        final String isExist = response['result'] as String;
+      if (response['code'] == 200) {
+        final data = response['result'] as Map<String, dynamic>;
+        final bool isExist = data['isExist'];
+        final String beadColor = data['beadColor'];
 
-        if (isExist == 'Y') {
+        beadProvider.updateColorForBead(beadColor, isAdding: false);
+        if (isExist) {
           puzzleProvider.updateShuffle(true);
           puzzleProvider.initializeColors(puzzleType);
         }

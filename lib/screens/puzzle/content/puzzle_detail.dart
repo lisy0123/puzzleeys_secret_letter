@@ -171,7 +171,7 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
         puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
         context: context,
       );
-      _beadProvider.putIntoBead(widget.puzzleData, widget.puzzleType);
+      _beadProvider.addPuzzleToBead(widget.puzzleData, widget.puzzleType);
     } else {
       CustomOverlay.show(
         text: MessageStrings.puzzleExistOverlay,

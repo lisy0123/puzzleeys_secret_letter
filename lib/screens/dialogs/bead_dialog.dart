@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/bead/bead_colored.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
+import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
@@ -86,9 +86,10 @@ class _BeadDialogState extends State<BeadDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildBead(null),
+        _buildBead([Colors.white, Colors.white], 0),
+        Utils.dialogDivider(),
         SizedBox(
-          height: 1200.0.w,
+          height: 1300.0.w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -107,14 +108,16 @@ class _BeadDialogState extends State<BeadDialog> {
 
   Widget _buildItem(AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
     final int puzzleCount = snapshot.data!.length;
+    final List<Color> beadColor = context.read<BeadProvider>().beadColor;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildBead(snapshot.data),
+        _buildBead(beadColor, puzzleCount),
+        Utils.dialogDivider(),
         SizedBox(
-          height: 1200.0.w,
+          height: 1300.0.w,
           child: RawScrollbar(
             radius: Radius.circular(10),
             child: ListView.builder(
@@ -137,23 +140,28 @@ class _BeadDialogState extends State<BeadDialog> {
     );
   }
 
-  Widget _buildBead(List<Map<String, dynamic>>? item) {
-    final int puzzleCount = (item == null) ? 0 : item.length;
-
+  Widget _buildBead(List<Color> beadColor, int puzzleCount) {
     return SizedBox(
-      height: 1200.0.w,
+      height: 1100.0.w,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 1),
-          BeadColored(item: item),
+          Stack(
+            children: [
+              Container(
+                width: 800.0.w,
+                height: 800.0.w,
+                decoration: BoxDecorations.bead(gradientColors: beadColor),
+              ),
+              Image.asset('assets/imgs/puzzle_pattern.png', width: 800.0.w),
+            ],
+          ),
           CustomText.textDisplay(
             text: '${puzzleCount.toString()}${CustomStrings.puzzleCount}',
             stroke: true,
             context: context,
           ),
-          Utils.dialogDivider(),
         ],
       ),
     );
@@ -168,7 +176,10 @@ class _BeadDialogState extends State<BeadDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildTopContext(item),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+          child: _buildTopContext(item),
+        ),
         SizedBox(
           width: 1200.0.w,
           child: CustomText.dialogPuzzleText(item['title']),

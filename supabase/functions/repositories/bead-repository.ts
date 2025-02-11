@@ -33,11 +33,32 @@ export class BeadRepository {
         }
     }
 
+    static async updateBead(
+        field: string,
+        id: string
+    ): Promise<Response | string> {
+        const { data, error } = await supabase
+            .from("bead_user_list")
+            .update({ [field]: true })
+            .eq("id", id)
+            .is(field, false)
+            .select();
+
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+        return data[0].color;
+    }
+
     static async updatePost<T>(
         table: string,
         field: string,
         id: string
-    ): Promise<Response | string | null> {
+    ): Promise<Response | boolean | null> {
         const { data, error } = await supabase
             .from(table)
             .update({ [field]: true })
@@ -53,8 +74,8 @@ export class BeadRepository {
             );
         }
         if (data.length == 0) {
-            return null;
+            return false;
         }
-        return "Y";
+        return true;
     }
 }

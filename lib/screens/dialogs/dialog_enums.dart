@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/bead/bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
