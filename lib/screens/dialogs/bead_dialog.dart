@@ -10,9 +10,9 @@ import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
-import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/fetch_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
-import 'package:puzzleeys_secret_letter/widgets/parent_widget.dart';
+import 'package:puzzleeys_secret_letter/widgets/parent_puzzle_widget.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class BeadDialog extends StatefulWidget {
@@ -28,22 +28,7 @@ class _BeadDialogState extends State<BeadDialog> {
   @override
   void initState() {
     super.initState();
-    _futureData = fetchData();
-  }
-
-  Future<List<Map<String, dynamic>>?> fetchData() async {
-    try {
-      final responseData = await apiRequest('/api/bead/user', ApiType.get);
-
-      if (responseData['code'] == 200) {
-        final List<dynamic> data = responseData['result'] as List<dynamic>;
-        return List<Map<String, dynamic>>.from(data);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
+    _futureData = FetchRequest.dialogData('/api/bead/user');
   }
 
   @override
@@ -52,26 +37,29 @@ class _BeadDialogState extends State<BeadDialog> {
       selector: (context, provider) => provider.isLoading,
       builder: (context, isLoading, child) {
         if (!isLoading) {
-          _futureData = fetchData();
+          _futureData = FetchRequest.dialogData('/api/bead/user');
         }
-        return FutureBuilder<List<Map<String, dynamic>>?>(
-          future: _futureData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return PuzzleLoadingScreen(overlay: false);
-            }
-            if (snapshot.hasError) {
-              return _buildErrorText(snapshot.error);
-            }
-            if (!snapshot.hasData ||
-                snapshot.data == null ||
-                snapshot.data!.isEmpty) {
-              return _buildErrorText(null);
-            } else {
-              return _buildItem(snapshot);
-            }
-          },
-        );
+        return _buildFutureContent();
+      },
+    );
+  }
+
+  Widget _buildFutureContent() {
+    return FutureBuilder<List<Map<String, dynamic>>?>(
+      future: _futureData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return PuzzleLoadingScreen(overlay: false);
+        }
+        if (snapshot.hasError) {
+          return _buildErrorText(snapshot.error);
+        }
+        final data = snapshot.data;
+        if (data == null || data.isEmpty) {
+          return _buildErrorText(null);
+        } else {
+          return _buildItem(data);
+        }
       },
     );
   }
@@ -83,7 +71,7 @@ class _BeadDialogState extends State<BeadDialog> {
       );
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildBead([Colors.white, Colors.white], 0),
@@ -106,8 +94,8 @@ class _BeadDialogState extends State<BeadDialog> {
     );
   }
 
-  Widget _buildItem(AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
-    final int puzzleCount = snapshot.data!.length;
+  Widget _buildItem(List<Map<String, dynamic>> data) {
+    final int puzzleCount = data.length;
     final List<Color> beadColor = context.read<BeadProvider>().beadColor;
 
     return Column(
@@ -120,17 +108,13 @@ class _BeadDialogState extends State<BeadDialog> {
           height: 1300.0.w,
           child: RawScrollbar(
             radius: Radius.circular(10),
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: puzzleCount,
+              separatorBuilder: (_, __) => Utils.dialogDivider(),
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 840.0.w,
-                      child: _buildContent(snapshot.data![index]),
-                    ),
-                    Utils.dialogDivider(),
-                  ],
+                return SizedBox(
+                  height: 840.0.w,
+                  child: _buildContent(data[index]),
                 );
               },
             ),
@@ -176,10 +160,7 @@ class _BeadDialogState extends State<BeadDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 60.0.w),
-          child: _buildTopContext(item),
-        ),
+        _buildTopContext(item),
         SizedBox(
           width: 1200.0.w,
           child: CustomText.dialogPuzzleText(item['title']),
@@ -189,7 +170,7 @@ class _BeadDialogState extends State<BeadDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomText.dialogPuzzleText(date, date: true),
-            ParentWidget(parentPostType: item['post_type']),
+            ParentPuzzleWidget(parentPostType: item['post_type']),
           ],
         ),
       ],
@@ -199,31 +180,34 @@ class _BeadDialogState extends State<BeadDialog> {
   Widget _buildTopContext(Map<String, dynamic> item) {
     final Color color = ColorUtils.colorMatch(stringColor: item['color']);
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: _buildReportButton(item['id'], item['post_type']),
-        ),
-        Center(
-          child: CustomPaint(
-            size: Size(400.0.w, 400.0.w),
-            painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+      child: Stack(
+        children: [
+          _buildReportButton(item['id'], item['post_type']),
+          Center(
+            child: CustomPaint(
+              size: Size(400.0.w, 400.0.w),
+              painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildReportButton(String puzzleId, String postType) {
-    return GestureDetector(
-      child: SvgPicture.asset('assets/imgs/btn_alarm.svg', height: 100.0.w),
-      onTap: () => BuildDialog.show(
-        iconName: 'reportBead',
-        puzzleId: puzzleId,
-        puzzleType: GetPuzzleType.stringToType(postType),
-        simpleDialog: true,
-        context: context,
+    return Align(
+      alignment: Alignment.topRight,
+      child: GestureDetector(
+        child: SvgPicture.asset('assets/imgs/btn_alarm.svg', height: 100.0.w),
+        onTap: () => BuildDialog.show(
+          iconName: 'reportBead',
+          puzzleId: puzzleId,
+          puzzleType: GetPuzzleType.stringToType(postType),
+          simpleDialog: true,
+          context: context,
+        ),
       ),
     );
   }

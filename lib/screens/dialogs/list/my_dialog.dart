@@ -6,9 +6,9 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
+import 'package:puzzleeys_secret_letter/utils/request/fetch_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
@@ -25,23 +25,7 @@ class _MyDialogState extends State<MyDialog> {
   @override
   void initState() {
     super.initState();
-    _futureData = fetchData();
-  }
-
-  Future<List<Map<String, dynamic>>?> fetchData() async {
-    try {
-      final responseData =
-          await apiRequest('/api/post/global_user', ApiType.get);
-
-      if (responseData['code'] == 200) {
-        final List<dynamic> data = responseData['result'] as List<dynamic>;
-        return List<Map<String, dynamic>>.from(data);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
+    _futureData = FetchRequest.dialogData('/api/post/global_user');
   }
 
   @override
@@ -50,26 +34,29 @@ class _MyDialogState extends State<MyDialog> {
       selector: (context, provider) => provider.isLoading,
       builder: (context, isLoading, child) {
         if (!isLoading) {
-          _futureData = fetchData();
+          _futureData = FetchRequest.dialogData('/api/post/global_user');
         }
-        return FutureBuilder<List<Map<String, dynamic>>?>(
-          future: _futureData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return PuzzleLoadingScreen(overlay: false);
-            }
-            if (snapshot.hasError) {
-              return _buildErrorText(snapshot.error);
-            }
-            if (!snapshot.hasData ||
-                snapshot.data == null ||
-                snapshot.data!.isEmpty) {
-              return _buildErrorText(null);
-            } else {
-              return _buildItem(snapshot);
-            }
-          },
-        );
+        return _buildFutureContent();
+      },
+    );
+  }
+
+  Widget _buildFutureContent() {
+    return FutureBuilder<List<Map<String, dynamic>>?>(
+      future: _futureData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return PuzzleLoadingScreen(overlay: false);
+        }
+        if (snapshot.hasError) {
+          return _buildErrorText(snapshot.error);
+        }
+        final data = snapshot.data;
+        if (data == null || data.isEmpty) {
+          return _buildErrorText(null);
+        } else {
+          return _buildItem(data);
+        }
       },
     );
   }
@@ -97,21 +84,14 @@ class _MyDialogState extends State<MyDialog> {
     );
   }
 
-  Widget _buildItem(AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
+  Widget _buildItem(List<Map<String, dynamic>> data) {
     return RawScrollbar(
       radius: Radius.circular(10),
-      child: ListView.builder(
-        itemCount: snapshot.data!.length,
+      child: ListView.separated(
+        itemCount: data.length,
+        separatorBuilder: (_, __) => Utils.dialogDivider(),
         itemBuilder: (context, index) {
-          return Column(
-            children: [
-              SizedBox(
-                height: 880.0.w,
-                child: _buildContent(snapshot.data![index]),
-              ),
-              Utils.dialogDivider(),
-            ],
-          );
+          return SizedBox(height: 900.0.w, child: _buildContent(data[index]));
         },
       ),
     );

@@ -7,11 +7,11 @@ import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
-class ParentWidget extends StatelessWidget {
+class ParentPuzzleWidget extends StatelessWidget {
   final String? parentPostColor;
   final String parentPostType;
 
-  const ParentWidget({
+  const ParentPuzzleWidget({
     super.key,
     this.parentPostColor,
     required this.parentPostType,
@@ -29,7 +29,7 @@ class ParentWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (isExist) _buildExist(),
+          if (isExist) _buildPuzzle(),
           if (iconIndex != 2) SizedBox(width: 20.0.w),
           SvgPicture.asset(
             'assets/imgs/icon_${iconIndex.toString()}.svg',
@@ -46,7 +46,7 @@ class ParentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildExist() {
+  Widget _buildPuzzle() {
     return Row(
       children: [
         SizedBox(width: 80.0.w),

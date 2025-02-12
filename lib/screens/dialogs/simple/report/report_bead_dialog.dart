@@ -4,7 +4,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/utils/request/report_request.dart';
+import 'package:puzzleeys_secret_letter/utils/request/fetch_request.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
@@ -36,10 +36,10 @@ class ReportBeadDialog extends StatelessWidget {
       final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
       CustomOverlay.show(text: MessageStrings.reportOverlay, context: context);
-      final response = await ReportRequest.fetch(
+      final response = await FetchRequest.report(
         puzzleType: puzzleType,
         puzzleId: puzzleId,
-        api: 'bead',
+        router: 'bead',
       );
 
       if (response['code'] == 200) {

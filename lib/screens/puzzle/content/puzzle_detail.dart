@@ -11,7 +11,7 @@ import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
-import 'package:puzzleeys_secret_letter/widgets/parent_widget.dart';
+import 'package:puzzleeys_secret_letter/widgets/parent_puzzle_widget.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PuzzleDetail extends StatefulWidget {
@@ -77,7 +77,7 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
     return Stack(
       children: [
         if (isExist)
-          ParentWidget(
+          ParentPuzzleWidget(
             parentPostColor: widget.puzzleData['parent_post_color'],
             parentPostType: widget.puzzleData['parent_post_type'],
           ),
