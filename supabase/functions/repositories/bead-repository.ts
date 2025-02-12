@@ -42,7 +42,7 @@ export class BeadRepository {
             .update({ [field]: true })
             .eq("id", id)
             .is(field, false)
-            .select();
+            .select("color");
 
         if (error) {
             return createResponse(
@@ -54,17 +54,16 @@ export class BeadRepository {
         return data[0].color;
     }
 
-    static async updatePost<T>(
+    static async updatePost(
         table: string,
         field: string,
         id: string
-    ): Promise<Response | boolean | null> {
-        const { data, error } = await supabase
+    ): Promise<Response | boolean> {
+        const { error, count } = await supabase
             .from(table)
-            .update({ [field]: true })
+            .update({ [field]: true }, { count: "exact" })
             .eq("id", id)
-            .is(field, false)
-            .select();
+            .is(field, false);
 
         if (error) {
             return createResponse(
@@ -73,9 +72,6 @@ export class BeadRepository {
                 null
             );
         }
-        if (data.length == 0) {
-            return false;
-        }
-        return true;
+        return (count ?? 0) > 0;
     }
 }

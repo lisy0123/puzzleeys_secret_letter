@@ -6,6 +6,7 @@ import { LoggingMiddleware } from "./middleware/logging-middleware.ts";
 import authRouter from "./auth/auth-router.ts";
 import postRouter from "./post/post-router.ts";
 import beadRouter from "./bead/bead-router.ts";
+import barRouter from "./bar/bar-router.ts";
 
 const app = new Hono();
 
@@ -14,6 +15,7 @@ app.use(LoggingMiddleware.logger);
 app.basePath("/api").route("/auth", authRouter);
 app.basePath("/api").route("/post", postRouter);
 app.basePath("/api").route("/bead", beadRouter);
+app.basePath("/api").route("/bar", barRouter);
 
 app.all("/api/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);

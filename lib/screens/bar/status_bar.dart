@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/vars.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/count_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
@@ -52,23 +53,16 @@ class StatusBar extends StatelessWidget {
   }
 
   Widget _buildMainBarLeft(BuildContext context) {
+    final int puzzleNums = context.watch<CountPuzzleProvider>().puzzleNums;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(
-          'assets/imgs/bar_puzzle.svg',
-          height: 32.0.h,
-        ),
+        SvgPicture.asset('assets/imgs/bar_puzzle.svg', height: 32.0.h),
         SizedBox(width: 30.0.w),
-        CustomText.textTopBarNums(
-          puzzleNums: CustomVars.puzzleNums,
-          context: context,
-        ),
+        CustomText.textTopBarNums(puzzleNums: puzzleNums, context: context),
         SizedBox(width: 80.0.w),
-        SvgPicture.asset(
-          'assets/imgs/bar_dia.svg',
-          height: 32.0.h,
-        ),
+        SvgPicture.asset('assets/imgs/bar_dia.svg', height: 32.0.h),
         SizedBox(width: 30.0.w),
         CustomText.textTopBarNums(
           puzzleNums: CustomVars.diaNums,

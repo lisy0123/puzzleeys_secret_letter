@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/providers/attendance_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/count_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
@@ -51,6 +53,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       _puzzleProvider.initializeHasSubject();
       _puzzleScaleProvider.initialize();
       context.read<BeadProvider>().initialize();
+      context.read<AttendanceProvider>().checkIn(context);
+      // context.read<AttendanceProvider>().resetAttendance();
+      context.read<CountPuzzleProvider>().initialize();
     }
   }
 

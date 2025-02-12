@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';

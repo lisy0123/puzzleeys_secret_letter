@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle_scale_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleBackground extends StatefulWidget {

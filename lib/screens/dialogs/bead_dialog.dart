@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
@@ -160,7 +161,10 @@ class _BeadDialogState extends State<BeadDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildTopContext(item),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+          child: _buildTopContext(item),
+        ),
         SizedBox(
           width: 1200.0.w,
           child: CustomText.dialogPuzzleText(item['title']),
@@ -179,36 +183,33 @@ class _BeadDialogState extends State<BeadDialog> {
 
   Widget _buildTopContext(Map<String, dynamic> item) {
     final Color color = ColorUtils.colorMatch(stringColor: item['color']);
+    final PuzzleType puzzleType = GetPuzzleType.stringToType(item['post_type']);
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 60.0.w),
-      child: Stack(
-        children: [
-          _buildReportButton(item['id'], item['post_type']),
-          Center(
-            child: CustomPaint(
-              size: Size(400.0.w, 400.0.w),
-              painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+            child: SvgPicture.asset(
+              'assets/imgs/btn_alarm.svg',
+              height: 100.0.w,
+            ),
+            onTap: () => BuildDialog.show(
+              iconName: 'reportBead',
+              puzzleId: item['id'],
+              puzzleType: puzzleType,
+              simpleDialog: true,
+              context: context,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReportButton(String puzzleId, String postType) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: GestureDetector(
-        child: SvgPicture.asset('assets/imgs/btn_alarm.svg', height: 100.0.w),
-        onTap: () => BuildDialog.show(
-          iconName: 'reportBead',
-          puzzleId: puzzleId,
-          puzzleType: GetPuzzleType.stringToType(postType),
-          simpleDialog: true,
-          context: context,
         ),
-      ),
+        Center(
+          child: CustomPaint(
+            size: Size(400.0.w, 400.0.w),
+            painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -111,9 +111,23 @@ class CustomText {
     );
   }
 
-  static Text dialogPuzzleText(String str, {bool date = false}) {
+  static Text overlayText(String text, {bool fontFamily = false}) {
     return Text(
-      str,
+      text,
+      style: TextStyle(
+        color: Colors.white.withValues(alpha: 0.9),
+        fontSize: 74.0.sp,
+        fontFamily: fontFamily? 'BMJUA' :'NANUM',
+        fontWeight: FontWeight.w900,
+        letterSpacing: 1.5,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  static Text dialogPuzzleText(String text, {bool date = false}) {
+    return Text(
+      text,
       textAlign: TextAlign.center,
       style: TextStyle(
         color: date
@@ -121,7 +135,7 @@ class CustomText {
             : CustomColors.colorBase,
         fontFamily: 'NANUM',
         fontWeight: FontWeight.w900,
-        letterSpacing: 1,
+        letterSpacing: 1.5,
         fontSize: date ? 70.sp : 74.0.sp,
       ),
     );

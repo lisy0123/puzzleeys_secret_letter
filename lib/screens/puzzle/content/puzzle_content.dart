@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/read_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content_handler.dart';
 import 'package:puzzleeys_secret_letter/widgets/board_puzzle.dart';
 

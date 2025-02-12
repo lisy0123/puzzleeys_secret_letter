@@ -1,10 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/providers/count_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class CustomOverlay {
-  static final List<OverlayEntry> _overlayEntries = [];
+  static OverlayEntry? _currentOverlay;
+  static bool _hasUpdated = false;
 
   static void show({
     required String text,
@@ -13,6 +17,9 @@ class CustomOverlay {
     required BuildContext context,
   }) {
     final overlay = Overlay.of(context);
+
+    _removeCurrentOverlay();
+    _hasUpdated = false;
 
     final overlayEntry = OverlayEntry(
       builder: (context) => Padding(
@@ -41,15 +48,20 @@ class CustomOverlay {
         ),
       ),
     );
-    overlay.insert(overlayEntry);
-    _overlayEntries.add(overlayEntry);
 
-    Future.delayed(Duration(milliseconds: 3000), () {
-      if (overlayEntry.mounted) {
-        overlayEntry.remove();
-        _overlayEntries.remove(overlayEntry);
-      }
+    overlay.insert(overlayEntry);
+    _currentOverlay = overlayEntry;
+
+    Future.delayed(const Duration(milliseconds: 4000), () {
+      _removeCurrentOverlay();
     });
+  }
+
+  static void _removeCurrentOverlay() {
+    if (_currentOverlay != null) {
+      _currentOverlay!.remove();
+      _currentOverlay = null;
+    }
   }
 
   static Widget _buildContent({
@@ -61,6 +73,13 @@ class CustomOverlay {
     final String puzzleNumString =
         (puzzleNum > 0) ? '+${puzzleNum.toString()}' : puzzleNum.toString();
 
+    if (puzzleVis && !_hasUpdated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<CountPuzzleProvider>().updatePuzzleNum(puzzleNum);
+        _hasUpdated = true;
+      });
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +90,7 @@ class CustomOverlay {
             children: [
               SizedBox(width: 60.0.w),
               Transform.rotate(
-                angle: -45 * pi / 180,
+                angle: -pi / 4,
                 child: CustomPaint(
                   size: Size(190.0.w, 190.0.w),
                   painter: TiltedPuzzlePiece(
@@ -81,29 +100,11 @@ class CustomOverlay {
                 ),
               ),
               SizedBox(width: 10.0.w),
-              Text(
-                puzzleNumString,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  fontSize: 74.0.sp,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              CustomText.overlayText(puzzleNumString, fontFamily: true),
               SizedBox(width: 60.0.w),
             ],
           ),
-        Text(
-          text,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.9),
-            fontSize: 74.0.sp,
-            fontFamily: 'NANUM',
-            fontWeight: FontWeight.w900,
-          ),
-          textAlign: TextAlign.center,
-        ),
+        CustomText.overlayText(text),
       ],
     );
   }

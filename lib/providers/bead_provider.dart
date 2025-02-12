@@ -43,7 +43,7 @@ class BeadProvider with ChangeNotifier {
         if (error.toString().contains('Invalid or expired JWT')) {
           await Utils.waitForSession();
         } else {
-          throw Exception('Error initializing puzzle: $error');
+          throw Exception('Error initializing bead: $error');
         }
       }
     }
@@ -74,6 +74,7 @@ class BeadProvider with ChangeNotifier {
     if (hasChanges) {
       _beadIds = validIds;
       notifyListeners();
+
       await SharedPreferencesUtils.save('beadIds', _beadIds.join(','));
     }
   }
@@ -94,6 +95,8 @@ class BeadProvider with ChangeNotifier {
 
     if (!mapEquals(_colorCount, colorCount)) {
       _colorCount = Map.from(colorCount);
+      notifyListeners();
+
       await SharedPreferencesUtils.save('colorCount', jsonEncode(_colorCount));
     }
     final List<Color> colors = _getTopColors();
@@ -169,9 +172,12 @@ class BeadProvider with ChangeNotifier {
 
     if (_beadIds.add(puzzleId)) {
       notifyListeners();
-      await SharedPreferencesUtils.save('beadIds', _beadIds.join(','));
 
       final String puzzleColor = ColorUtils.colorToString(puzzleData['color']);
+      updateColorForBead(puzzleColor);
+
+      await SharedPreferencesUtils.save('beadIds', _beadIds.join(','));
+
       final String userId = await UserRequest.getUserId();
       final Map<String, String> bodies = {
         'id': puzzleId,
@@ -191,13 +197,14 @@ class BeadProvider with ChangeNotifier {
         headers: headers,
         bodies: bodies,
       );
-      updateColorForBead(puzzleColor);
     }
   }
 
   void updateColorForBead(String addedColor, {bool isAdding = true}) async {
     _colorCount[addedColor] =
         (_colorCount[addedColor] ?? 0) + (isAdding ? 1 : -1);
+    notifyListeners();
+
     await SharedPreferencesUtils.save('colorCount', jsonEncode(_colorCount));
     final List<Color> colors = _getTopColors();
     _setBeadColor(colors);
