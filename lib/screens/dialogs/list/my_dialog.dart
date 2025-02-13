@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
-import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
+import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
@@ -36,40 +36,16 @@ class _MyDialogState extends State<MyDialog> {
         if (!isLoading) {
           _futureData = FetchRequest.dialogData('/api/post/global_user');
         }
-        return _buildFutureContent();
+        return LoadingDialog(
+          futureData: _futureData,
+          buildErrorText: _buildErrorText(),
+          buildItem: _buildItem,
+        );
       },
     );
   }
 
-  Widget _buildFutureContent() {
-    return FutureBuilder<List<Map<String, dynamic>>?>(
-      future: _futureData,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return PuzzleLoadingScreen(overlay: false);
-        }
-        if (snapshot.hasError) {
-          return _buildErrorText(snapshot.error);
-        }
-        final data = snapshot.data;
-        if (data == null || data.isEmpty) {
-          return _buildErrorText(null);
-        } else {
-          return _buildItem(data);
-        }
-      },
-    );
-  }
-
-  Widget _buildErrorText(Object? error) {
-    if (error != null) {
-      return Center(
-        child: CustomText.textContent(
-          text: 'Error: $error',
-          context: context,
-        ),
-      );
-    }
+  Widget _buildErrorText() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,32 +100,6 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ),
         ),
-        //  TODO: Will put them in later update
-        // SizedBox(
-        //   width: 1000.0.w,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       CountdownTimer(createdAt: item['created_at']),
-        //       CustomButton(
-        //         iconName: 'none',
-        //         iconTitle: CustomStrings.deleteShort,
-        //         height: 180,
-        //         width: 360,
-        //         borderStroke: 1.5,
-        //         onTap: () {
-        //           BuildDialog.show(
-        //             iconName: 'delete',
-        //             simpleDialog: true,
-        //             puzzleId: item['id'],
-        //             context: context,
-        //           );
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }

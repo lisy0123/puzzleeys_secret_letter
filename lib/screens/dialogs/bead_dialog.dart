@@ -6,7 +6,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
+import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
@@ -40,37 +40,16 @@ class _BeadDialogState extends State<BeadDialog> {
         if (!isLoading) {
           _futureData = FetchRequest.dialogData('/api/bead/user');
         }
-        return _buildFutureContent();
+        return LoadingDialog(
+          futureData: _futureData,
+          buildErrorText: _buildErrorText(),
+          buildItem: _buildItem,
+        );
       },
     );
   }
 
-  Widget _buildFutureContent() {
-    return FutureBuilder<List<Map<String, dynamic>>?>(
-      future: _futureData,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return PuzzleLoadingScreen(overlay: false);
-        }
-        if (snapshot.hasError) {
-          return _buildErrorText(snapshot.error);
-        }
-        final data = snapshot.data;
-        if (data == null || data.isEmpty) {
-          return _buildErrorText(null);
-        } else {
-          return _buildItem(data);
-        }
-      },
-    );
-  }
-
-  Widget _buildErrorText(Object? error) {
-    if (error != null) {
-      return Center(
-        child: CustomText.textContent(text: 'Error: $error', context: context),
-      );
-    }
+  Widget _buildErrorText() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
