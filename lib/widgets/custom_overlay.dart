@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:puzzleeys_secret_letter/providers/count_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
@@ -75,7 +75,7 @@ class CustomOverlay {
 
     if (puzzleVis && !_hasUpdated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.read<CountPuzzleProvider>().updatePuzzleNum(puzzleNum);
+        context.read<BarProvider>().updatePuzzleNum(puzzleNum);
         _hasUpdated = true;
       });
     }

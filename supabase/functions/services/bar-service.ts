@@ -4,39 +4,41 @@ import { User } from "jsr:@supabase/supabase-js@2";
 import { ResponseUtils } from "../lib/response/response-utils.ts";
 import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 import { BarRepository } from "../repositories/bar-repository.ts";
+import { BarData } from "../types/user.ts";
 
 export class BarService {
-    static getPuzzle(user: User): Promise<Response> {
+    static getData(user: User): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
                 const userId = uuidToBase64(user.id);
 
-                const puzzle = await BarRepository.getPuzzle(userId);
-                if (puzzle instanceof createResponse) {
-                    return puzzle;
+                const resultList = await BarRepository.getData(userId);
+                if ("status" in resultList) {
+                    return resultList;
                 }
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    "Get user's bead successful.",
-                    { puzzle: puzzle }
+                    "Get get bar successful.",
+                    resultList
                 );
             },
         });
     }
-    static postPuzzle(user: User, body: unknown): Promise<Response> {
+
+    static postData(user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
                 const userId = uuidToBase64(user.id);
 
-                const error = await BarRepository.postPuzzle(
+                const error = await BarRepository.postData(
                     userId,
-                    body as { puzzle: number }
+                    body as BarData
                 );
                 if (error) return error;
 
                 return createResponse(
                     ResponseCode.SUCCESS,
-                    `Post into bead successful.`,
+                    `Post bar data successful.`,
                     null
                 );
             },

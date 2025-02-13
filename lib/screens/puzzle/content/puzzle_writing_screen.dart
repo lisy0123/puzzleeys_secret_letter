@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
@@ -131,11 +132,14 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           maxLines: null,
+          maxLength: 1000,
+          inputFormatters: [LengthLimitingTextInputFormatter(1000)],
           style: Theme.of(context).textTheme.displayLarge,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.labelSmall,
             border: InputBorder.none,
+            counterText: '',
           ),
         ),
       ),

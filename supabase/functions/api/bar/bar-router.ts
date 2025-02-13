@@ -6,8 +6,8 @@ import { BarController } from "./bar-controller.ts";
 
 const barRouter = new Hono();
 
-barRouter.get("/puzzle", (c) => withAuth(c, BarController.getPuzzle));
-barRouter.post("/puzzle", (c) => withAuth(c, BarController.PostPuzzle));
+barRouter.get("/user", (c) => withAuth(c, BarController.getData));
+barRouter.post("/user", (c) => withAuth(c, BarController.postData));
 
 barRouter.all("/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);

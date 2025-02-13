@@ -4,17 +4,17 @@ import { ResponseUtils } from "../../lib/response/response-utils.ts";
 import { BarService } from "../../services/bar-service.ts";
 
 export class BarController {
-    static getPuzzle(_c: Context, user: User) {
+    static getData(_c: Context, user: User) {
         return ResponseUtils.handleRequest({
-            callback: BarService.getPuzzle,
+            callback: BarService.getData,
             user: user,
         });
     }
 
-    static async PostPuzzle(c: Context, user: User) {
+    static async postData(c: Context, user: User) {
         const body = await c.req.json();
         return ResponseUtils.handleRequest({
-            callback: BarService.postPuzzle,
+            callback: BarService.postData,
             user: user,
             tableOrBody: body,
         });

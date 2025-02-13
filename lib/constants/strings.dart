@@ -108,7 +108,7 @@ class MessageStrings {
   };
 
   static Map<Enum, List<dynamic>> overlayMessages = {
-    OverlayType.attendance: [5, '출석했어요!'],
+    OverlayType.attendance: [3, '출석했어요!'],
     OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
     OverlayType.writeGlobalPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
     OverlayType.writeSubjectPuzzle: [-1, '오늘의 주제에 감정 퍼즐을 공유했어요!'],

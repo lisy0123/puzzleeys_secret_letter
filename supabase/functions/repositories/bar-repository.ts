@@ -1,15 +1,16 @@
 import { ResponseCode } from "../lib/response/response-code.ts";
 import { createResponse } from "../lib/response/response-format.ts";
 import { supabase } from "../lib/supabase-config.ts";
+import { BarData } from "../types/user.ts";
 
 export class BarRepository {
-    static async getPuzzle(userId: string): Promise<Response | string> {
-        const puzzleNum = await this.getPuzzleWithId(userId);
-        if (!puzzleNum) {
+    static async getData(userId: string): Promise<Response | BarData> {
+        const resultList = await this.getDataWithId(userId);
+        if (!resultList) {
             const { data, error } = await supabase
                 .from("bar_user_list")
                 .insert([{ user_id: userId }])
-                .select("puzzle");
+                .select("puzzle, date");
 
             if (error) {
                 return createResponse(
@@ -18,17 +19,17 @@ export class BarRepository {
                     null
                 );
             }
-            return data[0].puzzle;
+            return data[0];
         }
-        return puzzleNum;
+        return resultList;
     }
 
-    static async getPuzzleWithId(
+    static async getDataWithId(
         userId: string
-    ): Promise<Response | string | undefined> {
+    ): Promise<Response | undefined | BarData> {
         const { data, error } = await supabase
             .from("bar_user_list")
-            .select("puzzle")
+            .select("puzzle, date")
             .eq("user_id", userId);
 
         if (error && error.code !== "PGRST116") {
@@ -41,13 +42,10 @@ export class BarRepository {
         if (!data || data.length === 0) {
             return;
         }
-        return data[0].puzzle;
+        return data[0];
     }
 
-    static async postPuzzle(
-        userId: string,
-        body: { puzzle: number }
-    ): Promise<Response | void> {
+    static async postData(userId: string, body: BarData): Promise<Response | void> {
         const { error } = await supabase
             .from("bar_user_list")
             .update(body)

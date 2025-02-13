@@ -5,7 +5,7 @@ class PuzzleScaleProvider extends ChangeNotifier {
   double _scaleFactor = 0.5;
   double get scaleFactor => _scaleFactor;
 
-  Future<void> initialize() async {
+  void initialize() async {
     final storedScale = await SharedPreferencesUtils.get('scaleFactor');
     if (storedScale != null) {
       _scaleFactor = double.tryParse(storedScale) ?? 0.5;

@@ -42,3 +42,8 @@ export interface BeadData {
     post_type: string;
     created_at: string;
 }
+
+export interface BarData {
+    puzzle?: number;
+    date?: string;
+}

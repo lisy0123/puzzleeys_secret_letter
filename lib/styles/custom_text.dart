@@ -116,8 +116,8 @@ class CustomText {
       text,
       style: TextStyle(
         color: Colors.white.withValues(alpha: 0.9),
-        fontSize: 74.0.sp,
-        fontFamily: fontFamily? 'BMJUA' :'NANUM',
+        fontSize: fontFamily ? 84.sp : 74.0.sp,
+        fontFamily: fontFamily ? 'BMJUA' : 'NANUM',
         fontWeight: FontWeight.w900,
         letterSpacing: 1.5,
       ),
