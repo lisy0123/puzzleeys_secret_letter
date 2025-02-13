@@ -24,10 +24,7 @@ class BottomBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(4, (index) {
-              return _buildIconButton(
-                index: index,
-                context: context,
-              );
+              return _buildIconButton(index: index, context: context);
             }),
           ),
         ),

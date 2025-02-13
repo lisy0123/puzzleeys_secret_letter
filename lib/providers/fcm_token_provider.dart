@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class FcmTokenProvider with ChangeNotifier {
   final PushNotification _pushNotification = PushNotification();
 
-  Future<void> requestPermission() async {
+  Future<void> _requestPermission() async {
     await _pushNotification.requestPermission();
   }
 
@@ -17,7 +17,7 @@ class FcmTokenProvider with ChangeNotifier {
 
   Future<void> initialize() async {
     if (!(await isPermissionGranted())) {
-      await requestPermission();
+      await _requestPermission();
     }
     await _pushNotification.initPushNotifications(
         onTokenUpdated: (newToken) async {
@@ -44,6 +44,7 @@ class FcmTokenProvider with ChangeNotifier {
   Future<Map<String, dynamic>> deleteFcm() async {
     final token = await getFcm();
     final responseData = _sendFcmTokenRequest('/api/auth/logout', token);
+
     return responseData;
   }
 

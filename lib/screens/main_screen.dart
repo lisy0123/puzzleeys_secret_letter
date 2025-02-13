@@ -13,6 +13,7 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.da
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
@@ -53,6 +54,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       _puzzleScaleProvider.initialize();
       context.read<BeadProvider>().initialize();
       await context.read<BarProvider>().initialize(context);
+
+      setState(() {});
     }
   }
 
@@ -131,18 +134,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void _shuffle() {
-    final PuzzleType puzzleType = _getPuzzleType(_tabController!.index);
+    final PuzzleType puzzleType =
+        GetPuzzleType.intToPuzzleType(_tabController!.index);
 
     _puzzleProvider.updateShuffle(true);
     _puzzleProvider.initializeColors(puzzleType);
-  }
-
-  PuzzleType _getPuzzleType(int index) {
-    return {
-      0: PuzzleType.global,
-      1: PuzzleType.subject,
-      2: PuzzleType.personal,
-    }[index]!;
   }
 
   void _navigateToTab(int index) async {

@@ -77,10 +77,7 @@ class MyApp extends StatelessWidget {
             ],
             supportedLocales: [Locale('en'), Locale('ko')],
             theme: ThemeSetting.themeSetting(),
-            home: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: AuthCheckScreen(),
-            ),
+            home: AuthCheckScreen(),
           ),
         );
       },

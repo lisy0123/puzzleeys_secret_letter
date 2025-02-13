@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
@@ -7,6 +6,7 @@ import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.da
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/utils/push_notification.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthCheckScreen extends StatefulWidget {
@@ -22,17 +22,24 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   void initState() {
     super.initState();
+    // PushNotification().initialize();
+    _initializeFcm();
+
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       if (mounted) {
         context.read<AuthStatusProvider>().checkLoginStatus();
+        _initializeFcm();
       }
     });
-    _initializeFcm();
   }
 
   void _initializeFcm() async {
-    await context.read<FcmTokenProvider>().initialize();
+    final isLoggedIn =
+        Supabase.instance.client.auth.currentSession?.user != null;
+    if (isLoggedIn) {
+      await context.read<FcmTokenProvider>().initialize();
+    }
   }
 
   @override
@@ -45,12 +52,15 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   Widget build(BuildContext context) {
     final AuthStatusProvider authStatus = context.watch<AuthStatusProvider>();
 
-    return Stack(
-      children: [
-        MainScreen(),
-        if (!authStatus.isLoggedIn && !authStatus.isLoading) LoginScreen(),
-        if (authStatus.isLoading) PuzzleLoadingScreen(),
-      ],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          MainScreen(),
+          if (!authStatus.isLoggedIn && !authStatus.isLoading) LoginScreen(),
+          if (authStatus.isLoading) PuzzleLoadingScreen(),
+        ],
+      ),
     );
   }
 }

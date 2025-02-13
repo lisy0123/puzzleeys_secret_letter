@@ -83,7 +83,7 @@ class PushNotification {
   }
 
   // 푸시 메시지를 처리하는 핸들러 (알림 또는 데이터를 처리)
-  static Future<void> _messageHandler(RemoteMessage message) async {
+  Future<void> _messageHandler(RemoteMessage message) async {
     if (message.notification != null) {
       await _showNotification(message.notification);
     } else if (message.data.isNotEmpty) {
@@ -94,7 +94,7 @@ class PushNotification {
   }
 
   // 데이터 메시지에서 알림 정보를 추출하여 로컬 알림 표시
-  static Future<void> _showNotificationFromData(
+  Future<void> _showNotificationFromData(
       Map<String, dynamic> data) async {
     String? title = data['title'];
     String? body = data['body'];
@@ -178,7 +178,7 @@ class PushNotification {
   }
 
   // 수신된 메시지를 처리하여 로컬 알림을 표시하는 메서드
-  static Future<void> _showNotification(
+  Future<void> _showNotification(
       RemoteNotification? notification) async {
     if (notification != null) {
       await _showNotificationBody(
@@ -192,7 +192,7 @@ class PushNotification {
   }
 
   // 로컬 알림의 실제 표시를 처리하는 메서드
-  static Future<void> _showNotificationBody(
+  Future<void> _showNotificationBody(
     int id,
     String? title,
     String? body,
@@ -226,11 +226,11 @@ class PushNotification {
 
   // 네비게이션 처리
   // void _handleNotificationClick(RemoteMessage message) {
-  //   String? route = message.data['route'];
-  //   if (route != null) {
-  //     Navigator.pushNamed(context, route);
+  //   String? tabIndex = message.data['tabIndex'];
+  //   if (tabIndex != null) {
+  //     appRouter.go('/tabs?index=$tabIndex');
   //   } else {
-  //     Navigator.pushNamed(context, '/home');
+  //     appRouter.go('/tabs');
   //   }
   // }
 }
