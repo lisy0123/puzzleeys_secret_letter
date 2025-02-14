@@ -44,15 +44,16 @@ class _PuzzleContentState extends State<PuzzleContent>
 
   void _updateExistState() {
     bool exist = _isPuzzleExist();
-    if (isExist != exist) {
-      setState(() {
-        isExist = exist;
-      });
-      if (!exist) {
-        _initializeAnimation();
-      } else {
-        _animation = AlwaysStoppedAnimation(widget.puzzleData['color']);
-      }
+    if (isExist == exist) return;
+
+    setState(() {
+      isExist = exist;
+    });
+
+    if (!exist) {
+      _initializeAnimation();
+    } else {
+      _disposeAnimation();
     }
   }
 
@@ -67,22 +68,29 @@ class _PuzzleContentState extends State<PuzzleContent>
   }
 
   void _initializeAnimation() {
-    if (_controller == null) {
-      _controller = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 500),
-      )..repeat(reverse: true);
+    if (_controller != null) return;
 
-      _animation = ColorTween(
-        begin: widget.puzzleData['color'],
-        end: Color.lerp(widget.puzzleData['color'], Colors.white, 0.7)!,
-      ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-    }
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true);
+
+    _animation = ColorTween(
+      begin: widget.puzzleData['color'],
+      end: Color.lerp(widget.puzzleData['color'], Colors.white, 0.7)!,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+  }
+
+  void _disposeAnimation() {
+    _controller?.stop();
+    _controller?.dispose();
+    _controller = null;
+    _animation = null;
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _disposeAnimation();
     super.dispose();
   }
 
@@ -103,24 +111,27 @@ class _PuzzleContentState extends State<PuzzleContent>
         ),
         child: Transform.rotate(
           angle: rotationAngle,
-          child: AnimatedBuilder(
-            animation: _animation ??
-                AlwaysStoppedAnimation(widget.puzzleData['color']),
-            builder: (context, child) {
-              final Color puzzleColor = isExist == true
-                  ? widget.puzzleData['color']
-                  : _animation?.value ?? widget.puzzleData['color'];
-
-              return CustomPaint(
-                size: Size(widget.puzzleHeight, widget.puzzleHeight),
-                painter: BoardPuzzle(
-                  puzzleColor: puzzleColor,
-                  scaleFactor: widget.scaleFactor,
-                ),
-              );
-            },
-          ),
+          child: _animation != null
+              ? AnimatedBuilder(
+                  animation: _animation!,
+                  builder: (context, _) {
+                    final Color puzzleColor =
+                        _animation!.value ?? widget.puzzleData['color'];
+                    return _buildCustomPaint(puzzleColor);
+                  },
+                )
+              : _buildCustomPaint(widget.puzzleData['color']),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCustomPaint(Color puzzleColor) {
+    return CustomPaint(
+      size: Size(widget.puzzleHeight, widget.puzzleHeight),
+      painter: BoardPuzzle(
+        puzzleColor: puzzleColor,
+        scaleFactor: widget.scaleFactor,
       ),
     );
   }

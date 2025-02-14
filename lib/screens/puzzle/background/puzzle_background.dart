@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_offset_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
@@ -27,7 +28,6 @@ class PuzzleBackground extends StatefulWidget {
 
 class _PuzzleBackgroundState extends State<PuzzleBackground> {
   late final StreamSubscription _authSubscription;
-  late Offset _dragOffset = Offset.zero;
 
   @override
   void initState() {
@@ -42,12 +42,12 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
   }
 
   void _initialize() {
-    final CheckScreenProvider checkProvider =
-        context.read<CheckScreenProvider>();
-    final bool check = checkProvider.check;
+    final PuzzleScreenProvider checkProvider =
+        context.read<PuzzleScreenProvider>();
+    final bool check = checkProvider.screenCheck;
 
     if (check && widget.puzzleType == PuzzleType.personal) {
-      checkProvider.toggleCheck(false);
+      checkProvider.screenCheckToggle(false);
       context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
     }
   }
@@ -75,42 +75,37 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
       children: [
         GestureDetector(
           onPanUpdate: (details) {
-            setState(() {
-              _dragOffset = _calculateNewOffset(details.delta, config);
-            });
+            context.read<PuzzleOffsetProvider>().updateOffset(
+                  details.delta,
+                  config,
+                );
           },
-          child: CustomMultiChildLayout(
-            delegate: PuzzleLayoutDelegate(
-              config: config,
-              dragOffset: _dragOffset,
-            ),
-            children: List.generate(
-              config.totalItems,
-              (index) => PuzzleContent(
-                key: ValueKey(index),
-                row: index ~/ config.itemsPerRow,
-                column: index % config.itemsPerRow,
-                index: index,
-                puzzleHeight: config.puzzleHeight,
-                scaleFactor: scaleFactor,
-                puzzleType: widget.puzzleType,
-                puzzleData: widget.puzzleList[index],
-              ),
-            ),
+          child: Selector<PuzzleOffsetProvider, Offset>(
+            selector: (_, provider) => provider.dragOffset,
+            builder: (_, dragOffset, __) {
+              return CustomMultiChildLayout(
+                delegate: PuzzleLayoutDelegate(
+                  config: config,
+                  dragOffset: dragOffset,
+                ),
+                children: List.generate(
+                  config.totalItems,
+                  (index) => PuzzleContent(
+                    key: ValueKey(index),
+                    row: index ~/ config.itemsPerRow,
+                    column: index % config.itemsPerRow,
+                    index: index,
+                    puzzleHeight: config.puzzleHeight,
+                    scaleFactor: scaleFactor,
+                    puzzleType: widget.puzzleType,
+                    puzzleData: widget.puzzleList[index],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
-    );
-  }
-
-  Offset _calculateNewOffset(Offset delta, PuzzleConfig config) {
-    final double maxDragX = config.maxDragDistanceX;
-    final double maxDragY = config.maxDragDistanceY;
-    final Offset newOffset = _dragOffset + delta;
-
-    return Offset(
-      newOffset.dx.clamp(-maxDragX, maxDragX),
-      newOffset.dy.clamp(-maxDragY, maxDragY),
     );
   }
 }

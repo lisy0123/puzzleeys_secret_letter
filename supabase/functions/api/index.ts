@@ -10,7 +10,7 @@ import barRouter from "./bar/bar-router.ts";
 
 const app = new Hono();
 
-app.use(LoggingMiddleware.logger);
+// app.use(LoggingMiddleware.logger);
 
 app.basePath("/api").route("/auth", authRouter);
 app.basePath("/api").route("/post", postRouter);

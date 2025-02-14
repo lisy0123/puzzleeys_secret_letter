@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
+import 'package:puzzleeys_secret_letter/utils/utils.dart';
 
 class PuzzleSubjectDialog extends StatelessWidget {
   final Color puzzleColor;
@@ -21,7 +21,7 @@ class PuzzleSubjectDialog extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          TiltedPuzzle(puzzleColor: puzzleColor),
+          Utils.tiltedPuzzle(puzzleColor),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0.w),
             child: SizedBox(

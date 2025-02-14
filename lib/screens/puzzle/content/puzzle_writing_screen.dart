@@ -38,7 +38,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() => setState(() {}));
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -60,24 +64,28 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 200.0.w).copyWith(
-              top: (height - 786.0.h) / 2,
+        body: _buildContent(height),
+      ),
+    );
+  }
+
+  Widget _buildContent(double height) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 200.0.w).copyWith(
+          top: (height - 786.0.h) / 2,
+        ),
+        child: Column(
+          children: [
+            _buildBackButton(),
+            _buildMidContent(),
+            SizedBox(height: 200.0.w),
+            CustomButton(
+              iconName: 'btn_puzzle',
+              iconTitle: CustomStrings.putEmotion,
+              onTap: _handlePutButtonTap,
             ),
-            child: Column(
-              children: [
-                _buildBackButton(),
-                _buildMidContent(),
-                SizedBox(height: 200.0.w),
-                CustomButton(
-                  iconName: 'btn_puzzle',
-                  iconTitle: CustomStrings.putEmotion,
-                  onTap: _handlePutButtonTap,
-                ),
-              ],
-            ),
-          ),
+          ],
         ),
       ),
     );

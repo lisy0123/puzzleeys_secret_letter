@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
-
-class TiltedPuzzle extends StatelessWidget {
-  final Color puzzleColor;
-
-  const TiltedPuzzle({super.key, required this.puzzleColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(600.0.w, 600.0.w),
-      painter: TiltedPuzzlePiece(puzzleColor: puzzleColor),
-    );
-  }
-}
 
 class TiltedPuzzlePiece extends CustomPainter {
   final Color puzzleColor;

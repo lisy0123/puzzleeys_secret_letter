@@ -43,16 +43,17 @@ class _PuzzleLoadingScreenState extends State<PuzzleLoadingScreen>
       child: Center(
         child: AnimatedBuilder(
           animation: _animation,
+          child: Transform.rotate(
+            angle: -pi / 4,
+            child: CustomPaint(
+              size: Size(280.0.w, 280.0.w),
+              painter: TiltedPuzzlePiece(puzzleColor: Colors.white),
+            ),
+          ),
           builder: (context, child) {
             return Transform.translate(
               offset: Offset(0, _animation.value),
-              child: Transform.rotate(
-                angle: -pi / 4,
-                child: CustomPaint(
-                  size: Size(280.0.w, 280.0.w),
-                  painter: TiltedPuzzlePiece(puzzleColor: Colors.white),
-                ),
-              ),
+              child: child,
             );
           },
         ),

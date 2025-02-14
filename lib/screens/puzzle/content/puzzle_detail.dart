@@ -29,20 +29,16 @@ class PuzzleDetail extends StatefulWidget {
 }
 
 class _PuzzleDetailState extends State<PuzzleDetail> {
-  Color _puzzleButtonColor = Colors.white;
+  late Color _puzzleButtonColor;
   late BeadProvider _beadProvider;
 
   @override
   void initState() {
     super.initState();
     _beadProvider = context.read<BeadProvider>();
-    final bool isExist = _beadProvider.isExist(widget.puzzleData['id']);
-
-    if (isExist) {
-      setState(() {
-        _puzzleButtonColor = widget.puzzleData['color'];
-      });
-    }
+    _puzzleButtonColor = _beadProvider.isExist(widget.puzzleData['id'])
+        ? widget.puzzleData['color']
+        : Colors.white;
   }
 
   @override
@@ -117,12 +113,10 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
           baseColor: widget.puzzleData['color'],
         ),
         child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 60.0.w),
-            child: Text(
-              widget.puzzleData['content'].replaceAll(r'\n', '\n'),
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
+          padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+          child: Text(
+            widget.puzzleData['content'].replaceAll(r'\n', '\n'),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
       ),
@@ -136,35 +130,30 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
       padding: EdgeInsets.symmetric(vertical: 10.0.w),
       constraints: BoxConstraints(),
       onPressed: _getPuzzle,
-      icon: SizedBox(
-        width: 600.0.w,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Transform.rotate(
-              angle: -pi / 4,
-              child: CustomPaint(
-                size: Size(200.0.w, 200.0.w),
-                painter: TiltedPuzzlePiece(
-                  puzzleColor: _puzzleButtonColor,
-                  strokeWidth: 1.5,
-                ),
+      icon: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Transform.rotate(
+            angle: -pi / 4,
+            child: CustomPaint(
+              size: Size(200.0.w, 200.0.w),
+              painter: TiltedPuzzlePiece(
+                puzzleColor: _puzzleButtonColor,
+                strokeWidth: 1.5,
               ),
             ),
-            SizedBox(width: 40.0.w),
-            CustomText.textDisplay(text: CustomStrings.get, context: context),
-          ],
-        ),
+          ),
+          SizedBox(width: 40.0.w),
+          CustomText.textDisplay(text: CustomStrings.get, context: context),
+        ],
       ),
     );
   }
 
   void _getPuzzle() async {
     if (_puzzleButtonColor == Colors.white) {
-      setState(() {
-        _puzzleButtonColor = widget.puzzleData['color'];
-      });
+      setState(() => _puzzleButtonColor = widget.puzzleData['color']);
       CustomOverlay.show(
         text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
         puzzleVis: true,

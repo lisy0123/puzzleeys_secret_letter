@@ -6,14 +6,6 @@ export interface ResponseFormat<T> {
     result: T | null;
 }
 
-export interface UserData {
-    user_id: string;
-    auth_user_id: string;
-    email: string;
-    provider: string;
-    created_at: string;
-}
-
 export interface PostQuery {
     receiver_id?: string;
     author_id?: string;

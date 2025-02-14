@@ -13,7 +13,6 @@ import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/complete_puzzle.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
-import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class PutDialog extends StatefulWidget {
   final Map<String, dynamic> puzzleData;
@@ -86,19 +85,15 @@ class _PutDialogState extends State<PutDialog> {
 
   Widget _buildPuzzle(BuildContext context) {
     return Selector<ColorPickerProvider, Color>(
-      selector: (context, provider) => provider.selectedColor,
-      builder: (context, selectedColor, child) {
+      selector: (_, provider) => provider.selectedColor,
+      builder: (_, selectedColor, __) {
         return SizedBox(
           height: 600.0.w,
-          child: Stack(
-            children: [
-              Opacity(
-                opacity: (selectedColor == Colors.white) ? 0.4 : 1.0,
-                child: Center(
-                  child: TiltedPuzzle(puzzleColor: selectedColor),
-                ),
-              ),
-            ],
+          child: Opacity(
+            opacity: (selectedColor == Colors.white) ? 0.4 : 1.0,
+            child: Center(
+              child: Utils.tiltedPuzzle(selectedColor),
+            ),
           ),
         );
       },
@@ -107,8 +102,9 @@ class _PutDialogState extends State<PutDialog> {
 
   Widget _buildBottomContent(BuildContext context) {
     return Selector<ColorPickerProvider, double>(
-      selector: (context, provider) => provider.opacity,
-      builder: (context, opacity, child) {
+      selector: (_, provider) => provider.opacity,
+      child: const ColorPicker(),
+      builder: (_, opacity, child) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 100),
           switchInCurve: Curves.easeIn,
@@ -125,7 +121,7 @@ class _PutDialogState extends State<PutDialog> {
                     _buildPutButton(context),
                   ],
                 )
-              : const SizedBox(key: ValueKey('hidden'), child: ColorPicker()),
+              : child,
         );
       },
     );

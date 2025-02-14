@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
-import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
 class WarningDialog extends StatelessWidget {
@@ -20,7 +20,7 @@ class WarningDialog extends StatelessWidget {
         Navigator.pop(context);
         if (dialogType == WarningType.cancel) {
           Navigator.pop(context);
-          context.read<WritingProvider>().updateOpacity();
+          context.read<PuzzleScreenProvider>().updateScreenOpacity();
         }
       },
     );

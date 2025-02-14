@@ -94,6 +94,10 @@ class _CustomCircleState extends State<CustomCircle>
       onTapCancel: () => _handleTapState(false),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
+        child: SvgPicture.asset(
+          'assets/imgs/${widget.svgImage}.svg',
+          width: 280.0.w,
+        ),
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
@@ -102,15 +106,14 @@ class _CustomCircleState extends State<CustomCircle>
                 boxShadow: [BoxDecorations.shadow()],
                 shape: BoxShape.circle,
               ),
-              child: SvgPicture.asset(
-                'assets/imgs/${widget.svgImage}.svg',
-                width: 280.0.w,
+              child: ColorFiltered(
                 colorFilter: ColorFilter.mode(
                   _isPressed
                       ? CustomColors.colorBase.withValues(alpha: 0.2)
                       : Colors.transparent,
                   BlendMode.srcATop,
                 ),
+                child: child,
               ),
             ),
           );

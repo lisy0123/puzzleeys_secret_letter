@@ -35,8 +35,8 @@ class _BeadDialogState extends State<BeadDialog> {
   @override
   Widget build(BuildContext context) {
     return Selector<BeadProvider, bool>(
-      selector: (context, provider) => provider.isLoading,
-      builder: (context, isLoading, child) {
+      selector: (_, provider) => provider.isLoading,
+      builder: (_, isLoading, __) {
         if (!isLoading) {
           _futureData = FetchRequest.dialogData('/api/bead/user');
         }

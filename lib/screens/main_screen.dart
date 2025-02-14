@@ -9,9 +9,7 @@ import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_personal_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_subject_screen.dart';
-import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_global_screen.dart';
+import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
@@ -37,7 +35,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   Future<void> _initialize() async {
     final savedIndex = await SharedPreferencesUtils.get('tab');
-    final int index = (savedIndex == null) ? 0 : int.tryParse(savedIndex) ?? 0;
+    final int index = int.tryParse(savedIndex ?? '0') ?? 0;
 
     _tabController = TabController(
       length: 4,
@@ -61,7 +59,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _tabController!.dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 
@@ -74,7 +72,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       children: [
         _buildTabBarView(),
         _buildMainTop(),
-        _buildMainBottom(_tabController!.index),
+        Selector<PuzzleProvider, int>(
+          selector: (_, provider) => _tabController!.index,
+          builder: (_, index, __) => _buildMainBottom(index),
+        ),
       ],
     );
   }
@@ -82,8 +83,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildTabBarView() {
     return TabBarView(
       controller: _tabController,
-      physics: NeverScrollableScrollPhysics(),
-      children: [
+      physics: const NeverScrollableScrollPhysics(),
+      children: const [
         PuzzleGlobalScreen(),
         PuzzleSubjectScreen(),
         PuzzlePersonalScreen(),
@@ -95,17 +96,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildMainTop() {
     return SafeArea(
       top: true,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 40.0.w),
-        child: StatusBar(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+        child: const StatusBar(),
       ),
     );
   }
 
   Widget _buildMainBottom(int index) {
-    return Container(
-      margin: EdgeInsets.all(40.0.w),
-      padding: EdgeInsets.only(bottom: 160.0.w),
+    return Padding(
+      padding: EdgeInsets.all(40.0.w).copyWith(bottom: 160.0.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -118,8 +118,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildActionButtons() {
-    return Container(
-      margin: EdgeInsets.all(100.0.w),
+    return Padding(
+      padding: EdgeInsets.all(100.0.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -143,9 +143,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   void _navigateToTab(int index) async {
     if (_tabController!.index != index) {
-      setState(() {
-        _tabController!.animateTo(index);
-      });
+      _tabController!.animateTo(index);
       await SharedPreferencesUtils.save('tab', index.toString());
     }
   }

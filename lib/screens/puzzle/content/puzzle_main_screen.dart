@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_detail.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_screen.dart';
-import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleMainScreen extends StatefulWidget {
@@ -26,14 +26,14 @@ class PuzzleMainScreen extends StatefulWidget {
 }
 
 class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
-  late WritingProvider _writingProvider;
+  late PuzzleScreenProvider _screenProvider;
 
   @override
   void initState() {
-    _writingProvider = context.read<WritingProvider>();
+    _screenProvider = context.read<PuzzleScreenProvider>();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _writingProvider.updateOpacity(setToInitial: true);
+      _screenProvider.updateScreenOpacity(setToInitial: true);
     });
   }
 
@@ -41,40 +41,46 @@ class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
-    return Selector<WritingProvider, double>(
-      selector: (_, provider) => provider.opacity,
-      builder: (context, opacity, child) {
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 100),
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
-          child: opacity > 0.0
-              ? Stack(
-                  key: const ValueKey('visible'),
-                  children: [
-                    GestureDetector(onTap: () => Navigator.pop(context)),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 200.0.w,
-                        right: 200.0.w,
-                        top: (height - 760.0.h) / 2,
-                      ),
-                      child: Column(
-                        children: [
-                          PuzzleDetail(
-                            puzzleData: widget.puzzleData,
-                            puzzleType: widget.puzzleType,
-                          ),
-                          SizedBox(height: 200.0.w),
-                          _buildReplyButton(),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              : const SizedBox.shrink(key: ValueKey('hidden')),
-        );
+    return Selector<PuzzleScreenProvider, double>(
+      selector: (_, provider) => provider.screenOpacity,
+      builder: (_, opacity, __) {
+        return _animatedOpacityContent(height, opacity);
       },
+    );
+  }
+
+  Widget _animatedOpacityContent(double height, double opacity) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 100),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      child: opacity > 0.0
+          ? _buildContent(height)
+          : const SizedBox.shrink(key: ValueKey('hidden')),
+    );
+  }
+
+  Widget _buildContent(double height) {
+    return Stack(
+      key: const ValueKey('visible'),
+      children: [
+        GestureDetector(onTap: () => Navigator.pop(context)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 200.0.w).copyWith(
+            top: (height - 760.0.h) / 2,
+          ),
+          child: Column(
+            children: [
+              PuzzleDetail(
+                puzzleData: widget.puzzleData,
+                puzzleType: widget.puzzleType,
+              ),
+              SizedBox(height: 200.0.w),
+              _buildReplyButton(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -101,7 +107,7 @@ class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
           ),
           context: context,
         );
-        _writingProvider.updateOpacity();
+        _screenProvider.updateScreenOpacity();
       },
     );
   }

@@ -80,37 +80,42 @@ class _CustomButtonState extends State<CustomButton>
       onTapCancel: () => _handleTapState(false),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
+        child: _buildButtonContent(),
         builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
-            child: Container(
-              width: widget.width.w,
-              height: widget.height.w,
-              decoration: _buttonDecoration(widget.borderStroke),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (widget.iconTopTitle != '')
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomText.textSmall(
-                          text: widget.iconTopTitle,
-                          context: context,
-                        ),
-                        _buildRowContent(context),
-                      ],
-                    ),
-                  if (widget.iconTopTitle == '') _buildRowContent(context),
-                  Container(
-                    color: _overlayColor(),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return Transform.scale(scale: _scaleAnimation.value, child: child);
         },
+      ),
+    );
+  }
+
+  Widget _buildButtonContent() {
+    return Container(
+      width: widget.width.w,
+      height: widget.height.w,
+      decoration: _buttonDecoration(widget.borderStroke),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (widget.iconTopTitle != '')
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomText.textSmall(
+                  text: widget.iconTopTitle,
+                  context: context,
+                ),
+                _buildRowContent(context),
+              ],
+            ),
+          if (widget.iconTopTitle == '') _buildRowContent(context),
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, _) {
+              return Container(color: _overlayColor());
+            },
+          ),
+        ],
       ),
     );
   }

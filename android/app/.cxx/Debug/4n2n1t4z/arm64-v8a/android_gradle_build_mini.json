@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Library/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/sangeunlee/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/sangeunlee/lisy/puzzle/puzzleeys_secret_letter/android/app/.cxx/Debug/4n2n1t4z/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/sangeunlee/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/sangeunlee/lisy/puzzle/puzzleeys_secret_letter/android/app/.cxx/Debug/4n2n1t4z/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

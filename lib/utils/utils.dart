@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
+import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Utils {
@@ -59,5 +60,12 @@ class Utils {
   static Widget dialogDivider() {
     return DottedDivider(
         dashWidth: 40.0.w, dashSpace: 20.0.w, thickness: 3.0.w, padding: 0.0.w);
+  }
+
+  static Widget tiltedPuzzle(Color puzzleColor) {
+    return CustomPaint(
+      size: Size(600.0.w, 600.0.w),
+      painter: TiltedPuzzlePiece(puzzleColor: puzzleColor),
+    );
   }
 }

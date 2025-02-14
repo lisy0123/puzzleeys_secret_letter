@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
@@ -39,7 +39,7 @@ class CompletePuzzle {
       await puzzleProvider.initializeColors(puzzleType);
       if (context.mounted) {
         Navigator.popUntil(context, (route) => route.isFirst);
-        context.read<WritingProvider>().updateOpacity();
+        context.read<PuzzleScreenProvider>().updateScreenOpacity();
       }
     } catch (error) {
       throw Exception('Error posting puzzle: $error');

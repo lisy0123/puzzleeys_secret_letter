@@ -6,16 +6,16 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/check_screen_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_offset_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
-import 'package:puzzleeys_secret_letter/providers/writing_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/auth_check_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -41,14 +41,14 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => PuzzleScaleProvider()),
-      ChangeNotifierProvider(create: (_) => WritingProvider()),
+      ChangeNotifierProvider(create: (_) => PuzzleOffsetProvider()),
       ChangeNotifierProvider(create: (_) => ColorPickerProvider()),
       ChangeNotifierProvider(create: (_) => AuthStatusProvider()),
       ChangeNotifierProvider(create: (_) => PuzzleProvider()),
       ChangeNotifierProvider(create: (_) => FcmTokenProvider()),
       ChangeNotifierProvider(create: (_) => DeleteDialogProvider()),
       ChangeNotifierProvider(create: (_) => ReadPuzzleProvider()),
-      ChangeNotifierProvider(create: (_) => CheckScreenProvider()),
+      ChangeNotifierProvider(create: (_) => PuzzleScreenProvider()),
       ChangeNotifierProvider(create: (_) => BeadProvider()),
       ChangeNotifierProvider(create: (_) => BarProvider()),
     ],

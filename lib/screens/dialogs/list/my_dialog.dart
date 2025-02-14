@@ -31,8 +31,8 @@ class _MyDialogState extends State<MyDialog> {
   @override
   Widget build(BuildContext context) {
     return Selector<DeleteDialogProvider, bool>(
-      selector: (context, provider) => provider.isLoading,
-      builder: (context, isLoading, child) {
+      selector: (_, provider) => provider.isLoading,
+      builder: (_, isLoading, __) {
         if (!isLoading) {
           _futureData = FetchRequest.dialogData('/api/post/global_user');
         }

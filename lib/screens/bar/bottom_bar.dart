@@ -45,14 +45,16 @@ class BottomBar extends StatelessWidget {
       icon: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            'assets/imgs/icon_$index.svg',
-            height: 38.0.h,
+          ColorFiltered(
             colorFilter: ColorFilter.mode(
               isSelected
                   ? CustomColors.colorBase.withValues(alpha: 0.2)
                   : Colors.white.withValues(alpha: 0.5),
               BlendMode.srcATop,
+            ),
+            child: SvgPicture.asset(
+              'assets/imgs/icon_$index.svg',
+              height: 38.0.h,
             ),
           ),
           SizedBox(width: 300.0.w),

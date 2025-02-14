@@ -15,8 +15,6 @@ class StatusBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> gradientColors = context.watch<BeadProvider>().beadColor;
-
     return Stack(
       children: [
         CustomBox(
@@ -25,14 +23,19 @@ class StatusBar extends StatelessWidget {
           top: 18.0,
           child: _buildMainBar(context),
         ),
-        GestureDetector(
-          child: Container(
-            margin: EdgeInsets.only(left: 40.0.w),
-            width: 360.0.w,
-            height: 360.0.w,
-            decoration: BoxDecorations.bead(gradientColors: gradientColors),
-          ),
-          onTap: () => BuildDialog.show(iconName: 'bead', context: context),
+        Selector<BeadProvider, List<Color>>(
+          selector: (_, provider) => provider.beadColor,
+          builder: (_, gradientColors, __) {
+            return GestureDetector(
+              child: Container(
+                margin: EdgeInsets.only(left: 40.0.w),
+                width: 360.0.w,
+                height: 360.0.w,
+                decoration: BoxDecorations.bead(gradientColors: gradientColors),
+              ),
+              onTap: () => BuildDialog.show(iconName: 'bead', context: context),
+            );
+          },
         ),
       ],
     );
@@ -53,22 +56,25 @@ class StatusBar extends StatelessWidget {
   }
 
   Widget _buildMainBarLeft(BuildContext context) {
-    final int puzzleNums = context.watch<BarProvider>().puzzleNums;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset('assets/imgs/bar_puzzle.svg', height: 32.0.h),
-        SizedBox(width: 30.0.w),
-        CustomText.textTopBarNums(puzzleNums: puzzleNums, context: context),
-        SizedBox(width: 80.0.w),
-        SvgPicture.asset('assets/imgs/bar_dia.svg', height: 32.0.h),
-        SizedBox(width: 30.0.w),
-        CustomText.textTopBarNums(
-          puzzleNums: CustomVars.diaNums,
-          context: context,
-        ),
-      ],
+    return Selector<BarProvider, int>(
+      selector: (_, provider) => provider.puzzleNums,
+      builder: (_, puzzleNums, __) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/imgs/bar_puzzle.svg', height: 32.0.h),
+            SizedBox(width: 30.0.w),
+            CustomText.textTopBarNums(puzzleNums: puzzleNums, context: context),
+            SizedBox(width: 80.0.w),
+            SvgPicture.asset('assets/imgs/bar_dia.svg', height: 32.0.h),
+            SizedBox(width: 30.0.w),
+            CustomText.textTopBarNums(
+              puzzleNums: CustomVars.diaNums,
+              context: context,
+            ),
+          ],
+        );
+      },
     );
   }
 }
