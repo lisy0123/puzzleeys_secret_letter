@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart' show MobileAds;
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/providers/ad_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
@@ -53,6 +54,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PuzzleScreenProvider()),
       ChangeNotifierProvider(create: (_) => BeadProvider()),
       ChangeNotifierProvider(create: (_) => BarProvider()),
+      ChangeNotifierProvider(create: (_) => AdProvider()),
     ],
     child: const MyApp(),
   ));

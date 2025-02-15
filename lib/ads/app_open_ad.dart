@@ -10,7 +10,7 @@ class AppOpenAdManager extends BaseAdManager<AppOpenAd> {
     isLoading = true;
 
     AppOpenAd.load(
-      adUnitId: getAdUnitId(AdType.appOpen),
+      adUnitId: AdUtils.getAdUnitId(AdType.appOpen),
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: setAd,
@@ -19,7 +19,7 @@ class AppOpenAdManager extends BaseAdManager<AppOpenAd> {
     );
   }
 
-  void _setCallbacks(AppOpenAd ad) {
+  void setCallbacks(AppOpenAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (_) => handleAdClosed(),
       onAdFailedToShowFullScreenContent: (_, error) {
@@ -29,11 +29,11 @@ class AppOpenAdManager extends BaseAdManager<AppOpenAd> {
     );
   }
 
-  void _dispose(AppOpenAd? ad) {
+  void dispose(AppOpenAd? ad) {
     ad?.dispose();
   }
 
-  void _show(AppOpenAd ad, VoidCallback? onRewardEarned) {
+  void show(AppOpenAd ad, VoidCallback? onRewardEarned) {
     ad.show();
   }
 }

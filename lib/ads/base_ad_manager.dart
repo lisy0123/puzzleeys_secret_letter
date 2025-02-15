@@ -1,35 +1,24 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 
-abstract class AdManagerBase {
-  bool get isAdLoaded;
-  void loadAd();
-  void showAd([VoidCallback? onRewardEarned]);
-}
-
-abstract class BaseAdManager<T> implements AdManagerBase {
+abstract class BaseAdManager<T> {
   T? _ad;
   bool _isAdLoaded = false;
   bool isLoading = false;
   int _retryCount = 0;
   static const int _maxRetryCount = 3;
 
-  @override
   bool get isAdLoaded => _isAdLoaded;
 
-  @override
   void loadAd();
 
   void retryLoad() {
     if (_retryCount < _maxRetryCount) {
       int delay = 500 * (1 << _retryCount++);
       Future.delayed(Duration(milliseconds: delay), loadAd);
-    } else {
-      debugPrint("Max retries reached. No more attempts.");
     }
   }
 
-  @override
   void showAd([VoidCallback? onRewardEarned]) {
     if (_ad == null || !_isAdLoaded) return;
     _show(_ad as T, onRewardEarned);
@@ -44,7 +33,6 @@ abstract class BaseAdManager<T> implements AdManagerBase {
   }
 
   void handleAdClosed() {
-    debugPrint("Ad dismissed. Loading new ad...");
     disposeAd();
     loadAd();
   }
@@ -66,6 +54,8 @@ abstract class BaseAdManager<T> implements AdManagerBase {
   }
 
   void _setCallbacks(T ad);
+
   void _dispose(T? ad);
+
   void _show(T ad, VoidCallback? onRewardEarned);
 }

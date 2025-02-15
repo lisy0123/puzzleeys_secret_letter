@@ -10,7 +10,7 @@ class InterstitialAdManager extends BaseAdManager<InterstitialAd> {
     isLoading = true;
 
     InterstitialAd.load(
-      adUnitId: getAdUnitId(AdType.interstitial),
+      adUnitId: AdUtils.getAdUnitId(AdType.interstitial),
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: setAd,
@@ -19,21 +19,21 @@ class InterstitialAdManager extends BaseAdManager<InterstitialAd> {
     );
   }
 
-  void _setCallbacks(InterstitialAd ad) {
+  void setCallbacks(InterstitialAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (_) => handleAdClosed(),
       onAdFailedToShowFullScreenContent: (_, error) {
-        debugPrint("Interstitial Ad failed: ${error.message}");
+        debugPrint("Interstitial ad failed: ${error.message}");
         handleAdClosed();
       },
     );
   }
 
-  void _dispose(InterstitialAd? ad) {
+  void dispose(InterstitialAd? ad) {
     ad?.dispose();
   }
 
-  void _show(InterstitialAd ad, VoidCallback? onRewardEarned) {
+  void show(InterstitialAd ad, VoidCallback? onRewardEarned) {
     ad.show();
   }
 }
