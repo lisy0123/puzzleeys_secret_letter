@@ -36,6 +36,10 @@ class Utils {
     return formattedKstTime;
   }
 
+  static String formatDateToString(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
   static int calculateDays(String? userCreatedAt) {
     if (userCreatedAt != null) {
       DateTime createdDate =

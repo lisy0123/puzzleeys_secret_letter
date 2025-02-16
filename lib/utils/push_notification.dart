@@ -5,17 +5,17 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-AndroidNotificationChannel? channel;
-const String notificationIcon = '@mipmap/ic_launcher';
-
 class PushNotification {
   static final PushNotification _instance = PushNotification._internal();
 
   factory PushNotification() => _instance;
 
   PushNotification._internal();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  AndroidNotificationChannel? channel;
+  final String notificationIcon = '@mipmap/ic_launcher';
 
   // 푸시 알림 초기화 (로컬 알림, 안드로이드 채널, Firebase 메시징 초기화)
   Future<void> initialize() async {
@@ -32,13 +32,13 @@ class PushNotification {
 
   // 로컬 알림 초기화 (안드로이드 및 iOS 설정)
   Future<void> _initLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings(notificationIcon);
-    const iosSettings = DarwinInitializationSettings(
+    final androidSettings = AndroidInitializationSettings(notificationIcon);
+    final iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
-    const settings = InitializationSettings(
+    final settings = InitializationSettings(
       android: androidSettings,
       iOS: iosSettings,
     );
@@ -94,8 +94,7 @@ class PushNotification {
   }
 
   // 데이터 메시지에서 알림 정보를 추출하여 로컬 알림 표시
-  Future<void> _showNotificationFromData(
-      Map<String, dynamic> data) async {
+  Future<void> _showNotificationFromData(Map<String, dynamic> data) async {
     String? title = data['title'];
     String? body = data['body'];
 
@@ -178,8 +177,7 @@ class PushNotification {
   }
 
   // 수신된 메시지를 처리하여 로컬 알림을 표시하는 메서드
-  Future<void> _showNotification(
-      RemoteNotification? notification) async {
+  Future<void> _showNotification(RemoteNotification? notification) async {
     if (notification != null) {
       await _showNotificationBody(
         notification.hashCode,
@@ -224,13 +222,13 @@ class PushNotification {
     }
   }
 
-  // 네비게이션 처리
-  // void _handleNotificationClick(RemoteMessage message) {
-  //   String? tabIndex = message.data['tabIndex'];
-  //   if (tabIndex != null) {
-  //     appRouter.go('/tabs?index=$tabIndex');
-  //   } else {
-  //     appRouter.go('/tabs');
-  //   }
-  // }
+// 네비게이션 처리
+// void _handleNotificationClick(RemoteMessage message) {
+//   String? tabIndex = message.data['tabIndex'];
+//   if (tabIndex != null) {
+//     appRouter.go('/tabs?index=$tabIndex');
+//   } else {
+//     appRouter.go('/tabs');
+//   }
+// }
 }

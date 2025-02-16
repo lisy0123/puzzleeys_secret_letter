@@ -54,14 +54,14 @@ android {
         manifestPlaceholders["AdMobID"] = keystoreProperties["AdMobID"]
     }
 
-    signingConfigs {
-        release {
-            keyAlias keyProperties['keyAlias']
-            keyPassword keyProperties['keyPassword']
-            storeFile keyProperties['storeFile'] ? file(keyProperties['storeFile']) : null
-            storePassword keyProperties['storePassword']
-        }
-    }
+//    signingConfigs {
+//        release {
+//            keyAlias keyProperties['keyAlias']
+//            keyPassword keyProperties['keyPassword']
+//            storeFile keyProperties['storeFile'] ? file(keyProperties['storeFile']) : null
+//            storePassword keyProperties['storePassword']
+//        }
+//    }
 
     buildTypes {
         release {

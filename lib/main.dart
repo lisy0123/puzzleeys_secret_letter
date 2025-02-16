@@ -6,7 +6,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart' show MobileAds;
 import 'package:provider/provider.dart';
-import 'package:puzzleeys_secret_letter/providers/ad_provider.dart';
+import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
+import 'package:puzzleeys_secret_letter/ads/interstitial_ad.dart';
+import 'package:puzzleeys_secret_letter/ads/rewarded_ad.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
@@ -20,25 +22,32 @@ import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.d
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/auth_check_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
+import 'package:puzzleeys_secret_letter/utils/push_notification.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
   FlutterNativeSplash.preserve(
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
 
+  await Firebase.initializeApp();
+  await MobileAds.instance.initialize();
   await dotenv.load(fileName: ".env");
+
   await Future.wait([
     Supabase.initialize(
       url: dotenv.env['PROJECT_URL']!,
       anonKey: dotenv.env['API_KEY']!,
     ),
-    Firebase.initializeApp(),
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+    AdManager().initialize(
+      interstitialAd: InterstitialAdManager(),
+      rewardedAd: RewardedInterstitialAdManager(),
+    ),
+    // PushNotification().initialize(),
   ]);
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   FlutterNativeSplash.remove();
 
   runApp(MultiProvider(
@@ -54,7 +63,6 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PuzzleScreenProvider()),
       ChangeNotifierProvider(create: (_) => BeadProvider()),
       ChangeNotifierProvider(create: (_) => BarProvider()),
-      ChangeNotifierProvider(create: (_) => AdProvider()),
     ],
     child: const MyApp(),
   ));

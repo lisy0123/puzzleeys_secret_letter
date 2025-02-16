@@ -18,8 +18,9 @@ class BarProvider with ChangeNotifier {
   }
 
   void _loadStoredData() async {
-    final savedNums = await SharedPreferencesUtils.get('puzzleNums');
-    final savedDate = await SharedPreferencesUtils.get('attendance_date');
+    final String? savedNums = await SharedPreferencesUtils.get('puzzleNums');
+    final String? savedDate =
+        await SharedPreferencesUtils.get('attendance_date');
 
     _puzzleNums = int.tryParse(savedNums ?? '') ?? 0;
     _lastCheckedDate = savedDate != null ? DateTime.tryParse(savedDate) : null;
@@ -60,23 +61,22 @@ class BarProvider with ChangeNotifier {
       _puzzleNums = puzzleNum;
       notifyListeners();
 
-      await SharedPreferencesUtils.save(
-        'puzzleNums',
-        _puzzleNums.toString(),
-      );
+      await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
     }
     if (lastCheckedDate != _lastCheckedDate) {
       _lastCheckedDate = lastCheckedDate;
       notifyListeners();
 
-      final String dateString = _lastCheckedDate?.toIso8601String() ?? '';
+      final String dateString = _lastCheckedDate != null
+          ? Utils.formatDateToString(_lastCheckedDate!)
+          : '';
       await SharedPreferencesUtils.save('attendance_date', dateString);
     }
   }
 
   Future<void> _checkIn(BuildContext context) async {
-    final now = DateTime.now();
-    final nowOnlyDate = DateTime(now.year, now.month, now.day);
+    final DateTime now = DateTime.now();
+    final DateTime nowOnlyDate = DateTime(now.year, now.month, now.day);
 
     if (_lastCheckedDate == null ||
         _lastCheckedDate!.compareTo(nowOnlyDate) != 0) {
@@ -92,21 +92,25 @@ class BarProvider with ChangeNotifier {
         );
       }
 
-      final String dateString = _lastCheckedDate!.toIso8601String();
-
+      final String dateString = Utils.formatDateToString(_lastCheckedDate!);
       await SharedPreferencesUtils.save('attendance_date', dateString);
       _request({'date': dateString});
     }
+  }
+
+  void adPuzzleNum() async {
+    _puzzleNums++;
+    notifyListeners();
+
+    await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
   }
 
   void updatePuzzleNum(int num) async {
     _puzzleNums += num;
     notifyListeners();
 
-    final String numString = _puzzleNums.toString();
-
-    await SharedPreferencesUtils.save('puzzleNums', numString);
-    _request({'puzzle': numString});
+    await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
+    _request({'puzzle': '$_puzzleNums'});
   }
 
   void _request(Map<String, String> bodies) async {

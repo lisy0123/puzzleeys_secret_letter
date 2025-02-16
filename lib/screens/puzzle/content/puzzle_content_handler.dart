@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
@@ -20,6 +21,7 @@ class PuzzleContentHandler {
     if (puzzleColor == Colors.white) {
       _handleWhitePuzzle(index, puzzleType, context);
     } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
+      _showInterstitialAd();
       BuildDialog.show(
         iconName: 'puzzleSubject',
         puzzleText: puzzleData['title'].replaceAll(r'\n', '\n'),
@@ -30,6 +32,8 @@ class PuzzleContentHandler {
       if (puzzleType == PuzzleType.personal) {
         context.read<ReadPuzzleProvider>().markAsRead(puzzleData['id']);
       }
+
+      _showInterstitialAd();
       PuzzleScreenHandler.navigateScreen(
         barrierColor: puzzleData['color'].withValues(alpha: 0.8),
         child: PuzzleMainScreen(
@@ -40,6 +44,11 @@ class PuzzleContentHandler {
         context: context,
       );
     }
+  }
+
+  static void _showInterstitialAd() async {
+    await AdManager().updatePostViewCount();
+    await AdManager().showInterstitialAd();
   }
 
   static void _handleWhitePuzzle(

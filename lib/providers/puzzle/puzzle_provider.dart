@@ -40,7 +40,6 @@ class PuzzleProvider extends ChangeNotifier {
     final stored = await SharedPreferencesUtils.get('hasSubject');
     _hasSubject = stored ?? '';
     notifyListeners();
-    userId = await UserRequest.getUserId();
   }
 
   Map<String, dynamic> _emptyPuzzle(int index) {
@@ -102,11 +101,18 @@ class PuzzleProvider extends ChangeNotifier {
 
   Future<Map<String, dynamic>> _fetchPuzzleResponse(
       PuzzleType puzzleType) async {
-    final url = {
-          PuzzleType.global: '/api/post/global',
-          PuzzleType.subject: '/api/post/subject',
-        }[puzzleType] ??
-        '/api/post/personal';
+    late String url;
+    switch (puzzleType) {
+      case PuzzleType.global:
+        url = '/api/post/global';
+        break;
+      case PuzzleType.subject:
+        url = '/api/post/subject';
+        break;
+      default:
+        url = '/api/post/personal';
+        break;
+    }
     return await apiRequest(url, ApiType.get);
   }
 
@@ -129,6 +135,7 @@ class PuzzleProvider extends ChangeNotifier {
     }
 
     bool isExisted = false;
+    userId = await UserRequest.getUserId();
 
     for (int i = 0; i < puzzleData.length; i++) {
       final targetIndex = getTargetIndex(i);

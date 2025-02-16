@@ -21,12 +21,12 @@ abstract class BaseAdManager<T> {
 
   void showAd([VoidCallback? onRewardEarned]) {
     if (_ad == null || !_isAdLoaded) return;
-    _show(_ad as T, onRewardEarned);
+    show(_ad as T, onRewardEarned);
     disposeAd();
   }
 
   void disposeAd() {
-    _dispose(_ad);
+    dispose(_ad);
     _ad = null;
     _isAdLoaded = false;
     isLoading = false;
@@ -43,7 +43,7 @@ abstract class BaseAdManager<T> {
     _isAdLoaded = true;
     _retryCount = 0;
     isLoading = false;
-    _setCallbacks(ad);
+    setCallbacks(ad);
   }
 
   void onAdFailedToLoad(String errorMessage) {
@@ -53,9 +53,9 @@ abstract class BaseAdManager<T> {
     retryLoad();
   }
 
-  void _setCallbacks(T ad);
+  void setCallbacks(T ad);
 
-  void _dispose(T? ad);
+  void dispose(T? ad);
 
-  void _show(T ad, VoidCallback? onRewardEarned);
+  void show(T ad, VoidCallback? onRewardEarned);
 }

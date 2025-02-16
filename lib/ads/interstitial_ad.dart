@@ -19,6 +19,7 @@ class InterstitialAdManager extends BaseAdManager<InterstitialAd> {
     );
   }
 
+  @override
   void setCallbacks(InterstitialAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (_) => handleAdClosed(),
@@ -29,10 +30,12 @@ class InterstitialAdManager extends BaseAdManager<InterstitialAd> {
     );
   }
 
+  @override
   void dispose(InterstitialAd? ad) {
     ad?.dispose();
   }
 
+  @override
   void show(InterstitialAd ad, VoidCallback? onRewardEarned) {
     ad.show();
   }

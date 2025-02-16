@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:puzzleeys_secret_letter/ads/ad_utils.dart';
-import 'base_ad_manager.dart';
+import 'package:puzzleeys_secret_letter/ads/base_ad_manager.dart';
 
 class RewardedInterstitialAdManager
     extends BaseAdManager<RewardedInterstitialAd> {
@@ -20,6 +20,7 @@ class RewardedInterstitialAdManager
     );
   }
 
+  @override
   void setCallbacks(RewardedInterstitialAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (_) => handleAdClosed(),
@@ -30,10 +31,12 @@ class RewardedInterstitialAdManager
     );
   }
 
+  @override
   void dispose(RewardedInterstitialAd? ad) {
     ad?.dispose();
   }
 
+  @override
   void show(RewardedInterstitialAd ad, VoidCallback? onRewardEarned) {
     ad.show(onUserEarnedReward: (_, __) => onRewardEarned?.call());
   }

@@ -3,35 +3,47 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 
 class GetPuzzleType {
   static String typeToString(PuzzleType puzzleType) {
-    return {
-          PuzzleType.global: 'global',
-          PuzzleType.subject: 'subject',
-        }[puzzleType] ??
-        'personal';
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return 'global';
+      case PuzzleType.subject:
+        return 'subject';
+      default:
+        return 'personal';
+    }
   }
 
   static PuzzleType stringToType(String puzzleType) {
-    return {
-          'global': PuzzleType.global,
-          'subject': PuzzleType.subject,
-        }[puzzleType] ??
-        PuzzleType.personal;
+    switch (puzzleType) {
+      case 'global':
+        return PuzzleType.global;
+      case 'subject':
+        return PuzzleType.subject;
+      default:
+        return PuzzleType.personal;
+    }
   }
 
   static int stringToIndex(String puzzleType) {
-    return {
-          'global': 0,
-          'subject': 1,
-        }[puzzleType] ??
-        2;
+    switch (puzzleType) {
+      case 'global':
+        return 0;
+      case 'subject':
+        return 1;
+      default:
+        return 2;
+    }
   }
 
   static PuzzleType intToPuzzleType(int index) {
-    return {
-      0: PuzzleType.global,
-      1: PuzzleType.subject,
-      2: PuzzleType.personal,
-    }[index]!;
+    switch (index) {
+      case 0:
+        return PuzzleType.global;
+      case 1:
+        return PuzzleType.subject;
+      default:
+        return PuzzleType.personal;
+    }
   }
 
   static String typeToHintText({
@@ -39,12 +51,17 @@ class GetPuzzleType {
     required bool reply,
   }) {
     if (reply) return MessageStrings.writingReplyMessage;
-    return {
-      PuzzleType.global: MessageStrings.writingGlobalMessage,
-      PuzzleType.subject: MessageStrings.writingSubjectMessage,
-      PuzzleType.personal: MessageStrings.writingToOtherMessage,
-      PuzzleType.me: MessageStrings.writingToMeMessage,
-    }[puzzleType]!;
+
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return MessageStrings.writingGlobalMessage;
+      case PuzzleType.subject:
+        return MessageStrings.writingSubjectMessage;
+      case PuzzleType.personal:
+        return MessageStrings.writingToOtherMessage;
+      default:
+        return MessageStrings.writingToMeMessage;
+    }
   }
 
   static String typeToIconName({
@@ -52,11 +69,14 @@ class GetPuzzleType {
     required bool reply,
   }) {
     if (reply) return 'putReply';
-    return {
-      PuzzleType.global: 'putGlobal',
-      PuzzleType.subject: 'putSubject',
-      PuzzleType.personal: 'putPersonal',
-      PuzzleType.me: 'putMe',
-    }[puzzleType]!;
+
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return 'putGlobal';
+      case PuzzleType.subject:
+        return 'putSubject';
+      default:
+        return 'putPersonal';
+    }
   }
 }
