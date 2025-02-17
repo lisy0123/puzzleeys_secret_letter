@@ -22,7 +22,6 @@ abstract class BaseAdManager<T> {
   void showAd([VoidCallback? onRewardEarned]) {
     if (_ad == null || !_isAdLoaded) return;
     show(_ad as T, onRewardEarned);
-    disposeAd();
   }
 
   void disposeAd() {

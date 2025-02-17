@@ -42,7 +42,7 @@ void main() async {
     ),
     AdManager().initialize(
       interstitialAd: InterstitialAdManager(),
-      rewardedAd: RewardedInterstitialAdManager(),
+      rewardedAd: RewardedAdManager(),
     ),
     // PushNotification().initialize(),
   ]);

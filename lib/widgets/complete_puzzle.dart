@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
@@ -14,6 +15,7 @@ class CompletePuzzle {
   final PuzzleType puzzleType;
   final Map<String, dynamic> puzzleData;
   final int? sendDays;
+  final bool isNotZero;
   final BuildContext context;
 
   const CompletePuzzle({
@@ -21,29 +23,36 @@ class CompletePuzzle {
     required this.puzzleType,
     required this.puzzleData,
     this.sendDays,
+    required this.isNotZero,
     required this.context,
   });
 
   void post() async {
     try {
-      final puzzleProvider = context.read<PuzzleProvider>();
-
-      CustomOverlay.show(
-        text: MessageStrings.overlayMessages[overlayType]![1],
-        puzzleVis: true,
-        puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
-        context: context,
-      );
-      await _fetchResponse();
-      puzzleProvider.updateShuffle(true);
-      await puzzleProvider.initializeColors(puzzleType);
-      if (context.mounted) {
-        Navigator.popUntil(context, (route) => route.isFirst);
-        context.read<PuzzleScreenProvider>().updateScreenOpacity();
+      if (!isNotZero) {
+        await AdManager().showRewardedAd(() => _build());
+      } else {
+        _build();
       }
     } catch (error) {
       throw Exception('Error posting puzzle: $error');
     }
+  }
+
+  void _build() async {
+    final puzzleProvider = context.read<PuzzleProvider>();
+
+    Navigator.popUntil(context, (route) => route.isFirst);
+    context.read<PuzzleScreenProvider>().updateScreenOpacity();
+    CustomOverlay.show(
+      text: MessageStrings.overlayMessages[overlayType]![1],
+      puzzleVis: isNotZero,
+      puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
+      context: context,
+    );
+    await _fetchResponse();
+    puzzleProvider.updateShuffle(true);
+    await puzzleProvider.initializeColors(puzzleType);
   }
 
   Future<Map<String, dynamic>> _fetchResponse() async {

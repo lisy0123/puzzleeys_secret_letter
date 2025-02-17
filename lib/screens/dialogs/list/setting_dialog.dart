@@ -52,7 +52,7 @@ class _SettingDialogState extends State<SettingDialog> {
             ],
           ),
         ),
-        _buildBottomText(),
+        Align(alignment: Alignment.bottomCenter, child: _buildBottomText()),
       ],
     );
   }
@@ -60,7 +60,7 @@ class _SettingDialogState extends State<SettingDialog> {
   Widget _buildBottomText() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: _logout,

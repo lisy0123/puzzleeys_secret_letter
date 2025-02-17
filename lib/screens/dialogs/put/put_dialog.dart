@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/put/color_picker.dart';
 import 'package:puzzleeys_secret_letter/providers/color_picker_provider.dart';
@@ -149,14 +150,18 @@ class _PutDialogState extends State<PutDialog> {
   }
 
   Widget _buildPutButton(BuildContext context) {
+    final int puzzleNums = context.read<BarProvider>().puzzleNums;
+    final bool isNotZero = widget.puzzleType == PuzzleType.me || puzzleNums > 0;
+
     return CustomButton(
-      iconName: 'btn_puzzle',
-      iconTitle: CustomStrings.put,
-      onTap: () => _showDialog(context),
+      iconName: isNotZero ? 'btn_puzzle' : 'btn_ad',
+      iconTitle: isNotZero ? CustomStrings.put : CustomStrings.adPut,
+      width: isNotZero ? 640.0 : 800.0,
+      onTap: () => _showDialog(isNotZero, context),
     );
   }
 
-  void _showDialog(BuildContext context) {
+  void _showDialog(bool isNotZero, BuildContext context) {
     final Color color = _colorProvider.selectedColor;
 
     if (color == Colors.white) {
@@ -172,11 +177,11 @@ class _PutDialogState extends State<PutDialog> {
         context: context,
       );
     } else {
-      _finalize(color);
+      _finalize(isNotZero, color);
     }
   }
 
-  void _finalize(Color color) {
+  void _finalize(bool isNotZero, Color color) async {
     widget.puzzleData['title'] = _textEditingController.text;
     widget.puzzleData['color'] = ColorUtils.colorToString(color);
 
@@ -191,18 +196,24 @@ class _PutDialogState extends State<PutDialog> {
         overlayType: _getOverlayType(),
         puzzleType: widget.puzzleType,
         puzzleData: widget.puzzleData,
+        isNotZero: isNotZero,
         context: context,
       ).post();
     }
   }
 
   OverlayType _getOverlayType() {
-    return {
-      PuzzleType.global: OverlayType.writeGlobalPuzzle,
-      PuzzleType.subject: OverlayType.writeSubjectPuzzle,
-      PuzzleType.personal: OverlayType.writePersonalPuzzle,
-      PuzzleType.me: OverlayType.writePuzzleToMe,
-      PuzzleType.reply: OverlayType.writeReply,
-    }[widget.puzzleType]!;
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        return OverlayType.writeGlobalPuzzle;
+      case PuzzleType.subject:
+        return OverlayType.writeSubjectPuzzle;
+      case PuzzleType.personal:
+        return OverlayType.writePersonalPuzzle;
+      case PuzzleType.me:
+        return OverlayType.writePuzzleToMe;
+      default:
+        return OverlayType.writeReply;
+    }
   }
 }

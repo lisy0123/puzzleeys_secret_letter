@@ -37,6 +37,11 @@ class AdManager {
       _showAd(AdType.rewarded, onRewardEarned);
 
   Future<void> _showAd(AdType adType, [VoidCallback? onRewardEarned]) async {
+    if (adType == AdType.interstitial) {
+      _postViewCount++;
+      await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
+    }
+
     if (!_canShowAd(adType)) return;
 
     switch (adType) {
@@ -45,7 +50,7 @@ class AdManager {
         break;
       case AdType.rewarded:
         if (_postViewCount == 7) {
-          _postViewCount -= 2;
+          _postViewCount -= 3;
         }
         break;
     }
@@ -61,7 +66,6 @@ class AdManager {
     } else {
       ad?.showAd();
     }
-    ad?.loadAd();
   }
 
   bool _canShowAd(AdType adType) {
@@ -71,10 +75,5 @@ class AdManager {
       case AdType.interstitial:
         return _postViewCount == 7;
     }
-  }
-
-  Future<void> updatePostViewCount() async {
-    _postViewCount++;
-    await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
   }
 }

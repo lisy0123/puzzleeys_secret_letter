@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/complete_puzzle.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_radio_group.dart';
@@ -37,18 +39,27 @@ class _SetDaysDialogState extends State<SetDaysDialog> {
             labelBuilder: (option) => "$option${CustomStrings.day}",
           ),
         ),
-        CustomButton(
-          iconName: 'btn_puzzle',
-          iconTitle: CustomStrings.send,
-          onTap: () => CompletePuzzle(
-            overlayType: OverlayType.writePuzzleToMe,
-            puzzleType: PuzzleType.me,
-            puzzleData: widget.puzzleData,
-            sendDays: _selectedOption,
-            context: context,
-          ).post(),
-        ),
+        _buildButton(),
       ],
+    );
+  }
+
+  Widget _buildButton() {
+    final int puzzleNums = context.read<BarProvider>().puzzleNums;
+    final bool isNotZero = puzzleNums > 0;
+
+    return CustomButton(
+      iconName: isNotZero ? 'btn_puzzle' : 'btn_ad',
+      iconTitle: isNotZero ? CustomStrings.send : CustomStrings.adSend,
+      width: isNotZero ? 640.0 : 880.0,
+      onTap: () => CompletePuzzle(
+        overlayType: OverlayType.writePuzzleToMe,
+        puzzleType: PuzzleType.me,
+        puzzleData: widget.puzzleData,
+        sendDays: _selectedOption,
+        isNotZero: isNotZero,
+        context: context,
+      ).post(),
     );
   }
 }

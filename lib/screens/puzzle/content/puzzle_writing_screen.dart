@@ -123,11 +123,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   Widget _buildTextField() {
-    final String hintText = GetPuzzleType.typeToHintText(
-      puzzleType: widget.puzzleType,
-      reply: widget.reply,
-    );
-
     return RawScrollbar(
       controller: _scrollController,
       radius: Radius.circular(10),
@@ -144,7 +139,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
           inputFormatters: [LengthLimitingTextInputFormatter(1000)],
           style: Theme.of(context).textTheme.displayLarge,
           decoration: InputDecoration(
-            hintText: hintText,
+            hintText: _typeToHintText(),
             hintStyle: Theme.of(context).textTheme.labelSmall,
             border: InputBorder.none,
             counterText: '',
@@ -159,10 +154,6 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
     } else {
       final Map<String, dynamic> puzzleData = {'content': _textController.text};
-      final String iconName = GetPuzzleType.typeToIconName(
-        puzzleType: widget.puzzleType,
-        reply: widget.reply,
-      );
 
       if (widget.reply) {
         puzzleData['receiver_id'] = widget.parentId;
@@ -173,10 +164,41 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       }
 
       BuildDialog.show(
-        iconName: iconName,
+        iconName: _typeToIconName(),
         puzzleData: puzzleData,
         context: context,
       );
+    }
+  }
+
+  String _typeToHintText() {
+    if (widget.reply) return MessageStrings.writingReplyMessage;
+
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        return MessageStrings.writingGlobalMessage;
+      case PuzzleType.subject:
+        return MessageStrings.writingSubjectMessage;
+      case PuzzleType.personal:
+        return MessageStrings.writingToOtherMessage;
+      default:
+        return MessageStrings.writingToMeMessage;
+    }
+  }
+
+  String _typeToIconName() {
+    if (widget.reply) return 'putReply';
+
+    switch (widget.puzzleType) {
+      case PuzzleType.global:
+        return 'putGlobal';
+      case PuzzleType.subject:
+        return 'putSubject';
+      case PuzzleType.personal:
+        return 'putPersonal';
+      case PuzzleType.me:
+      default:
+        return 'putMe';
     }
   }
 }

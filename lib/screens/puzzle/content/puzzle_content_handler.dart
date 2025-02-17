@@ -29,11 +29,10 @@ class PuzzleContentHandler {
         context: context,
       );
     } else {
+      _showInterstitialAd();
       if (puzzleType == PuzzleType.personal) {
         context.read<ReadPuzzleProvider>().markAsRead(puzzleData['id']);
       }
-
-      _showInterstitialAd();
       PuzzleScreenHandler.navigateScreen(
         barrierColor: puzzleData['color'].withValues(alpha: 0.8),
         child: PuzzleMainScreen(
@@ -47,7 +46,6 @@ class PuzzleContentHandler {
   }
 
   static void _showInterstitialAd() async {
-    await AdManager().updatePostViewCount();
     await AdManager().showInterstitialAd();
   }
 

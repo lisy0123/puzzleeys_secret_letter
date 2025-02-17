@@ -48,8 +48,9 @@ class CustomStrings {
   static String putEmotion = '감정 넣기';
   static String preview = '더 보 기';
   static String put = '넣 기';
-  static String ad = '광고 보고 넣기';
+  static String adPut = '광고 보고 넣기';
   static String send = '보내기';
+  static String adSend = '광고 보고 보내기';
   static String get = '퍼즐 담기';
 
   static String logout = '로그아웃';

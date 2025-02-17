@@ -1,5 +1,4 @@
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/constants/strings.dart';
 
 class GetPuzzleType {
   static String typeToString(PuzzleType puzzleType) {
@@ -35,7 +34,7 @@ class GetPuzzleType {
     }
   }
 
-  static PuzzleType intToPuzzleType(int index) {
+  static PuzzleType indexToType(int index) {
     switch (index) {
       case 0:
         return PuzzleType.global;
@@ -43,40 +42,6 @@ class GetPuzzleType {
         return PuzzleType.subject;
       default:
         return PuzzleType.personal;
-    }
-  }
-
-  static String typeToHintText({
-    required PuzzleType puzzleType,
-    required bool reply,
-  }) {
-    if (reply) return MessageStrings.writingReplyMessage;
-
-    switch (puzzleType) {
-      case PuzzleType.global:
-        return MessageStrings.writingGlobalMessage;
-      case PuzzleType.subject:
-        return MessageStrings.writingSubjectMessage;
-      case PuzzleType.personal:
-        return MessageStrings.writingToOtherMessage;
-      default:
-        return MessageStrings.writingToMeMessage;
-    }
-  }
-
-  static String typeToIconName({
-    required PuzzleType puzzleType,
-    required bool reply,
-  }) {
-    if (reply) return 'putReply';
-
-    switch (puzzleType) {
-      case PuzzleType.global:
-        return 'putGlobal';
-      case PuzzleType.subject:
-        return 'putSubject';
-      default:
-        return 'putPersonal';
     }
   }
 }

@@ -3,17 +3,18 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:puzzleeys_secret_letter/ads/ad_utils.dart';
 import 'package:puzzleeys_secret_letter/ads/base_ad_manager.dart';
 
-class RewardedInterstitialAdManager
-    extends BaseAdManager<RewardedInterstitialAd> {
+class RewardedAdManager extends BaseAdManager<RewardedAd> {
+  VoidCallback? onRewardEarned;
+
   @override
   void loadAd() {
     if (isLoading || isAdLoaded) return;
     isLoading = true;
 
-    RewardedInterstitialAd.load(
+    RewardedAd.load(
       adUnitId: AdUtils.getAdUnitId(AdType.rewarded),
       request: const AdRequest(),
-      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: setAd,
         onAdFailedToLoad: (error) => onAdFailedToLoad(error.message),
       ),
@@ -21,23 +22,27 @@ class RewardedInterstitialAdManager
   }
 
   @override
-  void setCallbacks(RewardedInterstitialAd ad) {
+  void setCallbacks(RewardedAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (_) => handleAdClosed(),
+      onAdDismissedFullScreenContent: (_) {
+        onRewardEarned?.call();
+        handleAdClosed();
+      },
       onAdFailedToShowFullScreenContent: (_, error) {
-        debugPrint("Rewarded interstitial ad failed: ${error.message}");
+        debugPrint("Rewarded ad failed: ${error.message}");
         handleAdClosed();
       },
     );
   }
 
   @override
-  void dispose(RewardedInterstitialAd? ad) {
+  void dispose(RewardedAd? ad) {
     ad?.dispose();
   }
 
   @override
-  void show(RewardedInterstitialAd ad, VoidCallback? onRewardEarned) {
-    ad.show(onUserEarnedReward: (_, __) => onRewardEarned?.call());
+  void show(RewardedAd ad, VoidCallback? onRewardEarned) {
+    this.onRewardEarned = onRewardEarned;
+    ad.show(onUserEarnedReward: (_, __) {});
   }
 }
