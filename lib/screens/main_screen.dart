@@ -52,8 +52,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       _puzzleScaleProvider.initialize();
       context.read<BeadProvider>().initialize();
       await context.read<BarProvider>().initialize(context);
-
-      setState(() {});
     }
   }
 
@@ -72,10 +70,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       children: [
         _buildTabBarView(),
         _buildMainTop(),
-        Selector<PuzzleProvider, int>(
-          selector: (_, provider) => _tabController!.index,
-          builder: (_, index, __) => _buildMainBottom(index),
-        ),
+        _buildMainBottom(_tabController!.index),
       ],
     );
   }
@@ -83,8 +78,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildTabBarView() {
     return TabBarView(
       controller: _tabController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [
+      physics: NeverScrollableScrollPhysics(),
+      children: [
         PuzzleGlobalScreen(),
         PuzzleSubjectScreen(),
         PuzzlePersonalScreen(),
@@ -98,7 +93,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       top: true,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-        child: const StatusBar(),
+        child: StatusBar(),
       ),
     );
   }
@@ -110,7 +105,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (index != 3) _buildActionButtons(),
-          if (index == 3) const ShopScreen(),
+          if (index == 3) ShopScreen(),
           BottomBar(currentIndex: index, onIconTap: _navigateToTab),
         ],
       ),
@@ -143,7 +138,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   void _navigateToTab(int index) async {
     if (_tabController!.index != index) {
-      _tabController!.animateTo(index);
+      setState(() {
+        _tabController!.animateTo(index);
+      });
       await SharedPreferencesUtils.save('tab', index.toString());
     }
   }

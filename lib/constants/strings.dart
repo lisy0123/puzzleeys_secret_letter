@@ -87,7 +87,7 @@ class MessageStrings {
   static String reportMessage = '해당 글을\n신고할까요?';
 
   static Map<Enum, String> warningMessages = {
-    WarningType.cancel: '돌아가면\n편지가 지워져요!',
+    WarningType.cancel: '돌아가면\n감정이 지워져요!',
     WarningType.limit: '최소 10자 이상\n작성해주세요!',
     WarningType.emptyName: '감정에\n이름을 붙여주세요!',
     WarningType.emptyPuzzle: '퍼즐에\n감정을 넣어주세요!',
