@@ -128,12 +128,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  void _shuffle() {
+  void _shuffle() async {
     final PuzzleType puzzleType =
         GetPuzzleType.indexToType(_tabController!.index);
 
     _puzzleProvider.updateShuffle(true);
-    _puzzleProvider.initializeColors(puzzleType);
+    await _puzzleProvider.initializeColors(puzzleType);
   }
 
   void _navigateToTab(int index) async {

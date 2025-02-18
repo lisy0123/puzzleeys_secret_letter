@@ -20,8 +20,11 @@ class PuzzleProvider extends ChangeNotifier {
   String _hasSubject = '';
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
+
   bool get isLoading => _isLoading;
+
   bool get isShuffle => _isShuffle;
+
   String get hasSubject => _hasSubject;
 
   PuzzleProvider() {
@@ -75,12 +78,14 @@ class PuzzleProvider extends ChangeNotifier {
       _updateLoading(true);
 
       try {
-        _currentPuzzleType = puzzleType;
+        if (puzzleType != PuzzleType.reply && puzzleType != PuzzleType.me) {
+          _currentPuzzleType = puzzleType;
+        }
 
-        final puzzleResponse = await _fetchPuzzleResponse(puzzleType);
+        final puzzleResponse = await _fetchResponse(_currentPuzzleType!);
         if (puzzleResponse['code'] == 200) {
           final puzzleList = puzzleResponse['result'] as List<dynamic>;
-          _refreshPuzzles(puzzleList, puzzleType);
+          await _refreshPuzzles(puzzleList, _currentPuzzleType!);
           updateShuffle(false);
         } else {
           updateShuffle(true);
@@ -99,8 +104,7 @@ class PuzzleProvider extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> _fetchPuzzleResponse(
-      PuzzleType puzzleType) async {
+  Future<Map<String, dynamic>> _fetchResponse(PuzzleType puzzleType) async {
     late String url;
     switch (puzzleType) {
       case PuzzleType.global:
@@ -116,7 +120,10 @@ class PuzzleProvider extends ChangeNotifier {
     return await apiRequest(url, ApiType.get);
   }
 
-  void _refreshPuzzles(List<dynamic> puzzleData, PuzzleType puzzleType) async {
+  Future<void> _refreshPuzzles(
+    List<dynamic> puzzleData,
+    PuzzleType puzzleType,
+  ) async {
     final updatedPuzzleList = List<Map<String, dynamic>>.from(_puzzleList);
     final indexes = List.generate(_puzzleList.length, (index) => index);
     final int baseColorIndex = 85;

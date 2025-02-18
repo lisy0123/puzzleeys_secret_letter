@@ -50,7 +50,7 @@ class ReportBeadDialog extends StatelessWidget {
         beadProvider.updateColorForBead(beadColor, isAdding: false);
         if (isExist) {
           puzzleProvider.updateShuffle(true);
-          puzzleProvider.initializeColors(puzzleType);
+          await puzzleProvider.initializeColors(puzzleType);
         }
       }
 

@@ -34,21 +34,22 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     super.initState();
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-      if (mounted) {
-        context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
-        _initialize();
-      }
+      _initialize();
     });
   }
 
-  void _initialize() {
+  void _initialize() async {
     final PuzzleScreenProvider checkProvider =
         context.read<PuzzleScreenProvider>();
     final bool check = checkProvider.screenCheck;
 
+    await context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
+
     if (check && widget.puzzleType == PuzzleType.personal) {
       checkProvider.screenCheckToggle(false);
-      context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
+      if (mounted) {
+        context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
+      }
     }
   }
 

@@ -39,7 +39,7 @@ class ReportPostDialog extends StatelessWidget {
       );
 
       puzzleProvider.updateShuffle(true);
-      puzzleProvider.initializeColors(puzzleType);
+      await puzzleProvider.initializeColors(puzzleType);
 
       if (context.mounted) {
         Navigator.popUntil(context, (route) => route.isFirst);

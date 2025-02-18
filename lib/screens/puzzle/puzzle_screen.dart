@@ -19,8 +19,6 @@ class PuzzleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final checkProvider = useCheck ? context.read<PuzzleScreenProvider>() : null;
-
     return Selector<PuzzleProvider, Tuple2<bool, List<Map<String, dynamic>>>>(
       selector: (_, provider) =>
           Tuple2(provider.isLoading, provider.puzzleList),
@@ -29,9 +27,9 @@ class PuzzleScreen extends StatelessWidget {
         final puzzleList = data.item2;
 
         if (isLoading) {
-          if (checkProvider != null) {
+          if (useCheck) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              checkProvider.screenCheckToggle(true);
+              context.read<PuzzleScreenProvider>().screenCheckToggle(true);
             });
           }
           return PuzzleLoadingScreen();

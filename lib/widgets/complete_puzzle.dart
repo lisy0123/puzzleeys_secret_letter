@@ -56,13 +56,19 @@ class CompletePuzzle {
   }
 
   Future<Map<String, dynamic>> _fetchResponse() async {
-    final urlMap = {
-      PuzzleType.global: '/api/post/global',
-      PuzzleType.subject: '/api/post/subject',
-    };
-    final String url = urlMap[puzzleType] ?? '/api/post/personal';
+    final String url;
+    switch (puzzleType) {
+      case PuzzleType.global:
+        url = '/api/post/global';
+        break;
+      case PuzzleType.subject:
+        url = '/api/post/subject';
+        break;
+      default:
+        url = '/api/post/personal';
+        break;
+    }
     final String userId = await UserRequest.getUserId();
-
     final Map<String, String> bodies = {...puzzleData};
     final Map<String, String> headers = {'Content-Type': 'application/json'};
 

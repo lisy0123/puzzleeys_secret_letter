@@ -6,7 +6,7 @@ class ReadPuzzleProvider with ChangeNotifier {
   Set<String> _readIds = {};
   Set<String> get readIds => _readIds;
 
-  Future<void> initialize(List<Map<String, dynamic>> puzzleList) async {
+  void initialize(List<Map<String, dynamic>> puzzleList) async {
     final Set<String> validIds = puzzleList
         .where((p) => p['read'] == true)
         .map((p) => p['id'] as String)
