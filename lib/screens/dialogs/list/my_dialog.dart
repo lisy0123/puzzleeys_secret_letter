@@ -67,7 +67,7 @@ class _MyDialogState extends State<MyDialog> {
         itemCount: data.length,
         separatorBuilder: (_, __) => Utils.dialogDivider(),
         itemBuilder: (context, index) {
-          return SizedBox(height: 900.0.w, child: _buildContent(data[index]));
+          return _buildContent(data[index]);
         },
       ),
     );
@@ -78,16 +78,22 @@ class _MyDialogState extends State<MyDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomPaint(
-          size: Size(400.0.w, 400.0.w),
-          painter: TiltedPuzzlePiece(
-            puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
-            strokeWidth: 1.5,
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 30.0.w),
+          child: CustomPaint(
+            size: Size(340.0.w, 340.0.w),
+            painter: TiltedPuzzlePiece(
+              puzzleColor: ColorUtils.colorMatch(stringColor: item['color']),
+              strokeWidth: 1.5,
+            ),
           ),
         ),
-        SizedBox(
-          width: 1200.0.w,
-          child: CustomText.dialogPuzzleText(item['title']),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0.w),
+          child: SizedBox(
+            width: 1200.0.w,
+            child: CustomText.dialogPuzzleText(item['title']),
+          ),
         ),
         SizedBox(
           height: 180.0.w,

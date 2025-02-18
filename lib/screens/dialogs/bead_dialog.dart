@@ -92,10 +92,7 @@ class _BeadDialogState extends State<BeadDialog> {
               itemCount: puzzleCount,
               separatorBuilder: (_, __) => Utils.dialogDivider(),
               itemBuilder: (context, index) {
-                return SizedBox(
-                  height: 840.0.w,
-                  child: _buildContent(data[index]),
-                );
+                return _buildContent(data[index]);
               },
             ),
           ),
@@ -141,12 +138,15 @@ class _BeadDialogState extends State<BeadDialog> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+          padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 30.0.w),
           child: _buildTopContext(item),
         ),
-        SizedBox(
-          width: 1200.0.w,
-          child: CustomText.dialogPuzzleText(item['title']),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0.w),
+          child: SizedBox(
+            width: 1200.0.w,
+            child: CustomText.dialogPuzzleText(item['title']),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +184,7 @@ class _BeadDialogState extends State<BeadDialog> {
         ),
         Center(
           child: CustomPaint(
-            size: Size(400.0.w, 400.0.w),
+            size: Size(340.0.w, 340.0.w),
             painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
           ),
         ),
