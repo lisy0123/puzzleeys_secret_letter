@@ -75,9 +75,11 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     return Stack(
       children: [
         GestureDetector(
-          onPanUpdate: (details) {
+          onScaleUpdate: (details) {
+            final newScaleFactor = scaleFactor * details.scale;
+            context.read<PuzzleScaleProvider>().updateScale(newScaleFactor);
             context.read<PuzzleOffsetProvider>().updateOffset(
-                  details.delta,
+                  details.focalPointDelta,
                   config,
                 );
           },

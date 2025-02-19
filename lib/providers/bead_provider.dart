@@ -25,27 +25,12 @@ class BeadProvider with ChangeNotifier {
   }
 
   BeadProvider() {
-    _loadStoredData();
+    _initialize();
   }
 
-  void _loadStoredData() async {
-    final savedIds = await SharedPreferencesUtils.get('beadIds');
-    final savedColor = await SharedPreferencesUtils.get('beadColor');
-    final savedCount = await SharedPreferencesUtils.get('colorCount');
+  void _initialize() async {
+    await _loadStoredData();
 
-    _beadIds = savedIds?.split(',').toSet() ?? {};
-    _beadColor = savedColor
-        ?.split(',')
-        .map((str) => ColorUtils.colorMatch(stringColor: str))
-        .toList() ??
-        [Colors.white, Colors.white];
-    _colorCount =
-    savedCount != null ? Map<String, int>.from(jsonDecode(savedCount)) : {};
-
-    notifyListeners();
-  }
-
-  void initialize() async {
     while (true) {
       final currentSession = Supabase.instance.client.auth.currentSession;
       if (currentSession == null) await Utils.waitForSession();
@@ -66,6 +51,23 @@ class BeadProvider with ChangeNotifier {
         }
       }
     }
+  }
+
+  Future<void> _loadStoredData() async {
+    final savedIds = await SharedPreferencesUtils.get('beadIds');
+    final savedColor = await SharedPreferencesUtils.get('beadColor');
+    final savedCount = await SharedPreferencesUtils.get('colorCount');
+
+    _beadIds = savedIds?.split(',').toSet() ?? {};
+    _beadColor = savedColor
+        ?.split(',')
+        .map((str) => ColorUtils.colorMatch(stringColor: str))
+        .toList() ??
+        [Colors.white, Colors.white];
+    _colorCount =
+    savedCount != null ? Map<String, int>.from(jsonDecode(savedCount)) : {};
+
+    notifyListeners();
   }
 
   Future<void> _updateBeadIds(List<Map<String, dynamic>> puzzleList) async {

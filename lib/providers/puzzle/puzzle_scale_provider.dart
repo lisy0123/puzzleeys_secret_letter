@@ -5,7 +5,11 @@ class PuzzleScaleProvider extends ChangeNotifier {
   double _scaleFactor = 0.5;
   double get scaleFactor => _scaleFactor;
 
-  void initialize() async {
+  PuzzleScaleProvider() {
+    _initialize();
+  }
+
+  void _initialize() async {
     final storedScale = await SharedPreferencesUtils.get('scaleFactor');
     if (storedScale != null) {
       _scaleFactor = double.tryParse(storedScale) ?? 0.5;
@@ -15,15 +19,8 @@ class PuzzleScaleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleScale() {
-    switch (_scaleFactor) {
-      case 1.0:
-        _scaleFactor = 0.75;
-      case 0.75:
-        _scaleFactor = 0.5;
-      default:
-        _scaleFactor = 1.0;
-    }
+  void updateScale(double newScaleFactor) {
+    _scaleFactor = newScaleFactor.clamp(0.5, 1.3);
     SharedPreferencesUtils.save('scaleFactor', _scaleFactor.toString());
     notifyListeners();
   }

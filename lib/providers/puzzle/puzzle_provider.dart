@@ -31,15 +31,12 @@ class PuzzleProvider extends ChangeNotifier {
     _initialize();
   }
 
-  void _initialize() {
+  void _initialize() async {
     _puzzleList = List<Map<String, dynamic>>.generate(
       rows * cols,
       (index) => _emptyPuzzle(index),
     );
-    notifyListeners();
-  }
 
-  void initializeHasSubject() async {
     final stored = await SharedPreferencesUtils.get('hasSubject');
     _hasSubject = stored ?? '';
     notifyListeners();

@@ -7,7 +7,6 @@ import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
-import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
@@ -24,8 +23,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   TabController? _tabController;
-  late PuzzleProvider _puzzleProvider;
-  late PuzzleScaleProvider _puzzleScaleProvider;
 
   @override
   void initState() {
@@ -45,12 +42,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
 
     if (mounted) {
-      _puzzleProvider = context.read<PuzzleProvider>();
-      _puzzleScaleProvider = context.read<PuzzleScaleProvider>();
-
-      _puzzleProvider.initializeHasSubject();
-      _puzzleScaleProvider.initialize();
-      context.read<BeadProvider>().initialize();
       await context.read<BarProvider>().initialize(context);
     }
   }
@@ -115,15 +106,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildActionButtons() {
     return Padding(
       padding: EdgeInsets.all(100.0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomCircle(
-            svgImage: 'cir_zoom',
-            onTap: _puzzleScaleProvider.toggleScale,
-          ),
-          CustomCircle(svgImage: 'cir_shuffle', onTap: _shuffle),
-        ],
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: CustomCircle(svgImage: 'cir_shuffle', onTap: _shuffle),
       ),
     );
   }
@@ -131,9 +116,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _shuffle() async {
     final PuzzleType puzzleType =
         GetPuzzleType.indexToType(_tabController!.index);
+    final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
-    _puzzleProvider.updateShuffle(true);
-    await _puzzleProvider.initializeColors(puzzleType);
+    puzzleProvider.updateShuffle(true);
+    await puzzleProvider.initializeColors(puzzleType);
   }
 
   void _navigateToTab(int index) async {

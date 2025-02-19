@@ -22,10 +22,10 @@ class PuzzleConfig {
   int get totalItems => itemsPerRow * totalRows;
 
   double get maxDragDistanceX =>
-      (puzzleWidth + horizontalSpacing) * scaleFactor * 3;
+      (puzzleWidth + horizontalSpacing) * scaleFactor * 4;
 
   double get maxDragDistanceY =>
-      (puzzleHeight + verticalSpacing) * scaleFactor * 6;
+      (puzzleHeight + verticalSpacing) * scaleFactor * 7;
 
   Offset calculateStartOffset(Size containerSize, Offset dragOffset) {
     final double scaledWidth = _scaledTotalWidth;
