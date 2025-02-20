@@ -8,6 +8,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart' show MobileAds;
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
 import 'package:puzzleeys_secret_letter/ads/interstitial_ad.dart';
+import 'package:puzzleeys_secret_letter/ads/native_ad.dart';
 import 'package:puzzleeys_secret_letter/ads/rewarded_ad.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
@@ -43,6 +44,7 @@ void main() async {
     AdManager().initialize(
       interstitialAd: InterstitialAdManager(),
       rewardedAd: RewardedAdManager(),
+      nativeAd: NativeAdManager(),
     ),
     // PushNotification().initialize(),
   ]);

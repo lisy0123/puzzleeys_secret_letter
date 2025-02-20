@@ -1,0 +1,2 @@
+/Users/sangeunlee/lisy/puzzle/puzzleeys_secret_letter/android/app/.cxx/RelWithDebInfo/72g3u5i1/x86/CMakeFiles/edit_cache.dir
+/Users/sangeunlee/lisy/puzzle/puzzleeys_secret_letter/android/app/.cxx/RelWithDebInfo/72g3u5i1/x86/CMakeFiles/rebuild_cache.dir

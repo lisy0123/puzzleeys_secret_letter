@@ -1,15 +1,17 @@
 import 'dart:io' show Platform;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-enum AdType { interstitial, rewarded }
+enum AdType { interstitial, rewarded, native }
 
 class AdUtils {
   static String getAdUnitId(AdType adType) {
     final String interstitialAos = 'INTERSTITIAL_AD_ID_AOS';
     final String rewardAos = 'REWARDED_AD_ID_AOS';
+    final String nativeAos = 'NATIVE_AD_ID_AOS';
 
     final String interstitialIos = 'INTERSTITIAL_AD_ID_IOS';
     final String rewardIos = 'REWARDED_AD_ID_IOS';
+    final String nativeIos = 'NATIVE_AD_ID_IOS';
 
     // TODO: need to change before release
     if (Platform.isAndroid) {
@@ -20,6 +22,9 @@ class AdUtils {
         case AdType.rewarded:
           return "ca-app-pub-3940256099942544/5224354917";
         // return dotenv.env[rewardAos]!;
+        case AdType.native:
+          return "ca-app-pub-3940256099942544/2247696110";
+      // return dotenv.env[nativeAos]!;
       }
     } else if (Platform.isIOS) {
       switch (adType) {
@@ -29,6 +34,9 @@ class AdUtils {
         case AdType.rewarded:
           return "ca-app-pub-3940256099942544/1712485313";
         // return dotenv.env[rewardIos]!;
+        case AdType.native:
+          return "ca-app-pub-3940256099942544/3986624511";
+      // return dotenv.env[nativeIos]!;
       }
     }
     return "";

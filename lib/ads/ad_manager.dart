@@ -16,10 +16,12 @@ class AdManager {
   Future<void> initialize({
     required BaseAdManager interstitialAd,
     required BaseAdManager rewardedAd,
+    required BaseAdManager nativeAd,
   }) async {
     _adManagers = {
       AdType.interstitial: interstitialAd,
       AdType.rewarded: rewardedAd,
+      AdType.native: nativeAd,
     };
 
     final String? value = await SharedPreferencesUtils.get("postViewCount");
@@ -35,6 +37,8 @@ class AdManager {
 
   Future<void> showRewardedAd(VoidCallback onRewardEarned) =>
       _showAd(AdType.rewarded, onRewardEarned);
+
+  void showNativeAd() => _showAd(AdType.rewarded);
 
   Future<void> _showAd(AdType adType, [VoidCallback? onRewardEarned]) async {
     if (adType == AdType.interstitial) {
@@ -53,8 +57,13 @@ class AdManager {
           _postViewCount -= 3;
         }
         break;
+      default:
+        break;
     }
-    await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
+
+    if (adType != AdType.native) {
+      await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
+    }
 
     final ad = _adManagers[adType];
     if (ad == null || !ad.isAdLoaded) {
@@ -74,6 +83,8 @@ class AdManager {
         return true;
       case AdType.interstitial:
         return _postViewCount == 7;
+      default:
+        return true;
     }
   }
 }
