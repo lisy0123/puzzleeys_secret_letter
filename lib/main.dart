@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart' show MobileAds;
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
 import 'package:puzzleeys_secret_letter/ads/interstitial_ad.dart';
@@ -44,8 +45,10 @@ void main() async {
       interstitialAd: InterstitialAdManager(),
       rewardedAd: RewardedAdManager(),
     ),
+    Hive.initFlutter(),
     // PushNotification().initialize(),
   ]);
+  Hive.registerAdapter(ColorAdapter());
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   FlutterNativeSplash.remove();

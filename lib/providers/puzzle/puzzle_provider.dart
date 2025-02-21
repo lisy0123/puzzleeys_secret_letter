@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
@@ -20,11 +21,8 @@ class PuzzleProvider extends ChangeNotifier {
   String _hasSubject = '';
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
-
   bool get isLoading => _isLoading;
-
   bool get isShuffle => _isShuffle;
-
   String get hasSubject => _hasSubject;
 
   PuzzleProvider() {
@@ -79,16 +77,31 @@ class PuzzleProvider extends ChangeNotifier {
           _currentPuzzleType = puzzleType;
         }
 
-        final puzzleResponse = await _fetchResponse(_currentPuzzleType!);
-        if (puzzleResponse['code'] == 200) {
-          final puzzleList = puzzleResponse['result'] as List<dynamic>;
-          await _refreshPuzzles(puzzleList, _currentPuzzleType!);
-          updateShuffle(false);
-        } else {
-          updateShuffle(true);
+        late List<Map<String, dynamic>> puzzleListCache = [];
+        if (!_isShuffle) {
+          puzzleListCache = await _loadPuzzleList(_currentPuzzleType!);
         }
-        _updateLoading(false);
-        break;
+
+        if (puzzleListCache.isNotEmpty) {
+          _puzzleList = puzzleListCache;
+          notifyListeners();
+
+          updateShuffle(false);
+          _updateLoading(false);
+          break;
+        } else {
+          final puzzleResponse = await _fetchResponse(_currentPuzzleType!);
+          if (puzzleResponse['code'] == 200) {
+            final puzzleList = puzzleResponse['result'] as List<dynamic>;
+            await _refreshPuzzles(puzzleList, _currentPuzzleType!);
+            await _savePuzzleList(_currentPuzzleType!);
+            updateShuffle(false);
+          } else {
+            updateShuffle(true);
+          }
+          _updateLoading(false);
+          break;
+        }
       } catch (error) {
         updateShuffle(true);
         if (error.toString().contains('Invalid or expired JWT')) {
@@ -99,6 +112,29 @@ class PuzzleProvider extends ChangeNotifier {
         }
       }
     }
+  }
+
+  Future<List<Map<String, dynamic>>> _loadPuzzleList(
+      PuzzleType puzzleType) async {
+    final box = await _openPuzzleBox(puzzleType);
+    final storedList = box.get('puzzles', defaultValue: []);
+    return List<Map<String, dynamic>>.from(storedList);
+  }
+
+  Future<Box> _openPuzzleBox(PuzzleType puzzleType) async {
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return await Hive.openBox('globalPuzzleBox');
+      case PuzzleType.subject:
+        return await Hive.openBox('subjectPuzzleBox');
+      default:
+        return await Hive.openBox('personalPuzzleBox');
+    }
+  }
+
+  Future<void> _savePuzzleList(PuzzleType puzzleType) async {
+    final box = await _openPuzzleBox(puzzleType);
+    await box.put('puzzles', _puzzleList);
   }
 
   Future<Map<String, dynamic>> _fetchResponse(PuzzleType puzzleType) async {

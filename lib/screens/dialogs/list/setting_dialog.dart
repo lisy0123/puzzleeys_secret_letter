@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
@@ -104,6 +105,7 @@ class _SettingDialogState extends State<SettingDialog> {
       Supabase.instance.client.auth.signOut(),
       SecureStorageUtils.clear(),
       SharedPreferencesUtils.clear(),
+      Hive.deleteFromDisk(),
     ]);
     if (mounted) {
       context.read<AuthStatusProvider>().checkLoginStatus();
