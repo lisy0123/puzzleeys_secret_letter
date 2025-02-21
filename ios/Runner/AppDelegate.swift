@@ -1,8 +1,6 @@
 import Flutter
 import UIKit
 
-import google_mobile_ads
-
 @main
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
@@ -13,11 +11,6 @@ import google_mobile_ads
   if #available(iOS 10.0, *) {
     UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
   }
-
-      let listTileFactory = ListTileNativeAdFactory()
-      FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-        self, factoryId: "listTile", nativeAdFactory: listTileFactory
-      )
       
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
