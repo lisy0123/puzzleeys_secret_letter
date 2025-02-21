@@ -23,8 +23,9 @@ if (keyPropertiesFile.exists()) {
 android {
     namespace = "com.puzzleey.puzzleeysSecretLetter"
 //    compileSdk = flutter.compileSdkVersion
+//    ndkVersion = flutter.ndkVersion
     compileSdk = 34
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
