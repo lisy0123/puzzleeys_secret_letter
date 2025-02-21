@@ -50,6 +50,7 @@ class _CustomCircleState extends State<CustomCircle>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late bool _isPressed = false;
+  bool _isTapped = false;
 
   @override
   void initState() {
@@ -79,6 +80,22 @@ class _CustomCircleState extends State<CustomCircle>
     });
   }
 
+  void _handleTap() async {
+    if (_isTapped) return;
+
+    setState(() {
+      _isTapped = true;
+    });
+
+    widget.onTap();
+    await Future.delayed(Duration(seconds: 1));
+    _handleTapState(false);
+
+    setState(() {
+      _isTapped = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -87,11 +104,13 @@ class _CustomCircleState extends State<CustomCircle>
         await _controller.forward();
         await _controller.reverse();
       },
-      onTapUp: (_) {
+      onTapUp: (_) => _handleTap(),
+      onTapCancel: () {
         _handleTapState(false);
-        widget.onTap();
+        setState(() {
+          _isTapped = false;
+        });
       },
-      onTapCancel: () => _handleTapState(false),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         child: SvgPicture.asset(

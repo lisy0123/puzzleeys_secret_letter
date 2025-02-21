@@ -12,6 +12,7 @@ class AdManager {
 
   late Map<AdType, BaseAdManager> _adManagers;
   int _postViewCount = 0;
+  final int _postViewMaxCount = 7;
 
   Future<void> initialize({
     required BaseAdManager interstitialAd,
@@ -49,8 +50,8 @@ class AdManager {
         _postViewCount = 0;
         break;
       case AdType.rewarded:
-        if (_postViewCount == 7) {
-          _postViewCount -= 3;
+        if (_postViewCount == _postViewMaxCount) {
+          _postViewCount -= _postViewMaxCount ~/ 2;
         }
         break;
     }
@@ -74,7 +75,7 @@ class AdManager {
       case AdType.rewarded:
         return true;
       case AdType.interstitial:
-        return _postViewCount == 7;
+        return _postViewCount == _postViewMaxCount;
     }
   }
 }
