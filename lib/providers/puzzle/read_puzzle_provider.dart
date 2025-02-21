@@ -32,7 +32,7 @@ class ReadPuzzleProvider with ChangeNotifier {
     }
   }
 
-  Future<void> markAsRead(String puzzleId) async {
+  void markAsRead(String puzzleId) async {
     if (_readIds.add(puzzleId)) {
       notifyListeners();
       await Future.wait([
