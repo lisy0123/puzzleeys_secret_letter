@@ -1,22 +1,24 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BeadProvider with ChangeNotifier {
+  late Box _beadBox;
+
   Set<String> _beadIds = {};
   Map<String, int> _colorCount = {};
   List<Color> _beadColor = [Colors.white, Colors.white];
   bool _isLoading = false;
 
   List<Color> get beadColor => _beadColor;
+
   bool get isLoading => _isLoading;
 
   void updateLoading({required bool setLoading}) {
@@ -34,6 +36,7 @@ class BeadProvider with ChangeNotifier {
     while (true) {
       final currentSession = Supabase.instance.client.auth.currentSession;
       if (currentSession == null) await Utils.waitForSession();
+
       try {
         final responseData = await apiRequest('/api/bead/user', ApiType.get);
         if (responseData['code'] == 200) {
@@ -54,19 +57,17 @@ class BeadProvider with ChangeNotifier {
   }
 
   Future<void> _loadStoredData() async {
-    final savedIds = await SharedPreferencesUtils.get('beadIds');
-    final savedColor = await SharedPreferencesUtils.get('beadColor');
-    final savedCount = await SharedPreferencesUtils.get('colorCount');
+    _beadBox = await Hive.openBox('beadBox');
 
-    _beadIds = savedIds?.split(',').toSet() ?? {};
-    _beadColor = savedColor
-        ?.split(',')
-        .map((str) => ColorUtils.colorMatch(stringColor: str))
-        .toList() ??
-        [Colors.white, Colors.white];
-    _colorCount =
-    savedCount != null ? Map<String, int>.from(jsonDecode(savedCount)) : {};
-
+    _beadIds = _beadBox.get('beadIds', defaultValue: <String>{});
+    _beadColor =
+        List<Color>.from(_beadBox.get('beadColor', defaultValue: <Color>[]));
+    if (_beadColor.isEmpty) {
+      _beadColor = [Colors.white, Colors.white];
+    }
+    _colorCount = Map<String, int>.from(
+      _beadBox.get('colorCount', defaultValue: <String, int>{}),
+    );
     notifyListeners();
   }
 
@@ -78,8 +79,7 @@ class BeadProvider with ChangeNotifier {
     if (hasChanges) {
       _beadIds = validIds;
       notifyListeners();
-
-      await SharedPreferencesUtils.save('beadIds', _beadIds.join(','));
+      await _beadBox.put('beadIds', _beadIds);
     }
   }
 
@@ -100,8 +100,7 @@ class BeadProvider with ChangeNotifier {
     if (!mapEquals(_colorCount, colorCount)) {
       _colorCount = Map.from(colorCount);
       notifyListeners();
-
-      await SharedPreferencesUtils.save('colorCount', jsonEncode(_colorCount));
+      await _beadBox.put('colorCount', _colorCount);
     }
     final List<Color> colors = _getTopColors();
     _setBeadColor(colors);
@@ -161,10 +160,7 @@ class BeadProvider with ChangeNotifier {
     if (_beadColor != colors) {
       _beadColor = colors;
       notifyListeners();
-
-      final String beadColorString =
-          _beadColor.map((color) => ColorUtils.colorToString(color)).join(',');
-      await SharedPreferencesUtils.save('beadColor', beadColorString);
+      await _beadBox.put('beadColor', _beadColor);
     }
   }
 
@@ -180,7 +176,7 @@ class BeadProvider with ChangeNotifier {
       final String puzzleColor = ColorUtils.colorToString(puzzleData['color']);
       updateColorForBead(puzzleColor);
 
-      await SharedPreferencesUtils.save('beadIds', _beadIds.join(','));
+      await _beadBox.put('beadIds', _beadIds);
 
       final String userId = await UserRequest.getUserId();
       final Map<String, String> bodies = {
@@ -209,7 +205,7 @@ class BeadProvider with ChangeNotifier {
         (_colorCount[addedColor] ?? 0) + (isAdding ? 1 : -1);
     notifyListeners();
 
-    await SharedPreferencesUtils.save('colorCount', jsonEncode(_colorCount));
+    await _beadBox.put('colorCount', _colorCount);
     final List<Color> colors = _getTopColors();
     _setBeadColor(colors);
   }

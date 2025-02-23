@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
@@ -10,20 +11,21 @@ import 'package:puzzleeys_secret_letter/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PuzzleProvider extends ChangeNotifier {
-  final int rows = 9;
-  final int cols = 18;
-  late String userId;
+  final int _rows = 9;
+  final int _cols = 18;
+  late String _userId;
+  final Set<int> _loadedScreens = {};
 
   List<Map<String, dynamic>> _puzzleList = [];
   PuzzleType? _currentPuzzleType;
   bool _isLoading = false;
   bool _isShuffle = false;
-  String _hasSubject = '';
+  bool _hasSubject = false;
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
   bool get isLoading => _isLoading;
   bool get isShuffle => _isShuffle;
-  String get hasSubject => _hasSubject;
+  bool get hasSubject => _hasSubject;
 
   PuzzleProvider() {
     _initialize();
@@ -31,12 +33,10 @@ class PuzzleProvider extends ChangeNotifier {
 
   void _initialize() async {
     _puzzleList = List<Map<String, dynamic>>.generate(
-      rows * cols,
+      _rows * _cols,
       (index) => _emptyPuzzle(index),
     );
-
-    final stored = await SharedPreferencesUtils.get('hasSubject');
-    _hasSubject = stored ?? '';
+    _hasSubject = await SharedPreferencesUtils.getBool('hasSubject') ?? false;
     notifyListeners();
   }
 
@@ -79,7 +79,10 @@ class PuzzleProvider extends ChangeNotifier {
 
         late List<Map<String, dynamic>> puzzleListCache = [];
         if (!_isShuffle) {
-          puzzleListCache = await _loadPuzzleList(_currentPuzzleType!);
+          final int screenIndex = GetPuzzleType.typeToIndex(puzzleType);
+          if (!_loadedScreens.add(screenIndex)) {
+            puzzleListCache = await _loadPuzzleList(_currentPuzzleType!);
+          }
         }
 
         if (puzzleListCache.isNotEmpty) {
@@ -175,7 +178,7 @@ class PuzzleProvider extends ChangeNotifier {
     }
 
     bool isExisted = false;
-    userId = await UserRequest.getUserId();
+    _userId = await UserRequest.getUserId();
 
     for (int i = 0; i < puzzleData.length; i++) {
       final targetIndex = getTargetIndex(i);
@@ -196,7 +199,7 @@ class PuzzleProvider extends ChangeNotifier {
         'read': puzzleData[i]['read'],
       };
       if (puzzleType == PuzzleType.subject) {
-        if (!isExisted && puzzleData[i]['author_id'] == userId) {
+        if (!isExisted && puzzleData[i]['author_id'] == _userId) {
           isExisted = true;
         }
       }
@@ -204,10 +207,12 @@ class PuzzleProvider extends ChangeNotifier {
 
     _puzzleList = updatedPuzzleList;
     notifyListeners();
+
     if (puzzleType == PuzzleType.subject) {
-      final shouldSave = isExisted ? _hasSubject != 'Y' : _hasSubject != '';
-      if (shouldSave) {
-        _saveHasSubject(isExisted);
+      if (_hasSubject != isExisted) {
+        _hasSubject = isExisted;
+        notifyListeners();
+        SharedPreferencesUtils.saveBool('hasSubject', _hasSubject);
       }
     }
   }
@@ -224,11 +229,5 @@ class PuzzleProvider extends ChangeNotifier {
       _isLoading = value;
       notifyListeners();
     }
-  }
-
-  void _saveHasSubject(bool isExist) {
-    _hasSubject = isExist ? 'Y' : '';
-    SharedPreferencesUtils.save('hasSubject', _hasSubject);
-    notifyListeners();
   }
 }

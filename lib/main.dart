@@ -23,6 +23,8 @@ import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.d
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/auth_check_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
+import 'package:puzzleeys_secret_letter/utils/hive_adapter/color_count_adapter.dart';
+import 'package:puzzleeys_secret_letter/utils/hive_adapter/string_set_adapter.dart';
 import 'package:puzzleeys_secret_letter/utils/push_notification.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,9 +34,11 @@ void main() async {
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
 
-  await Firebase.initializeApp();
-  await MobileAds.instance.initialize();
-  await dotenv.load(fileName: ".env");
+  await Future.wait([
+    Firebase.initializeApp(),
+    MobileAds.instance.initialize(),
+    dotenv.load(fileName: ".env"),
+  ]);
 
   await Future.wait([
     Supabase.initialize(
@@ -48,7 +52,10 @@ void main() async {
     Hive.initFlutter(),
     // PushNotification().initialize(),
   ]);
+
   Hive.registerAdapter(ColorAdapter());
+  Hive.registerAdapter(StringSetAdapter());
+  Hive.registerAdapter(ColorCountAdapter());
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   FlutterNativeSplash.remove();

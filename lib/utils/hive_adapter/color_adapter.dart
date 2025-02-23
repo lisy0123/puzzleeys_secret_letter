@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ColorAdapter extends TypeAdapter<Color> {
   @override
-  final typeId = 1;
+  final typeId = 0;
 
   @override
   Color read(BinaryReader reader) {

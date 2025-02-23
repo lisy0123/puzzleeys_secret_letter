@@ -18,12 +18,12 @@ class BarProvider with ChangeNotifier {
   }
 
   void _loadStoredData() async {
-    final String? savedNums = await SharedPreferencesUtils.get('puzzleNums');
+    _puzzleNums = await SharedPreferencesUtils.getInt('puzzleNums');
+
     final String? savedDate =
         await SharedPreferencesUtils.get('attendance_date');
-
-    _puzzleNums = int.tryParse(savedNums ?? '') ?? 0;
     _lastCheckedDate = savedDate != null ? DateTime.tryParse(savedDate) : null;
+
     notifyListeners();
   }
 
@@ -31,6 +31,7 @@ class BarProvider with ChangeNotifier {
     while (true) {
       final currentSession = Supabase.instance.client.auth.currentSession;
       if (currentSession == null) await Utils.waitForSession();
+
       try {
         final responseData = await apiRequest('/api/bar/user', ApiType.get);
         if (responseData['code'] == 200) {
@@ -60,9 +61,9 @@ class BarProvider with ChangeNotifier {
     if (puzzleNum != _puzzleNums) {
       _puzzleNums = puzzleNum;
       notifyListeners();
-
-      await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
+      await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
     }
+
     if (lastCheckedDate != _lastCheckedDate) {
       _lastCheckedDate = lastCheckedDate;
       notifyListeners();
@@ -101,15 +102,13 @@ class BarProvider with ChangeNotifier {
   void adPuzzleNum() async {
     _puzzleNums++;
     notifyListeners();
-
-    await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
+    await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
   }
 
   void updatePuzzleNum(int num) async {
     _puzzleNums += num;
     notifyListeners();
-
-    await SharedPreferencesUtils.save('puzzleNums', '$_puzzleNums');
+    await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
     _request({'puzzle': '$_puzzleNums'});
   }
 
@@ -127,7 +126,6 @@ class BarProvider with ChangeNotifier {
   Future<void> resetAttendance() async {
     await SharedPreferencesUtils.delete('attendance_date');
     _lastCheckedDate = null;
-
     notifyListeners();
   }
 }

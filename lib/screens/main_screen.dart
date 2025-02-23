@@ -11,7 +11,6 @@ import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.da
 import 'package:puzzleeys_secret_letter/screens/puzzle/puzzle_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/shop/shop_screen.dart';
 import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 
 class MainScreen extends StatefulWidget {
@@ -31,12 +30,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _initialize() async {
-    final savedIndex = await SharedPreferencesUtils.get('tab');
-    final int index = int.tryParse(savedIndex ?? '0') ?? 0;
-
     _tabController = TabController(
       length: 4,
-      initialIndex: index,
+      initialIndex: 0,
       vsync: this,
       animationDuration: Duration.zero,
     );
@@ -136,7 +132,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       setState(() {
         _tabController!.animateTo(index);
       });
-      await SharedPreferencesUtils.save('tab', index.toString());
     }
   }
 }

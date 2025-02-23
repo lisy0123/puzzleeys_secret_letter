@@ -23,8 +23,7 @@ class AdManager {
       AdType.rewarded: rewardedAd,
     };
 
-    final String? value = await SharedPreferencesUtils.get("postViewCount");
-    _postViewCount = value != null ? int.parse(value) : 0;
+    _postViewCount = await SharedPreferencesUtils.getInt("postViewCount");
 
     final List<AdType> adTypes = _adManagers.keys.toList();
     for (var adType in adTypes) {
@@ -40,7 +39,7 @@ class AdManager {
   Future<void> _showAd(AdType adType, [VoidCallback? onRewardEarned]) async {
     if (adType == AdType.interstitial) {
       _postViewCount++;
-      await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
+      await SharedPreferencesUtils.saveInt("postViewCount", _postViewCount);
     }
 
     if (!_canShowAd(adType)) return;
@@ -56,7 +55,7 @@ class AdManager {
         break;
     }
 
-    await SharedPreferencesUtils.save("postViewCount", '$_postViewCount');
+    await SharedPreferencesUtils.saveInt("postViewCount", _postViewCount);
 
     final ad = _adManagers[adType];
     if (ad == null || !ad.isAdLoaded) {

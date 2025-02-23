@@ -44,4 +44,15 @@ class GetPuzzleType {
         return PuzzleType.personal;
     }
   }
+
+  static int typeToIndex(PuzzleType puzzleType) {
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return 0;
+      case PuzzleType.subject:
+        return 1;
+      default:
+        return 2;
+    }
+  }
 }

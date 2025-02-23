@@ -10,18 +10,13 @@ class PuzzleScaleProvider extends ChangeNotifier {
   }
 
   void _initialize() async {
-    final storedScale = await SharedPreferencesUtils.get('scaleFactor');
-    if (storedScale != null) {
-      _scaleFactor = double.tryParse(storedScale) ?? 0.5;
-    } else {
-      _scaleFactor = 0.5;
-    }
+    _scaleFactor = await SharedPreferencesUtils.getDouble('scaleFactor') ?? 0.5;
     notifyListeners();
   }
 
   void updateScale(double newScaleFactor) {
     _scaleFactor = newScaleFactor.clamp(0.5, 1.3);
-    SharedPreferencesUtils.save('scaleFactor', _scaleFactor.toString());
+    SharedPreferencesUtils.saveDouble('scaleFactor', _scaleFactor);
     notifyListeners();
   }
 }

@@ -54,12 +54,12 @@ class PuzzleContentHandler {
     PuzzleType puzzleType,
     BuildContext context,
   ) {
-    final String hasSubject =
+    final bool hasSubject =
         Provider.of<PuzzleProvider>(context, listen: false).hasSubject;
 
     if (puzzleType == PuzzleType.personal) {
       _showDialog('putWho', context);
-    } else if (puzzleType == PuzzleType.subject && hasSubject == 'Y') {
+    } else if (puzzleType == PuzzleType.subject && hasSubject) {
       _showDialog('isExists', context);
     } else {
       PuzzleScreenHandler.navigateScreen(
