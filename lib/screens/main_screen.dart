@@ -31,7 +31,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   Future<void> _initialize() async {
     _tabController = TabController(
-      length: 4,
+      length: 3, // TODO: need to add 4 later
       initialIndex: 0,
       vsync: this,
       animationDuration: Duration.zero,
@@ -79,7 +79,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         PuzzleGlobalScreen(),
         PuzzleSubjectScreen(),
         PuzzlePersonalScreen(),
-        EmptyShopScreen(),
+        // TODO: need to add 4 later
+        // EmptyShopScreen(),
       ],
     );
   }

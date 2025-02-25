@@ -145,14 +145,14 @@ class _BeadDialogState extends State<BeadDialog> {
           padding: EdgeInsets.symmetric(vertical: 20.0.w),
           child: SizedBox(
             width: 1200.0.w,
-            child: CustomText.dialogPuzzleText(item['title']),
+            child: CustomText.dialogText(item['title']),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomText.dialogPuzzleText(date, date: true),
+            CustomText.dialogText(date, gray: true),
             ParentPuzzleWidget(parentPostType: item['post_type']),
           ],
         ),

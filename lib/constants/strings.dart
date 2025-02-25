@@ -2,6 +2,17 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 
 class CustomStrings {
   static const String email = 'puzzleey@puzzleletter.com';
+  static const String snsX = 'https://x.com/puzzleey_app';
+
+  static const String howToUseUrl =
+      'https://puzzleey.notion.site/1a5056190a05802fb47ec48016cfea9d';
+  static const String termsUrl =
+      'https://puzzleey.notion.site/1a5056190a0580df8396d5e041463494';
+  static const String privacyPolicyUrl =
+      'https://puzzleey.notion.site/1a5056190a0580fda462cb5b814310c3';
+  static const String propertyRightUrl =
+      'https://puzzleey.notion.site/1a5056190a0580eaa418f5926c78ca44';
+
   static const String title = 'PUZZLEEY';
   static const String slogan = '퍼즐에 감정을 담다';
   static const String googleLogin = '구글로 시작하기';
@@ -14,14 +25,13 @@ class CustomStrings {
     'list': '더 보 기',
     'puzzlePreview': '감정 보기',
     'puzzleSubject': '오늘의 주제',
-
     'putGlobal': '감정 넣기',
     'putSubject': '감정 넣기',
     'putPersonal': '감정 넣기',
     'putMe': '감정 넣기',
     'putReply': '감정 넣기',
     'setDays': '언제 받을까요?',
-
+    'terms': '서비스 이용약관',
     '0': '계 정',
     '1': '내 글',
     '2': '알 람',
@@ -39,8 +49,15 @@ class CustomStrings {
   static String dayCount = '일째';
   static String day = '일 뒤';
 
+  static String howToUse = '이용 안내';
   static String feedback = '문의하기';
+
   static String version = '버 전';
+  static String copyRight = 'Copyright 2025 Puzzleey';
+
+  static String terms = '서비스 이용약관';
+  static String privacyPolicy = '개인정보 처리방침';
+  static String propertyRight = '회원 저작물의 지적재산권';
 
   static String reply = '답 장';
   static String report = '신고하기';
@@ -70,14 +87,17 @@ class CustomStrings {
 }
 
 class MessageStrings {
+  static String welcomeMessage = 'PUZZLEEY 사용법에 대해\n알아볼까요?';
+
   static String writingGlobalMessage = '전하고 싶은 감정을 자유롭게 적어주세요.';
   static String writingSubjectMessage = '주제에 대해 자유롭게 적어주세요.';
   static String writingToOtherMessage = '누군가에게 전하고 싶은 감정을 적어주세요.';
   static String writingToMeMessage = '미래의 나에게 전하고 싶은 감정을 적어주세요.';
   static String writingReplyMessage = '답장을 적어주세요.';
+  static String limitReplyMessage = '\n(1000자 이하)';
 
   static String chooseMessage = '퍼즐을 클릭해서 감정을 골라주세요.';
-  static String namingMessage = '감정에 이름을 붙여주세요.\n(최대 30자)';
+  static String namingMessage = '감정에 이름을 붙여주세요.\n(30자 이하)';
   static String setDaysMessage = '받을 날짜를 골라주세요.';
 
   static String emptyWritingMessage = '작성한 글이 없어요!';
@@ -85,6 +105,9 @@ class MessageStrings {
 
   static String deleteMessage = '지금 당장\n삭제할까요?';
   static String reportMessage = '해당 글을\n신고할까요?';
+
+  static String logoutMessage = '로그아웃할까요?';
+  static String deleteUserMessage = '회원 탈퇴할까요?';
 
   static Map<Enum, String> warningMessages = {
     WarningType.cancel: '돌아가면\n감정이 지워져요!',
@@ -110,7 +133,7 @@ class MessageStrings {
   };
 
   static Map<Enum, List<dynamic>> overlayMessages = {
-    OverlayType.attendance: [3, '출석했어요!'],
+    OverlayType.attendance: [1, '출석했어요!'],
     OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
     OverlayType.writeGlobalPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
     OverlayType.writeSubjectPuzzle: [-1, '오늘의 주제에 감정 퍼즐을 공유했어요!'],

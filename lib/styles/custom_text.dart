@@ -125,18 +125,18 @@ class CustomText {
     );
   }
 
-  static Text dialogPuzzleText(String text, {bool date = false}) {
+  static Text dialogText(String text, {bool gray = false}) {
     return Text(
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: date
+        color: gray
             ? CustomColors.colorBase.withValues(alpha: 0.6)
             : CustomColors.colorBase,
         fontFamily: 'NANUM',
         fontWeight: FontWeight.w900,
         letterSpacing: 1.5,
-        fontSize: date ? 70.sp : 74.0.sp,
+        fontSize: gray ? 70.sp : 74.0.sp,
       ),
     );
   }

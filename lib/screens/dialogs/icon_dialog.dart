@@ -37,9 +37,11 @@ class BuildDialog {
     String? puzzleId,
     bool overlapped = false,
     bool simpleDialog = false,
+    bool dismissible = true,
     required BuildContext context,
   }) {
     showDialog(
+      barrierDismissible: dismissible,
       barrierColor: overlapped ? Colors.transparent : Colors.black54,
       context: context,
       builder: (_) {

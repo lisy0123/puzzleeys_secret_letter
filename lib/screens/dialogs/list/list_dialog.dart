@@ -14,7 +14,6 @@ class ListDialog extends StatefulWidget {
 }
 
 class _ListDialogState extends State<ListDialog> {
-
   @override
   void initState() {
     FeedbackEmail.initialize();
@@ -57,26 +56,7 @@ class _ListDialogState extends State<ListDialog> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onPressed: () => _showIconDialog(index, context),
-          icon: Column(
-            children: [
-              SvgPicture.asset(
-                'assets/imgs/list_$index.svg',
-                width: 36.0.h,
-                colorFilter: ColorFilter.mode(
-                  index == 4
-                      ? Colors.white.withValues(alpha: 0.6)
-                      : Colors.transparent,
-                  BlendMode.srcATop,
-                ),
-              ),
-              SizedBox(height: 6.0.h, width: 300.0.w),
-              CustomText.textDisplay(
-                text: CustomStrings.dialogNameLists[index.toString()]!,
-                disable: index == 4 ? true : false,
-                context: context,
-              ),
-            ],
-          ),
+          icon: _showIcon(index, context),
         ),
       ],
     );
@@ -84,14 +64,35 @@ class _ListDialogState extends State<ListDialog> {
 
   void _showIconDialog(int index, BuildContext context) async {
     // TODO: need to fix later
-    if (index == 7) {
-      FeedbackEmail.send();
-    } else if (index != 4) {
+    if (index != 4) {
       BuildDialog.show(
         iconName: index.toString(),
         overlapped: true,
         context: context,
       );
     }
+  }
+
+  Widget _showIcon(int index, BuildContext context) {
+    return Column(
+      children: [
+        SvgPicture.asset(
+          'assets/imgs/list_$index.svg',
+          width: 36.0.h,
+          colorFilter: ColorFilter.mode(
+            index == 4
+                ? Colors.white.withValues(alpha: 0.6)
+                : Colors.transparent,
+            BlendMode.srcATop,
+          ),
+        ),
+        SizedBox(height: 6.0.h, width: 300.0.w),
+        CustomText.textDisplay(
+          text: CustomStrings.dialogNameLists[index.toString()]!,
+          disable: index == 4 ? true : false,
+          context: context,
+        ),
+      ],
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/request/user_request.dart';
@@ -53,6 +54,13 @@ class _AccountDialogState extends State<AccountDialog> {
 
   @override
   Widget build(BuildContext context) {
+    return Stack(children: [
+      _buildMain(),
+      _buildLogoutDeleteUser(),
+    ]);
+  }
+
+  Widget _buildMain() {
     final String puzzleDays =
         Utils.calculateDays(_userCreatedAt).toString().padLeft(4, '0');
 
@@ -137,6 +145,31 @@ class _AccountDialogState extends State<AccountDialog> {
         CustomText.textContentTitle(text: firstString, context: context),
         CustomText.textContent(text: secondString, context: context),
       ],
+    );
+  }
+
+  Widget _buildLogoutDeleteUser() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildTextAction('logout', CustomStrings.logout),
+          _buildTextAction('deleteUser', CustomStrings.deleteUser),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextAction(String iconName, String text) {
+    return GestureDetector(
+      onTap: () => BuildDialog.show(
+        iconName: iconName,
+        simpleDialog: true,
+        context: context,
+      ),
+      child: CustomText.dialogText(text, gray: true),
     );
   }
 }

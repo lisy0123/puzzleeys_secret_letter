@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
@@ -81,10 +82,7 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-              child: CountdownTimer(createdAt: widget.puzzleData['created_at']),
-            ),
+            _buildTimer(),
             PuzzleScreenHandler().buildIconButton(
               iconName: 'btn_alarm',
               text: CustomStrings.report,
@@ -100,6 +98,22 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildTimer() {
+    final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+      child: CountdownTimer(
+        createdAt: widget.puzzleData['created_at'],
+        onEnd: () async {
+          Navigator.pop(context);
+          puzzleProvider.updateShuffle(true);
+          await puzzleProvider.initializeColors(widget.puzzleType);
+        },
+      ),
     );
   }
 

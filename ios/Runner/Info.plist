@@ -67,6 +67,7 @@
         </array>
         <key>LSApplicationQueriesSchemes</key>
         <array>
+            <string>https</string>
             <string>mailto</string>
         </array>
         <key>GADApplicationIdentifier</key>

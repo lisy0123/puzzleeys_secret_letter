@@ -5,11 +5,13 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_han
 class CountdownTimer extends StatefulWidget {
   final String createdAt;
   final bool grayText;
+  final VoidCallback? onEnd;
 
   const CountdownTimer({
     super.key,
     required this.createdAt,
     this.grayText = false,
+    this.onEnd,
   });
 
   @override
@@ -25,7 +27,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
   void initState() {
     super.initState();
 
-    timerUtil = TimerUtil(widget.createdAt);
+    timerUtil = TimerUtil(widget.createdAt, onEnd: widget.onEnd);
     _timerSubscription = timerUtil.timeStream.listen((remainingTime) {
       if (_remainingTime != remainingTime) {
         setState(() {
@@ -55,11 +57,12 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
 class TimerUtil {
   final DateTime targetTime;
+  final VoidCallback? onEnd;
   late StreamController<String> _timeStreamController;
   late Stream<String> timeStream;
   Timer? _timer;
 
-  TimerUtil(String createdAtStr)
+  TimerUtil(String createdAtStr, {this.onEnd})
       : targetTime = DateTime.parse(createdAtStr).add(Duration(hours: 33)) {
     _timeStreamController = StreamController<String>();
     timeStream = _timeStreamController.stream;
@@ -75,22 +78,29 @@ class TimerUtil {
 
   void _startTimer() {
     final now = DateTime.now().toUtc().add(Duration(hours: 9));
-    Duration remainingTime =
-        targetTime.isAfter(now) ? targetTime.difference(now) : Duration.zero;
+    Duration remainingTime = targetTime.isAfter(now)
+        ? targetTime.difference(now)
+        : Duration.zero;
 
     _timeStreamController.add(_formatTime(remainingTime));
 
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
       final now = DateTime.now().toUtc().add(Duration(hours: 9));
-      remainingTime =
-          targetTime.isAfter(now) ? targetTime.difference(now) : Duration.zero;
+      remainingTime = targetTime.isAfter(now)
+          ? targetTime.difference(now)
+          : Duration.zero;
 
       if (remainingTime.inSeconds <= 0) {
-        _timeStreamController.add("00:00:00");
+        if (!_timeStreamController.isClosed) {
+          _timeStreamController.add("00:00:00");
+        }
         _timer?.cancel();
         _timeStreamController.close();
+        onEnd?.call();
       } else {
-        _timeStreamController.add(_formatTime(remainingTime));
+        if (!_timeStreamController.isClosed) {
+          _timeStreamController.add(_formatTime(remainingTime));
+        }
       }
     });
   }

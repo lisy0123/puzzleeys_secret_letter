@@ -23,7 +23,7 @@ class BottomBar extends StatelessWidget {
         CustomBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(4, (index) {
+            children: List.generate(3, (index) { // TODO: need to add 4 later
               return _buildIconButton(index: index, context: context);
             }),
           ),

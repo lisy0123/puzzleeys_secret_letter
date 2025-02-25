@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -27,14 +28,23 @@ class PuzzleMainScreen extends StatefulWidget {
 
 class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
   late PuzzleScreenProvider _screenProvider;
+  bool isTimeZero = false;
 
   @override
   void initState() {
-    _screenProvider = context.read<PuzzleScreenProvider>();
     super.initState();
+    _screenProvider = context.read<PuzzleScreenProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _screenProvider.updateScreenOpacity(setToInitial: true);
     });
+
+    final targetTime = DateTime.parse(widget.puzzleData['created_at'])
+        .add(Duration(hours: 33));
+    final now = DateTime.now().toUtc().add(Duration(hours: 9));
+
+    if (targetTime.isBefore(now)) {
+      setState(() => isTimeZero = true);
+    }
   }
 
   @override
@@ -80,6 +90,21 @@ class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
             ],
           ),
         ),
+        if (isTimeZero)
+          Positioned.fill(
+            child: Stack(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+                  child: Container(color: Colors.transparent),
+                ),
+                IgnorePointer(
+                  ignoring: true,
+                  child: Container(color: Colors.transparent),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }

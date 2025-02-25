@@ -54,7 +54,7 @@ class PuzzleScreenHandler {
 
     if (grayText) {
       iconSize = 90.0.w;
-      customText = CustomText.dialogPuzzleText(text, date: true);
+      customText = CustomText.dialogText(text, gray: true);
     } else {
       if (isLargeIcon) {
         iconSize = 140.0.w;

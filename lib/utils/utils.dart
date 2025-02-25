@@ -7,6 +7,7 @@ import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static Future<void> waitForSession() async {
@@ -71,5 +72,14 @@ class Utils {
       size: Size(600.0.w, 600.0.w),
       painter: TiltedPuzzlePiece(puzzleColor: puzzleColor),
     );
+  }
+
+  static void launchURL(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

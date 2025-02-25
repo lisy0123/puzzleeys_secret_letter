@@ -92,7 +92,7 @@ class _MyDialogState extends State<MyDialog> {
           padding: EdgeInsets.symmetric(vertical: 20.0.w),
           child: SizedBox(
             width: 1200.0.w,
-            child: CustomText.dialogPuzzleText(item['title']),
+            child: CustomText.dialogText(item['title']),
           ),
         ),
         SizedBox(

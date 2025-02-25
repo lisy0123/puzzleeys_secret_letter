@@ -139,7 +139,7 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
           inputFormatters: [LengthLimitingTextInputFormatter(1000)],
           style: Theme.of(context).textTheme.displayLarge,
           decoration: InputDecoration(
-            hintText: _typeToHintText(),
+            hintText: '${_typeToHintText()}${MessageStrings.limitReplyMessage}',
             hintStyle: Theme.of(context).textTheme.labelSmall,
             border: InputBorder.none,
             counterText: '',

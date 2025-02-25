@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/question_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/list/terms_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
@@ -14,7 +16,9 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dar
 import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_subject_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_post_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/user_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/welcome_dialog.dart';
 
 enum DialogType {
   bead,
@@ -38,6 +42,11 @@ enum DialogType {
   putMe,
   putReply,
   setDays,
+
+  welcome,
+  logout,
+  deleteUser,
+  terms,
 
   list0,
   list1,
@@ -114,6 +123,15 @@ enum DialogType {
       case DialogType.setDays:
         return SetDaysDialog(puzzleData: puzzleData!);
 
+      case DialogType.welcome:
+        return WelcomeDialog();
+      case DialogType.logout:
+        return UserDialog(deleteUser: false);
+      case DialogType.deleteUser:
+        return UserDialog(deleteUser: true);
+      case DialogType.terms:
+        return TermsDialog();
+
       case DialogType.list0:
         return AccountDialog();
       case DialogType.list1:
@@ -122,6 +140,8 @@ enum DialogType {
         return MissionDialog();
       case DialogType.list5:
         return QuestDialog();
+      case DialogType.list7:
+        return QuestionDialog();
       case DialogType.list8:
         return SettingDialog();
       default:
