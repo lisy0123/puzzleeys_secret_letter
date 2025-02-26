@@ -9,6 +9,9 @@ const authRouter = new Hono();
 authRouter.post("/login", (c) => withAuth(c, AuthController.login));
 authRouter.post("/logout", (c) => withAuth(c, AuthController.logout));
 authRouter.post("/upsert_fcm", (c) => withAuth(c, AuthController.upsertFcm));
+authRouter.post("/property_right", (c) =>
+    withAuth(c, AuthController.propertyRight)
+);
 
 authRouter.get("/check_user", (c) => withAuth(c, AuthController.checkUser));
 authRouter.get("/me", (c) => withAuth(c, AuthController.me));

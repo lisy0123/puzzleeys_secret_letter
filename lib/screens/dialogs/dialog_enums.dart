@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/agree_to_terms_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/question_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/terms_dialog.dart';
@@ -18,7 +19,6 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_bea
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_post_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/user_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/simple/welcome_dialog.dart';
 
 enum DialogType {
   bead,
@@ -42,8 +42,8 @@ enum DialogType {
   putMe,
   putReply,
   setDays,
+  agreeToTerms,
 
-  welcome,
   logout,
   deleteUser,
   terms,
@@ -123,8 +123,8 @@ enum DialogType {
       case DialogType.setDays:
         return SetDaysDialog(puzzleData: puzzleData!);
 
-      case DialogType.welcome:
-        return WelcomeDialog();
+      case DialogType.agreeToTerms:
+        return AgreeToTermsDialog();
       case DialogType.logout:
         return UserDialog(deleteUser: false);
       case DialogType.deleteUser:

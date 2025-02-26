@@ -10,7 +10,7 @@ class CustomStrings {
       'https://puzzleey.notion.site/1a5056190a0580df8396d5e041463494';
   static const String privacyPolicyUrl =
       'https://puzzleey.notion.site/1a5056190a0580fda462cb5b814310c3';
-  static const String propertyRightUrl =
+  static const String copyRightPolicyUrl =
       'https://puzzleey.notion.site/1a5056190a0580eaa418f5926c78ca44';
 
   static const String title = 'PUZZLEEY';
@@ -22,16 +22,18 @@ class CustomStrings {
 
   static const Map<String, String> dialogNameLists = {
     'bead': '감정 퍼즐 구슬',
-    'list': '더 보 기',
+    'list': preview,
     'puzzlePreview': '감정 보기',
     'puzzleSubject': '오늘의 주제',
-    'putGlobal': '감정 넣기',
-    'putSubject': '감정 넣기',
-    'putPersonal': '감정 넣기',
-    'putMe': '감정 넣기',
-    'putReply': '감정 넣기',
+    'putGlobal': putEmotion,
+    'putSubject': putEmotion,
+    'putPersonal': putEmotion,
+    'putMe': putEmotion,
+    'putReply': putEmotion,
     'setDays': '언제 받을까요?',
-    'terms': '서비스 이용약관',
+    'terms': terms,
+    'agreeToTerms': terms,
+
     '0': '계 정',
     '1': '내 글',
     '2': '알 람',
@@ -43,52 +45,57 @@ class CustomStrings {
     '8': '설 정',
   };
 
-  static String userId = '회원 번호';
-  static String userCreatedAt = '가입 날짜';
-  static String userPuzzleeyDays = '퍼즐이가 된 지';
-  static String dayCount = '일째';
-  static String day = '일 뒤';
+  static const String userId = '회원 번호';
+  static const String userCreatedAt = '가입 날짜';
+  static const String userPuzzleeyDays = '퍼즐이가 된 지';
+  static const String dayCount = '일째';
+  static const String day = '일 뒤';
 
-  static String howToUse = '이용 안내';
-  static String feedback = '문의하기';
+  static const String start = '시작하기';
+  static const String howToUse = '이용 안내';
+  static const String feedback = '문의하기';
 
-  static String version = '버 전';
-  static String copyRight = 'Copyright 2025 Puzzleey';
+  static const String version = '버 전';
+  static const String copyRight = 'Copyright 2025 Puzzleey';
 
-  static String terms = '서비스 이용약관';
-  static String privacyPolicy = '개인정보 처리방침';
-  static String propertyRight = '회원 저작물의 지적재산권';
+  static const String terms = '서비스 이용약관';
+  static const String privacyPolicy = '개인정보 처리방침';
+  static const String copyRightPolicy = '회원 저작물의 지적재산권';
 
-  static String reply = '답 장';
-  static String report = '신고하기';
-  static String back = '돌아가기';
-  static String putEmotion = '감정 넣기';
-  static String preview = '더 보 기';
-  static String put = '넣 기';
-  static String adPut = '광고 보고 넣기';
-  static String send = '보내기';
-  static String adSend = '광고 보고 보내기';
-  static String get = '퍼즐 담기';
+  static const String termsAgree = '서비스 이용약관 동의';
+  static const String privacyPolicyAgree = '개인정보 처리방침 동의';
+  static const String copyRightPolicyAgree = '회원 저작물의 지적재산권에\n대한 동의 (선택)';
+  static const String agreeAll = '전체 동의';
+  static const String hasAgreed = '동의 완료';
 
-  static String logout = '로그아웃';
-  static String deleteUser = '회원 탈퇴';
-  static String deleteShort = '삭 제';
-  static String deleteLong = '삭제하기';
+  static const String reply = '답 장';
+  static const String report = '신고하기';
+  static const String back = '돌아가기';
+  static const String putEmotion = '감정 넣기';
+  static const String preview = '더 보 기';
+  static const String put = '넣 기';
+  static const String adPut = '광고 보고 넣기';
+  static const String send = '보내기';
+  static const String adSend = '광고 보고 보내기';
+  static const String get = '퍼즐 담기';
 
-  static String sendToWho = '누구에게 보낼 건가요?';
-  static String sendToOther = '누군가에게';
-  static String sendToMe = '미래의 나에게';
+  static const String logout = '로그아웃';
+  static const String deleteUser = '회원 탈퇴';
+  static const String deleteShort = '삭 제';
+  static const String deleteLong = '삭제하기';
 
-  static String addToday = '오늘 하루';
-  static String puzzleCount = '개의 감정 퍼즐을 담았어요!';
+  static const String sendToWho = '누구에게 보낼 건가요?';
+  static const String sendToOther = '누군가에게';
+  static const String sendToMe = '미래의 나에게';
+
+  static const String addToday = '오늘 하루';
+  static const String puzzleCount = '개의 감정 퍼즐을 담았어요!';
 
   static List<String> questUnits = ['일', '회'];
   static Map<bool, String> questButtons = {false: '완료 보상', true: '보상 받기'};
 }
 
 class MessageStrings {
-  static String welcomeMessage = 'PUZZLEEY 사용법에 대해\n알아볼까요?';
-
   static String writingGlobalMessage = '전하고 싶은 감정을 자유롭게 적어주세요.';
   static String writingSubjectMessage = '주제에 대해 자유롭게 적어주세요.';
   static String writingToOtherMessage = '누군가에게 전하고 싶은 감정을 적어주세요.';
@@ -133,7 +140,7 @@ class MessageStrings {
   };
 
   static Map<Enum, List<dynamic>> overlayMessages = {
-    OverlayType.attendance: [1, '출석했어요!'],
+    OverlayType.attendance: [3, '출석했어요!'],
     OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
     OverlayType.writeGlobalPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
     OverlayType.writeSubjectPuzzle: [-1, '오늘의 주제에 감정 퍼즐을 공유했어요!'],

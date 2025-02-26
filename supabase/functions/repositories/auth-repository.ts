@@ -16,7 +16,24 @@ export class AuthRepository {
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
-                `Error getting user data: ${error.message}`,
+                `Error getting/inserting user data: ${error.message}`,
+                null
+            );
+        }
+    }
+
+    static async propertyRight(
+        authId: string,
+    ): Promise<Response | void> {
+        const { error } = await supabase
+            .from("user_list")
+            .update({ property_right: false })
+            .eq("auth_user_id", authId);
+
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Error upserting user's property right: ${error.message}`,
                 null
             );
         }

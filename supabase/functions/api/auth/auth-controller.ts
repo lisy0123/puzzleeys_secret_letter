@@ -31,6 +31,14 @@ export class AuthController {
             tableOrBody: body,
         });
     }
+
+    static propertyRight(_c: Context, user: User) {
+        return ResponseUtils.handleRequest({
+            callback: AuthService.propertyRight,
+            user: user,
+        });
+    }
+
     static deleteUser(_c: Context, user: User) {
         return ResponseUtils.handleRequest({
             callback: AuthService.deleteUser,

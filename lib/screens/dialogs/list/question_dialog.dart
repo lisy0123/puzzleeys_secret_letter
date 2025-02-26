@@ -16,7 +16,7 @@ class QuestionDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CustomButton(
-          iconName: 'bar_puzzle',
+          iconName: 'btn_puzzle',
           iconTitle: CustomStrings.howToUse,
           onTap: () => Utils.launchURL(CustomStrings.howToUseUrl),
         ),

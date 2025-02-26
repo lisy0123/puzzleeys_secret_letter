@@ -55,12 +55,11 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
 
     if (isLoggedIn && !_hasLoggedInBefore) {
       BuildDialog.show(
-        iconName: 'welcome',
-        simpleDialog: true,
+        iconName: 'agreeToTerms',
         dismissible: false,
         context: context,
       );
-      await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
+      // await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
     }
   }
 

@@ -140,4 +140,20 @@ class CustomText {
       ),
     );
   }
+
+  static Text agreementText(String text, [bool underline = true]) {
+    return Text(
+      text,
+      textAlign: TextAlign.end,
+      style: TextStyle(
+        color: underline
+            ? CustomColors.colorBase.withValues(alpha: 0.6)
+            : CustomColors.colorBase,
+        fontFamily: 'NANUM',
+        fontSize: underline ? 78.0.sp : 88.0.sp,
+        fontWeight: FontWeight.w900,
+        decoration: underline ? TextDecoration.underline : null,
+      ),
+    );
+  }
 }

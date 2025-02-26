@@ -24,8 +24,8 @@ class TermsDialog extends StatelessWidget {
           ),
           Utils.dialogDivider(),
           _buildText(
-            CustomStrings.propertyRight,
-            CustomStrings.propertyRightUrl,
+            CustomStrings.copyRightPolicy,
+            CustomStrings.copyRightPolicyUrl,
             context,
           ),
         ],

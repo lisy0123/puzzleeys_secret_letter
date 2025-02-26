@@ -76,6 +76,8 @@ class BuildDialog {
       return 1000.0.w;
     } else if (iconName == 'bead') {
       return 3000.0.w;
+    } else if (iconName == 'agreeToTerms') {
+      return 2100.0.w;
     } else {
       return 2000.0.w;
     }

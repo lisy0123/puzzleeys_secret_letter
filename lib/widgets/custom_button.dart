@@ -68,16 +68,22 @@ class _CustomButtonState extends State<CustomButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) async {
+      onTapDown: widget.disable
+          ? null
+          : (_) async {
         _handleTapState(true);
         await _controller.forward();
         await _controller.reverse();
       },
-      onTapUp: (_) {
+      onTapUp: widget.disable
+          ? null
+          : (_) {
         _handleTapState(false);
         widget.onTap();
       },
-      onTapCancel: () => _handleTapState(false),
+      onTapCancel: widget.disable
+          ? null
+          : () => _handleTapState(false),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         child: _buildButtonContent(),

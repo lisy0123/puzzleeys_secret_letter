@@ -113,6 +113,23 @@ export class AuthService {
         });
     }
 
+    static propertyRight(user: User): Promise<Response> {
+        return ResponseUtils.handleRequest({
+            callback: async () => {
+                const withdrawResponse = await AuthRepository.propertyRight(
+                    user.id
+                );
+                if (withdrawResponse) return withdrawResponse;
+
+                return createResponse(
+                    ResponseCode.SUCCESS,
+                    "Change User's property right successful.",
+                    null
+                );
+            },
+        });
+    }
+
     static deleteUser(user: User): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
