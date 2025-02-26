@@ -9,33 +9,31 @@ class TermsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 1000.0.w,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildText(CustomStrings.terms, CustomStrings.termsUrl, context),
-          Utils.dialogDivider(),
-          _buildText(
-            CustomStrings.privacyPolicy,
-            CustomStrings.privacyPolicyUrl,
-            context,
-          ),
-          Utils.dialogDivider(),
-          _buildText(
-            CustomStrings.copyRightPolicy,
-            CustomStrings.copyRightPolicyUrl,
-            context,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildText(CustomStrings.terms, CustomStrings.termsUrl, context),
+        Utils.dialogDivider(),
+        _buildText(
+          CustomStrings.privacyPolicy,
+          CustomStrings.privacyPolicyUrl,
+          context,
+        ),
+        Utils.dialogDivider(),
+        _buildText(
+          CustomStrings.copyRightPolicy,
+          CustomStrings.copyRightPolicyUrl,
+          context,
+        ),
+        Utils.dialogDivider(),
+      ],
     );
   }
 
   Widget _buildText(String text, String url, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 60.0.w),
+      padding: EdgeInsets.all(80.0.w),
       child: GestureDetector(
         onTap: () => Utils.launchURL(url),
         child: CustomText.textContent(text: '- $text', context: context),

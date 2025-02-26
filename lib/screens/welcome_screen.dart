@@ -27,7 +27,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       'assets/imgs/Instructions_1.svg',
       'assets/imgs/Instructions_2.svg',
       'assets/imgs/Instructions_3.svg',
-      'assets/imgs/Instructions_4.svg',
     ];
 
     return Stack(
@@ -45,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           },
         ),
         Positioned(
-          top: 240.0.h,
+          top: 100.0.h,
           left: 0,
           right: 0,
           child: Center(
@@ -68,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
         ),
         Positioned(
-          bottom: 240.0.h,
+          bottom: 300.0.h,
           left: 0,
           right: 0,
           child: Builder(

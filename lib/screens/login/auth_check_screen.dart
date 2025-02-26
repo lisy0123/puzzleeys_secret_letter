@@ -59,7 +59,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         dismissible: false,
         context: context,
       );
-      // await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
+      await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
     }
   }
 
