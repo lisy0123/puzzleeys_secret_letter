@@ -14,9 +14,12 @@ class LoginValidate {
   }
 
   static Future<void> validateTokens(
-      String? accessToken, String? idToken) async {
-    if (accessToken == null || idToken == null) {
-      throw 'Access Token or ID Token is missing.';
+      String? idToken, String? accessToken, String? nonce) async {
+    if (idToken == null) {
+      throw 'ID Token is missing.';
+    }
+    if (accessToken == null && nonce == null) {
+      throw 'Access Token or Nonce is missing.';
     }
   }
 }

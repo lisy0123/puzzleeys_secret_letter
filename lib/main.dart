@@ -34,24 +34,21 @@ void main() async {
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
 
-  await Future.wait([
-    Firebase.initializeApp(),
-    MobileAds.instance.initialize(),
-    dotenv.load(fileName: ".env"),
-  ]);
+  await Future.wait([dotenv.load(fileName: ".env"), Hive.initFlutter()]);
 
-  await Future.wait([
-    Supabase.initialize(
-      url: dotenv.env['PROJECT_URL']!,
-      anonKey: dotenv.env['API_KEY']!,
-    ),
-    AdManager().initialize(
-      interstitialAd: InterstitialAdManager(),
-      rewardedAd: RewardedAdManager(),
-    ),
-    Hive.initFlutter(),
-    // PushNotification().initialize(),
-  ]);
+  await Supabase.initialize(
+    url: dotenv.env['PROJECT_URL']!,
+    anonKey: dotenv.env['API_KEY']!,
+  );
+
+  await Firebase.initializeApp();
+  await PushNotification().initialize();
+
+  await MobileAds.instance.initialize();
+  await AdManager().initialize(
+    interstitialAd: InterstitialAdManager(),
+    rewardedAd: RewardedAdManager(),
+  );
 
   Hive.registerAdapter(ColorAdapter());
   Hive.registerAdapter(StringSetAdapter());

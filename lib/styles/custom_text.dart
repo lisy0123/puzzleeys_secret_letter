@@ -150,7 +150,7 @@ class CustomText {
             ? CustomColors.colorBase.withValues(alpha: 0.6)
             : CustomColors.colorBase,
         fontFamily: 'NANUM',
-        fontSize: underline ? 78.0.sp : 88.0.sp,
+        fontSize: underline ? 74.0.sp : 84.0.sp,
         fontWeight: FontWeight.w900,
         decoration: underline ? TextDecoration.underline : null,
       ),

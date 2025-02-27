@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
@@ -60,6 +62,12 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         context: context,
       );
       await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
+    }
+    if (isLoggedIn && mounted) {
+      await context.read<BarProvider>().initialize(context);
+      if (mounted) {
+        await context.read<BeadProvider>().initialize();
+      }
     }
   }
 

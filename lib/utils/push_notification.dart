@@ -16,15 +16,19 @@ class PushNotification {
       FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel? channel;
   final String notificationIcon = '@mipmap/ic_launcher';
+  final _firebaseMessaging = FirebaseMessaging.instance;
 
   // 푸시 알림 초기화 (로컬 알림, 안드로이드 채널, Firebase 메시징 초기화)
   Future<void> initialize() async {
     try {
-      await Future.wait([
-        _initLocalNotifications(),
-        _initAndroidChannel(),
-        _initFirebaseMessaging(),
-      ]);
+      await requestPermission();
+
+      await _initLocalNotifications();
+      await _initAndroidChannel();
+      await _initFirebaseMessaging();
+      if (Platform.isIOS) {
+        await _firebaseMessaging.getAPNSToken();
+      }
     } catch (error) {
       debugPrint("Error during notification initialization: $error");
     }
@@ -141,7 +145,7 @@ class PushNotification {
   // Firebase 메시징에서 FCM 토큰을 가져오는 메서드
   Future<String?> getToken() async {
     try {
-      return await FirebaseMessaging.instance.getToken();
+      return await _firebaseMessaging.getToken();
     } catch (error) {
       debugPrint("Error getting FCM token: $error");
       return null;
@@ -153,16 +157,13 @@ class PushNotification {
       {required Function(String? fcmToken) onTokenUpdated}) async {
     await requestPermission();
 
-    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
 
-    final token = await getToken();
-    onTokenUpdated(token);
-
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+    _firebaseMessaging.onTokenRefresh.listen((newToken) {
       onTokenUpdated(newToken);
     });
   }

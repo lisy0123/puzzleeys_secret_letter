@@ -46,7 +46,7 @@ class _AgreeToTermsDialogState extends State<AgreeToTermsDialog> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ..._buildAgreementCheckboxes(),
@@ -100,13 +100,7 @@ class _AgreeToTermsDialogState extends State<AgreeToTermsDialog> {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (_) {
-            return Dialog(
-              backgroundColor: Colors.transparent,
-              insetPadding: EdgeInsets.zero,
-              child: WelcomeScreen(),
-            );
-          },
+          builder: (context) => WelcomeScreen(),
         );
       },
     );

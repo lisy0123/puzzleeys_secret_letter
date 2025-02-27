@@ -15,7 +15,7 @@ class PuzzleScaleProvider extends ChangeNotifier {
   }
 
   void updateScale(double newScaleFactor) {
-    _scaleFactor = newScaleFactor.clamp(0.5, 1.3);
+    _scaleFactor = newScaleFactor;
     SharedPreferencesUtils.saveDouble('scaleFactor', _scaleFactor);
     notifyListeners();
   }

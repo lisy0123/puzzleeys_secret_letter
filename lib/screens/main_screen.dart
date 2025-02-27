@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
-import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
@@ -29,17 +28,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     _initialize();
   }
 
-  Future<void> _initialize() async {
+  void _initialize() async {
     _tabController = TabController(
       length: 3, // TODO: need to add 4 later
       initialIndex: 0,
       vsync: this,
       animationDuration: Duration.zero,
     );
-
-    if (mounted) {
-      await context.read<BarProvider>().initialize(context);
-    }
     await _checkIOSTrackingPermission();
   }
 

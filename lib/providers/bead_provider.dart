@@ -18,7 +18,6 @@ class BeadProvider with ChangeNotifier {
   bool _isLoading = false;
 
   List<Color> get beadColor => _beadColor;
-
   bool get isLoading => _isLoading;
 
   void updateLoading({required bool setLoading}) {
@@ -26,11 +25,7 @@ class BeadProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  BeadProvider() {
-    _initialize();
-  }
-
-  void _initialize() async {
+  Future<void> initialize() async {
     await _loadStoredData();
 
     while (true) {

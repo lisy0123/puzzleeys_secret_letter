@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/screens/welcome_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/feedback_email.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
-import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class QuestionDialog extends StatelessWidget {
   const QuestionDialog({super.key});
@@ -20,17 +20,25 @@ class QuestionDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildTextButton(
-              'btn_puzzle',
-              () => Utils.launchURL(CustomStrings.howToUseUrl),
-              CustomStrings.howToUse,
-              context,
+              iconName: 'btn_puzzle',
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (_) {
+                    return WelcomeScreen();
+                  },
+                );
+              },
+              text: CustomStrings.howToUse,
+              context: context,
             ),
             Utils.dialogDivider(),
             _buildTextButton(
-              'btn_mail',
-              () => FeedbackEmail.send(),
-              CustomStrings.feedback,
-              context,
+              iconName: 'btn_mail',
+              onTap: () => FeedbackEmail.send(),
+              text: CustomStrings.feedback,
+              context: context,
             ),
             Utils.dialogDivider(),
           ],
@@ -43,12 +51,12 @@ class QuestionDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildTextButton(
-    String iconName,
-    VoidCallback onTap,
-    String text,
-    BuildContext context,
-  ) {
+  Widget _buildTextButton({
+    required String iconName,
+    required VoidCallback onTap,
+    required String text,
+    required BuildContext context,
+  }) {
     return Padding(
       padding: EdgeInsets.all(80.0.w),
       child: GestureDetector(
