@@ -30,7 +30,7 @@ class UserDialog extends StatelessWidget {
   void _logout(BuildContext context) async {
     final responseData = await context.read<FcmTokenProvider>().deleteFcm();
     if (responseData['code'] == 200 && context.mounted) {
-      _clear(context);
+      await _clear(context);
     }
   }
 
@@ -39,7 +39,7 @@ class UserDialog extends StatelessWidget {
       final responseData =
           await apiRequest('/api/auth/delete_user', ApiType.delete);
       if (responseData['code'] == 200 && context.mounted) {
-        _clear(context);
+        await _clear(context);
       }
     } catch (error) {
       throw Exception("Error deleting user: $error");
@@ -47,14 +47,13 @@ class UserDialog extends StatelessWidget {
   }
 
   Future<void> _clear(BuildContext context) async {
+    await Supabase.instance.client.auth.signOut();
     await Future.wait([
-      Supabase.instance.client.auth.signOut(),
       SecureStorageUtils.clear(),
       SharedPreferencesUtils.clear(),
       Hive.deleteFromDisk(),
     ]);
     if (context.mounted) {
-      context.read<AuthStatusProvider>().checkLoginStatus();
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }

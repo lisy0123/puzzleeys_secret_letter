@@ -30,11 +30,8 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
 
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-      if (mounted) {
-        context.read<AuthStatusProvider>().checkLoginStatus();
-        _initializeFcm();
-        _handleFirstLogin();
-      }
+      _initialize();
+      _handleFirstLogin();
     });
   }
 
@@ -43,11 +40,20 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         await SharedPreferencesUtils.getBool('hasLoggedInBefore') ?? false;
   }
 
-  void _initializeFcm() async {
+  void _initialize() async {
+    await context.read<AuthStatusProvider>().checkLoginStatus();
+
     final isLoggedIn =
         Supabase.instance.client.auth.currentSession?.user != null;
-    if (isLoggedIn) {
+
+    if (isLoggedIn && mounted) {
       await context.read<FcmTokenProvider>().initialize();
+      if (mounted) {
+        await Future.wait([
+          context.read<BarProvider>().initialize(context),
+          context.read<BeadProvider>().initialize(),
+        ]);
+      }
     }
   }
 
@@ -62,12 +68,6 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         context: context,
       );
       await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
-    }
-    if (isLoggedIn && mounted) {
-      await context.read<BarProvider>().initialize(context);
-      if (mounted) {
-        await context.read<BeadProvider>().initialize();
-      }
     }
   }
 
