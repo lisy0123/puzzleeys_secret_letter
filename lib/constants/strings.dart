@@ -15,8 +15,8 @@ class CustomStrings {
 
   static const String title = 'PUZZLEEY';
   static const String slogan = '퍼즐에 감정을 담다';
-  static const String googleLogin = '구글로 시작하기';
-  static const String appleLogin = '애플로 시작하기';
+  static const String googleLogin = 'Google로 시작하기';
+  static const String appleLogin = 'Apple로 시작하기';
 
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
