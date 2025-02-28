@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_offset_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/utils/task_schedule.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_content.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/background/puzzle_config.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
@@ -28,6 +30,9 @@ class PuzzleBackground extends StatefulWidget {
 
 class _PuzzleBackgroundState extends State<PuzzleBackground> {
   late final StreamSubscription _authSubscription;
+  TaskScheduler? _refreshScheduler;
+  TaskScheduler? _resetSubjectScreenScheduler;
+  late PuzzleProvider _puzzleProvider;
 
   @override
   void initState() {
@@ -39,24 +44,62 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
   }
 
   void _initialize() async {
+    _puzzleProvider = context.read<PuzzleProvider>();
     final PuzzleScreenProvider checkProvider =
         context.read<PuzzleScreenProvider>();
-    final bool check = checkProvider.screenCheck;
 
-    await context.read<PuzzleProvider>().initializeColors(widget.puzzleType);
+    await _puzzleProvider.initializeColors(widget.puzzleType);
 
-    if (check && widget.puzzleType == PuzzleType.personal) {
+    if (checkProvider.screenCheck && widget.puzzleType == PuzzleType.personal) {
       checkProvider.screenCheckToggle(false);
       if (mounted) {
         context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
       }
     }
+    _initializeScheduler();
+  }
+
+  void _initializeScheduler() async {
+    final Box globalBox = await Hive.openBox('globalPuzzleBox');
+    final Box subjectBox = await Hive.openBox('subjectPuzzleBox');
+    final Box personalBox = await Hive.openBox('personalPuzzleBox');
+
+    _refreshScheduler = TaskScheduler(
+      hour: 0,
+      minute: 1,
+      executeTask: () async {
+        await Future.wait([
+          globalBox.clear(),
+          subjectBox.clear(),
+          personalBox.clear(),
+        ]);
+        _puzzleProvider.updateShuffle(true);
+        await _puzzleProvider.initializeColors(widget.puzzleType);
+      },
+    );
+
+    _resetSubjectScreenScheduler = TaskScheduler(
+      hour: 18,
+      minute: 1,
+      executeTask: () async {
+        await subjectBox.clear();
+        if (widget.puzzleType == PuzzleType.personal) {
+          _puzzleProvider.updateShuffle(true);
+          await _puzzleProvider.initializeColors(widget.puzzleType);
+        }
+      },
+    );
+
+    _refreshScheduler?.scheduleDailyTask();
+    _resetSubjectScreenScheduler?.scheduleDailyTask();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _authSubscription.cancel();
+    _refreshScheduler?.cancelTask();
+    _resetSubjectScreenScheduler?.cancelTask();
+    super.dispose();
   }
 
   @override
