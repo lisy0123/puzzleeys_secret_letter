@@ -52,7 +52,7 @@ class CustomOverlay {
     overlay.insert(overlayEntry);
     _currentOverlay = overlayEntry;
 
-    Future.delayed(const Duration(milliseconds: 4000), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       _removeCurrentOverlay();
     });
   }

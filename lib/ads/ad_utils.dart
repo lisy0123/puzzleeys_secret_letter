@@ -15,20 +15,20 @@ class AdUtils {
     if (Platform.isAndroid) {
       switch (adType) {
         case AdType.interstitial:
-          // return "ca-app-pub-3940256099942544/1033173712";
-        return dotenv.env[interstitialAos]!;
+          return "ca-app-pub-3940256099942544/1033173712";
+        // return dotenv.env[interstitialAos]!;
         case AdType.rewarded:
-          // return "ca-app-pub-3940256099942544/5224354917";
-        return dotenv.env[rewardAos]!;
+          return "ca-app-pub-3940256099942544/5224354917";
+        // return dotenv.env[rewardAos]!;
       }
     } else if (Platform.isIOS) {
       switch (adType) {
         case AdType.interstitial:
-          // return "ca-app-pub-3940256099942544/4411468910";
-        return dotenv.env[interstitialIos]!;
+          return "ca-app-pub-3940256099942544/4411468910";
+        // return dotenv.env[interstitialIos]!;
         case AdType.rewarded:
-          // return "ca-app-pub-3940256099942544/1712485313";
-        return dotenv.env[rewardIos]!;
+          return "ca-app-pub-3940256099942544/1712485313";
+        // return dotenv.env[rewardIos]!;
       }
     }
     return "";

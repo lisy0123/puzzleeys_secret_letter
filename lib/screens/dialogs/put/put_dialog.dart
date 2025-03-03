@@ -177,7 +177,12 @@ class _PutDialogState extends State<PutDialog> {
         context: context,
       );
     } else {
-      _finalize(isNotZero, color);
+      if (Utils.containsProfanity(_textEditingController.text)) {
+        BuildDialog.show(
+            iconName: 'profanity', simpleDialog: true, context: context);
+      } else {
+        _finalize(isNotZero, color);
+      }
     }
   }
 

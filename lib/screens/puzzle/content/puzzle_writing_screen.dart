@@ -150,24 +150,31 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
   }
 
   void _handlePutButtonTap() {
-    if (_textController.text.trim().length < 10) {
-      BuildDialog.show(iconName: 'limit', simpleDialog: true, context: context);
-    } else {
-      final Map<String, dynamic> puzzleData = {'content': _textController.text};
-
-      if (widget.reply) {
-        puzzleData['receiver_id'] = widget.parentId;
-        puzzleData['parent_post_color'] =
-            ColorUtils.colorToString(widget.parentColor!);
-        puzzleData['parent_post_type'] =
-            GetPuzzleType.typeToString(widget.puzzleType);
-      }
-
+    if (Utils.containsProfanity(_textController.text)) {
       BuildDialog.show(
-        iconName: _typeToIconName(),
-        puzzleData: puzzleData,
-        context: context,
-      );
+          iconName: 'profanity', simpleDialog: true, context: context);
+    } else {
+      if (_textController.text.trim().length < 10) {
+        BuildDialog.show(
+            iconName: 'limit', simpleDialog: true, context: context);
+      } else {
+        final Map<String, dynamic> puzzleData = {
+          'content': _textController.text
+        };
+        if (widget.reply) {
+          puzzleData['receiver_id'] = widget.parentId;
+          puzzleData['parent_post_color'] =
+              ColorUtils.colorToString(widget.parentColor!);
+          puzzleData['parent_post_type'] =
+              GetPuzzleType.typeToString(widget.puzzleType);
+        }
+
+        BuildDialog.show(
+          iconName: _typeToIconName(),
+          puzzleData: puzzleData,
+          context: context,
+        );
+      }
     }
   }
 

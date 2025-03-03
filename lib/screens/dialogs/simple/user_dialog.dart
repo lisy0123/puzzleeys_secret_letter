@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/constants/enums.dart' show PuzzleType;
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/logged_before_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/tab_index_provider.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/secure_storage_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
@@ -46,6 +50,8 @@ class UserDialog extends StatelessWidget {
   }
 
   Future<void> _clear(BuildContext context) async {
+    final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
+
     await Supabase.instance.client.auth.signOut();
     await Future.wait([
       SecureStorageUtils.clear(),
@@ -53,7 +59,11 @@ class UserDialog extends StatelessWidget {
       Hive.deleteFromDisk(),
     ]);
     if (context.mounted) {
+      context.read<LoggedBeforeProvider>().loggedCheckToggle(false);
       Navigator.popUntil(context, (route) => route.isFirst);
+      context.read<TabIndexProvider>().changeTabIndex(0);
     }
+    puzzleProvider.updateShuffle(true);
+    await puzzleProvider.initializeColors(PuzzleType.global);
   }
 }

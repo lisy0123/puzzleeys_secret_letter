@@ -1,6 +1,6 @@
 enum PuzzleType{ global, subject, personal, me, reply }
 
-enum WarningType { cancel, limit, emptyName, emptyPuzzle, isExists }
+enum WarningType { cancel, limit, emptyName, emptyPuzzle, isExists, profanity }
 
 enum MissionType {
   attendance,

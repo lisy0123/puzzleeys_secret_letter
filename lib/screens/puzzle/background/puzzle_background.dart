@@ -48,14 +48,14 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     final PuzzleScreenProvider checkProvider =
         context.read<PuzzleScreenProvider>();
 
-    await _puzzleProvider.initializeColors(widget.puzzleType);
-
     if (checkProvider.screenCheck && widget.puzzleType == PuzzleType.personal) {
-      checkProvider.screenCheckToggle(false);
       if (mounted) {
-        context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
+        await context.read<ReadPuzzleProvider>().initialize(widget.puzzleList);
       }
+      checkProvider.screenCheckToggle(false);
     }
+
+    await _puzzleProvider.initializeColors(widget.puzzleType);
     _initializeScheduler();
   }
 

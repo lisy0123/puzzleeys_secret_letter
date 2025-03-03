@@ -8,7 +8,7 @@ class ReadPuzzleProvider with ChangeNotifier {
 
   late Box<bool> _box;
 
-  void initialize(List<Map<String, dynamic>> puzzleList) async {
+  Future<void> initialize(List<Map<String, dynamic>> puzzleList) async {
     _box = await Hive.openBox<bool>('readPuzzleBox');
     _readIds = _box.keys.cast<String>().toSet();
     notifyListeners();

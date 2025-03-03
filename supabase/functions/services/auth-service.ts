@@ -7,18 +7,16 @@ import { ResponseUtils } from "../lib/response/response-utils.ts";
 import { UserRepository } from "../repositories/user-repository.ts";
 
 export class AuthService {
-    static extractFcmToken(body: unknown): string | null {
-        return typeof body === "object" && body !== null && "fcm_token" in body
-            ? ((body as Record<string, unknown>).fcm_token as string)
-            : null;
-    }
-
     static handleFcmTokenRequest(
         user: User,
         body: unknown,
         action: (authId: string, fcmToken: string) => Promise<Response>
     ): Promise<Response> | Response {
-        const fcmToken = AuthService.extractFcmToken(body);
+        const fcmToken =
+            typeof body === "object" && body !== null && "fcm_token" in body
+                ? ((body as Record<string, unknown>).fcm_token as string)
+                : null;
+
         if (!fcmToken) {
             return createResponse(
                 ResponseCode.INVALID_ARGUMENTS,
@@ -41,8 +39,10 @@ export class AuthService {
         if (upsertResponse) return upsertResponse;
 
         if (isLogin) {
-            const insertResponse = await AuthRepository.insertUser(user);
-            if (insertResponse) return insertResponse;
+            const isExist = await AuthRepository.insertUser(user);
+            if (isExist instanceof Response) {
+                return isExist;
+            }
 
             return createResponse(
                 ResponseCode.SUCCESS,
@@ -50,6 +50,7 @@ export class AuthService {
                 {
                     user_id: uuidToBase64(user.id),
                     created_at: user.created_at,
+                    is_exist: isExist,
                 }
             );
         }

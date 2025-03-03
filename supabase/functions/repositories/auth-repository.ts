@@ -5,8 +5,8 @@ import { supabase, } from "../lib/supabase-config.ts";
 import { uuidToBase64 } from "../lib/utils/uuid-to-base64.ts";
 
 export class AuthRepository {
-    static async insertUser(user: User): Promise<Response | void> {
-        const { error } = await supabase.rpc("get_user", {
+    static async insertUser(user: User): Promise<Response | boolean> {
+        const { data, error } = await supabase.rpc("get_user", {
             user_id: uuidToBase64(user.id),
             email: user.email,
             auth_user_id: user.id,
@@ -20,6 +20,7 @@ export class AuthRepository {
                 null
             );
         }
+        return data;
     }
 
     static async propertyRight(

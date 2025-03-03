@@ -39,7 +39,7 @@ postRouter.post("/personal_read/:id", (c) =>
     withAuth(c, PostController.readPost)
 );
 
-postRouter.delete("/global/:id", (c) =>
+postRouter.delete("/global_delete/:id", (c) =>
     withAuth(c, PostController.deleteGlobalUser)
 );
 

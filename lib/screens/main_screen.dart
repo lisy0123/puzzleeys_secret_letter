@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/tab_index_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/bottom_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/bar/status_bar.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
@@ -21,6 +22,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   TabController? _tabController;
+  late TabIndexProvider _tabIndexProvider;
 
   @override
   void initState() {
@@ -29,13 +31,19 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void _initialize() async {
+    _tabIndexProvider = context.read<TabIndexProvider>();
+
     _tabController = TabController(
       length: 3, // TODO: need to add 4 later
-      initialIndex: 0,
+      initialIndex: _tabIndexProvider.currentTabIndex,
       vsync: this,
       animationDuration: Duration.zero,
     );
     await _checkIOSTrackingPermission();
+
+    _tabIndexProvider.addListener(() {
+      _tabController!.animateTo(_tabIndexProvider.currentTabIndex);
+    });
   }
 
   Future<void> _checkIOSTrackingPermission() async {
@@ -126,7 +134,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _navigateToTab(int index) async {
     if (_tabController!.index != index) {
       setState(() {
-        _tabController!.animateTo(index);
+        _tabIndexProvider.changeTabIndex(index);
       });
     }
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_validate.dart';
@@ -14,26 +13,27 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
 class LoginScreenHandler {
-  static Future<void> googleLogin(BuildContext context) async {
+  static Future<bool> googleLogin(BuildContext context) async {
     try {
       final googleSignIn = await _initializeGoogleSignIn();
       final googleUser = await _signInWithGoogle(googleSignIn);
       final googleAuth = await googleUser!.authentication;
 
       if (context.mounted) {
-        await _handleLogin(
+        return await _handleLogin(
           context,
           provider: OAuthProvider.google,
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
       }
+      return false;
     } catch (error) {
       throw Exception('Google login failed: $error');
     }
   }
 
-  static Future<void> appleLogin(BuildContext context) async {
+  static Future<bool> appleLogin(BuildContext context) async {
     try {
       final rawNonce = Supabase.instance.client.auth.generateRawNonce();
       final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
@@ -47,19 +47,20 @@ class LoginScreenHandler {
       );
 
       if (context.mounted) {
-        await _handleLogin(
+        return await _handleLogin(
           context,
           provider: OAuthProvider.apple,
           idToken: appleCredentials.identityToken,
           nonce: rawNonce,
         );
       }
+      return false;
     } catch (error) {
       throw Exception('Apple login failed: $error');
     }
   }
 
-  static Future<void> _handleLogin(
+  static Future<bool> _handleLogin(
     BuildContext context, {
     required OAuthProvider provider,
     required String? idToken,
@@ -94,13 +95,12 @@ class LoginScreenHandler {
           SecureStorageUtils.save('userId', userData['user_id']),
           SecureStorageUtils.save('createdAt', createdAt),
         ]);
-        if (context.mounted) {
-          await context.read<AuthStatusProvider>().checkLoginStatus();
-        }
+        return userData['is_exist'];
       } else {
         throw Exception('Error: ${responseData['message']}');
       }
     }
+    return false;
   }
 
   static Future<GoogleSignIn> _initializeGoogleSignIn() async {

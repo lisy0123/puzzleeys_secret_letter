@@ -11,6 +11,7 @@ import 'package:puzzleeys_secret_letter/ads/ad_manager.dart';
 import 'package:puzzleeys_secret_letter/ads/interstitial_ad.dart';
 import 'package:puzzleeys_secret_letter/ads/rewarded_ad.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/logged_before_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_screen_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
@@ -21,6 +22,7 @@ import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_offset_provider.
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_scale_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/puzzle/read_puzzle_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/tab_index_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/auth_check_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/theme_setting.dart';
 import 'package:puzzleeys_secret_letter/utils/hive_adapter/color_count_adapter.dart';
@@ -59,6 +61,8 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (_) => LoggedBeforeProvider()),
+      ChangeNotifierProvider(create: (_) => TabIndexProvider()),
       ChangeNotifierProvider(create: (_) => PuzzleScaleProvider()),
       ChangeNotifierProvider(create: (_) => PuzzleOffsetProvider()),
       ChangeNotifierProvider(create: (_) => ColorPickerProvider()),

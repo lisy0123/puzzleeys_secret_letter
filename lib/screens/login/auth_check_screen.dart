@@ -4,12 +4,12 @@ import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/fcm_token_provider.dart';
+import 'package:puzzleeys_secret_letter/providers/logged_before_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:puzzleeys_secret_letter/utils/storage/shared_preferences_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthCheckScreen extends StatefulWidget {
@@ -21,29 +21,34 @@ class AuthCheckScreen extends StatefulWidget {
 
 class _AuthCheckScreenState extends State<AuthCheckScreen> {
   late final StreamSubscription _authSubscription;
-  bool _hasLoggedInBefore = false;
+  late final LoggedBeforeProvider _loggedBeforeProvider;
 
   @override
   void initState() {
     super.initState();
-    _checkFirstLogin();
+    _loggedBeforeProvider = context.read<LoggedBeforeProvider>();
+
+    _loggedBeforeProvider.addListener(() {
+      if (!_loggedBeforeProvider.loggedInBefore) {
+        BuildDialog.show(
+          iconName: 'agreeToTerms',
+          dismissible: false,
+          context: context,
+        );
+        _loggedBeforeProvider.loggedCheckToggle(true);
+      }
+    });
 
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       _initialize();
-      _handleFirstLogin();
     });
-  }
-
-  Future<void> _checkFirstLogin() async {
-    _hasLoggedInBefore =
-        await SharedPreferencesUtils.getBool('hasLoggedInBefore') ?? false;
   }
 
   void _initialize() async {
     await context.read<AuthStatusProvider>().checkLoginStatus();
 
-    final isLoggedIn =
+    final bool isLoggedIn =
         Supabase.instance.client.auth.currentSession?.user != null;
 
     if (isLoggedIn && mounted) {
@@ -54,20 +59,6 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
           context.read<BeadProvider>().initialize(),
         ]);
       }
-    }
-  }
-
-  void _handleFirstLogin() async {
-    final isLoggedIn =
-        Supabase.instance.client.auth.currentSession?.user != null;
-
-    if (isLoggedIn && !_hasLoggedInBefore) {
-      BuildDialog.show(
-        iconName: 'agreeToTerms',
-        dismissible: false,
-        context: context,
-      );
-      await SharedPreferencesUtils.saveBool('hasLoggedInBefore', true);
     }
   }
 

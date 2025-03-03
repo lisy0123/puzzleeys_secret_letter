@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/logged_before_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen_handler.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -27,6 +29,9 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
+    final LoggedBeforeProvider loggedBeforeProvider =
+        context.read<LoggedBeforeProvider>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -39,14 +44,20 @@ class LoginScreen extends StatelessWidget {
         Column(
           children: [
             _buildSignInButton(
-              onTap: () => LoginScreenHandler.googleLogin(context),
+              onTap: () async {
+                bool isExist = await LoginScreenHandler.googleLogin(context);
+                loggedBeforeProvider.loggedCheckToggle(isExist);
+              },
               color: Colors.white,
               text: CustomStrings.googleLogin,
               icon: SvgPicture.asset('assets/imgs/google.svg'),
             ),
             SizedBox(height: 60.0.w),
             _buildSignInButton(
-              onTap: () => LoginScreenHandler.appleLogin(context),
+              onTap: () async {
+                bool isExist = await LoginScreenHandler.appleLogin(context);
+                loggedBeforeProvider.loggedCheckToggle(isExist);
+              },
               color: Colors.black,
               text: CustomStrings.appleLogin,
               icon: Icon(Icons.apple, color: Colors.white),

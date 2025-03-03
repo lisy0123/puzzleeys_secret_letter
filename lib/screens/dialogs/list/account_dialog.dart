@@ -79,7 +79,7 @@ class _AccountDialogState extends State<AccountDialog> {
                 color: CustomColors.colorBase,
                 fontFamily: 'NANUM',
                 fontWeight: FontWeight.w900,
-                fontSize: 72.0.w,
+                fontSize: 68.0.w,
               ),
             ),
           ],

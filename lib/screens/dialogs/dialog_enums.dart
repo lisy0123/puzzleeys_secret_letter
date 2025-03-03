@@ -31,6 +31,7 @@ enum DialogType {
   delete,
   cancel,
   limit,
+  profanity,
   emptyName,
   emptyPuzzle,
   isExists,
@@ -86,6 +87,8 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:
         return WarningDialog(dialogType: WarningType.limit);
+      case DialogType.profanity:
+        return WarningDialog(dialogType: WarningType.profanity);
       case DialogType.emptyName:
         return WarningDialog(dialogType: WarningType.emptyName);
       case DialogType.emptyPuzzle:

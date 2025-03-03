@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_overlay.dart';
 import 'package:puzzleeys_secret_letter/widgets/dotted_divider.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
@@ -51,6 +52,11 @@ class Utils {
     } else {
       return 0;
     }
+  }
+
+  static bool containsProfanity(String input) {
+    final regExp = RegExp(CustomStrings.profanityKorean, caseSensitive: false);
+    return regExp.hasMatch(input);
   }
 
   static void copyText({

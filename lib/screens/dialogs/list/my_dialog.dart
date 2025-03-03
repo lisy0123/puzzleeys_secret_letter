@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
@@ -95,14 +97,31 @@ class _MyDialogState extends State<MyDialog> {
             child: CustomText.dialogText(item['title']),
           ),
         ),
-        SizedBox(
-          height: 180.0.w,
-          width: 540.0.w,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: CountdownTimer(
-              createdAt: item['created_at'],
-              grayText: true,
+        Padding(
+          padding: EdgeInsets.only(top: 30.0.w, bottom: 60.0.w),
+          child: SizedBox(
+            width: 840.0.w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CountdownTimer(createdAt: item['created_at']),
+                CustomButton(
+                  iconName: 'none',
+                  iconTitle: CustomStrings.deleteShort,
+                  height: 160,
+                  width: 260,
+                  borderStroke: 1.3,
+                  onTap: () {
+                    BuildDialog.show(
+                      iconName: 'delete',
+                      simpleDialog: true,
+                      puzzleId: item['id'],
+                      context: context,
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),

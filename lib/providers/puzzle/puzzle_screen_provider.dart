@@ -8,8 +8,10 @@ class PuzzleScreenProvider extends ChangeNotifier {
   double get screenOpacity => _screenOpacity;
 
   void screenCheckToggle(bool toggle) {
-    _screenCheck = toggle;
-    notifyListeners();
+    if (_screenCheck != toggle) {
+      _screenCheck = toggle;
+      notifyListeners();
+    }
   }
 
   void updateScreenOpacity({bool? setToInitial}) {
