@@ -1,7 +1,7 @@
 import { ResponseCode } from "../lib/response/response-code.ts";
 import { createResponse } from "../lib/response/response-format.ts";
 import { supabase } from "../lib/supabase-config.ts";
-import { PostData, PostQuery } from "../types/user.ts";
+import { PostData, BeadData, PostQuery } from "../types/user.ts";
 
 export class PostRepository {
     static async getGlobalPosts(): Promise<Response | PostData[]> {
@@ -32,8 +32,6 @@ export class PostRepository {
                 receiver_id: userId,
                 created_at: { lt: currentDateUTC },
             };
-        } else if (table == "global_post") {
-            condition = { author_id: userId };
         }
 
         return this.fetchPosts(table, condition);
@@ -57,11 +55,22 @@ export class PostRepository {
                 }
             });
         }
-        if (table == "global_post") {
-            queryBuilder.order("created_at", { ascending: true });
-        }
 
         const { data, error } = await queryBuilder;
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Database query failed: ${error.message}`,
+                null
+            );
+        }
+        return data;
+    }
+
+    static async getAllUserPosts(id: string): Promise<Response | BeadData[]> {
+        const { data, error } = await supabase.rpc("get_all_user_posts", {
+            user_id: id,
+        });
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
@@ -115,11 +124,11 @@ export class PostRepository {
         }
     }
 
-    static async deleteGlobalUser(id: string): Promise<Response | void> {
+    static async deletePost(table: string, id: string): Promise<Response | void> {
         const { error } = await supabase.rpc("delete_user_posts", {
             id_input: id,
-            base_table: "global_post",
-            backup_table: "backup_global_post",
+            base_table: table,
+            backup_table: `backup_${table}`,
         });
         if (error) {
             return createResponse(

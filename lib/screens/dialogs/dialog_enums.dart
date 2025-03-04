@@ -82,7 +82,7 @@ enum DialogType {
       case DialogType.reportPost:
         return ReportPostDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.delete:
-        return DeleteDialog(puzzleId: puzzleId!);
+        return DeleteDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:

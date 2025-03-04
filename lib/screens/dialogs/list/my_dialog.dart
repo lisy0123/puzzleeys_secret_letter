@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/delete_dialog_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/utils/get_puzzle_type.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
@@ -12,6 +13,7 @@ import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
 import 'package:puzzleeys_secret_letter/utils/countdown_timer.dart';
 import 'package:puzzleeys_secret_letter/utils/request/fetch_request.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
+import 'package:puzzleeys_secret_letter/widgets/parent_puzzle_widget.dart';
 import 'package:puzzleeys_secret_letter/widgets/tilted_puzzle.dart';
 
 class MyDialog extends StatefulWidget {
@@ -27,7 +29,7 @@ class _MyDialogState extends State<MyDialog> {
   @override
   void initState() {
     super.initState();
-    _futureData = FetchRequest.dialogData('/api/post/global_user');
+    _futureData = FetchRequest.dialogData('/api/post/user');
   }
 
   @override
@@ -36,7 +38,7 @@ class _MyDialogState extends State<MyDialog> {
       selector: (_, provider) => provider.isLoading,
       builder: (_, isLoading, __) {
         if (!isLoading) {
-          _futureData = FetchRequest.dialogData('/api/post/global_user');
+          _futureData = FetchRequest.dialogData('/api/post/user');
         }
         return LoadingDialog(
           futureData: _futureData,
@@ -97,32 +99,34 @@ class _MyDialogState extends State<MyDialog> {
             child: CustomText.dialogText(item['title']),
           ),
         ),
+        SizedBox(
+          width: 700.0.w,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CountdownTimer(createdAt: item['created_at']),
+              ParentPuzzleWidget(parentPostType: item['post_type']),
+            ],
+          ),
+        ),
         Padding(
-          padding: EdgeInsets.only(top: 30.0.w, bottom: 60.0.w),
-          child: SizedBox(
-            width: 840.0.w,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CountdownTimer(createdAt: item['created_at']),
-                CustomButton(
-                  iconName: 'none',
-                  iconTitle: CustomStrings.deleteShort,
-                  height: 160,
-                  width: 260,
-                  borderStroke: 1.3,
-                  onTap: () {
-                    BuildDialog.show(
-                      iconName: 'delete',
-                      simpleDialog: true,
-                      puzzleId: item['id'],
-                      context: context,
-                    );
-                  },
-                ),
-              ],
-            ),
+          padding: EdgeInsets.only(top: 20.0.w, bottom: 60.0.w),
+          child: CustomButton(
+            iconName: 'none',
+            iconTitle: CustomStrings.deleteShort,
+            height: 160,
+            width: 300,
+            borderStroke: 1.5,
+            onTap: () {
+              BuildDialog.show(
+                iconName: 'delete',
+                simpleDialog: true,
+                puzzleId: item['id'],
+                puzzleType: GetPuzzleType.stringToType(item['post_type']),
+                context: context,
+              );
+            },
           ),
         ),
       ],

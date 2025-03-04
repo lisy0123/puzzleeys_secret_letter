@@ -26,7 +26,7 @@ export class PostService {
         return ResponseUtils.handleRequest({
             callback: async () => {
                 const userId = uuidToBase64(user.id);
-                
+
                 const posts = await PostRepository.getUserPosts(
                     userId,
                     table as string
@@ -43,7 +43,25 @@ export class PostService {
         });
     }
 
-   static postPost(_user: User, body: unknown): Promise<Response> {
+    static getAllUser(user: User): Promise<Response> {
+        return ResponseUtils.handleRequest({
+            callback: async () => {
+                const userId = uuidToBase64(user.id);
+
+                const posts = await PostRepository.getAllUserPosts(userId);
+                if ("status" in posts) {
+                    return posts;
+                }
+                return createResponse(
+                    ResponseCode.SUCCESS,
+                    `Get all user's post successful.`,
+                    posts
+                );
+            },
+        });
+    }
+
+    static postPost(_user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
                 const list = body as Array<unknown>;
@@ -62,7 +80,11 @@ export class PostService {
         });
     }
 
-    static updatePost(_user: User, body: unknown, id: unknown): Promise<Response> {
+    static updatePost(
+        _user: User,
+        body: unknown,
+        id: unknown
+    ): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
                 const list = body as Array<string>;
@@ -83,12 +105,12 @@ export class PostService {
         });
     }
 
-    static deleteGlobalUser(_user: User, id: unknown): Promise<Response> {
+    static deletePost(_user: User, body: unknown): Promise<Response> {
         return ResponseUtils.handleRequest({
             callback: async () => {
-                const error = await PostRepository.deleteGlobalUser(
-                    id as string
-                );
+                const list = body as Array<string>;
+
+                const error = await PostRepository.deletePost(list[0], list[1]);
                 if (error) return error;
 
                 return createResponse(

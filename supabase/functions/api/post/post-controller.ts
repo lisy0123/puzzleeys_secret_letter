@@ -15,6 +15,13 @@ export class PostController {
         });
     }
 
+    static getAllUser(_c: Context, user: User) {
+        return ResponseUtils.handleRequest({
+            callback: PostService.getAllUser,
+            user: user,
+        });
+    }
+
     static async postPost(c: Context, _user: User, postType?: string) {
         const body = await c.req.json();
         return ResponseUtils.handleRequest({
@@ -41,11 +48,11 @@ export class PostController {
         });
     }
 
-    static deleteGlobalUser(c: Context, _user: User) {
+    static deletePost(c: Context, _user: User, postType?: string) {
         const id = c.req.param("id");
         return ResponseUtils.handleRequest({
-            callback: PostService.deleteGlobalUser,
-            only_id: id,
+            callback: PostService.deletePost,
+            tableOrBody: [postType, id],
         });
     }
 }

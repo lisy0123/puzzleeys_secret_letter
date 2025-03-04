@@ -14,9 +14,7 @@ postRouter.get("/subject", (c) => withAuth(c, PostController.getUser, subject));
 postRouter.get("/personal", (c) =>
     withAuth(c, PostController.getUser, personal)
 );
-postRouter.get("/global_user", (c) =>
-    withAuth(c, PostController.getUser, global)
-);
+postRouter.get("/user", (c) => withAuth(c, PostController.getAllUser));
 
 postRouter.post("/global", (c) => withAuth(c, PostController.postPost, global));
 postRouter.post("/subject", (c) =>
@@ -40,7 +38,13 @@ postRouter.post("/personal_read/:id", (c) =>
 );
 
 postRouter.delete("/global_delete/:id", (c) =>
-    withAuth(c, PostController.deleteGlobalUser)
+    withAuth(c, PostController.deletePost, global)
+);
+postRouter.delete("/subject_delete/:id", (c) =>
+    withAuth(c, PostController.deletePost, subject)
+);
+postRouter.delete("/personal_delete/:id", (c) =>
+    withAuth(c, PostController.deletePost, personal)
 );
 
 postRouter.all("/*", () => {

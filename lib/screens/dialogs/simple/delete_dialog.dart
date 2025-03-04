@@ -9,8 +9,13 @@ import 'package:puzzleeys_secret_letter/widgets/custom_simple_dialog.dart';
 
 class DeleteDialog extends StatelessWidget {
   final String puzzleId;
+  final PuzzleType puzzleType;
 
-  const DeleteDialog({super.key, required this.puzzleId});
+  const DeleteDialog({
+    super.key,
+    required this.puzzleId,
+    required this.puzzleType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +34,19 @@ class DeleteDialog extends StatelessWidget {
 
     try {
       deleteProvider.updateLoading(setLoading: true);
-      await apiRequest('/api/post/global_delete/$puzzleId', ApiType.delete);
+
+      final url = {
+        PuzzleType.global: '/api/post/global_delete/$puzzleId',
+        PuzzleType.subject: '/api/post/subject_delete/$puzzleId',
+        PuzzleType.personal: '/api/post/personal_delete/$puzzleId',
+      }[puzzleType]!;
+      await apiRequest(url, ApiType.delete);
 
       deleteProvider.updateLoading(setLoading: false);
       if (context.mounted) Navigator.pop(context);
 
       puzzleProvider.updateShuffle(true);
-      await puzzleProvider.initializeColors(PuzzleType.global);
+      await puzzleProvider.initializeColors(puzzleType);
     } catch (error) {
       deleteProvider.updateLoading(setLoading: false);
       if (context.mounted) Navigator.pop(context);
