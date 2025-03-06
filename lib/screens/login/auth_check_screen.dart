@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
@@ -26,6 +27,9 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((_) => _checkIOSTrackingPermission());
+
     _loggedBeforeProvider = context.read<LoggedBeforeProvider>();
 
     _loggedBeforeProvider.addListener(() {
@@ -43,6 +47,19 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       _initialize();
     });
+  }
+
+  Future<void> _checkIOSTrackingPermission() async {
+    try {
+      final TrackingStatus status =
+          await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (status == TrackingStatus.notDetermined) {
+        await AppTrackingTransparency.requestTrackingAuthorization();
+      }
+      // final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    } catch (error) {
+      debugPrint('checkIOSTracking Error: $error');
+    }
   }
 
   void _initialize() async {

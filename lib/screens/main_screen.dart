@@ -1,4 +1,3 @@
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,19 +38,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       vsync: this,
       animationDuration: Duration.zero,
     );
-    await _checkIOSTrackingPermission();
 
     _tabIndexProvider.addListener(() {
       _tabController!.animateTo(_tabIndexProvider.currentTabIndex);
     });
-  }
-
-  Future<void> _checkIOSTrackingPermission() async {
-    try {
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    } catch (error) {
-      debugPrint('checkIOSTracking Error: $error');
-    }
   }
 
   @override
