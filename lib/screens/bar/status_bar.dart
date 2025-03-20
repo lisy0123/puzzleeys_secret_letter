@@ -56,9 +56,15 @@ class StatusBar extends StatelessWidget {
   }
 
   Widget _buildMainBarLeft(BuildContext context) {
-    return Selector<BarProvider, int>(
-      selector: (_, provider) => provider.puzzleNums,
-      builder: (_, puzzleNums, __) {
+    return Selector<BarProvider, Map<String, int>>(
+      selector: (_, provider) => {
+        'puzzleNums': provider.puzzleNums,
+        'diaNums': provider.diaNums,
+      },
+      builder: (_, data, __) {
+        final int puzzleNums = data['puzzleNums']!;
+        final int diaNums = data['diaNums']!;
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -68,10 +74,7 @@ class StatusBar extends StatelessWidget {
             SizedBox(width: 80.0.w),
             SvgPicture.asset('assets/imgs/bar_dia.svg', height: 32.0.h),
             SizedBox(width: 30.0.w),
-            CustomText.textTopBarNums(
-              puzzleNums: CustomVars.diaNums,
-              context: context,
-            ),
+            CustomText.textTopBarNums(puzzleNums: diaNums, context: context),
           ],
         );
       },

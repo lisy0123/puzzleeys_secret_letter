@@ -37,5 +37,6 @@ export interface BeadData {
 
 export interface BarData {
     puzzle?: number;
+    dia?: number;
     date?: string;
 }

@@ -9,9 +9,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BarProvider with ChangeNotifier {
   int _puzzleNums = 0;
+  int _diaNums = 0;
   DateTime? _lastCheckedDate;
 
   int get puzzleNums => _puzzleNums;
+  int get diaNums => _diaNums;
 
   BarProvider() {
     _loadStoredData();
@@ -19,6 +21,7 @@ class BarProvider with ChangeNotifier {
 
   void _loadStoredData() async {
     _puzzleNums = await SharedPreferencesUtils.getInt('puzzleNums');
+    _diaNums = await SharedPreferencesUtils.getInt('diaNums');
 
     final String? savedDate =
         await SharedPreferencesUtils.get('attendance_date');
@@ -37,10 +40,11 @@ class BarProvider with ChangeNotifier {
         if (responseData['code'] == 200) {
           final data = responseData['result'] as Map<String, dynamic>;
           final int puzzleNum = data['puzzle'];
+          final int diaNum = data['dia'];
           final DateTime? lastCheckedDate =
               data['date'].isNotEmpty ? DateTime.tryParse(data['date']) : null;
 
-          await _updateIfChanged(puzzleNum, lastCheckedDate);
+          await _updateIfChanged(puzzleNum, diaNum, lastCheckedDate);
           if (context.mounted) await _checkIn(context);
         }
         break;
@@ -56,12 +60,19 @@ class BarProvider with ChangeNotifier {
 
   Future<void> _updateIfChanged(
     int puzzleNum,
+    int diaNum,
     DateTime? lastCheckedDate,
   ) async {
     if (puzzleNum != _puzzleNums) {
       _puzzleNums = puzzleNum;
       notifyListeners();
       await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
+    }
+
+    if (diaNum != _diaNums) {
+      _diaNums = diaNum;
+      notifyListeners();
+      await SharedPreferencesUtils.saveInt('diaNums', _diaNums);
     }
 
     if (lastCheckedDate != _lastCheckedDate) {

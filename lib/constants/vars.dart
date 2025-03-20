@@ -3,8 +3,6 @@ import 'package:puzzleeys_secret_letter/constants/colors.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 
 class CustomVars {
-  static final int diaNums = 0000;
-
   static final List<Color> myColorPickers = [
     CustomColors.colorPink,
     CustomColors.colorRed,
