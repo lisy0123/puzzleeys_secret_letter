@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
+import 'package:puzzleeys_secret_letter/providers/puzzle/puzzle_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_screen_handler.dart';
 import 'package:puzzleeys_secret_letter/utils/color_utils.dart';
@@ -185,7 +187,11 @@ class _PuzzleWritingScreenState extends State<PuzzleWritingScreen> {
       case PuzzleType.global:
         return MessageStrings.writingGlobalMessage;
       case PuzzleType.subject:
-        return MessageStrings.writingSubjectMessage;
+        final String subjectTitle =
+            Provider.of<PuzzleProvider>(context, listen: false)
+                .subjectTitle
+                .replaceAll(r'\n', ' ');
+        return '${CustomStrings.addToday} $subjectTitle\n${MessageStrings.writingSubjectMessage}';
       case PuzzleType.personal:
         return MessageStrings.writingToOtherMessage;
       default:

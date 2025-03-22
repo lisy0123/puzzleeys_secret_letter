@@ -2,6 +2,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 
 class CustomStrings {
   static const String email = 'puzzleey@puzzleletter.com';
+  static const String snsInsta = 'https://www.instagram.com/puzzleey._.app';
   static const String snsX = 'https://x.com/puzzleey_app';
 
   static const String howToUseUrl =

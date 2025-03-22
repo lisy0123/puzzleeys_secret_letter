@@ -21,11 +21,13 @@ class PuzzleProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isShuffle = false;
   bool _hasSubject = false;
+  String _subjectTitle = '';
 
   List<Map<String, dynamic>> get puzzleList => _puzzleList;
   bool get isLoading => _isLoading;
   bool get isShuffle => _isShuffle;
   bool get hasSubject => _hasSubject;
+  String get subjectTitle => _subjectTitle;
 
   PuzzleProvider() {
     _initialize();
@@ -37,6 +39,7 @@ class PuzzleProvider extends ChangeNotifier {
       (index) => _emptyPuzzle(index),
     );
     _hasSubject = await SharedPreferencesUtils.getBool('hasSubject') ?? false;
+    _subjectTitle = await SharedPreferencesUtils.get('subjectTitle') ?? '';
     notifyListeners();
   }
 
@@ -209,11 +212,26 @@ class PuzzleProvider extends ChangeNotifier {
     notifyListeners();
 
     if (puzzleType == PuzzleType.subject) {
-      if (_hasSubject != isExisted) {
-        _hasSubject = isExisted;
-        notifyListeners();
-        SharedPreferencesUtils.saveBool('hasSubject', _hasSubject);
-      }
+      _handleSubjectPuzzle(puzzleType, isExisted);
+    }
+  }
+
+  void _handleSubjectPuzzle(PuzzleType puzzleType, bool isExisted) {
+    if (_hasSubject != isExisted) {
+      _hasSubject = isExisted;
+      notifyListeners();
+      SharedPreferencesUtils.saveBool('hasSubject', _hasSubject);
+    }
+
+    String matchingTitle = _puzzleList.firstWhere(
+          (data) => data['color'] == Colors.white.withValues(alpha: 0.8),
+          orElse: () => {},
+        )['title'] ??
+        '';
+    if (_subjectTitle != matchingTitle) {
+      _subjectTitle = matchingTitle;
+      notifyListeners();
+      SharedPreferencesUtils.save('subjectTitle', _subjectTitle);
     }
   }
 

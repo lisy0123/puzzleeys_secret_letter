@@ -43,10 +43,7 @@ class QuestionDialog extends StatelessWidget {
             Utils.dialogDivider(),
           ],
         ),
-        GestureDetector(
-          onTap: () => Utils.launchURL(CustomStrings.snsX),
-          child: SvgPicture.asset('assets/imgs/sns_x.svg', height: 300.0.w),
-        ),
+        _buildSns(),
       ],
     );
   }
@@ -71,6 +68,24 @@ class QuestionDialog extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSns() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () => Utils.launchURL(CustomStrings.snsInsta),
+          child: SvgPicture.asset('assets/imgs/sns_insta.svg', height: 200.0.w),
+        ),
+        SizedBox(width: 40.0.w),
+        GestureDetector(
+          onTap: () => Utils.launchURL(CustomStrings.snsX),
+          child: SvgPicture.asset('assets/imgs/sns_x.svg', height: 260.0.w),
+        ),
+      ],
     );
   }
 }

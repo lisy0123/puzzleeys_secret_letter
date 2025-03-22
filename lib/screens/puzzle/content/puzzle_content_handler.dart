@@ -25,7 +25,7 @@ class PuzzleContentHandler {
       BuildDialog.show(
         iconName: 'puzzleSubject',
         puzzleText: puzzleData['title'].replaceAll(r'\n', '\n'),
-        puzzleColor: puzzleData['color'],
+        puzzleColor: puzzleColor,
         context: context,
       );
     } else {
@@ -34,7 +34,7 @@ class PuzzleContentHandler {
         context.read<ReadPuzzleProvider>().markAsRead(puzzleData['id']);
       }
       PuzzleScreenHandler.navigateScreen(
-        barrierColor: puzzleData['color'].withValues(alpha: 0.8),
+        barrierColor: puzzleColor.withValues(alpha: 0.8),
         child: PuzzleMainScreen(
           index: index,
           puzzleData: puzzleData,
