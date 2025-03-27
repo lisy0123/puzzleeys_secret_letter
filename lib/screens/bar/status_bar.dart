@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
+import 'package:puzzleeys_secret_letter/screens/welcome_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
@@ -48,7 +49,31 @@ class StatusBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildMainBarLeft(context),
-          IconDialog(iconName: 'list'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (_) {
+                      return WelcomeScreen();
+                    },
+                  );
+                },
+                child: Container(
+                  width: 100.0.w,
+                  color: Colors.transparent,
+                  child:
+                  CustomText.textDialogTitle(text: '?', context: context),
+                ),
+              ),
+              SizedBox(width: 40.0.w),
+              IconDialog(iconName: 'list'),
+            ],
+          ),
         ],
       ),
     );
@@ -56,7 +81,8 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildMainBarLeft(BuildContext context) {
     return Selector<BarProvider, Map<String, int>>(
-      selector: (_, provider) => {
+      selector: (_, provider) =>
+      {
         'puzzleNums': provider.puzzleNums,
         'diaNums': provider.diaNums,
       },

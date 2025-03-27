@@ -24,9 +24,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> svgPaths = [
-      'assets/imgs/Instructions_1.svg',
-      'assets/imgs/Instructions_2.svg',
-      'assets/imgs/Instructions_3.svg',
+      'assets/imgs/instructions_1.svg',
+      'assets/imgs/instructions_2.svg',
+      'assets/imgs/instructions_3.svg',
+      'assets/imgs/instructions_4.svg',
     ];
 
     return Dialog(
@@ -55,7 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildPageIndicator(List<String> svgPaths) {
     return Positioned(
-      top: 100.0.h,
+      top: 160.0.h,
       left: 0,
       right: 0,
       child: Center(
@@ -81,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildButton(List<String> svgPaths) {
     return Positioned(
-      bottom: 300.0.h,
+      bottom: 260.0.h,
       left: 0,
       right: 0,
       child: Builder(

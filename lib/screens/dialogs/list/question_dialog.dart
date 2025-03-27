@@ -20,21 +20,6 @@ class QuestionDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildTextButton(
-              iconName: 'btn_puzzle',
-              onTap: () {
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (_) {
-                    return WelcomeScreen();
-                  },
-                );
-              },
-              text: CustomStrings.howToUse,
-              context: context,
-            ),
-            Utils.dialogDivider(),
-            _buildTextButton(
               iconName: 'btn_mail',
               onTap: () => FeedbackEmail.send(),
               text: CustomStrings.feedback,
@@ -78,12 +63,12 @@ class QuestionDialog extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () => Utils.launchURL(CustomStrings.snsInsta),
-          child: SvgPicture.asset('assets/imgs/sns_insta.svg', height: 200.0.w),
+          child: SvgPicture.asset('assets/imgs/sns_insta.svg', height: 240.0.w),
         ),
         SizedBox(width: 40.0.w),
         GestureDetector(
           onTap: () => Utils.launchURL(CustomStrings.snsX),
-          child: SvgPicture.asset('assets/imgs/sns_x.svg', height: 260.0.w),
+          child: SvgPicture.asset('assets/imgs/sns_x.svg', height: 300.0.w),
         ),
       ],
     );

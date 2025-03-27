@@ -53,7 +53,6 @@ class CustomStrings {
   static const String day = '일 뒤';
 
   static const String start = '시작하기';
-  static const String howToUse = '이용 안내';
   static const String feedback = '문의하기';
 
   static const String version = '버 전';
