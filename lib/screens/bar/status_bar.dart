@@ -43,7 +43,7 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildMainBar(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 200.0.w, right: 100.0.w),
+      padding: EdgeInsets.only(left: 200.0.w, right: 80.0.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,14 +63,12 @@ class StatusBar extends StatelessWidget {
                     },
                   );
                 },
-                child: Container(
-                  width: 100.0.w,
-                  color: Colors.transparent,
-                  child:
-                  CustomText.textDialogTitle(text: '?', context: context),
+                child: SvgPicture.asset(
+                  'assets/imgs/icon_question.svg',
+                  height: 32.0.h,
                 ),
               ),
-              SizedBox(width: 40.0.w),
+              SizedBox(width: 20.0.w),
               IconDialog(iconName: 'list'),
             ],
           ),
@@ -81,8 +79,7 @@ class StatusBar extends StatelessWidget {
 
   Widget _buildMainBarLeft(BuildContext context) {
     return Selector<BarProvider, Map<String, int>>(
-      selector: (_, provider) =>
-      {
+      selector: (_, provider) => {
         'puzzleNums': provider.puzzleNums,
         'diaNums': provider.diaNums,
       },

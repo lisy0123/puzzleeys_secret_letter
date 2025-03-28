@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
-import 'package:puzzleeys_secret_letter/screens/welcome_screen.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
 import 'package:puzzleeys_secret_letter/utils/feedback_email.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
