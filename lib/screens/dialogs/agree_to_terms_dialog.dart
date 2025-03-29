@@ -67,14 +67,14 @@ class _AgreeToTermsDialogState extends State<AgreeToTermsDialog> {
 
   List<Widget> _buildAgreementCheckboxes() {
     final Map<String, Agreement> agreementsData = {
-      service: Agreement(CustomStrings.termsAgree, CustomStrings.termsUrl),
+      service: Agreement(CustomStrings.termsAgree, UrlStrings.termsUrl),
       privacy: Agreement(
         CustomStrings.privacyPolicyAgree,
-        CustomStrings.privacyPolicyUrl,
+        UrlStrings.privacyPolicyUrl,
       ),
       copyRight: Agreement(
         CustomStrings.copyRightPolicyAgree,
-        CustomStrings.copyRightPolicyUrl,
+        UrlStrings.copyRightPolicyUrl,
       ),
     };
 

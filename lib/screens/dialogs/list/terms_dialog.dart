@@ -13,17 +13,17 @@ class TermsDialog extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildText(CustomStrings.terms, CustomStrings.termsUrl, context),
+        _buildText(CustomStrings.terms, UrlStrings.termsUrl, context),
         Utils.dialogDivider(),
         _buildText(
           CustomStrings.privacyPolicy,
-          CustomStrings.privacyPolicyUrl,
+          UrlStrings.privacyPolicyUrl,
           context,
         ),
         Utils.dialogDivider(),
         _buildText(
           CustomStrings.copyRightPolicy,
-          CustomStrings.copyRightPolicyUrl,
+          UrlStrings.copyRightPolicyUrl,
           context,
         ),
         Utils.dialogDivider(),

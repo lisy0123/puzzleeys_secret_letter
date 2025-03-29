@@ -97,9 +97,9 @@ class BarProvider with ChangeNotifier {
 
       if (context.mounted) {
         CustomOverlay.show(
-          text: MessageStrings.overlayMessages[OverlayType.attendance]![1],
+          text: OverlayStrings.overlayMessages[OverlayType.attendance]![1],
           puzzleVis: true,
-          puzzleNum: MessageStrings.overlayMessages[OverlayType.attendance]![0],
+          puzzleNum: OverlayStrings.overlayMessages[OverlayType.attendance]![0],
           context: context,
         );
       }

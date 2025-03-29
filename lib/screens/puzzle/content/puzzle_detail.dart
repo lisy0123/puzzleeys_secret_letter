@@ -169,15 +169,15 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
     if (_puzzleButtonColor == Colors.white) {
       setState(() => _puzzleButtonColor = widget.puzzleData['color']);
       CustomOverlay.show(
-        text: MessageStrings.overlayMessages[OverlayType.getPuzzle]![1],
+        text: OverlayStrings.overlayMessages[OverlayType.getPuzzle]![1],
         puzzleVis: true,
-        puzzleNum: MessageStrings.overlayMessages[OverlayType.getPuzzle]![0],
+        puzzleNum: OverlayStrings.overlayMessages[OverlayType.getPuzzle]![0],
         context: context,
       );
       _beadProvider.addPuzzleToBead(widget.puzzleData, widget.puzzleType);
     } else {
       CustomOverlay.show(
-        text: MessageStrings.puzzleExistOverlay,
+        text: OverlayStrings.puzzleExistOverlay,
         context: context,
       );
     }

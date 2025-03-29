@@ -31,7 +31,7 @@ class ReportPostDialog extends StatelessWidget {
     try {
       final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
-      CustomOverlay.show(text: MessageStrings.reportOverlay, context: context);
+      CustomOverlay.show(text: OverlayStrings.reportOverlay, context: context);
       await FetchRequest.report(
         puzzleType: puzzleType,
         puzzleId: puzzleId,

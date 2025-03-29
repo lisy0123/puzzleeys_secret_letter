@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:app_version_update/app_version_update.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:puzzleeys_secret_letter/providers/auth_status_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bar_provider.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
@@ -27,11 +29,12 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsFlutterBinding.ensureInitialized()
-        .addPostFrameCallback((_) => _checkIOSTrackingPermission());
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      await _verifyVersion();
+      await _checkIOSTrackingPermission();
+    });
 
     _loggedBeforeProvider = context.read<LoggedBeforeProvider>();
-
     _loggedBeforeProvider.addListener(() {
       if (!_loggedBeforeProvider.loggedInBefore) {
         BuildDialog.show(
@@ -46,6 +49,24 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       _initialize();
+    });
+  }
+
+  Future<void> _verifyVersion() async {
+    await AppVersionUpdate.checkForUpdates(
+      appleId: dotenv.env['APPLE_APP_ID'],
+      // playStoreId: dotenv.env['PLAY_STORE_ID'],
+      country: 'kr',
+    ).then((result) async {
+      if (result.canUpdate! && mounted) {
+        BuildDialog.show(
+          iconName: 'update',
+          puzzleText: result.storeUrl,
+          simpleDialog: true,
+          dismissible: false,
+          context: context,
+        );
+      }
     });
   }
 

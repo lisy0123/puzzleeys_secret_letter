@@ -61,12 +61,12 @@ class QuestionDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: () => Utils.launchURL(CustomStrings.snsInsta),
+          onTap: () => Utils.launchURL(UrlStrings.snsInsta),
           child: SvgPicture.asset('assets/imgs/sns_insta.svg', height: 240.0.w),
         ),
         SizedBox(width: 40.0.w),
         GestureDetector(
-          onTap: () => Utils.launchURL(CustomStrings.snsX),
+          onTap: () => Utils.launchURL(UrlStrings.snsX),
           child: SvgPicture.asset('assets/imgs/sns_x.svg', height: 300.0.w),
         ),
       ],

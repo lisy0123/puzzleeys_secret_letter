@@ -45,9 +45,9 @@ class CompletePuzzle {
     Navigator.popUntil(context, (route) => route.isFirst);
     context.read<PuzzleScreenProvider>().updateScreenOpacity();
     CustomOverlay.show(
-      text: MessageStrings.overlayMessages[overlayType]![1],
+      text: OverlayStrings.overlayMessages[overlayType]![1],
       puzzleVis: isNotZero,
-      puzzleNum: MessageStrings.overlayMessages[overlayType]![0],
+      puzzleNum: OverlayStrings.overlayMessages[overlayType]![0],
       context: context,
     );
     await _fetchResponse();

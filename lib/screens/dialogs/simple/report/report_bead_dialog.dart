@@ -35,7 +35,7 @@ class ReportBeadDialog extends StatelessWidget {
       beadProvider.updateLoading(setLoading: true);
       final PuzzleProvider puzzleProvider = context.read<PuzzleProvider>();
 
-      CustomOverlay.show(text: MessageStrings.reportOverlay, context: context);
+      CustomOverlay.show(text: OverlayStrings.reportOverlay, context: context);
       final responseData = await FetchRequest.report(
         puzzleType: puzzleType,
         puzzleId: puzzleId,

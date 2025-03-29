@@ -41,7 +41,7 @@ class FeedbackEmail {
   static Future<void> send() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
-      path: CustomStrings.email,
+      path: UrlStrings.email,
       query: _encodeQueryParameters(<String, String>{
         'subject': '[PUZZLEEY][${_osVersion.split(' ')[0]}] Feedback',
         'body': '''

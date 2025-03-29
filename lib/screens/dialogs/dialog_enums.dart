@@ -17,6 +17,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/show_receiver_dialog.dar
 import 'package:puzzleeys_secret_letter/screens/dialogs/puzzle_subject_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/report/report_post_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/update_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/user_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
@@ -35,6 +36,7 @@ enum DialogType {
   emptyName,
   emptyPuzzle,
   isExists,
+  update,
 
   putGlobal,
   putSubject,
@@ -95,6 +97,8 @@ enum DialogType {
         return WarningDialog(dialogType: WarningType.emptyPuzzle);
       case DialogType.isExists:
         return WarningDialog(dialogType: WarningType.isExists);
+      case DialogType.update:
+        return UpdateDialog(puzzleText: puzzleText!);
 
       case DialogType.putGlobal:
         return PutDialog(
@@ -185,11 +189,6 @@ class DialogEnums extends StatelessWidget {
     final DialogType dialogType = DialogTypeExtension.fromString(
         (RegExp(r'^[0-8]$').hasMatch(iconName)) ? 'list$iconName' : iconName);
     return dialogType.showDialog(
-      puzzleId,
-      puzzleColor,
-      puzzleText,
-      puzzleData,
-      puzzleType,
-    );
+        puzzleId, puzzleColor, puzzleText, puzzleData, puzzleType);
   }
 }
