@@ -21,7 +21,6 @@ class QuestData {
 
 enum OverlayType {
   attendance,
-  getPuzzle,
   writeSubjectPuzzle,
   writeGlobalPuzzle,
   writePersonalPuzzle,

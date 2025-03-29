@@ -115,7 +115,8 @@ class MessageStrings {
   static String emptyWritingMessage = '작성한 글이 없어요!';
   static String emptyPuzzleMessage = '담은 감정 퍼즐이 없어요!';
 
-  static String deleteMessage = '지금 당장\n삭제할까요?';
+  static String deleteMessage = '해당 글을\n당장 삭제할까요?';
+  static String deleteBeadMessage = '해당 글을\n구슬에서 삭제할까요?';
   static String reportMessage = '해당 글을\n신고할까요?';
 
   static String logoutMessage = '로그아웃할까요?';
@@ -149,16 +150,17 @@ class MessageStrings {
 class OverlayStrings {
   static Map<Enum, List<dynamic>> overlayMessages = {
     OverlayType.attendance: [3, '출석했어요!'],
-    OverlayType.getPuzzle: [1, '감정 퍼즐을 담았어요!'],
     OverlayType.writeGlobalPuzzle: [-1, '감정 퍼즐을 공유했어요!'],
     OverlayType.writeSubjectPuzzle: [-1, '오늘의 주제에 감정 퍼즐을 공유했어요!'],
     OverlayType.writePersonalPuzzle: [-1, '누군가에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writePuzzleToMe: [-1, '미래의 나에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writeReply: [1, '답장을 보냈어요!'],
   };
+  static String getOverlay = '감정 퍼즐을 담았어요!';
   static String userIdOverlay = '회원 번호를 복사했어요!';
   static String puzzleExistOverlay = '이미 담은 감정 퍼즐이에요!';
   static String reportOverlay = '해당 감정 퍼즐을 신고했어요!';
+  static String deleteOverlay = '해당 감정 퍼즐을 삭제했어요!';
 }
 
 class UpdateStrings {

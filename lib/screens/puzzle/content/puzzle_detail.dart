@@ -168,12 +168,7 @@ class _PuzzleDetailState extends State<PuzzleDetail> {
   void _getPuzzle() async {
     if (_puzzleButtonColor == Colors.white) {
       setState(() => _puzzleButtonColor = widget.puzzleData['color']);
-      CustomOverlay.show(
-        text: OverlayStrings.overlayMessages[OverlayType.getPuzzle]![1],
-        puzzleVis: true,
-        puzzleNum: OverlayStrings.overlayMessages[OverlayType.getPuzzle]![0],
-        context: context,
-      );
+      CustomOverlay.show(text: OverlayStrings.getOverlay, context: context);
       _beadProvider.addPuzzleToBead(widget.puzzleData, widget.puzzleType);
     } else {
       CustomOverlay.show(

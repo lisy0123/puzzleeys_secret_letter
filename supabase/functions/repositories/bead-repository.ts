@@ -15,7 +15,7 @@ export class BeadRepository {
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
+                `Error getting user's bead data: ${error.message}`,
                 null
             );
         }
@@ -27,7 +27,7 @@ export class BeadRepository {
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
+                `Error posting bead data: ${error.message}`,
                 null
             );
         }
@@ -47,7 +47,7 @@ export class BeadRepository {
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
+                `Error updating bead: ${error.message}`,
                 null
             );
         }
@@ -68,10 +68,25 @@ export class BeadRepository {
         if (error) {
             return createResponse(
                 ResponseCode.SERVER_ERROR,
-                `Database query failed: ${error.message}`,
+                `Error updating bead data: ${error.message}`,
                 null
             );
         }
         return (count ?? 0) > 0;
+    }
+    
+    static async deletePost(index: string): Promise<Response | void> {
+        const { error } = await supabase
+            .from("bead_user_list")
+            .delete()
+            .eq("index", index);
+
+        if (error) {
+            return createResponse(
+                ResponseCode.SERVER_ERROR,
+                `Error deleting bead data: ${error.message}`,
+                null
+            );
+        }
     }
 }

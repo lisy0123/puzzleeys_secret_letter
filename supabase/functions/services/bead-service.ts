@@ -72,4 +72,19 @@ export class BeadService {
             },
         });
     }
+
+    static deletePost(_user: User, id: unknown): Promise<Response> {
+        return ResponseUtils.handleRequest({
+            callback: async () => {
+                const error = await BeadRepository.deletePost(id as string);
+                if (error) return error;
+
+                return createResponse(
+                    ResponseCode.SUCCESS,
+                    `Delete bead puzzle successful.`,
+                    null
+                );
+            },
+        });
+    }
 }

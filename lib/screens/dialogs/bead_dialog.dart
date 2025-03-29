@@ -6,6 +6,7 @@ import 'package:puzzleeys_secret_letter/constants/enums.dart';
 import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
+import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
@@ -137,10 +138,7 @@ class _BeadDialogState extends State<BeadDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 30.0.w),
-          child: _buildTopContext(item),
-        ),
+        _buildTopContext(item),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 20.0.w),
           child: SizedBox(
@@ -156,6 +154,7 @@ class _BeadDialogState extends State<BeadDialog> {
             ParentPuzzleWidget(parentPostType: item['post_type']),
           ],
         ),
+        _buildDeleteButton(item),
       ],
     );
   }
@@ -164,31 +163,55 @@ class _BeadDialogState extends State<BeadDialog> {
     final Color color = ColorUtils.colorMatch(stringColor: item['color']);
     final PuzzleType puzzleType = GetPuzzleType.stringToType(item['post_type']);
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: GestureDetector(
-            child: SvgPicture.asset(
-              'assets/imgs/btn_alarm.svg',
-              height: 100.0.w,
-            ),
-            onTap: () => BuildDialog.show(
-              iconName: 'reportBead',
-              puzzleId: item['id'],
-              puzzleType: puzzleType,
-              simpleDialog: true,
-              context: context,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 30.0.w),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              child: SvgPicture.asset(
+                'assets/imgs/btn_alarm.svg',
+                height: 100.0.w,
+              ),
+              onTap: () => BuildDialog.show(
+                iconName: 'reportBead',
+                puzzleId: item['id'],
+                puzzleType: puzzleType,
+                simpleDialog: true,
+                context: context,
+              ),
             ),
           ),
-        ),
-        Center(
-          child: CustomPaint(
-            size: Size(340.0.w, 340.0.w),
-            painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+          Center(
+            child: CustomPaint(
+              size: Size(340.0.w, 340.0.w),
+              painter: TiltedPuzzlePiece(puzzleColor: color, strokeWidth: 1.5),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeleteButton(Map<String, dynamic> item) {
+    return Padding(
+      padding: EdgeInsets.only(top: 20.0.w, bottom: 60.0.w),
+      child: CustomButton(
+        iconName: 'none',
+        iconTitle: CustomStrings.deleteShort,
+        height: 160,
+        width: 300,
+        borderStroke: 1.5,
+        onTap: () {
+          BuildDialog.show(
+            iconName: 'deleteBead',
+            simpleDialog: true,
+            puzzleData: item,
+            context: context,
+          );
+        },
+      ),
     );
   }
 }

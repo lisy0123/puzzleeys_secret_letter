@@ -22,6 +22,10 @@ beadRouter.post("/personal_report/:id", (c) =>
     withAuth(c, BeadController.reportPost, personal)
 );
 
+beadRouter.delete("/:id", (c) =>
+    withAuth(c, BeadController.deletePost, personal)
+);
+
 beadRouter.all("/*", () => {
     return createResponse(ResponseCode.NOT_FOUND, "Not Found", null);
 });

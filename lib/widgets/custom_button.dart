@@ -71,19 +71,17 @@ class _CustomButtonState extends State<CustomButton>
       onTapDown: widget.disable
           ? null
           : (_) async {
-        _handleTapState(true);
-        await _controller.forward();
-        await _controller.reverse();
-      },
+              _handleTapState(true);
+              await _controller.forward();
+              await _controller.reverse();
+            },
       onTapUp: widget.disable
           ? null
           : (_) {
-        _handleTapState(false);
-        widget.onTap();
-      },
-      onTapCancel: widget.disable
-          ? null
-          : () => _handleTapState(false),
+              _handleTapState(false);
+              widget.onTap();
+            },
+      onTapCancel: widget.disable ? null : () => _handleTapState(false),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         child: _buildButtonContent(),

@@ -4,7 +4,8 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/agree_to_terms_dialog.da
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/question_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/terms_dialog.dart';
-import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete/delete_bead_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete/delete_post_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/account_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/list_dialog.dart';
@@ -29,7 +30,9 @@ enum DialogType {
 
   reportBead,
   reportPost,
-  delete,
+  deleteBead,
+  deletePost,
+
   cancel,
   limit,
   profanity,
@@ -83,8 +86,11 @@ enum DialogType {
         return ReportBeadDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
       case DialogType.reportPost:
         return ReportPostDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
-      case DialogType.delete:
-        return DeleteDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
+      case DialogType.deleteBead:
+        return DeleteBeadDialog(puzzleData: puzzleData!);
+      case DialogType.deletePost:
+        return DeletePostDialog(puzzleId: puzzleId!, puzzleType: puzzleType!);
+
       case DialogType.cancel:
         return WarningDialog(dialogType: WarningType.cancel);
       case DialogType.limit:

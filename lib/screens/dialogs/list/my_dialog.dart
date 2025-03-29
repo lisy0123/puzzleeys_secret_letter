@@ -120,7 +120,7 @@ class _MyDialogState extends State<MyDialog> {
             borderStroke: 1.5,
             onTap: () {
               BuildDialog.show(
-                iconName: 'delete',
+                iconName: 'deletePost',
                 simpleDialog: true,
                 puzzleId: item['id'],
                 puzzleType: GetPuzzleType.stringToType(item['post_type']),

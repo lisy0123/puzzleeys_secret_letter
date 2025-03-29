@@ -27,4 +27,12 @@ export class BeadController {
             id: id,
         });
     }
+
+    static deletePost(c: Context, _user: User) {
+        const id = c.req.param("id");
+        return ResponseUtils.handleRequest({
+            callback: BeadService.deletePost,
+            only_id: id,
+        });
+    }
 }

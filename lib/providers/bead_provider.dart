@@ -205,5 +205,11 @@ class BeadProvider with ChangeNotifier {
     _setBeadColor(colors);
   }
 
+  void removePuzzleFromBead(String puzzleId) async {
+    _beadIds.remove(puzzleId);
+    notifyListeners();
+    await _beadBox.put('beadIds', _beadIds);
+  }
+
   bool isExist(String puzzleId) => _beadIds.contains(puzzleId);
 }

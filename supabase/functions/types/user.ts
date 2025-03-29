@@ -28,6 +28,7 @@ export interface PostData {
 }
 
 export interface BeadData {
+    index: string;
     id: string;
     title: string;
     color: string;
