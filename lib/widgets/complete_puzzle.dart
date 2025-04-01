@@ -56,21 +56,32 @@ class CompletePuzzle {
   }
 
   Future<Map<String, dynamic>> _fetchResponse() async {
-    final String url;
-    switch (puzzleType) {
-      case PuzzleType.global:
-        url = '/api/post/global';
-        break;
-      case PuzzleType.subject:
-        url = '/api/post/subject';
-        break;
-      default:
-        url = '/api/post/personal';
-        break;
-    }
-    final String userId = await UserRequest.getUserId();
+    final String url = _getUrlForPuzzleType(puzzleType);
     final Map<String, String> bodies = {...puzzleData};
     final Map<String, String> headers = {'Content-Type': 'application/json'};
+    await _addAdditionalFieldsToBodies(bodies);
+
+    return await apiRequest(
+      url,
+      ApiType.post,
+      headers: headers,
+      bodies: bodies,
+    );
+  }
+
+  String _getUrlForPuzzleType(PuzzleType puzzleType) {
+    switch (puzzleType) {
+      case PuzzleType.global:
+        return '/api/post/global';
+      case PuzzleType.subject:
+        return '/api/post/subject';
+      default:
+        return '/api/post/personal';
+    }
+  }
+
+  Future<void> _addAdditionalFieldsToBodies(Map<String, String> bodies) async {
+    final String userId = await UserRequest.getUserId();
 
     switch (puzzleType) {
       case PuzzleType.reply:
@@ -82,7 +93,7 @@ class CompletePuzzle {
         });
         break;
       case PuzzleType.me:
-        final sendAt =
+        final DateTime sendAt =
             DateTime.now().toUtc().add(Duration(hours: sendDays! * 24));
         bodies.addAll({
           'sender_id': userId,
@@ -96,13 +107,6 @@ class CompletePuzzle {
       default:
         bodies['author_id'] = userId;
     }
-
-    return await apiRequest(
-      url,
-      ApiType.post,
-      headers: headers,
-      bodies: bodies,
-    );
   }
 
   String _formatDate(DateTime dateTime) {

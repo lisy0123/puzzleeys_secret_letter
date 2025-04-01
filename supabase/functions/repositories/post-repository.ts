@@ -1,6 +1,7 @@
 import { ResponseCode } from "../lib/response/response-code.ts";
 import { createResponse } from "../lib/response/response-format.ts";
 import { supabase } from "../lib/supabase-config.ts";
+import { enqueuePushNotification } from "../push/enqueuePushNotifications.ts";
 import { PostData, BeadData, PostQuery } from "../types/user.ts";
 
 export class PostRepository {
@@ -89,6 +90,13 @@ export class PostRepository {
                 body: body,
             });
             error = rpcError;
+
+            if (error == null) {
+                await enqueuePushNotification({
+                    userId: (body as any)["receiver_id"],
+                    body: "누군가의 감정 퍼즐이 도착했어요!",
+                });
+            }
         } else {
             const { error: insertError } = await supabase
                 .from(table)
@@ -124,7 +132,10 @@ export class PostRepository {
         }
     }
 
-    static async deletePost(table: string, id: string): Promise<Response | void> {
+    static async deletePost(
+        table: string,
+        id: string
+    ): Promise<Response | void> {
         const { error } = await supabase.rpc("delete_user_posts", {
             id_input: id,
             base_table: table,

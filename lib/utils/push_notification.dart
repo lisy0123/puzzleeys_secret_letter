@@ -15,7 +15,7 @@ class PushNotification {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel? channel;
-  final String notificationIcon = '@mipmap/ic_launcher';
+  final String notificationIcon = 'assets/icon/default.png';
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   // 푸시 알림 초기화 (로컬 알림, 안드로이드 채널, Firebase 메시징 초기화)
@@ -158,7 +158,7 @@ class PushNotification {
     await requestPermission();
 
     _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
+      alert: false,
       badge: true,
       sound: true,
     );

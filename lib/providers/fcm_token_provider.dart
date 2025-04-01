@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_new_badger/flutter_new_badger.dart';
 import 'package:puzzleeys_secret_letter/utils/request/api_request.dart';
 import 'package:puzzleeys_secret_letter/utils/push_notification.dart';
 import 'package:puzzleeys_secret_letter/utils/utils.dart';
@@ -19,6 +20,7 @@ class FcmTokenProvider with ChangeNotifier {
     if (!(await isPermissionGranted())) {
       await _requestPermission();
     }
+    await FlutterNewBadger.removeBadge();
     await _pushNotification.initPushNotifications(
         onTokenUpdated: (newToken) async {
       final session = Supabase.instance.client.auth.currentSession;
