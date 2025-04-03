@@ -24,10 +24,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> svgPaths = [
-      'assets/imgs/instructions_1.svg',
-      'assets/imgs/instructions_2.svg',
-      'assets/imgs/instructions_3.svg',
-      'assets/imgs/instructions_4.svg',
+      'assets/imgs/tutorial_1.svg',
+      'assets/imgs/tutorial_2.svg',
+      'assets/imgs/tutorial_3.svg',
+      'assets/imgs/tutorial_4.svg',
     ];
 
     return Dialog(
