@@ -74,6 +74,8 @@ class BuildDialog {
   static double _getDialogHeight(String iconName, bool simpleDialog) {
     if (simpleDialog) {
       return 1000.0.w;
+    } else if (iconName == 'onboarding') {
+      return 1800.0.w;
     } else if (iconName == 'bead') {
       return 3000.0.w;
     } else if (iconName == 'agreeToTerms') {

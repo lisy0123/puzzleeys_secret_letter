@@ -100,7 +100,7 @@ class _AgreeToTermsDialogState extends State<AgreeToTermsDialog> {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (context) => WelcomeScreen(),
+          builder: (context) => WelcomeScreen(shouldAddExtraPage: true),
         );
       },
     );

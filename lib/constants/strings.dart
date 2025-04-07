@@ -24,6 +24,7 @@ class CustomStrings {
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
   static const Map<String, String> dialogNameLists = {
+    'onboarding': '퍼즐에 감정 담아보기',
     'bead': '감정 퍼즐 구슬',
     'list': preview,
     'puzzlePreview': '감정 보기',
@@ -36,7 +37,6 @@ class CustomStrings {
     'setDays': '언제 받을까요?',
     'terms': terms,
     'agreeToTerms': terms,
-
     '0': '계 정',
     '1': '내 글',
     '2': '알 람',
@@ -156,11 +156,18 @@ class OverlayStrings {
     OverlayType.writePuzzleToMe: [-1, '미래의 나에게 감정 퍼즐을 보냈어요!'],
     OverlayType.writeReply: [1, '답장을 보냈어요!'],
   };
-  static String getOverlay = '감정 퍼즐을 담았어요!';
-  static String userIdOverlay = '회원 번호를 복사했어요!';
-  static String puzzleExistOverlay = '이미 담은 감정 퍼즐이에요!';
-  static String reportOverlay = '해당 감정 퍼즐을 신고했어요!';
-  static String deleteOverlay = '해당 감정 퍼즐을 삭제했어요!';
+  static const String getOverlay = '감정 퍼즐을 담았어요!';
+  static const String userIdOverlay = '회원 번호를 복사했어요!';
+  static const String puzzleExistOverlay = '이미 담은 감정 퍼즐이에요!';
+  static const String reportOverlay = '해당 감정 퍼즐을 신고했어요!';
+  static const String deleteOverlay = '해당 감정 퍼즐을 삭제했어요!';
+}
+
+class WelcomeStrings {
+  static const String globalContent = '📢 그 누구라도\n들어줬으면 하는 마음이에요.';
+  static const String personalContent = '💌 한 사람에게만\n조심스레 털어놓고 싶어요.';
+  static const String global = '전체퍼즐';
+  static const String personal = '개인퍼즐';
 }
 
 class UpdateStrings {

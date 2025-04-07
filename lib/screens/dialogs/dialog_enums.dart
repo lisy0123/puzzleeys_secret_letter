@@ -4,6 +4,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/agree_to_terms_dialog.da
 import 'package:puzzleeys_secret_letter/screens/dialogs/bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/question_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/terms_dialog.dart';
+import 'package:puzzleeys_secret_letter/screens/dialogs/onboarding_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete/delete_bead_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/delete/delete_post_dialog.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/list/my_dialog.dart';
@@ -23,6 +24,7 @@ import 'package:puzzleeys_secret_letter/screens/dialogs/simple/user_dialog.dart'
 import 'package:puzzleeys_secret_letter/screens/dialogs/simple/warning_dialog.dart';
 
 enum DialogType {
+  onboarding,
   bead,
   list,
   puzzlePreview,
@@ -72,6 +74,8 @@ enum DialogType {
     PuzzleType? puzzleType,
   ) {
     switch (this) {
+      case DialogType.onboarding:
+        return OnboardingDialog();
       case DialogType.bead:
         return BeadDialog();
       case DialogType.list:
