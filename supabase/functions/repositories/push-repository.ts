@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase-config.ts";
 
-export const NotificationRepository = {
-    async getFcmTokens(userId: string) {
+export class NotificationRepository {
+    static async getFcmTokens(userId: string): Promise<string[] | null> {
         const { data, error } = await supabase
             .from("fcm_token")
             .select("fcm_token")
@@ -12,13 +12,13 @@ export const NotificationRepository = {
             return null;
         }
         return data.map((row: { fcm_token: string }) => row.fcm_token);
-    },
+    }
 
-    async updateNotificationResult(
+    static async updateNotificationResult(
         id: string,
         completedAt: string,
         result: { [key: string]: string[] }
-    ) {
+    ): Promise<void> {
         const { error } = await supabase
             .from("fcm_notification")
             .update({
@@ -31,5 +31,16 @@ export const NotificationRepository = {
             console.error("Error updating notification result:", error);
             throw error;
         }
-    },
-};
+    }
+
+    static async deleteFcmTokens(tokens: string[]): Promise<void> {
+        const { error } = await supabase
+            .from("fcm_token")
+            .delete()
+            .in("fcm_token", tokens);
+
+        if (error) {
+            console.error("Error deleting FCM tokens:", error);
+        }
+    }
+}
