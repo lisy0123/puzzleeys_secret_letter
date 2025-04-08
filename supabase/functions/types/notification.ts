@@ -11,9 +11,3 @@ export interface UserNotificationWebhookPayload {
     record: UserNotificationRecord;
     schema: "public";
 }
-
-export interface PushNotificationParams {
-    userId: string;
-    body?: string;
-    title?: string;
-}

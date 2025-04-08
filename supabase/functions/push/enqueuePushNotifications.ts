@@ -1,11 +1,10 @@
 import { supabase } from "../lib/supabase-config.ts";
-import { PushNotificationParams } from "../types/notification.ts";
 
-export const enqueuePushNotification = async ({
-    userId,
-    body,
-    title,
-}: PushNotificationParams) => {
+export const enqueuePushNotification = async (
+    userId: string,
+    body?: string | null,
+    title?: string | null
+) => {
     try {
         const { error } = await supabase.rpc("enqueue_push_notification", {
             p_user_id: userId,

@@ -22,7 +22,9 @@ export class BeadRepository {
         return data;
     }
 
-    static async postUser(body: JSON): Promise<Response | void> {
+    static async postUser(body: {
+        [key: string]: string;
+    }): Promise<Response | void> {
         const { error } = await supabase.from("bead_user_list").insert([body]);
         if (error) {
             return createResponse(
@@ -30,6 +32,18 @@ export class BeadRepository {
                 `Error posting bead data: ${error.message}`,
                 null
             );
+        } else {
+            const { error } = await supabase.rpc("increment_puzzle_count", {
+                p_user_id: body.author_id,
+            });
+
+            if (error) {
+                return createResponse(
+                    ResponseCode.SERVER_ERROR,
+                    `Error updating puzzle counting: ${error.message}`,
+                    null
+                );
+            }
         }
     }
 
@@ -74,7 +88,7 @@ export class BeadRepository {
         }
         return (count ?? 0) > 0;
     }
-    
+
     static async deletePost(index: string): Promise<Response | void> {
         const { error } = await supabase
             .from("bead_user_list")
