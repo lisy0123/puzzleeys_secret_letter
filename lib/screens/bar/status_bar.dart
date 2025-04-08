@@ -9,6 +9,7 @@ import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_shapes.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
+import 'package:puzzleeys_secret_letter/widgets/info_button.dart';
 
 class StatusBar extends StatelessWidget {
   const StatusBar({super.key});
@@ -53,21 +54,7 @@ class StatusBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (_) {
-                      return WelcomeScreen();
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  'assets/imgs/icon_question.svg',
-                  height: 32.0.h,
-                ),
-              ),
+              InfoButton(onTap: () => WelcomeScreen(), dismissible: false),
               SizedBox(width: 20.0.w),
               IconDialog(iconName: 'list'),
             ],

@@ -30,7 +30,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       'assets/imgs/tutorial_1.svg',
       'assets/imgs/tutorial_2.svg',
       'assets/imgs/tutorial_3.svg',
-      'assets/imgs/tutorial_4.svg',
     ];
     final int svgPathLength = svgPaths.length;
 
@@ -86,7 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildButton(int svgPathLength, bool shouldAddExtraPage) {
     return Positioned(
-      bottom: 260.0.h,
+      bottom: 300.0.h,
       left: 0,
       right: 0,
       child: Builder(

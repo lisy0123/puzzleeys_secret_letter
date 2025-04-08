@@ -7,6 +7,7 @@ import 'package:puzzleeys_secret_letter/constants/strings.dart';
 import 'package:puzzleeys_secret_letter/providers/bead_provider.dart';
 import 'package:puzzleeys_secret_letter/screens/dialogs/icon_dialog.dart';
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
+import 'package:puzzleeys_secret_letter/widgets/info_button.dart';
 import 'package:puzzleeys_secret_letter/widgets/loading_dialog.dart';
 import 'package:puzzleeys_secret_letter/styles/box_decorations.dart';
 import 'package:puzzleeys_secret_letter/styles/custom_text.dart';
@@ -105,24 +106,41 @@ class _BeadDialogState extends State<BeadDialog> {
   Widget _buildBead(List<Color> beadColor, int puzzleCount) {
     return SizedBox(
       height: 1100.0.w,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
+        alignment: Alignment.topCenter,
         children: [
-          Stack(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 800.0.w,
-                height: 800.0.w,
-                decoration: BoxDecorations.bead(gradientColors: beadColor),
+              Stack(
+                children: [
+                  Container(
+                    width: 800.0.w,
+                    height: 800.0.w,
+                    decoration: BoxDecorations.bead(gradientColors: beadColor),
+                  ),
+                  Image.asset('assets/imgs/puzzle_pattern.png', width: 800.0.w),
+                ],
               ),
-              Image.asset('assets/imgs/puzzle_pattern.png', width: 800.0.w),
+              CustomText.textDisplay(
+                text: '${puzzleCount.toString()}${CustomStrings.puzzleCount}',
+                stroke: true,
+                context: context,
+              ),
             ],
           ),
-          CustomText.textDisplay(
-            text: '${puzzleCount.toString()}${CustomStrings.puzzleCount}',
-            stroke: true,
-            context: context,
+          Padding(
+            padding: EdgeInsets.only(right: 20.0.w),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: InfoButton(
+                isFaded: true,
+                onTap: () => Center(
+                  child: SvgPicture.asset('assets/imgs/tutorial_bead.svg'),
+                ),
+              ),
+            ),
           ),
         ],
       ),
