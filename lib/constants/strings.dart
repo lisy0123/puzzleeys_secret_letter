@@ -24,7 +24,7 @@ class CustomStrings {
   static const List<String> pageNameLists = ['전체', '주제', '개인', '상점', '더보기'];
 
   static const Map<String, String> dialogNameLists = {
-    'onboarding': '퍼즐에 감정 담아보기',
+    'onboarding': '퍼즐에 감정 담기',
     'bead': '감정 퍼즐 구슬',
     'list': preview,
     'puzzlePreview': '감정 보기',

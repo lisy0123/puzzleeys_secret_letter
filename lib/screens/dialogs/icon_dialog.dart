@@ -48,7 +48,11 @@ class BuildDialog {
         return AlertDialog(
           backgroundColor: Colors.transparent,
           contentPadding: EdgeInsets.symmetric(
-            horizontal: simpleDialog ? 360.0.w : 160.0.w,
+            horizontal: simpleDialog
+                ? 360.0.w
+                : iconName == 'onboarding'
+                    ? 240.0.w
+                    : 160.0.w,
           ),
           content: SizedBox(
             width: 1400.0.w,
