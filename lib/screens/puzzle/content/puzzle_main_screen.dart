@@ -11,13 +11,11 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_sc
 import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleMainScreen extends StatefulWidget {
-  final int index;
   final Map<String, dynamic> puzzleData;
   final PuzzleType puzzleType;
 
   const PuzzleMainScreen({
     super.key,
-    required this.index,
     required this.puzzleData,
     required this.puzzleType,
   });
@@ -126,7 +124,6 @@ class _PuzzleMainScreenState extends State<PuzzleMainScreen> {
           barrierColor: Colors.white38,
           child: PuzzleWritingScreen(
             puzzleType: widget.puzzleType,
-            index: widget.index,
             parentId: parentId,
             parentColor: widget.puzzleData['color'],
           ),
