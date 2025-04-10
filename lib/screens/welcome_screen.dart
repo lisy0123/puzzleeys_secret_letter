@@ -85,7 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildButton(int svgPathLength, bool shouldAddExtraPage) {
     return Positioned(
-      bottom: 300.0.h,
+      bottom: 280.0.h,
       left: 0,
       right: 0,
       child: Builder(
