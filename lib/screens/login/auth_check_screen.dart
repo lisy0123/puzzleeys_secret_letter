@@ -13,6 +13,7 @@ import 'package:puzzleeys_secret_letter/screens/loading/puzzle_loading_screen.da
 import 'package:puzzleeys_secret_letter/screens/main_screen.dart';
 import 'package:puzzleeys_secret_letter/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:puzzleeys_secret_letter/utils/task_schedule.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthCheckScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen>
   late BeadProvider _beadProvider;
   late final LoggedBeforeProvider _loggedBeforeProvider;
   DateTime? _lastUpdatedDate;
+  TaskScheduler? _refreshScheduler;
 
   @override
   void initState() {
@@ -101,13 +103,22 @@ class _AuthCheckScreenState extends State<AuthCheckScreen>
 
     if (isLoggedIn && mounted) {
       await context.read<FcmTokenProvider>().initialize();
-      if (mounted) {
-        await Future.wait([
-          _barProvider.initialize(context),
-          _beadProvider.initialize(),
-        ]);
-      }
+      _initializeProvider();
     }
+    await _initializeScheduler();
+  }
+
+  Future<void> _initializeScheduler() async {
+    _refreshScheduler = TaskScheduler(
+      hour: 0,
+      minute: 1,
+      executeTask: () {
+        _initializeProvider();
+        final DateTime now = DateTime.now();
+        _lastUpdatedDate = DateTime(now.year, now.month, now.day);
+      },
+    );
+    _refreshScheduler?.scheduleDailyTask();
   }
 
   @override
@@ -119,13 +130,17 @@ class _AuthCheckScreenState extends State<AuthCheckScreen>
 
       if (today.isAfter(lastUpdated)) {
         _lastUpdatedDate = today;
-        if (mounted) {
-          await Future.wait([
-            _barProvider.initialize(context),
-            _beadProvider.initialize(),
-          ]);
-        }
+        _initializeProvider();
       }
+    }
+  }
+
+  void _initializeProvider() async {
+    if (mounted) {
+      await Future.wait([
+        _barProvider.initialize(context),
+        _beadProvider.initialize(),
+      ]);
     }
   }
 
@@ -133,6 +148,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _authSubscription.cancel();
+    _refreshScheduler?.cancelTask();
     super.dispose();
   }
 
