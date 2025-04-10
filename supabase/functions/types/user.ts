@@ -27,6 +27,16 @@ export interface PostData {
     read?: boolean;
 }
 
+export interface UserData {
+    index: string;
+    id: string;
+    title: string;
+    content: string;
+    color: string;
+    post_type: string;
+    created_at: string;
+}
+
 export interface BeadData {
     index: string;
     id: string;

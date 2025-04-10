@@ -1,7 +1,7 @@
 import { ResponseCode } from "../lib/response/response-code.ts";
 import { createResponse } from "../lib/response/response-format.ts";
 import { supabase } from "../lib/supabase-config.ts";
-import { PostData, BeadData, PostQuery } from "../types/user.ts";
+import { PostData, PostQuery, UserData } from "../types/user.ts";
 
 export class PostRepository {
     static async getGlobalPosts(): Promise<Response | PostData[]> {
@@ -67,7 +67,7 @@ export class PostRepository {
         return data;
     }
 
-    static async getAllUserPosts(id: string): Promise<Response | BeadData[]> {
+    static async getAllUserPosts(id: string): Promise<Response | UserData[]> {
         const { data, error } = await supabase.rpc("get_all_user_posts", {
             user_id: id,
         });

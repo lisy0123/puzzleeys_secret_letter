@@ -14,7 +14,6 @@ import 'package:puzzleeys_secret_letter/widgets/custom_button.dart';
 
 class PuzzleWritingScreen extends StatefulWidget {
   final PuzzleType puzzleType;
-  final int? index;
   final bool reply;
   final String? parentId;
   final Color? parentColor;
@@ -22,7 +21,6 @@ class PuzzleWritingScreen extends StatefulWidget {
   const PuzzleWritingScreen({
     super.key,
     required this.puzzleType,
-    this.index,
     this.reply = true,
     this.parentId,
     this.parentColor,

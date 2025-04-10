@@ -11,7 +11,6 @@ import 'package:puzzleeys_secret_letter/screens/puzzle/content/puzzle_writing_sc
 
 class PuzzleContentHandler {
   static void handler({
-    required int index,
     required PuzzleType puzzleType,
     required Map<String, dynamic> puzzleData,
     required BuildContext context,
@@ -19,7 +18,7 @@ class PuzzleContentHandler {
     final Color puzzleColor = puzzleData['color'];
 
     if (puzzleColor == Colors.white) {
-      _handleWhitePuzzle(index, puzzleType, context);
+      _handleWhitePuzzle(puzzleType, context);
     } else if (puzzleColor == Colors.white.withValues(alpha: 0.8)) {
       _showInterstitialAd();
       BuildDialog.show(
@@ -35,11 +34,7 @@ class PuzzleContentHandler {
       }
       PuzzleScreenHandler.navigateScreen(
         barrierColor: puzzleColor.withValues(alpha: 0.8),
-        child: PuzzleMainScreen(
-          index: index,
-          puzzleData: puzzleData,
-          puzzleType: puzzleType,
-        ),
+        child: PuzzleMainScreen(puzzleData: puzzleData, puzzleType: puzzleType),
         context: context,
       );
     }
@@ -49,11 +44,7 @@ class PuzzleContentHandler {
     await AdManager().showInterstitialAd();
   }
 
-  static void _handleWhitePuzzle(
-    int index,
-    PuzzleType puzzleType,
-    BuildContext context,
-  ) {
+  static void _handleWhitePuzzle(PuzzleType puzzleType, BuildContext context) {
     final bool hasSubject =
         Provider.of<PuzzleProvider>(context, listen: false).hasSubject;
 
@@ -64,11 +55,7 @@ class PuzzleContentHandler {
     } else {
       PuzzleScreenHandler.navigateScreen(
         barrierColor: Colors.white70,
-        child: PuzzleWritingScreen(
-          puzzleType: puzzleType,
-          index: index,
-          reply: false,
-        ),
+        child: PuzzleWritingScreen(puzzleType: puzzleType, reply: false),
         context: context,
       );
     }

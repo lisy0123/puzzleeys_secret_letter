@@ -104,7 +104,6 @@ class _PuzzleContentState extends State<PuzzleContent>
       id: widget.index,
       child: GestureDetector(
         onTap: () => PuzzleContentHandler.handler(
-          index: widget.index,
           puzzleType: widget.puzzleType,
           puzzleData: widget.puzzleData,
           context: context,
