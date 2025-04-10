@@ -22,19 +22,29 @@ class AuthCheckScreen extends StatefulWidget {
   State<AuthCheckScreen> createState() => _AuthCheckScreenState();
 }
 
-class _AuthCheckScreenState extends State<AuthCheckScreen> {
+class _AuthCheckScreenState extends State<AuthCheckScreen>
+    with WidgetsBindingObserver {
   late final StreamSubscription _authSubscription;
+  late BarProvider _barProvider;
+  late BeadProvider _beadProvider;
   late final LoggedBeforeProvider _loggedBeforeProvider;
+  DateTime? _lastUpdatedDate;
 
   @override
   void initState() {
     super.initState();
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _verifyVersion();
       await _checkIOSTrackingPermission();
     });
 
-    _loggedBeforeProvider = context.read<LoggedBeforeProvider>();
+    if (mounted) {
+      _beadProvider = context.read<BeadProvider>();
+      _barProvider = context.read<BarProvider>();
+      _loggedBeforeProvider = context.read<LoggedBeforeProvider>();
+    }
+
     _loggedBeforeProvider.addListener(() {
       if (!_loggedBeforeProvider.loggedInBefore) {
         BuildDialog.show(
@@ -93,17 +103,37 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
       await context.read<FcmTokenProvider>().initialize();
       if (mounted) {
         await Future.wait([
-          context.read<BarProvider>().initialize(context),
-          context.read<BeadProvider>().initialize(),
+          _barProvider.initialize(context),
+          _beadProvider.initialize(),
         ]);
       }
     }
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final DateTime now = DateTime.now();
+      final DateTime today = DateTime(now.year, now.month, now.day);
+      final DateTime lastUpdated = _lastUpdatedDate ?? today;
+
+      if (today.isAfter(lastUpdated)) {
+        _lastUpdatedDate = today;
+        if (mounted) {
+          await Future.wait([
+            _barProvider.initialize(context),
+            _beadProvider.initialize(),
+          ]);
+        }
+      }
+    }
+  }
+
+  @override
   void dispose() {
-    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     _authSubscription.cancel();
+    super.dispose();
   }
 
   @override

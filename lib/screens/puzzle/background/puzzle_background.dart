@@ -28,15 +28,21 @@ class PuzzleBackground extends StatefulWidget {
   State<PuzzleBackground> createState() => _PuzzleBackgroundState();
 }
 
-class _PuzzleBackgroundState extends State<PuzzleBackground> {
+class _PuzzleBackgroundState extends State<PuzzleBackground>
+    with WidgetsBindingObserver {
   late final StreamSubscription _authSubscription;
   TaskScheduler? _refreshScheduler;
   TaskScheduler? _resetSubjectScreenScheduler;
   late PuzzleProvider _puzzleProvider;
+  DateTime? _lastUpdatedDate;
+  late Box _globalBox;
+  late Box _subjectBox;
+  late Box _personalBox;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _authSubscription =
         Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       _initialize();
@@ -56,25 +62,30 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
     }
 
     await _puzzleProvider.initializeColors(widget.puzzleType);
-    _initializeScheduler();
+
+    final DateTime now = DateTime.now();
+    _lastUpdatedDate = DateTime(now.year, now.month, now.day);
+
+    final List<dynamic> boxes = await Future.wait([
+      Hive.openBox('globalPuzzleBox'),
+      Hive.openBox('subjectPuzzleBox'),
+      Hive.openBox('personalPuzzleBox'),
+    ]);
+    _globalBox = boxes[0];
+    _subjectBox = boxes[1];
+    _personalBox = boxes[2];
+
+    await _initializeScheduler();
   }
 
-  void _initializeScheduler() async {
-    final Box globalBox = await Hive.openBox('globalPuzzleBox');
-    final Box subjectBox = await Hive.openBox('subjectPuzzleBox');
-    final Box personalBox = await Hive.openBox('personalPuzzleBox');
-
+  Future<void> _initializeScheduler() async {
     _refreshScheduler = TaskScheduler(
       hour: 0,
       minute: 1,
-      executeTask: () async {
-        await Future.wait([
-          globalBox.clear(),
-          subjectBox.clear(),
-          personalBox.clear(),
-        ]);
-        _puzzleProvider.updateShuffle(true);
-        await _puzzleProvider.initializeColors(widget.puzzleType);
+      executeTask: () {
+        _updateAllPuzzle();
+        final DateTime now = DateTime.now();
+        _lastUpdatedDate = DateTime(now.year, now.month, now.day);
       },
     );
 
@@ -82,7 +93,7 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
       hour: 18,
       minute: 1,
       executeTask: () async {
-        await subjectBox.clear();
+        await _subjectBox.clear();
         if (widget.puzzleType == PuzzleType.personal) {
           _puzzleProvider.updateShuffle(true);
           await _puzzleProvider.initializeColors(widget.puzzleType);
@@ -95,7 +106,32 @@ class _PuzzleBackgroundState extends State<PuzzleBackground> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final DateTime now = DateTime.now();
+      final DateTime today = DateTime(now.year, now.month, now.day);
+      final DateTime lastUpdated = _lastUpdatedDate ?? today;
+
+      if (today.isAfter(lastUpdated)) {
+        _lastUpdatedDate = today;
+        _updateAllPuzzle();
+      }
+    }
+  }
+
+  void _updateAllPuzzle() async {
+    await Future.wait([
+      _globalBox.clear(),
+      _subjectBox.clear(),
+      _personalBox.clear(),
+    ]);
+    _puzzleProvider.updateShuffle(true);
+    await _puzzleProvider.initializeColors(widget.puzzleType);
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _authSubscription.cancel();
     _refreshScheduler?.cancelTask();
     _resetSubjectScreenScheduler?.cancelTask();

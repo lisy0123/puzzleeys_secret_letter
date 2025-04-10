@@ -14,6 +14,7 @@ class BarProvider with ChangeNotifier {
 
   int get puzzleNums => _puzzleNums;
   int get diaNums => _diaNums;
+  DateTime? get lastCheckedDate => _lastCheckedDate;
 
   BarProvider() {
     _loadStoredData();
@@ -63,27 +64,29 @@ class BarProvider with ChangeNotifier {
     int diaNum,
     DateTime? lastCheckedDate,
   ) async {
+    bool shouldNotify = false;
+
     if (puzzleNum != _puzzleNums) {
       _puzzleNums = puzzleNum;
-      notifyListeners();
       await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
+      shouldNotify = true;
     }
-
     if (diaNum != _diaNums) {
       _diaNums = diaNum;
-      notifyListeners();
       await SharedPreferencesUtils.saveInt('diaNums', _diaNums);
+      shouldNotify = true;
     }
-
     if (lastCheckedDate != _lastCheckedDate) {
       _lastCheckedDate = lastCheckedDate;
-      notifyListeners();
-
-      final String dateString = _lastCheckedDate != null
-          ? Utils.formatDateToString(_lastCheckedDate!)
-          : '';
-      await SharedPreferencesUtils.save('attendance_date', dateString);
+      if (_lastCheckedDate != null) {
+        await SharedPreferencesUtils.save(
+          'attendance_date',
+          Utils.formatDateToString(_lastCheckedDate!),
+        );
+      }
+      shouldNotify = true;
     }
+    if (shouldNotify) notifyListeners();
   }
 
   Future<void> _checkIn(BuildContext context) async {
@@ -108,12 +111,6 @@ class BarProvider with ChangeNotifier {
       await SharedPreferencesUtils.save('attendance_date', dateString);
       _request({'date': dateString});
     }
-  }
-
-  void adPuzzleNum() async {
-    _puzzleNums++;
-    notifyListeners();
-    await SharedPreferencesUtils.saveInt('puzzleNums', _puzzleNums);
   }
 
   void updatePuzzleNum(int num) async {
